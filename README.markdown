@@ -43,9 +43,15 @@ Dependencies
 Screenshots
 -----------
 
+### Unread items
+
 ![items](https://raw.github.com/fguillot/miniflux/master/screenshots/items.png)
 
+### Item view
+
 ![item](https://raw.github.com/fguillot/miniflux/master/screenshots/item.png)
+
+### Subscriptions
 
 ![feeds](https://raw.github.com/fguillot/miniflux/master/screenshots/feeds.png)
 
