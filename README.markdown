@@ -43,11 +43,11 @@ Dependencies
 Screenshots
 -----------
 
-![items](https://github.com/fguillot/miniflux/screenshots/items.png)
+![items](https://raw.github.com/fguillot/miniflux/master/screenshots/items.png)
 
-![item](https://github.com/fguillot/miniflux/screenshots/item.png)
+![item](https://raw.github.com/fguillot/miniflux/master/screenshots/item.png)
 
-![feeds](https://github.com/fguillot/miniflux/screenshots/feeds.png)
+![feeds](https://raw.github.com/fguillot/miniflux/master/screenshots/feeds.png)
 
 Installation
 ------------
