@@ -44,13 +44,13 @@ class Reader
 
     public function getParser()
     {
-        $first_lines = substr($this->content, 0, 512);
+        $first_lines = substr($this->content, 0, 1024);
 
         if (stripos($first_lines, 'html') !== false) {
 
             if ($this->discover()) {
 
-                $first_lines = substr($this->content, 0, 512);
+                $first_lines = substr($this->content, 0, 1024);
             }
             else {
 

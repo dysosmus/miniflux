@@ -67,10 +67,10 @@ class Filter
     public function __construct($data, $url)
     {
         $this->url = $url;
-        $data = iconv("UTF-8", "ISO-8859-15//IGNORE", $data);
 
-        $dom = new \DOMDocument();
-        $dom->loadHTML($data);
+        // Convert bad formatted documents to XML
+        $dom = new \DOMDocument;
+        $dom->loadHTML('<?xml encoding="UTF-8">'.$data);
         $this->input = $dom->saveXML($dom->getElementsByTagName('body')->item(0));
     }
 
