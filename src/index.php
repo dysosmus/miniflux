@@ -108,7 +108,7 @@ Router\get_action('remove', function() {
 });
 
 
-Router\get_action('refresh', function() {
+Router\get_action('refresh-feed', function() {
 
     $id = Request\int_param('feed_id');
 
@@ -118,6 +118,19 @@ Router\get_action('refresh', function() {
     }
 
     Response\redirect('?action=unread');
+});
+
+
+Router\get_action('ajax-refresh-feed', function() {
+
+    $id = Request\int_param('feed_id');
+
+    if ($id) {
+
+        Response\json(array('feed_id' => $id, 'result' => Model\update_feed($id)));
+    }
+
+    Response\json(array('feed_id' => 0, 'result' => false));
 });
 
 

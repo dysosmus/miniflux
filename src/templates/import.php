@@ -1,6 +1,10 @@
 <div class="page-header">
     <h2>OPML Import</h2>
-    <?php include __DIR__.'/feed_menu.php' ?>
+    <ul>
+        <li><a href="?action=feeds">feeds</a></li>
+        <li><a href="?action=add">add</a></li>
+        <li><a href="?action=export">export</a></li>
+    </ul>
 </div>
 
 <form method="post" action="?action=import" enctype="multipart/form-data">

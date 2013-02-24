@@ -129,7 +129,7 @@ function get_unread_items()
 {
     return \PicoTools\singleton('db')
         ->table('items')
-        ->columns('items.id', 'items.title', 'items.updated', 'feeds.site_url')
+        ->columns('items.id', 'items.title', 'items.updated', 'items.url', 'feeds.site_url')
         ->join('feeds', 'id', 'feed_id')
         ->eq('status', 'unread')
         ->desc('updated')
@@ -141,7 +141,7 @@ function get_read_items()
 {
     return \PicoTools\singleton('db')
         ->table('items')
-        ->columns('items.id', 'items.title', 'items.updated', 'feeds.site_url')
+        ->columns('items.id', 'items.title', 'items.updated', 'items.url', 'feeds.site_url')
         ->join('feeds', 'id', 'feed_id')
         ->eq('status', 'read')
         ->desc('updated')
@@ -197,6 +197,11 @@ function update_feeds()
 
             update_items($feed['id'], $parser->execute()->items);
         }
+        else {
+
+            print_r($feed);
+            die;
+        }
     }
 }
 
@@ -212,7 +217,10 @@ function update_feed($feed_id)
     if ($parser !== false) {
 
         update_items($feed['id'], $parser->execute()->items);
+        return true;
     }
+
+    return false;
 }
 
 

@@ -6,12 +6,12 @@
 
     <article class="item">
         <h1>
-            <a href="<?= $item['url'] ?>" target="_blank"><?= Helper\escape($item['title']) ?></a>
+            <a href="<?= $item['url'] ?>" rel="noreferrer" target="_blank"><?= Helper\escape($item['title']) ?></a>
         </h1>
 
         <p class="infos">
-            <?= Helper\escape(parse_url($item['url'], PHP_URL_HOST)) ?> |
-            <?= date('l, j F Y H:i T', $item['updated']) ?>
+            <?= Helper\get_host_from_url($item['url']) ?> |
+            <?= date('l, j F Y H:i', $item['updated']) ?>
         </p>
 
         <?= $item['content'] ?>

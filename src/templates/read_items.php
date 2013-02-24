@@ -16,8 +16,9 @@
         <article>
             <h2><a href="?action=read&amp;id=<?= urlencode($item['id']) ?>"><?= Helper\escape($item['title']) ?></a></h2>
             <p>
-                <?= Helper\escape(parse_url($item['site_url'], PHP_URL_HOST)) ?> |
-                <?= date('l, j F Y H:i T', $item['updated']) ?>
+                <?= Helper\get_host_from_url($item['url']) ?> |
+                <?= date('l, j F Y H:i', $item['updated']) ?> |
+                <a href="<?= $item['url'] ?>" rel="noreferrer" target="_blank">direct link</a>
             </p>
         </article>
     <?php endforeach ?>

@@ -276,6 +276,10 @@ nav .active a {
     font-size: 70%;
 }
 
+.items p a {
+    color: #aaa;
+}
+
 
 /* item */
 .item {

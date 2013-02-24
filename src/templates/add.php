@@ -1,6 +1,10 @@
 <div class="page-header">
     <h2>New subscription</h2>
-    <?php include __DIR__.'/feed_menu.php' ?>
+    <ul>
+        <li><a href="?action=feeds">feeds</a></li>
+        <li><a href="?action=import">import</a></li>
+        <li><a href="?action=export">export</a></li>
+    </ul>
 </div>
 
 <form method="post" action="?action=add">
