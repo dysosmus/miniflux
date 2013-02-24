@@ -49,6 +49,12 @@ function flash_error($html)
 }
 
 
+function get_host_from_url($url)
+{
+    return escape(parse_url($url, PHP_URL_HOST));
+}
+
+
 function in_list($id, array $listing)
 {
     if (isset($listing[$id])) {

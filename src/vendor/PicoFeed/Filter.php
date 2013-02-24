@@ -13,6 +13,16 @@ class Filter
     public $ignored_tags = array();
 
     public $allowed_tags = array(
+        'dt' => array(),
+        'dd' => array(),
+        'dl' => array(),
+        'table' => array(),
+        'caption' => array(),
+        'tr' => array(),
+        'th' => array(),
+        'td' => array(),
+        'tbody' => array(),
+        'thead' => array(),
         'h2' => array(),
         'h3' => array(),
         'h4' => array(),
@@ -61,6 +71,10 @@ class Filter
     public $required_attributes = array(
         'a' => array('href'),
         'img' => array('src')
+    );
+
+    public $add_attributes = array(
+        'a' => 'rel="noreferrer" target="_blank"'
     );
 
 
@@ -149,6 +163,11 @@ class Filter
             if (! $this->empty_tag) {
 
                 $this->data .= '<'.$name.$attr_data;
+
+                if (isset($this->add_attributes[$name])) {
+
+                    $this->data .= ' '.$this->add_attributes[$name].' ';
+                }
 
                 if ($name !== 'img' && $name !== 'br') $this->data .= '>';
             }

@@ -42,34 +42,42 @@ class Reader
     }
 
 
-    public function getParser()
+    public function getFirstTag($data)
     {
-        $first_lines = substr($this->content, 0, 1024);
+        if (strpos($data, '<?xml') !== false) {
 
-        if (stripos($first_lines, 'html') !== false) {
+            $data = substr($data, strrpos($data, '?>') + 2);
 
-            if ($this->discover()) {
+            $open_tag = strpos($data, '<');
+            $close_tag = strpos($data, '>');
 
-                $first_lines = substr($this->content, 0, 1024);
-            }
-            else {
-
-                return false;
-            }
+            return substr($data, $open_tag, $close_tag);
         }
 
-        if (strpos($first_lines, '<feed ') !== false) {
+        return $data;
+    }
+
+
+    public function getParser($discover = false)
+    {
+        $first_tag = $this->getFirstTag($this->content);
+
+        if (strpos($first_tag, '<feed ') !== false) {
 
             return new Atom($this->content);
         }
-        else if (strpos($first_lines, '<rss ') !== false && strpos($first_lines, 'version="2.0"') !== false) {
+        else if (strpos($first_tag, '<rss ') !== false && strpos($first_tag, 'version="2.0"') !== false) {
 
             return new Rss20($this->content);
-        }/*
-        else if (strpos($first_lines, '<rdf') !== false && strpos($first_lines, 'xmlns="http://purl.org/rss/1.0/"') !== false) {
+        }
+        else if ($discover === true) {
 
-            return new Rss10($this->content);
-        }*/
+            return false;
+        }
+        else if ($this->discover()) {
+
+            return $this->getParser(true);
+        }
 
         return false;
     }
@@ -77,6 +85,11 @@ class Reader
 
     public function discover()
     {
+        if (! $this->content) {
+
+            return false;
+        }
+
         \libxml_use_internal_errors(true);
 
         $dom = new \DOMDocument;
