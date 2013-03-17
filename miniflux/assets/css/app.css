@@ -1,3 +1,4 @@
+figure,
 li,
 ul,
 table,
@@ -17,6 +18,8 @@ body {
     max-width: 750px;
     color: #333;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
 }
 
 a {
@@ -49,6 +52,71 @@ h3 {
     font-size: 1.2em;
 }
 
+blockquote {
+    border-left: 4px solid #ddd;
+    padding-left: 25px;
+    margin-left: 20px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    color: #777;
+    line-height: 1.4em;
+    font-family: Georgia, serif;
+}
+
+blockquote + p {
+    color: #555;
+    font-style: italic;
+}
+
+figcaption {
+    font-size: 0.8em;
+    text-transform: uppercase;
+    color: #777;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+table caption {
+    font-weight: bold;
+    font-size: 1.0em;
+    text-align: left;
+    padding-bottom: 0.5em;
+    padding-top: 0.5em;
+}
+
+th,
+td {
+    border: 1px solid #ccc;
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+    padding-left: 5px;
+}
+
+th {
+    text-align: left;
+}
+
+pre {
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    background: #f0f0f0;
+    padding: 0.8em;
+    overflow: auto;
+    color: brown;
+}
+
+code {
+    color: brown;
+}
+
+caption code,
+p code {
+    font-size: 1.1em;
+}
 
 /* forms */
 form {
@@ -61,6 +129,10 @@ label {
     display: block;
     float: left;
     width: 10em;
+}
+
+input {
+    -webkit-appearance: none;
 }
 
 input[type="email"],
@@ -160,7 +232,7 @@ textarea.form-error {
 
 /* buttons */
 .btn {
-    display: block;
+    display: inline-block;
     color: #333;
     border: 1px solid #ccc;
     background: #efefef;
@@ -170,6 +242,24 @@ textarea.form-error {
     font-size: 90%;
     cursor: pointer;
     border-radius: 2px;
+}
+
+a.btn {
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.btn-red {
+    border-color: #b0281a;;
+    background: #d14836;
+    color: #fff;
+}
+
+a.btn-red:hover,
+.btn-red:hover,
+.btn-red:focus {
+    color: #fff;
+    background: #c53727;
 }
 
 .btn-blue {
@@ -237,6 +327,7 @@ nav .active a {
 }
 
 .page-header li {
+    font-size: 90%;
     display: inline;
     padding-left: 10px;
     padding-right: 10px;
@@ -256,10 +347,10 @@ nav .active a {
 
 .items h2 {
     font-size: 100%;
-    font-weight: bold;
     margin: 0;
     padding: 0;
     padding-bottom: 2px;
+    font-weight: bold;
 }
 
 .items a {
@@ -267,7 +358,7 @@ nav .active a {
 }
 
 .items a:hover,
-.items :focus {
+.items a:focus {
     text-decoration: underline;
 }
 
@@ -280,14 +371,29 @@ nav .active a {
     color: #aaa;
 }
 
+.items .preview {
+    color: #555;
+    line-height: 1.5em;
+    font-size: 100%;
+    font-family: Georgia, serif;
+}
+
 
 /* item */
 .item {
-    font-size: 110%;
-    color: #444;
+    color: #333;
     padding-bottom: 50px;
-    text-rendering: optimizeLegibility;
-    -webkit-font-smoothing: antialiased;
+}
+
+.item p,
+.item li {
+    font-family: Georgia, serif;
+    line-height: 1.6em;
+}
+
+.item h2,
+.item h3 {
+    font-weight: bold;
 }
 
 .item pre,
@@ -305,19 +411,6 @@ nav .active a {
     margin-left: 25px;
 }
 
-.item li {
-    margin-top: 10px;
-}
-
-.item pre {
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    background: #f0f0f0;
-    padding: 20px;
-    overflow: auto;
-    color: brown;
-}
-
 .item img {
     display: block;
     margin-top: 15px;
@@ -325,29 +418,71 @@ nav .active a {
     max-width: 100%;
 }
 
-.item code {
-    color: brown;
-}
-
 .infos {
-    padding-bottom: 30px;
+    padding-bottom: 20px;
     color: #ccc;
 }
 
-.item h1 {
-}
-
 .item h1 a {
-    font-size: 150%;
+    font-size: 2.1em;
     text-decoration: none;
 }
 
-blockquote {
-    border-left: 4px solid #ddd;
-    padding-left: 25px;
-    margin-left: 20px;
-    margin-top: 20px;
-    margin-bottom: 20px;
-    color: #666;
-    line-height: 22px;
+.item a:visited {
+    color: purple;
+}
+
+
+/* mobile design */
+@media only screen and (max-width: 480px) {
+
+    body {
+        margin-left: 5px;
+        margin-right: 5px;
+        max-width: 480px;
+    }
+
+    nav .active a {
+        font-weight: normal;
+    }
+
+    .logo {
+        display: block;
+        float: none;
+    }
+
+    header {
+        margin: 0;
+        width: 100%;
+    }
+
+    header ul {
+        text-align: left;
+    }
+
+    header li {
+        padding: 0;
+        width: 50%;
+        float: right;
+        display: block;
+        line-height: 25px;
+    }
+
+    .page {
+        clear: both;
+        padding-top: 20px;
+    }
+
+    .item {
+        font-size: 0.8em;
+    }
+
+    .item h1 {
+        font-size: 0.9em;
+    }
+
+    .item .infos {
+        font-size: 0.9em;
+        padding: 0;
+    }
 }

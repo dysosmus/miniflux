@@ -40,7 +40,12 @@ class Filter
         'br' => array(),
         'del' => array(),
         'a' => array('href'),
-        'img' => array('src', 'width', 'height')
+        'img' => array('src'),
+        'figure' => array(),
+        'figcaption' => array(),
+        'cite' => array(),
+        'time' => array('datetime'),
+        'abbr' => array('title')
     );
 
     public $strip_tags_content = array(

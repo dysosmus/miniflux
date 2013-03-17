@@ -95,13 +95,28 @@ Router\get_action('history', function() {
 });
 
 
+Router\get_action('confirm-remove', function() {
+
+    $id = Request\int_param('feed_id');
+
+    Response\html(Template\layout('confirm_remove', array(
+        'feed' => Model\get_feed($id),
+        'menu' => 'feeds'
+    )));
+});
+
+
 Router\get_action('remove', function() {
 
     $id = Request\int_param('feed_id');
 
-    if ($id) {
+    if ($id && Model\remove_feed($id)) {
 
-        Model\remove_feed($id);
+        Session\flash('This subscription has been removed successfully');
+    }
+    else {
+
+        Session\flash_error('Unable to remove this subscription');
     }
 
     Response\redirect('?action=feeds');
@@ -160,6 +175,7 @@ Router\get_action('feeds', function() {
 
     Response\html(Template\layout('feeds', array(
         'feeds' => Model\get_feeds(),
+        'nothing_to_read' => Request\int_param('nothing_to_read'),
         'menu' => 'feeds'
     )));
 });
@@ -265,8 +281,15 @@ Router\post_action('config', function() {
 
 Router\notfound(function() {
 
+    $items = Model\get_unread_items();
+
+    if (empty($items)) {
+
+        Response\redirect('?action=feeds&nothing_to_read=1');
+    }
+
     Response\html(Template\layout('unread_items', array(
-        'items' => Model\get_unread_items(),
+        'items' => $items,
         'menu' => 'unread'
     )));
 });

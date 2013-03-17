@@ -56,7 +56,7 @@
 
                 if (! response.result) {
 
-                    window.alert('Unable to refresh this feed: ' + feed_id);
+                    //window.alert('Unable to refresh this feed: ' + feed_id);
                 }
             }
             catch (e) {}
