@@ -23,6 +23,11 @@ Todo
 
 - Remove older items from the database
 
+License
+-------
+
+- AGPL: <http://www.gnu.org/licenses/agpl-3.0.txt>
+
 Requirements
 ------------
 
