@@ -327,7 +327,15 @@ function validate_config_update(array $values)
 
 function save_config(array $values)
 {
-    $values['password'] = \PicoTools\Crypto\password_hash($values['password']);
+    if (! empty($values['password'])) {
+
+        $values['password'] = \PicoTools\Crypto\password_hash($values['password']);
+    }
+    else {
+
+        unset($values['password']);
+    }
+
     unset($values['confirmation']);
 
     return \PicoTools\singleton('db')->table('config')->update($values);
