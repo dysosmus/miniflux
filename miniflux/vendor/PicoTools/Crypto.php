@@ -43,7 +43,7 @@ function password_verify($password, $hash)
 {
     $ret = crypt($password, $hash);
 
-    if (! is_string($ret) || strlen($ret) != strlen($hash) || strlen($ret) <= 13) {
+    if (! is_string($ret) || strlen($ret) != strlen($hash) || strlen($ret) < 13) {
 
         return false;
     }
@@ -69,7 +69,7 @@ function password_hash($password)
 
     $ret = crypt($password, $hash);
 
-    if (! is_string($ret) || strlen($ret) <= 13) {
+    if (! is_string($ret) || strlen($ret) < 13) {
 
         return false;
     }
