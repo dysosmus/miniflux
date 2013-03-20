@@ -15,7 +15,7 @@ function version_1($pdo)
     $pdo->exec("
         INSERT INTO config
         (password)
-        VALUES ('".\PicoTools\Crypto\password_hash('admin')."')
+        VALUES ('".\password_hash('admin', PASSWORD_BCRYPT)."')
     ");
 
     $pdo->exec('

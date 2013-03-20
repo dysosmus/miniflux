@@ -1,9 +1,10 @@
 <?php
 
+require 'check_setup.php';
+require 'vendor/password.php';
 require 'vendor/PicoTools/Dependency_Injection.php';
 require 'vendor/PicoDb/Database.php';
 require 'vendor/PicoDb/Table.php';
-require 'vendor/PicoTools/Crypto.php';
 require 'schema.php';
 require 'model.php';
 
