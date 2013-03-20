@@ -22,7 +22,7 @@ class Import
 
             $xml = new \SimpleXMLElement(trim($this->content));
 
-            if ($xml->getName() !== 'opml') {
+            if ($xml->getName() !== 'opml' || ! isset($xml->body)) {
 
                 return false;
             }
@@ -40,21 +40,24 @@ class Import
 
     public function parseEntries($tree)
     {
-        foreach ($tree->outline as $item) {
+        if (isset($tree->outline)) {
 
-            if (isset($item['type']) && strtolower($item['type']) === 'folder' && isset($item->outline)) {
+            foreach ($tree->outline as $item) {
 
-                $this->parseEntries($item);
-            }
-            else if (isset($item['type']) && strtolower($item['type']) === 'rss') {
+                if (isset($item->outline)) {
 
-                $entry = new \StdClass;
-                $entry->title = (string) $item['text'];
-                $entry->site_url = (string) $item['htmlUrl'];
-                $entry->feed_url = (string) $item['xmlUrl'];
-                $entry->type = isset($item['version']) ? (string) $item['version'] : (string) $item['type'];
-                $entry->description = (string) $item['description'];
-                $this->items[] = $entry;
+                    $this->parseEntries($item);
+                }
+                else if (isset($item['text']) && isset($item['xmlUrl']) && isset($item['htmlUrl'])) {
+
+                    $entry = new \StdClass;
+                    $entry->title = isset($item['title']) ? (string) $item['title'] : (string) $item['text'];
+                    $entry->site_url = (string) $item['htmlUrl'];
+                    $entry->feed_url = (string) $item['xmlUrl'];
+                    $entry->type = isset($item['version']) ? (string) $item['version'] : isset($item['type']) ? (string) $item['type'] : 'rss';
+                    $entry->description = isset($item['description']) ? (string) $item['description'] : $entry->title;
+                    $this->items[] = $entry;
+                }
             }
         }
     }
