@@ -6,7 +6,6 @@ require_once 'vendor/PicoFeed/Export.php';
 require_once 'vendor/PicoFeed/Import.php';
 require_once 'vendor/PicoFeed/Parser.php';
 require_once 'vendor/PicoFeed/Reader.php';
-require_once 'vendor/PicoTools/Crypto.php';
 require_once 'vendor/SimpleValidator/Validator.php';
 require_once 'vendor/SimpleValidator/Base.php';
 require_once 'vendor/SimpleValidator/Validators/Required.php';
@@ -279,7 +278,7 @@ function validate_login(array $values)
 
         $user = get_user();
 
-        if ($user && \PicoTools\Crypto\password_verify($values['password'], $user['password'])) {
+        if ($user && \password_verify($values['password'], $user['password'])) {
 
             $_SESSION['user'] = $user;
         }
@@ -329,7 +328,7 @@ function save_config(array $values)
 {
     if (! empty($values['password'])) {
 
-        $values['password'] = \PicoTools\Crypto\password_hash($values['password']);
+        $values['password'] = \password_hash($values['password'], PASSWORD_BCRYPT);
     }
     else {
 
