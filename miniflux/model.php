@@ -167,7 +167,7 @@ function set_item_read($id)
 }
 
 
-function flush_unread($id)
+function flush_unread()
 {
     \PicoTools\singleton('db')
         ->table('items')
@@ -176,7 +176,7 @@ function flush_unread($id)
 }
 
 
-function flush_read($id)
+function flush_read()
 {
     \PicoTools\singleton('db')
         ->table('items')
