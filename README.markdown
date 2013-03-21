@@ -53,7 +53,7 @@ Installation
 2. Download the source code and copy the directory miniflux where you want
 3. Check if the directory data is writeable (Miniflux store everything inside a Sqlite database)
 4. With your browser go to <http://yourpersonalserver/miniflux>
-5. The default login and password is admin/admin
+5. The default login and password is **admin/admin**
 6. Start to use the software
 
 FAQ
@@ -85,3 +85,11 @@ Miniflux is a minimalist software. Less is more.
 ### I found a bug, what next?
 
 Report the bug to the [issues tracker](https://github.com/fguillot/miniflux/issues) and I will fix it.
+
+You can report feeds that doesn't works properly too.
+
+### Which browser is compatible with Miniflux?
+
+Miniflux is tested with the last version of Mozilla Firefox, Google Chrome and Safari.
+
+I don't use Microsoft products, then I have no idea if Miniflux works correctly with Internet Explorer.
