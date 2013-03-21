@@ -13,14 +13,14 @@
 
     <section class="items">
     <?php foreach ($items as $item): ?>
-        <article>
+        <article id="item-<?= urlencode($item['id']) ?>">
             <h2><a href="?action=read&amp;id=<?= urlencode($item['id']) ?>"><?= Helper\escape($item['title']) ?></a></h2>
             <p class="preview">
                 <?= Helper\escape(Helper\summary(strip_tags($item['content']), 50, 300)) ?>
             </p>
             <p>
                 <?= Helper\get_host_from_url($item['url']) ?> |
-                <a href="<?= $item['url'] ?>" rel="noreferrer" target="_blank">direct link</a>
+                <a href="<?= $item['url'] ?>" rel="noreferrer" target="_blank" data-item-id="<?= urlencode($item['id']) ?>" data-action="mark-read">direct link</a>
             </p>
         </article>
     <?php endforeach ?>

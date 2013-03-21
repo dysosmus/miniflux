@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>miniflux</title>
         <link href="./assets/css/app.css?v1" rel="stylesheet" media="screen">
-        <script type="text/javascript" src="./assets/js/app.js" defer></script>
+        <script type="text/javascript" src="./assets/js/app.js?v1" defer></script>
     </head>
     <body>
         <header>

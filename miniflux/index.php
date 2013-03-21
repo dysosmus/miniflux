@@ -86,6 +86,16 @@ Router\get_action('read', function() {
 });
 
 
+Router\post_action('read', function() {
+
+    $id = Request\param('id');
+
+    Model\set_item_read($id);
+
+    Response\json(array('Ok'));
+});
+
+
 Router\get_action('history', function() {
 
     Response\html(Template\layout('read_items', array(

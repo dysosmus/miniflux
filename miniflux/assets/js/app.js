@@ -5,6 +5,25 @@
     var queue_length = 5;
 
 
+    function mark_as_read(item_id)
+    {
+        var request = new XMLHttpRequest();
+
+        request.onload = function() {
+
+            var article = document.getElementById("item-" + item_id);
+
+            if (article) {
+
+                article.style.display = "none";
+            }
+        };
+
+        request.open("POST", "?action=read&id=" + item_id, true);
+        request.send();
+    }
+
+
     function show_refresh_icon(feed_id)
     {
         var container = document.getElementById("loading-feed-" + feed_id);
@@ -124,15 +143,19 @@
 
         if (action) {
 
-            e.preventDefault();
-
             switch (action) {
                 case 'refresh-all':
+                    e.preventDefault();
                     refresh_all();
                     break;
                 case 'refresh-feed':
+                    e.preventDefault();
                     var feed_id = e.target.getAttribute("data-feed-id");
                     refresh_feed(feed_id);
+                    break;
+                case 'mark-read':
+                    var item_id = e.target.getAttribute("data-item-id");
+                    mark_as_read(item_id);
                     break;
             }
         }
