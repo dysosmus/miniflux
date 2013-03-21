@@ -2,14 +2,14 @@
 
 // PHP 5.3 minimum
 
-if (version_compare(PHP_VERSION, '5.3.7') < 0) {
+if (version_compare(PHP_VERSION, '5.3.0', '<')) {
 
-    die('This software require PHP 5.3.7 minimum');
+    die('This software require PHP 5.3.0 minimum');
 }
 
 // Short tags must be enabled for PHP < 5.4
 
-if (version_compare(PHP_VERSION, '5.4.0') < 0) {
+if (version_compare(PHP_VERSION, '5.4.0', '<')) {
 
     if (! ini_get('short_open_tag')) {
 
