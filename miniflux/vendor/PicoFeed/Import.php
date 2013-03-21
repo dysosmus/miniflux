@@ -48,12 +48,12 @@ class Import
 
                     $this->parseEntries($item);
                 }
-                else if (isset($item['text']) && isset($item['xmlUrl']) && isset($item['htmlUrl'])) {
+                else if ((isset($item['text']) || isset($item['title'])) && isset($item['xmlUrl'])) {
 
                     $entry = new \StdClass;
                     $entry->title = isset($item['title']) ? (string) $item['title'] : (string) $item['text'];
-                    $entry->site_url = (string) $item['htmlUrl'];
                     $entry->feed_url = (string) $item['xmlUrl'];
+                    $entry->site_url = isset($item['htmlUrl']) ? (string) $item['htmlUrl'] : $entry->feed_url;
                     $entry->type = isset($item['version']) ? (string) $item['version'] : isset($item['type']) ? (string) $item['type'] : 'rss';
                     $entry->description = isset($item['description']) ? (string) $item['description'] : $entry->title;
                     $this->items[] = $entry;
