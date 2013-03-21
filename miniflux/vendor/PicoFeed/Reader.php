@@ -44,10 +44,15 @@ class Reader
 
     public function getFirstTag($data)
     {
+        // Strip HTML comments
+        $data = preg_replace('/<!--(.*)-->/Uis', '', $data);
+
+        // Find <?xml version....
         if (strpos($data, '<?xml') !== false) {
 
             $data = substr($data, strrpos($data, '?>') + 2);
 
+            // Find the first tag
             $open_tag = strpos($data, '<');
             $close_tag = strpos($data, '>');
 
