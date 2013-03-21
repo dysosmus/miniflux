@@ -22,6 +22,7 @@ Todo
 ----
 
 - Remove older items from the database
+- Mark an item as read when you click on "direct link"
 
 License
 -------
@@ -31,7 +32,7 @@ License
 Requirements
 ------------
 
-- PHP >= 5.3
+- PHP >= 5.3.7
 - PHP XML extensions (SimpleXML, DOM...)
 - PHP Sqlite extensions
 
@@ -43,11 +44,12 @@ Libraries used
 - [PicoTools](https://github.com/fguillot/picoTools)
 - [PicoDb](https://github.com/fguillot/picoDb)
 - [SimpleValidator](https://github.com/fguillot/simpleValidator)
+- [PHP 5.5 password backport](https://github.com/ircmaxell/password_compat)
 
 Installation
 ------------
 
-1. You must have a web server with PHP installed (version 5.3 minimum) with the Sqlite and XML extensions
+1. You must have a web server with PHP installed (version 5.3.7 minimum) with the Sqlite and XML extensions
 2. Download the source code and copy the directory miniflux where you want
 3. Check if the directory data is writeable (Miniflux store everything inside a Sqlite database)
 4. With your browser go to <http://yourpersonalserver/miniflux>
@@ -67,13 +69,19 @@ By example:
 
     0 */4 * * *  cd /path/to/miniflux && php cronjob.php >/dev/null 2>&1
 
-
 ### How Miniflux update my feeds from the user interface?
 
 Miniflux use an Ajax request to refresh each subscription.
 By default, there is only 5 feeds updated in parallel.
 
-
 ### I have 600 subscriptions, how Miniflux handle that?
 
 Your life is cluttered.
+
+### Why there is no categories? Why the feature X is missing?
+
+Miniflux is a minimalist software. Less is more.
+
+### I found a bug, what next?
+
+Report the bug to the [issues tracker](https://github.com/fguillot/miniflux/issues) and I will fix it.
