@@ -226,7 +226,7 @@ function update_items($feed_id, array $items)
 
     foreach ($items as $item) {
 
-        if (! $db->table('items')->eq('id', $item->id)->count()) {
+        if ($item->id && ! $db->table('items')->eq('id', $item->id)->count()) {
 
             $db->table('items')->save(array(
                 'id' => $item->id,
