@@ -22,7 +22,6 @@ Todo
 ----
 
 - Remove older items from the database
-- Mark an item as read when you click on "direct link"
 
 License
 -------
