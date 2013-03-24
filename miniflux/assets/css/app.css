@@ -200,6 +200,11 @@ textarea.form-error {
     list-style-type: none;
 }
 
+.form-help {
+    font-size: 0.9em;
+    color: brown;
+    display: inline;
+}
 
 /* alerts */
 .alert {
@@ -310,10 +315,16 @@ nav .active a {
     color: #339966;
 }
 
+.page-section {
+    margin-top: 30px;
+}
+
+.page-section,
 .page-header {
     margin-bottom: 30px;
 }
 
+.page-section h2,
 .page-header h2 {
     margin: 0;
     padding: 0;

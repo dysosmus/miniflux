@@ -221,6 +221,13 @@ Router\post_action('add', function() {
 });
 
 
+Router\get_action('download-db', function() {
+
+    Response\force_download('db.sqlite.gz');
+    Response\binary(gzencode(file_get_contents('data/db.sqlite')));
+});
+
+
 Router\get_action('export', function() {
 
     Response\force_download('feeds.opml');
