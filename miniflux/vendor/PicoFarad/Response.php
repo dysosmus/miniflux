@@ -73,6 +73,18 @@ function xml($data, $status_code = 200)
 }
 
 
+function binary($data, $status_code = 200)
+{
+    status($status_code);
+
+    header('Content-Transfer-Encoding: binary');
+    header('Content-Type: application/octet-stream');
+    echo $data;
+
+    exit;
+}
+
+
 function csp(array $policies = array())
 {
     $policies['default-src'] = "'self'";
