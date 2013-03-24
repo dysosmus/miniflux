@@ -7,7 +7,7 @@
     </ul>
 </div>
 
-<form method="post" action="?action=add">
+<form method="post" action="?action=add" autocomplete="off">
     <label for="url">Site or Feed URL</label>
     <input type="text" name="url" id="url" placeholder="http://website/" autofocus required/>
     <div class="form-actions">
