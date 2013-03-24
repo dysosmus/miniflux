@@ -20,10 +20,10 @@
 
         <form method="post" action="?action=login">
 
-            <?= Helper\form_label('Username', 'username', 'control-label') ?>
+            <?= Helper\form_label('Username', 'username') ?>
             <?= Helper\form_text('username', $values, $errors, array('autofocus', 'required')) ?><br/>
 
-            <?= Helper\form_label('Password', 'password', 'control-label') ?>
+            <?= Helper\form_label('Password', 'password') ?>
             <?= Helper\form_password('password', $values, $errors, array('required')) ?>
 
             <div class="form-actions">
