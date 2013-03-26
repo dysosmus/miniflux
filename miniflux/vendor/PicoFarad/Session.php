@@ -7,7 +7,14 @@ const SESSION_LIFETIME = 2678400;
 
 function open($base_path = '/')
 {
-    session_set_cookie_params(SESSION_LIFETIME, $base_path, null, false, true);
+    session_set_cookie_params(
+        SESSION_LIFETIME,
+        $base_path,
+        null,
+        isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on',
+        true
+    );
+
     session_start();
 }
 
