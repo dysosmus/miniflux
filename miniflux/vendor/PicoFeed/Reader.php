@@ -75,6 +75,14 @@ class Reader
 
             return new Rss20($this->content);
         }
+        else if (strpos($first_tag, '<rss ') !== false && strpos($first_tag, 'version="0.92"') !== false) {
+
+            return new Rss92($this->content);
+        }
+        else if (strpos($first_tag, '<rss ') !== false && strpos($first_tag, 'version="0.91"') !== false) {
+
+            return new Rss91($this->content);
+        }
         else if (strpos($first_tag, '<rdf:') !== false && strpos($first_tag, 'xmlns="http://purl.org/rss/1.0/"') !== false) {
 
             return new Rss10($this->content);

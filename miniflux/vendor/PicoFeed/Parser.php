@@ -134,7 +134,15 @@ class Rss20 extends Parser
             $this->url = (string) $xml->channel->link;
             $this->id = $this->url;
             $this->updated = isset($xml->channel->pubDate) ? (string) $xml->channel->pubDate : (string) $xml->channel->lastBuildDate;
-            $this->updated = strtotime($this->updated);
+
+            if ($this->updated) {
+
+                $this->updated = strtotime($this->updated);
+            }
+            else {
+
+                $this->updated = time();
+            }
 
             foreach ($xml->channel->item as $entry) {
 
@@ -273,3 +281,9 @@ class Rss10 extends Parser
         return $this;
     }
 }
+
+
+class Rss92 extends Rss20 {}
+
+
+class Rss91 extends Rss20 {}
