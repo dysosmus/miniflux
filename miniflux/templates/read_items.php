@@ -14,7 +14,7 @@
     <section class="items">
     <?php foreach ($items as $item): ?>
         <article>
-            <h2><a href="?action=read&amp;id=<?= urlencode($item['id']) ?>"><?= Helper\escape($item['title']) ?></a></h2>
+            <h2><a href="?action=show&amp;id=<?= urlencode($item['id']) ?>"><?= Helper\escape($item['title']) ?></a></h2>
             <p>
                 <?= Helper\get_host_from_url($item['url']) ?> |
                 <?= date('l, j F Y H:i', $item['updated']) ?> |

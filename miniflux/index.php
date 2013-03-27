@@ -74,14 +74,26 @@ Router\post_action('login', function() {
 });
 
 
+Router\get_action('show', function() {
+
+    $id = Request\param('id');
+
+    Response\html(Template\layout('read_item', array(
+        'item' => Model\get_item($id)
+    )));
+});
+
+
 Router\get_action('read', function() {
 
     $id = Request\param('id');
+    $item = Model\get_item($id);
 
     Model\set_item_read($id);
 
     Response\html(Template\layout('read_item', array(
-        'item' => Model\get_item($id)
+        'item' => $item,
+        'item_nav' => Model\get_nav_item($item)
     )));
 });
 
@@ -221,10 +233,17 @@ Router\post_action('add', function() {
 });
 
 
+Router\get_action('optimize-db', function() {
+
+    \PicoTools\singleton('db')->getConnection()->exec('VACUUM');
+    Response\redirect('?action=config');
+});
+
+
 Router\get_action('download-db', function() {
 
     Response\force_download('db.sqlite.gz');
-    Response\binary(gzencode(file_get_contents('data/db.sqlite')));
+    Response\binary(gzencode(file_get_contents(get_db_filename())));
 });
 
 
@@ -264,6 +283,7 @@ Router\get_action('config', function() {
     Response\html(Template\layout('config', array(
         'errors' => array(),
         'values' => Model\get_config(),
+        'db_size' => filesize(get_db_filename()),
         'menu' => 'config'
     )));
 });
