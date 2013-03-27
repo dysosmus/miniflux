@@ -9,11 +9,17 @@ require 'schema.php';
 require 'model.php';
 
 
+function get_db_filename()
+{
+    return 'data/db.sqlite';
+}
+
+
 PicoTools\container('db', function() {
 
     $db = new PicoDb\Database(array(
         'driver' => 'sqlite',
-        'filename' => 'data/db.sqlite'
+        'filename' => get_db_filename()
     ));
 
     if ($db->schema()->check(1)) {
