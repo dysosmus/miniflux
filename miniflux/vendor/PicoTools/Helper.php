@@ -49,6 +49,15 @@ function flash_error($html)
 }
 
 
+function format_bytes($size, $precision = 2)
+{
+    $base = log($size) / log(1024);
+    $suffixes = array('', 'k', 'M', 'G', 'T');
+
+    return round(pow(1024, $base - floor($base)), $precision).$suffixes[floor($base)];
+}
+
+
 function get_host_from_url($url)
 {
     return escape(parse_url($url, PHP_URL_HOST));
