@@ -3,7 +3,7 @@
     <p class="alert alert-info">Article not found.</p>
 
 <?php else: ?>
-
+    
     <article class="item">
         <h1>
             <a href="<?= $item['url'] ?>" rel="noreferrer" target="_blank"><?= Helper\escape($item['title']) ?></a>
