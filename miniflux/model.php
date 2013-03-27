@@ -157,6 +157,31 @@ function get_item($id)
 }
 
 
+function get_nav_item($item)
+{
+    $next_item = \PicoTools\singleton('db')
+        ->table('items')
+        ->columns('items.id')
+        ->eq('status', 'unread')
+        ->lt('updated', $item['updated'])
+        ->desc('updated')
+        ->findOne();
+
+    $previous_item = \PicoTools\singleton('db')
+        ->table('items')
+        ->columns('items.id')
+        ->eq('status', 'unread')
+        ->gt('updated', $item['updated'])
+        ->asc('updated')
+        ->findOne();
+
+    return array(
+        'next' => $next_item,
+        'previous' => $previous_item
+    );
+}
+
+
 function set_item_read($id)
 {
     \PicoTools\singleton('db')
