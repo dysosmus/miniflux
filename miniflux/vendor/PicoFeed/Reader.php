@@ -71,15 +71,18 @@ class Reader
 
             return new Atom($this->content);
         }
-        else if (strpos($first_tag, '<rss ') !== false && strpos($first_tag, 'version="2.0"') !== false) {
+        else if (strpos($first_tag, '<rss ') !== false &&
+                (strpos($first_tag, 'version="2.0"') !== false || strpos($first_tag, 'version=\'2.0\'') !== false)) {
 
             return new Rss20($this->content);
         }
-        else if (strpos($first_tag, '<rss ') !== false && strpos($first_tag, 'version="0.92"') !== false) {
+        else if (strpos($first_tag, '<rss ') !== false &&
+                (strpos($first_tag, 'version="0.92"') !== false || strpos($first_tag, 'version=\'0.92\'') !== false)) {
 
             return new Rss92($this->content);
         }
-        else if (strpos($first_tag, '<rss ') !== false && strpos($first_tag, 'version="0.91"') !== false) {
+        else if (strpos($first_tag, '<rss ') !== false &&
+                (strpos($first_tag, 'version="0.91"') !== false || strpos($first_tag, 'version=\'0.91\'') !== false)) {
 
             return new Rss91($this->content);
         }
