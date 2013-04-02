@@ -28,11 +28,11 @@
 
             <span class="nav-middle">
                 <?php if ($item_nav['previous'] && $item_nav['next']): ?>
-                    <a href="?action=default&amp;#item-<?= urlencode($item_nav['next']['id']) ?>">Unread items</a>
+                    <a href="?action=default#item-<?= urlencode($item_nav['next']['id']) ?>">Unread items</a>
                 <?php elseif ($item_nav['previous'] && ! $item_nav['next']): ?>
-                    <a href="?action=default&amp;#item-<?= urlencode($item_nav['previous']['id']) ?>">Unread items</a>
+                    <a href="?action=default#item-<?= urlencode($item_nav['previous']['id']) ?>">Unread items</a>
                 <?php elseif (! $item_nav['previous'] && $item_nav['next']): ?>
-                    <a href="?action=default&amp;#item-<?= urlencode($item_nav['next']['id']) ?>">Unread items</a>
+                    <a href="?action=default#item-<?= urlencode($item_nav['next']['id']) ?>">Unread items</a>
                 <?php elseif (! $item_nav['previous'] && ! $item_nav['next']): ?>
                     <a href="?action=default">Unread items</a>
                 <?php endif ?>
