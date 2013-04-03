@@ -108,6 +108,27 @@ Router\post_action('read', function() {
 });
 
 
+Router\post_action('unread', function() {
+
+    $id = Request\param('id');
+
+    Model\set_item_unread($id);
+
+    Response\json(array('Ok'));
+});
+
+
+Router\post_action('status', function() {
+
+    $id = Request\param('id');
+
+    Response\json(array(
+        'item_id' => urlencode($id),
+        'status' => Model\switch_item_status($id)
+    ));
+});
+
+
 Router\get_action('history', function() {
 
     Response\html(Template\layout('read_items', array(
@@ -171,9 +192,9 @@ Router\get_action('ajax-refresh-feed', function() {
 });
 
 
-Router\get_action('flush-unread', function() {
+Router\get_action('mark-as-read', function() {
 
-    Model\flush_unread();
+    Model\mark_as_read();
     Response\redirect('?action=unread');
 });
 

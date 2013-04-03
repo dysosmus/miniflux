@@ -191,6 +191,55 @@ function set_item_read($id)
 }
 
 
+function set_item_unread($id)
+{
+    \PicoTools\singleton('db')
+        ->table('items')
+        ->eq('id', $id)
+        ->save(array('status' => 'unread'));
+}
+
+
+function switch_item_status($id)
+{
+    $item = \PicoTools\singleton('db')
+        ->table('items')
+        ->columns('status')
+        ->eq('id', $id)
+        ->findOne();
+
+    if ($item['status'] == 'unread') {
+
+        \PicoTools\singleton('db')
+            ->table('items')
+            ->eq('id', $id)
+            ->save(array('status' => 'read'));
+
+        return 'read';
+    }
+    else {
+
+        \PicoTools\singleton('db')
+            ->table('items')
+            ->eq('id', $id)
+            ->save(array('status' => 'unread'));
+
+        return 'unread';
+    }
+
+    return '';
+}
+
+
+function mark_as_read()
+{
+    \PicoTools\singleton('db')
+        ->table('items')
+        ->eq('status', 'unread')
+        ->save(array('status' => 'read'));
+}
+
+
 function flush_unread()
 {
     \PicoTools\singleton('db')

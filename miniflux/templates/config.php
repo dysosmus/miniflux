@@ -30,3 +30,25 @@
     <li><a href="?action=download-db">Download the entire database</a> (Gzip compressed Sqlite file).</li>
 </ul>
 </section>
+
+<div class="page-section">
+    <h2>Help</h2>
+</div>
+<section>
+<div class="alert">
+    <h3>Keyboard shortcuts</h3>
+    <ul>
+        <li>Previous item = <strong>p</strong></li>
+        <li>Next item = <strong>n</strong></li>
+        <li>Mark as read or unread = <strong>m</strong></li>
+        <li>Open original link = <strong>v</strong></li>
+        <li>Open item = <strong>o</strong></li>
+    </ul>
+</div>
+<div class="alert alert-normal">
+    <h3>About</h3>
+    <ul>
+        <li>Miniflux version: <strong><?= APP_VERSION ?></strong></li>
+    </ul>
+</div>
+</section>

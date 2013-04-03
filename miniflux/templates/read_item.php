@@ -4,9 +4,9 @@
 
 <?php else: ?>
 
-    <article class="item">
+    <article class="item" id="current-item" data-item-id="<?= urlencode($item['id']) ?>">
         <h1>
-            <a href="<?= $item['url'] ?>" rel="noreferrer" target="_blank"><?= Helper\escape($item['title']) ?></a>
+            <a href="<?= $item['url'] ?>" rel="noreferrer" target="_blank" id="original-item"><?= Helper\escape($item['title']) ?></a>
         </h1>
 
         <p class="infos">
@@ -20,7 +20,7 @@
         <nav>
             <span class="nav-left">
                 <?php if ($item_nav['previous']): ?>
-                    <a href="?action=read&amp;id=<?= urlencode($item_nav['previous']['id']) ?>">« Previous</a>
+                    <a href="?action=read&amp;id=<?= urlencode($item_nav['previous']['id']) ?>" id="previous-item">« Previous</a>
                 <?php else: ?>
                     « Previous
                 <?php endif ?>
@@ -40,7 +40,7 @@
 
             <span class="nav-right">
                 <?php if ($item_nav['next']): ?>
-                    <a href="?action=read&amp;id=<?= urlencode($item_nav['next']['id']) ?>">Next »</a>
+                    <a href="?action=read&amp;id=<?= urlencode($item_nav['next']['id']) ?>" id="next-item">Next »</a>
                 <?php else: ?>
                     Next »
                 <?php endif ?>

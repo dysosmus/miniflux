@@ -9,6 +9,11 @@ require 'schema.php';
 require 'model.php';
 
 
+const DB_VERSION = 1;
+const APP_VERSION = 'master';
+
+
+// For future use...
 function get_db_filename()
 {
     return 'data/db.sqlite';
@@ -22,7 +27,7 @@ PicoTools\container('db', function() {
         'filename' => get_db_filename()
     ));
 
-    if ($db->schema()->check(1)) {
+    if ($db->schema()->check(DB_VERSION)) {
 
         return $db;
     }

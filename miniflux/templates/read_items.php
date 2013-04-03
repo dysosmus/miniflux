@@ -11,14 +11,30 @@
         </ul>
     </div>
 
-    <section class="items">
+    <section class="items" id="listing">
     <?php foreach ($items as $item): ?>
-        <article>
-            <h2><a href="?action=show&amp;id=<?= urlencode($item['id']) ?>"><?= Helper\escape($item['title']) ?></a></h2>
+        <article id="item-<?= urlencode($item['id']) ?>" data-item-id="<?= urlencode($item['id']) ?>">
+            <h2>
+                <a
+                    href="?action=show&amp;id=<?= urlencode($item['id']) ?>"
+                    id="open-<?= urlencode($item['id']) ?>"
+                >
+                    <?= Helper\escape($item['title']) ?>
+                </a>
+            </h2>
             <p>
                 <?= Helper\get_host_from_url($item['url']) ?> |
                 <?= date('l, j F Y H:i', $item['updated']) ?> |
-                <a href="<?= $item['url'] ?>" rel="noreferrer" target="_blank">direct link</a>
+                <a
+                    href="<?= $item['url'] ?>"
+                    id="original-<?= urlencode($item['id']) ?>"
+                    rel="noreferrer"
+                    target="_blank"
+                    data-item-id="<?= urlencode($item['id']) ?>"
+                    data-action="mark-read"
+                >
+                    direct link
+                </a>
             </p>
         </article>
     <?php endforeach ?>

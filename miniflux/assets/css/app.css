@@ -234,6 +234,12 @@ textarea.form-error {
     border-color: #bce8f1;
 }
 
+.alert-normal {
+    color: #333;
+    background-color: #f0f0f0;
+    border-color: #ddd;
+}
+
 
 /* buttons */
 .btn {
@@ -387,6 +393,11 @@ nav .active a {
     line-height: 1.5em;
     font-size: 100%;
     font-family: Georgia, serif;
+}
+
+.items #current-item {
+    border: 2px dashed #d14;
+    padding: 5px;
 }
 
 
