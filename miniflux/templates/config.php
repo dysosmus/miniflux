@@ -24,11 +24,14 @@
     <h2>My data</h2>
 </div>
 <section>
-<ul>
-    <li>Database size: <?= Helper\format_bytes($db_size) ?></li>
-    <li><a href="?action=optimize-db">Optimize the database</a> (VACUUM command)</li>
-    <li><a href="?action=download-db">Download the entire database</a> (Gzip compressed Sqlite file).</li>
-</ul>
+<div class="alert alert-normal">
+    <h3>Database</h3>
+    <ul>
+        <li>Database size: <?= Helper\format_bytes($db_size) ?></li>
+        <li><a href="?action=optimize-db">Optimize the database</a> (VACUUM command)</li>
+        <li><a href="?action=download-db">Download the entire database</a> (Gzip compressed Sqlite file).</li>
+    </ul>
+</div>
 </section>
 
 <div class="page-section">
@@ -45,7 +48,7 @@
         <li>Open item = <strong>o</strong></li>
     </ul>
 </div>
-<div class="alert alert-normal">
+<div class="alert alert-info">
     <h3>About</h3>
     <ul>
         <li>Miniflux version: <strong><?= APP_VERSION ?></strong></li>
