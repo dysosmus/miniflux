@@ -24,13 +24,13 @@ body {
 
 a {
     color: #3366CC;
+    border: 1px solid #fff;
 }
 
 a:focus {
     outline: 0;
     color: red;
     text-decoration: none;
-    padding: 3px;
     border: 1px dotted #aaa;
 }
 
@@ -509,6 +509,7 @@ section li {
     .logo {
         display: block;
         float: none;
+        border-bottom: 1px solid #ccc;
     }
 
     header {
@@ -527,10 +528,18 @@ section li {
         display: block;
         line-height: 25px;
     }
+    
+    nav ul {
+        padding-top: 5px;
+    }
 
     .page {
         clear: both;
         padding-top: 20px;
+    }
+    
+    .page li {
+        margin-left: 5px;
     }
 
     .item {
