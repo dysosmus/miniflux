@@ -98,27 +98,39 @@ Router\get_action('read', function() {
 });
 
 
-Router\post_action('read', function() {
+Router\get_action('mark-item-read', function() {
 
     $id = Request\param('id');
-
     Model\set_item_read($id);
-
-    Response\json(array('Ok'));
+    Response\Redirect('?action=default');
 });
 
 
-Router\post_action('unread', function() {
+Router\get_action('mark-item-unread', function() {
 
     $id = Request\param('id');
-
     Model\set_item_unread($id);
+    Response\Redirect('?action=history');
+});
 
+
+Router\post_action('mark-item-read', function() {
+
+    $id = Request\param('id');
+    Model\set_item_read($id);
     Response\json(array('Ok'));
 });
 
 
-Router\post_action('status', function() {
+Router\post_action('mark-item-unread', function() {
+
+    $id = Request\param('id');
+    Model\set_item_unread($id);
+    Response\json(array('Ok'));
+});
+
+
+Router\post_action('change-item-status', function() {
 
     $id = Request\param('id');
 
@@ -179,7 +191,7 @@ Router\get_action('refresh-feed', function() {
 });
 
 
-Router\get_action('ajax-refresh-feed', function() {
+Router\post_action('refresh-feed', function() {
 
     $id = Request\int_param('feed_id');
 
@@ -243,7 +255,7 @@ Router\post_action('add', function() {
     }
     else {
 
-        Session\flash_error('Unable to find a subscription.');
+        Session\flash_error('Unable to find a subscription or parsing error.');
     }
 
     Response\html(Template\layout('add', array(

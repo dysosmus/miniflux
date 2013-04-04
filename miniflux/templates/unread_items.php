@@ -27,6 +27,7 @@
             </p>
             <p>
                 <?= Helper\get_host_from_url($item['url']) ?> |
+                <a href="?action=mark-item-read&amp;id=<?= urlencode($item['id']) ?>">mark as read</a> |
                 <a
                     href="<?= $item['url'] ?>"
                     id="original-<?= urlencode($item['id']) ?>"

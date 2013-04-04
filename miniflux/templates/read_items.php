@@ -25,6 +25,7 @@
             <p>
                 <?= Helper\get_host_from_url($item['url']) ?> |
                 <?= date('l, j F Y H:i', $item['updated']) ?> |
+                <a href="?action=mark-item-unread&amp;id=<?= urlencode($item['id']) ?>">mark as unread</a> |
                 <a
                     href="<?= $item['url'] ?>"
                     id="original-<?= urlencode($item['id']) ?>"

@@ -23,7 +23,7 @@
             }
         }
 
-        request.open("POST", "?action=status&id=" + item_id, true);
+        request.open("POST", "?action=change-item-status&id=" + item_id, true);
         request.send();
     }
 
@@ -37,7 +37,7 @@
             remove_item(item_id);
         };
 
-        request.open("POST", "?action=read&id=" + item_id, true);
+        request.open("POST", "?action=mark-item-read&id=" + item_id, true);
         request.send();
     }
 
@@ -46,7 +46,7 @@
     {
         var request = new XMLHttpRequest();
 
-        request.open("POST", "?action=unread&id=" + item_id, true);
+        request.open("POST", "?action=mark-item-unread&id=" + item_id, true);
         request.send();
     }
 
@@ -87,28 +87,31 @@
 
         var request = new XMLHttpRequest();
 
-        request.onload = function() {
+        request.onreadystatechange = function() {
 
-            hide_refresh_icon(feed_id);
+            if (request.readyState === 4) {
 
-            try {
+                hide_refresh_icon(feed_id);
 
-                var response = JSON.parse(this.responseText);
+                try {
 
-                if (callback) {
+                    var response = JSON.parse(this.responseText);
 
-                    callback(response);
+                    if (callback) {
+
+                        callback(response);
+                    }
+
+                    if (! response.result) {
+
+                        //window.alert('Unable to refresh this feed: ' + feed_id);
+                    }
                 }
-
-                if (! response.result) {
-
-                    //window.alert('Unable to refresh this feed: ' + feed_id);
-                }
+                catch (e) {}
             }
-            catch (e) {}
         };
 
-        request.open("GET", "?action=ajax-refresh-feed&feed_id=" + feed_id, true);
+        request.open("POST", "?action=refresh-feed&feed_id=" + feed_id, true);
         request.send();
 
         return true;
