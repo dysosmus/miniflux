@@ -72,6 +72,11 @@ function import_feed($url)
 
         $feed = $parser->execute();
 
+        if (! $feed->title || ! $feed->url) {
+
+            return false;
+        }
+
         $db = \PicoTools\singleton('db');
 
         if (! $db->table('feeds')->eq('feed_url', $reader->getUrl())->count()) {
