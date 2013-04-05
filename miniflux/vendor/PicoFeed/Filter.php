@@ -45,7 +45,8 @@ class Filter
         'figcaption' => array(),
         'cite' => array(),
         'time' => array('datetime'),
-        'abbr' => array('title')
+        'abbr' => array('title'),
+        'iframe' => array('width', 'height', 'frameborder', 'src')
     );
 
     public $strip_tags_content = array(
@@ -82,6 +83,11 @@ class Filter
         'a' => 'rel="noreferrer" target="_blank"'
     );
 
+    public $iframe_allowed_resources = array(
+        'http://www.youtube.com/',
+        'http://player.vimeo.com/'
+    );
+
 
     public function __construct($data, $url)
     {
@@ -104,7 +110,7 @@ class Filter
 
         if (! xml_parse($parser, $this->input, true)) {
 
-            var_dump($this->input);
+            //var_dump($this->input);
             die(xml_get_current_line_number($parser).'|'.xml_error_string(xml_get_error_code($parser)));
         }
 
@@ -130,11 +136,16 @@ class Filter
 
             foreach ($attributes as $attribute => $value) {
 
-                if ($this->isAllowedAttribute($name, $attribute)) {
+                if ($value != '' && $this->isAllowedAttribute($name, $attribute)) {
 
                     if ($this->isResource($attribute)) {
 
-                        if ($this->isRelativePath($value)) {
+                        if ($name === 'iframe' && $this->isAllowedIframeResource($value)) {
+
+                            $attr_data .= ' '.$attribute.'="'.$value.'"';
+                            $used_attributes[] = $attribute;
+                        }
+                        else if ($this->isRelativePath($value)) {
 
                             $attr_data .= ' '.$attribute.'="'.$this->getAbsoluteUrl($value, $this->url).'"';
                             $used_attributes[] = $attribute;
@@ -216,7 +227,6 @@ class Filter
         else {
 
             // Relative path
-
             $url_path = $components['path'];
 
             if ($url_path{strlen($url_path) - 1} !== '/') {
@@ -255,6 +265,20 @@ class Filter
     public function isResource($attribute)
     {
         return in_array($attribute, $this->protocol_attributes);
+    }
+
+
+    public function isAllowedIframeResource($value)
+    {
+        foreach ($this->iframe_allowed_resources as $url) {
+
+            if (strpos($value, $url) === 0) {
+
+                return true;
+            }
+        }
+
+        return false;
     }
 
 

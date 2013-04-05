@@ -69,25 +69,30 @@ class Reader
 
         if (strpos($first_tag, '<feed ') !== false) {
 
+            require_once __DIR__.'/Parsers/Atom.php';
             return new Atom($this->content);
         }
         else if (strpos($first_tag, '<rss ') !== false &&
                 (strpos($first_tag, 'version="2.0"') !== false || strpos($first_tag, 'version=\'2.0\'') !== false)) {
 
+            require_once __DIR__.'/Parsers/Rss20.php';
             return new Rss20($this->content);
         }
         else if (strpos($first_tag, '<rss ') !== false &&
                 (strpos($first_tag, 'version="0.92"') !== false || strpos($first_tag, 'version=\'0.92\'') !== false)) {
 
+            require_once __DIR__.'/Parsers/Rss92.php';
             return new Rss92($this->content);
         }
         else if (strpos($first_tag, '<rss ') !== false &&
                 (strpos($first_tag, 'version="0.91"') !== false || strpos($first_tag, 'version=\'0.91\'') !== false)) {
 
+            require_once __DIR__.'/Parsers/Rss91.php';
             return new Rss91($this->content);
         }
         else if (strpos($first_tag, '<rdf:') !== false && strpos($first_tag, 'xmlns="http://purl.org/rss/1.0/"') !== false) {
 
+            require_once __DIR__.'/Parsers/Rss10.php';
             return new Rss10($this->content);
         }
         else if ($discover === true) {
