@@ -64,7 +64,7 @@ function import_feeds($content)
 function import_feed($url)
 {
     $reader = new Reader;
-    $reader->download($url);
+    $reader->download($url, HTTP_TIMEOUT, APP_USERAGENT);
 
     $parser = $reader->getParser();
 
@@ -268,7 +268,7 @@ function update_feeds()
     foreach (get_feeds() as $feed) {
 
         $reader = new Reader;
-        $reader->download($feed['feed_url']);
+        $reader->download($feed['feed_url'], HTTP_TIMEOUT, APP_USERAGENT);
         $parser = $reader->getParser();
 
         if ($parser !== false) {
@@ -284,7 +284,7 @@ function update_feed($feed_id)
     $feed = get_feed($feed_id);
 
     $reader = new Reader;
-    $reader->download($feed['feed_url']);
+    $reader->download($feed['feed_url'], HTTP_TIMEOUT, APP_USERAGENT);
     $parser = $reader->getParser();
 
     if ($parser !== false) {

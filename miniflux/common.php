@@ -11,6 +11,8 @@ require 'model.php';
 
 const DB_VERSION = 1;
 const APP_VERSION = 'master';
+const APP_USERAGENT = 'Miniflux - http://miniflux.net';
+const HTTP_TIMEOUT = 5;
 
 
 // For future use...

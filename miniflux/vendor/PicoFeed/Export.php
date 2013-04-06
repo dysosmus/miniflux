@@ -6,6 +6,12 @@ class Export
 {
     private $content = array();
 
+    public $required_fields = array(
+        'title',
+        'site_url',
+        'feed_url'
+    );
+
 
     public function __construct(array $content)
     {
@@ -23,6 +29,19 @@ class Export
         $body = $xml->addChild('body');
 
         foreach ($this->content as $feed) {
+
+            $valid = true;
+
+            foreach ($this->required_fields as $field) {
+
+                if (! isset($feed[$field])) {
+
+                    $valid = false;
+                    break;
+                }
+            }
+
+            if (! $valid) continue;
 
             $outline = $body->addChild('outline');
             $outline->addAttribute('xmlUrl', $feed['feed_url']);

@@ -16,7 +16,7 @@ class Reader
     }
 
 
-    public function download($url)
+    public function download($url, $timeout = 5, $user_agent = 'PicoFeed (https://github.com/fguillot/picoFeed)')
     {
         if (strpos($url, 'http') !== 0) {
 
@@ -24,9 +24,32 @@ class Reader
         }
 
         $this->url = $url;
-        $this->content = @file_get_contents($this->url);
+        $this->content = $this->fetchRemoteFile($url, $timeout, $user_agent);
 
         return $this;
+    }
+
+
+    public function fetchRemoteFile($url, $timeout, $user_agent)
+    {
+        if (! \function_exists('curl_init')) {
+
+            return @file_get_contents($this->url);
+        }
+
+        $ch = \curl_init();
+
+        \curl_setopt($ch, CURLOPT_URL, $url);
+        \curl_setopt($ch, CURLOPT_HEADER, false);
+        \curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        \curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
+        \curl_setopt($ch, CURLOPT_USERAGENT, $user_agent);
+
+        $content = \curl_exec($ch);
+
+        \curl_close($ch);
+
+        return $content;
     }
 
 
