@@ -29,6 +29,12 @@ License
 
 - AGPL: <http://www.gnu.org/licenses/agpl-3.0.txt>
 
+Authors
+-------
+
+- Original author: [Frédéric Guillot](http://fredericguillot.com/)
+- Contributors: [Pull requesters](https://github.com/fguillot/miniflux/pulls?direction=desc&page=1&sort=created&state=closed) and [Bug reporters](https://github.com/fguillot/miniflux/issues?page=1&state=closed)
+
 Requirements
 ------------
 
