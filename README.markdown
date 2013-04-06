@@ -91,7 +91,7 @@ Miniflux is a minimalist software. Less is more.
 ### Why there is no favourites?
 
 Use the right tool for the right job.
-Your browser already have bookmarks, if you don't like it there many online tools for that.
+Your browser already have bookmarks, if you don't like it there is many online tools for that.
 
 ### I found a bug, what next?
 
