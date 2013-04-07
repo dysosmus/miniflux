@@ -9,7 +9,6 @@ class Rss20 extends Parser
         $this->content = $this->normalizeData($this->content);
 
         \libxml_use_internal_errors(true);
-
         $xml = \simplexml_load_string($this->content);
 
         if ($xml === false) {
@@ -18,73 +17,64 @@ class Rss20 extends Parser
             return false;
         }
 
-        $ns = $xml->getNamespaces(true);
+        $namespaces = $xml->getNamespaces(true);
 
         $this->title = (string) $xml->channel->title;
         $this->url = (string) $xml->channel->link;
         $this->id = $this->url;
         $this->updated = isset($xml->channel->pubDate) ? (string) $xml->channel->pubDate : (string) $xml->channel->lastBuildDate;
-
-        if ($this->updated) {
-
-            $this->updated = strtotime($this->updated);
-        }
-        else {
-
-            $this->updated = time();
-        }
+        $this->updated = $this->updated ? strtotime($this->updated) : time();
 
         foreach ($xml->channel->item as $entry) {
 
-            $author = '';
-            $content = '';
-            $pubdate = '';
-            $link = '';
+            $item = new \StdClass;
+            $item->title = (string) $entry->title;
+            $item->url = '';
+            $item->author= '';
+            $item->updated = '';
+            $item->content = '';
 
-            if (isset($ns['feedburner'])) {
+            foreach ($namespaces as $name => $url) {
 
-                $ns_fb = $entry->children($ns['feedburner']);
-                $link = $ns_fb->origLink;
+                $namespace = $entry->children($namespaces[$name]);
+
+                if (! $item->url && ! empty($namespace->origLink)) $item->url = (string) $namespace->origLink;
+                if (! $item->author && ! empty($namespace->creator)) $item->author = (string) $namespace->creator;
+                if (! $item->updated && ! empty($namespace->date)) $item->updated = strtotime((string) $namespace->date);
+                if (! $item->updated && ! empty($namespace->updated)) $item->updated = strtotime((string) $namespace->updated);
+                if (! $item->content && ! empty($namespace->encoded)) $item->content = (string) $namespace->encoded;
             }
 
-            if (isset($ns['dc'])) {
+            if (empty($item->url)) $item->url = (string) $entry->link;
+            if (empty($item->updated)) $item->updated = strtotime((string) $entry->pubDate) ?: $this->updated;
 
-                $ns_dc = $entry->children($ns['dc']);
-                $author = (string) $ns_dc->creator;
-                $pubdate = (string) $ns_dc->date;
+            if (empty($item->content)) {
+
+                $item->content = isset($entry->description) ? (string) $entry->description : '';
             }
 
-            if (isset($ns['content'])) {
-
-                $ns_content = $entry->children($ns['content']);
-                $content = (string) $ns_content->encoded;
-            }
-
-            if ($content === '' && isset($entry->description)) {
-
-                $content = (string) $entry->description;
-            }
-
-            if ($author === '') {
+            if (empty($item->author)) {
 
                 if (isset($entry->author)) {
 
-                    $author = (string) $entry->author;
+                    $item->author = (string) $entry->author;
                 }
                 else if (isset($xml->channel->webMaster)) {
 
-                    $author = (string) $xml->channel->webMaster;
+                    $item->author = (string) $xml->channel->webMaster;
                 }
             }
 
-            $item = new \StdClass;
-            $item->title = (string) $entry->title;
-            $item->url = $link ?: (string) $entry->link;
-            $item->id = isset($entry->guid) ? (string) $entry->guid : $item->url;
-            $item->updated = strtotime($pubdate ?: (string) $entry->pubDate) ?: $this->updated;
-            $item->content = $this->filterHtml($content, $item->url);
-            $item->author = $author;
+            if (isset($entry->guid) && isset($entry->guid['isPermaLink']) && (string) $entry->guid['isPermaLink'] != 'false') {
 
+                $item->id = (string) $entry->guid;
+            }
+            else {
+
+                $item->id = $item->url;
+            }
+
+            $item->content = $this->filterHtml($item->content, $item->url);
             $this->items[] = $item;
         }
 
