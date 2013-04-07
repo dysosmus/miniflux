@@ -264,7 +264,7 @@ Router\post_action('add', function() {
     }
     else {
 
-        Session\flash_error('Unable to find a subscription or parsing error.');
+        Session\flash_error('Unable to find a subscription.');
     }
 
     Response\html(Template\layout('add', array(
