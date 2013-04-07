@@ -4,7 +4,6 @@ namespace Model;
 
 require_once 'vendor/PicoFeed/Export.php';
 require_once 'vendor/PicoFeed/Import.php';
-require_once 'vendor/PicoFeed/Parser.php';
 require_once 'vendor/PicoFeed/Reader.php';
 require_once 'vendor/SimpleValidator/Validator.php';
 require_once 'vendor/SimpleValidator/Base.php';
