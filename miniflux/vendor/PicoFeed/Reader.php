@@ -2,6 +2,9 @@
 
 namespace PicoFeed;
 
+require_once __DIR__.'/Parser.php';
+require_once __DIR__.'/RemoteResource.php';
+
 class Reader
 {
     private $url = '';
@@ -16,40 +19,22 @@ class Reader
     }
 
 
-    public function download($url, $timeout = 5, $user_agent = 'PicoFeed (https://github.com/fguillot/picoFeed)')
+    public function download($url, $last_modified = '', $etag = '', $timeout = 5, $user_agent = 'PicoFeed (https://github.com/fguillot/picoFeed)')
     {
         if (strpos($url, 'http') !== 0) {
 
             $url = 'http://'.$url;
         }
 
-        $this->url = $url;
-        $this->content = $this->fetchRemoteFile($url, $timeout, $user_agent);
+        $resource = new RemoteResource($url, $timeout, $user_agent);
+        $resource->setLastModified($last_modified);
+        $resource->setEtag($etag);
+        $resource->execute();
 
-        return $this;
-    }
+        $this->content = $resource->getContent();
+        $this->url = $resource->getUrl();
 
-
-    public function fetchRemoteFile($url, $timeout, $user_agent)
-    {
-        if (! \function_exists('curl_init')) {
-
-            return @file_get_contents($this->url);
-        }
-
-        $ch = \curl_init();
-
-        \curl_setopt($ch, CURLOPT_URL, $url);
-        \curl_setopt($ch, CURLOPT_HEADER, false);
-        \curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        \curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
-        \curl_setopt($ch, CURLOPT_USERAGENT, $user_agent);
-
-        $content = \curl_exec($ch);
-
-        \curl_close($ch);
-
-        return $content;
+        return $resource;
     }
 
 
@@ -90,24 +75,24 @@ class Reader
     {
         $first_tag = $this->getFirstTag($this->content);
 
-        if (strpos($first_tag, '<feed ') !== false) {
+        if (strpos($first_tag, '<feed') !== false) {
 
             require_once __DIR__.'/Parsers/Atom.php';
             return new Atom($this->content);
         }
-        else if (strpos($first_tag, '<rss ') !== false &&
+        else if (strpos($first_tag, '<rss') !== false &&
                 (strpos($first_tag, 'version="2.0"') !== false || strpos($first_tag, 'version=\'2.0\'') !== false)) {
 
             require_once __DIR__.'/Parsers/Rss20.php';
             return new Rss20($this->content);
         }
-        else if (strpos($first_tag, '<rss ') !== false &&
+        else if (strpos($first_tag, '<rss') !== false &&
                 (strpos($first_tag, 'version="0.92"') !== false || strpos($first_tag, 'version=\'0.92\'') !== false)) {
 
             require_once __DIR__.'/Parsers/Rss92.php';
             return new Rss92($this->content);
         }
-        else if (strpos($first_tag, '<rss ') !== false &&
+        else if (strpos($first_tag, '<rss') !== false &&
                 (strpos($first_tag, 'version="0.91"') !== false || strpos($first_tag, 'version=\'0.91\'') !== false)) {
 
             require_once __DIR__.'/Parsers/Rss91.php';

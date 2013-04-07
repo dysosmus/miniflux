@@ -7,10 +7,8 @@ class Filter
     private $data = '';
     private $url = '';
     private $input = '';
-    private $empty_tag = false;
+    private $empty_tags = array();
     private $strip_content = false;
-
-    public $ignored_tags = array();
 
     public $allowed_tags = array(
         'dt' => array(),
@@ -68,15 +66,20 @@ class Filter
 
     public $blacklist_media = array(
         'feeds.feedburner.com',
-        'feedsportal.com',
+        'da.feedsportal.com',
+        'rss.feedsportal.com',
+        'res.feedsportal.com',
+        'pi.feedsportal.com',
         'rss.nytimes.com',
         'feeds.wordpress.com',
-        'stats.wordpress.com'
+        'stats.wordpress.com',
+        'rss.cnn.com'
     );
 
     public $required_attributes = array(
         'a' => array('href'),
-        'img' => array('src')
+        'img' => array('src'),
+        'iframe' => array('src')
     );
 
     public $add_attributes = array(
@@ -85,13 +88,15 @@ class Filter
 
     public $iframe_allowed_resources = array(
         'http://www.youtube.com/',
-        'http://player.vimeo.com/'
+        'https://www.youtube.com/',
+        'http://player.vimeo.com/',
+        'https://player.vimeo.com/'
     );
 
 
-    public function __construct($data, $url)
+    public function __construct($data, $site_url)
     {
-        $this->url = $url;
+        $this->url = $site_url;
 
         // Convert bad formatted documents to XML
         $dom = new \DOMDocument;
@@ -122,12 +127,12 @@ class Filter
 
     public function startTag($parser, $name, $attributes)
     {
-        $this->empty_tag = false;
+        $empty_tag = false;
         $this->strip_content = false;
 
         if ($this->isPixelTracker($name, $attributes)) {
 
-            $this->empty_tag = true;
+            $empty_tag = true;
         }
         else if ($this->isAllowedTag($name)) {
 
@@ -140,10 +145,13 @@ class Filter
 
                     if ($this->isResource($attribute)) {
 
-                        if ($name === 'iframe' && $this->isAllowedIframeResource($value)) {
+                        if ($name === 'iframe') {
 
-                            $attr_data .= ' '.$attribute.'="'.$value.'"';
-                            $used_attributes[] = $attribute;
+                            if ($this->isAllowedIframeResource($value)) {
+
+                                $attr_data .= ' '.$attribute.'="'.$value.'"';
+                                $used_attributes[] = $attribute;
+                            }
                         }
                         else if ($this->isRelativePath($value)) {
 
@@ -164,45 +172,46 @@ class Filter
                 }
             }
 
+            // Check for required attributes
             if (isset($this->required_attributes[$name])) {
 
                 foreach ($this->required_attributes[$name] as $required_attribute) {
 
                     if (! in_array($required_attribute, $used_attributes)) {
 
-                        $this->empty_tag = true;
+                        $empty_tag = true;
                         break;
                     }
                 }
             }
 
-            if (! $this->empty_tag) {
+            if (! $empty_tag) {
 
                 $this->data .= '<'.$name.$attr_data;
 
+                // Add custom attributes
                 if (isset($this->add_attributes[$name])) {
 
                     $this->data .= ' '.$this->add_attributes[$name].' ';
                 }
 
+                // If img or br, we don't close it here
                 if ($name !== 'img' && $name !== 'br') $this->data .= '>';
             }
-        }
-        else {
-
-            $this->ignored_tags[] = $name;
         }
 
         if (in_array($name, $this->strip_tags_content)) {
 
             $this->strip_content = true;
         }
+
+        $this->empty_tags[] = $empty_tag;
     }
 
 
     public function endTag($parser, $name)
     {
-        if (! $this->empty_tag && $this->isAllowedTag($name)) {
+        if (! array_pop($this->empty_tags) && $this->isAllowedTag($name)) {
 
             $this->data .= $name !== 'img' && $name !== 'br' ? '</'.$name.'>' : '/>';
         }
