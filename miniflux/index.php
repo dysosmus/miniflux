@@ -27,7 +27,7 @@ Router\before(function($action) {
 
     Response\csp(array(
         'img-src' => '*',
-        'frame-src' => 'http://www.youtube.com http://player.vimeo.com'
+        'frame-src' => 'http://www.youtube.com https://www.youtube.com http://player.vimeo.com https://player.vimeo.com'
     ));
 
     Response\xframe();
