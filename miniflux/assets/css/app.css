@@ -509,7 +509,7 @@ section li {
     .logo {
         display: block;
         float: none;
-        border-bottom: 1px solid #ccc;
+        border-bottom: 1px dotted #ddd;
     }
 
     header {
@@ -528,7 +528,7 @@ section li {
         display: block;
         line-height: 25px;
     }
-    
+
     nav ul {
         padding-top: 5px;
     }
@@ -537,7 +537,7 @@ section li {
         clear: both;
         padding-top: 20px;
     }
-    
+
     .page li {
         margin-left: 5px;
     }
