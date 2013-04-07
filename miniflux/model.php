@@ -64,7 +64,7 @@ function import_feeds($content)
 function import_feed($url)
 {
     $reader = new Reader;
-    $reader->download($url, HTTP_TIMEOUT, APP_USERAGENT);
+    $resource = $reader->download($url, '', '', HTTP_TIMEOUT, APP_USERAGENT);
 
     $parser = $reader->getParser();
 
@@ -72,15 +72,14 @@ function import_feed($url)
 
         $feed = $parser->execute();
 
-        if (! $feed->title || ! $feed->url) {
-
-            return false;
-        }
+        if ($feed === false) return false;
+        if (! $feed->title || ! $feed->url) return false;
 
         $db = \PicoTools\singleton('db');
 
         if (! $db->table('feeds')->eq('feed_url', $reader->getUrl())->count()) {
 
+            // Etag and LastModified are added the next update
             $rs = $db->table('feeds')->save(array(
                 'title' => $feed->title,
                 'site_url' => $feed->url,
@@ -98,6 +97,62 @@ function import_feed($url)
     }
 
     return false;
+}
+
+
+function update_feeds()
+{
+    foreach (get_feeds_id() as $feed_id) {
+
+        update_feed($feed_id);
+    }
+}
+
+
+function update_feed($feed_id)
+{
+    $feed = get_feed($feed_id);
+
+    $reader = new Reader;
+
+    $resource = $reader->download(
+        $feed['feed_url'],
+        $feed['last_modified'],
+        $feed['etag'],
+        HTTP_TIMEOUT,
+        APP_USERAGENT
+    );
+
+    if (! $resource->isModified()) {
+
+        return true;
+    }
+
+    $parser = $reader->getParser();
+
+    if ($parser !== false) {
+
+        $feed = $parser->execute();
+
+        if ($feed !== false) {
+
+            update_feed_cache_infos($feed_id, $resource->getLastModified(), $resource->getEtag());
+            update_items($feed_id, $feed->items);
+
+            return true;
+        }
+    }
+
+    return false;
+}
+
+
+function get_feeds_id()
+{
+    return \PicoTools\singleton('db')
+        ->table('feeds')
+        ->asc('updated')
+        ->listing('id', 'id');
 }
 
 
@@ -119,10 +174,21 @@ function get_feed($feed_id)
 }
 
 
+function update_feed_cache_infos($feed_id, $last_modified, $etag)
+{
+    \PicoTools\singleton('db')
+        ->table('feeds')
+        ->eq('id', $feed_id)
+        ->save(array(
+            'last_modified' => $last_modified,
+            'etag' => $etag
+        ));
+}
+
+
 function remove_feed($feed_id)
 {
     $db = \PicoTools\singleton('db');
-
     $db->table('items')->eq('feed_id', $feed_id)->remove();
 
     return $db->table('feeds')->eq('id', $feed_id)->remove();
@@ -260,40 +326,6 @@ function flush_read()
         ->table('items')
         ->eq('status', 'read')
         ->save(array('status' => 'removed'));
-}
-
-
-function update_feeds()
-{
-    foreach (get_feeds() as $feed) {
-
-        $reader = new Reader;
-        $reader->download($feed['feed_url'], HTTP_TIMEOUT, APP_USERAGENT);
-        $parser = $reader->getParser();
-
-        if ($parser !== false) {
-
-            update_items($feed['id'], $parser->execute()->items);
-        }
-    }
-}
-
-
-function update_feed($feed_id)
-{
-    $feed = get_feed($feed_id);
-
-    $reader = new Reader;
-    $reader->download($feed['feed_url'], HTTP_TIMEOUT, APP_USERAGENT);
-    $parser = $reader->getParser();
-
-    if ($parser !== false) {
-
-        update_items($feed['id'], $parser->execute()->items);
-        return true;
-    }
-
-    return false;
 }
 
 

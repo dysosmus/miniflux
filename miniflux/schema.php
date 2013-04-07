@@ -2,13 +2,20 @@
 
 namespace Schema;
 
+
+function version_2($pdo)
+{
+    $pdo->exec('ALTER TABLE feeds ADD COLUMN last_modified TEXT');
+    $pdo->exec('ALTER TABLE feeds ADD COLUMN etag TEXT');
+}
+
+
 function version_1($pdo)
 {
     $pdo->exec("
         CREATE TABLE config (
             username TEXT DEFAULT 'admin',
-            password TEXT,
-            history INTEGER DEFAULT '15'
+            password TEXT
         )
     ");
 
