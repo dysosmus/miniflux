@@ -212,6 +212,14 @@ Router\get_action('mark-as-read', function() {
 });
 
 
+Router\get_action('confirm-flush-history', function() {
+
+    Response\html(Template\layout('confirm_flush', array(
+        'menu' => 'history'
+    )));
+});
+
+
 Router\get_action('flush-history', function() {
 
     Model\flush_read();

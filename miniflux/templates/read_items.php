@@ -7,7 +7,7 @@
     <div class="page-header">
         <h2>History</h2>
         <ul>
-            <li><a href="?action=flush-history">flush</a></li>
+            <li><a href="?action=confirm-flush-history">flush</a></li>
         </ul>
     </div>
 
