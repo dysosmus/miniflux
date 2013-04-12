@@ -19,8 +19,25 @@ class Rss20 extends Parser
 
         $namespaces = $xml->getNamespaces(true);
 
+        if ($xml->channel->link->count() > 1) {
+
+            foreach ($xml->channel->link as $xml_link) {
+
+                $link = (string) $xml_link;
+
+                if ($link !== '') {
+
+                    $this->url = (string) $link;
+                    break;
+                }
+            }
+        }
+        else {
+
+            $this->url = (string) $xml->channel->link;
+        }
+
         $this->title = (string) $xml->channel->title;
-        $this->url = (string) $xml->channel->link;
         $this->id = $this->url;
         $this->updated = isset($xml->channel->pubDate) ? (string) $xml->channel->pubDate : (string) $xml->channel->lastBuildDate;
         $this->updated = $this->updated ? strtotime($this->updated) : time();

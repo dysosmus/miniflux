@@ -22,7 +22,7 @@ Router\before(function($action) {
 
     if ($action !== 'login' && ! isset($_SESSION['user'])) {
 
-        PicoFarad\Response\redirect('?action=login');
+        Response\redirect('?action=login');
     }
 
     Response\csp(array(

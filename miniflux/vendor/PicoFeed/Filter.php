@@ -55,8 +55,11 @@ class Filter
         'http://',
         'https://',
         'ftp://',
-        'mailto://',
-        '//'
+        'mailto:',
+        '//',
+        'data:image/png;base64,',
+        'data:image/gif;base64,',
+        'data:image/jpg;base64,'
     );
 
     public $protocol_attributes = array(
@@ -169,6 +172,14 @@ class Filter
                         }
                         else if ($this->isAllowedProtocol($value) && ! $this->isBlacklistMedia($value)) {
 
+                            if ($attribute == 'src' &&
+                                isset($attributes['data-src']) &&
+                                $this->isAllowedProtocol($attributes['data-src']) &&
+                                ! $this->isBlacklistMedia($attributes['data-src'])) {
+
+                                $value = $attributes['data-src'];
+                            }
+
                             $attr_data .= ' '.$attribute.'="'.$value.'"';
                             $used_attributes[] = $attribute;
                         }
@@ -264,6 +275,8 @@ class Filter
 
     public function isRelativePath($value)
     {
+        if (strpos($value, 'data:') === 0) return false;
+
         return strpos($value, '://') === false && strpos($value, '//') !== 0;
     }
 
