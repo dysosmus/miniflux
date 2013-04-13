@@ -110,7 +110,7 @@ namespace PicoTools\Translator {
     {
         static $values = array();
 
-        if ($locales) {
+        if ($locales !== null) {
 
             $values = $locales;
         }

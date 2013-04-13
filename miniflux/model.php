@@ -460,5 +460,7 @@ function save_config(array $values)
     $_SESSION['user']['language'] = $values['language'];
     unset($_COOKIE['language']);
 
+    \PicoTools\Translator\load($values['language']);
+
     return \PicoTools\singleton('db')->table('config')->update($values);
 }
