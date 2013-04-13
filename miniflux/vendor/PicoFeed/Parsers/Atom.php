@@ -72,7 +72,7 @@ class Atom extends Parser
     {
         foreach ($xml->link as $link) {
 
-            if ((string) $link['type'] === 'text/html') {
+            if ((string) $link['type'] === 'text/html' || (string) $link['type'] === 'application/xhtml+xml') {
 
                 return (string) $link['href'];
             }
