@@ -1,13 +1,13 @@
 <?php if (empty($items)): ?>
 
-    <p class="alert alert-info">Nothing to read.</p>
+    <p class="alert alert-info"><?= t('Nothing to read') ?></p>
 
 <?php else: ?>
 
     <div class="page-header">
-        <h2>Unread items</h2>
+        <h2><?= t('Unread items') ?></h2>
         <ul>
-            <li><a href="?action=mark-as-read">mark all as read</a></li>
+            <li><a href="?action=mark-as-read"><?= t('mark all as read') ?></a></li>
         </ul>
     </div>
 
@@ -27,7 +27,7 @@
             </p>
             <p>
                 <?= Helper\get_host_from_url($item['url']) ?> |
-                <a href="?action=mark-item-read&amp;id=<?= urlencode($item['id']) ?>">mark as read</a> |
+                <a href="?action=mark-item-read&amp;id=<?= urlencode($item['id']) ?>"><?= t('mark as read') ?></a> |
                 <a
                     href="<?= $item['url'] ?>"
                     id="original-<?= urlencode($item['id']) ?>"
@@ -36,7 +36,7 @@
                     data-item-id="<?= urlencode($item['id']) ?>"
                     data-action="mark-read"
                 >
-                    direct link
+                    <?= t('original link') ?>
                 </a>
             </p>
         </article>

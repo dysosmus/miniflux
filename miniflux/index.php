@@ -25,6 +25,24 @@ Router\before(function($action) {
         Response\redirect('?action=login');
     }
 
+    $language = 'en_US';
+
+    if (isset($_SESSION['user']['language'])) {
+
+        $language = $_SESSION['user']['language'];
+    }
+    else if (isset($_COOKIE['language'])) {
+
+        $language = $_COOKIE['language'];
+    }
+
+    if ($language !== 'en_US') {
+
+        PicoTools\Translator\load($language);
+    }
+
+    setcookie('language', $language, time()+365*24*3600, dirname($_SERVER['PHP_SELF']));
+
     Response\csp(array(
         'img-src' => '*',
         'frame-src' => 'http://www.youtube.com https://www.youtube.com http://player.vimeo.com https://player.vimeo.com'
@@ -168,11 +186,11 @@ Router\get_action('remove', function() {
 
     if ($id && Model\remove_feed($id)) {
 
-        Session\flash('This subscription has been removed successfully');
+        Session\flash(t('This subscription has been removed successfully.'));
     }
     else {
 
-        Session\flash_error('Unable to remove this subscription');
+        Session\flash_error(t('Unable to remove this subscription.'));
     }
 
     Response\redirect('?action=feeds');
@@ -230,7 +248,7 @@ Router\get_action('flush-history', function() {
 Router\get_action('refresh-all', function() {
 
     Model\update_feeds();
-    Session\flash('Your subscriptions are updated');
+    Session\flash(t('Your subscriptions are updated'));
     Response\redirect('?action=unread');
 });
 
@@ -259,17 +277,16 @@ Router\post_action('add', function() {
 
     if (Model\import_feed($_POST['url'])) {
 
-        Session\flash('Subscription added successfully.');
+        Session\flash(t('Subscription added successfully.'));
         Response\redirect('?action=feeds');
     }
     else {
 
-        Session\flash_error('Unable to find a subscription.');
+        Session\flash_error(t('Unable to find a subscription.'));
     }
 
     Response\html(Template\layout('add', array(
         'values' => array('url' => $_POST['url']),
-        'errors' => array('url' => 'Unable to find a news feed.'),
         'menu' => 'feeds'
     )));
 });
@@ -309,14 +326,14 @@ Router\post_action('import', function() {
 
     if (Model\import_feeds(Request\file_content('file'))) {
 
-        Session\flash('Your feeds are imported.');
+        Session\flash(t('Your feeds have been imported.'));
     }
     else {
 
-        Session\flash_error('Unable to import your OPML file.');
+        Session\flash_error(t('Unable to import your OPML file.'));
     }
 
-    Response\redirect('?action=feeds');
+    Response\redirect('?action=import');
 });
 
 
@@ -326,6 +343,7 @@ Router\get_action('config', function() {
         'errors' => array(),
         'values' => Model\get_config(),
         'db_size' => filesize(get_db_filename()),
+        'languages' => Model\get_languages(),
         'menu' => 'config'
     )));
 });
@@ -340,11 +358,11 @@ Router\post_action('config', function() {
 
         if (Model\save_config($values)) {
 
-            Session\flash('Your preferences are updated.');
+            Session\flash(t('Your preferences are updated.'));
         }
         else {
 
-            Session\flash_error('Unable to update your preferences.');
+            Session\flash_error(t('Unable to update your preferences.'));
         }
 
         Response\redirect('?action=config');
@@ -353,6 +371,8 @@ Router\post_action('config', function() {
     Response\html(Template\layout('config', array(
         'errors' => $errors,
         'values' => $values,
+        'db_size' => filesize(get_db_filename()),
+        'languages' => Model\get_languages(),
         'menu' => 'config'
     )));
 });

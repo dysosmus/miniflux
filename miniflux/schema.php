@@ -3,6 +3,12 @@
 namespace Schema;
 
 
+function version_3($pdo)
+{
+    $pdo->exec("ALTER TABLE config ADD COLUMN language TEXT DEFAULT 'en_US'");
+}
+
+
 function version_2($pdo)
 {
     $pdo->exec('ALTER TABLE feeds ADD COLUMN last_modified TEXT');

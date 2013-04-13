@@ -18,11 +18,11 @@
             <nav>
                 <a class="logo" href="?">mini<span>flux</span></a>
                 <ul>
-                    <li <?= isset($menu) && $menu === 'unread' ? 'class="active"' : '' ?>><a href="?action=default">unread</a></li>
-                    <li <?= isset($menu) && $menu === 'history' ? 'class="active"' : '' ?>><a href="?action=history">history</a></li>
-                    <li <?= isset($menu) && $menu === 'feeds' ? 'class="active"' : '' ?>><a href="?action=feeds">subscriptions</a></li>
-                    <li <?= isset($menu) && $menu === 'config' ? 'class="active"' : '' ?>><a href="?action=config">preferences</a></li>
-                    <li><a href="?action=logout">logout</a></li>
+                    <li <?= isset($menu) && $menu === 'unread' ? 'class="active"' : '' ?>><a href="?action=default"><?= t('unread') ?></a></li>
+                    <li <?= isset($menu) && $menu === 'history' ? 'class="active"' : '' ?>><a href="?action=history"><?= t('history') ?></a></li>
+                    <li <?= isset($menu) && $menu === 'feeds' ? 'class="active"' : '' ?>><a href="?action=feeds"><?= t('subscriptions') ?></a></li>
+                    <li <?= isset($menu) && $menu === 'config' ? 'class="active"' : '' ?>><a href="?action=config"><?= t('preferences') ?></a></li>
+                    <li><a href="?action=logout"><?= t('logout') ?></a></li>
                 </ul>
             </nav>
         </header>

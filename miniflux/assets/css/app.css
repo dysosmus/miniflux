@@ -127,8 +127,6 @@ form {
 label {
     cursor: pointer;
     display: block;
-    float: left;
-    width: 10em;
 }
 
 input {
@@ -144,7 +142,8 @@ input[type="text"] {
     line-height: 15px;
     width: 250px;
     font-size: 99%;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
+    margin-top: 5px;
 }
 
 input[type="email"]:focus,
@@ -196,14 +195,14 @@ textarea.form-error {
 
 .form-errors {
     color: #b94a48;
-    margin-left: 10em;
+    margin-left: 15px;
     list-style-type: none;
 }
 
 .form-help {
     font-size: 0.9em;
     color: brown;
-    display: inline;
+    margin-bottom: 15px;
 }
 
 /* alerts */
@@ -346,8 +345,7 @@ nav .active a {
 .page-header li {
     font-size: 90%;
     display: inline;
-    padding-left: 10px;
-    padding-right: 10px;
+    padding-right: 5px;
     border-right: 1px dotted #ccc;
 }
 
@@ -488,7 +486,7 @@ nav .active a {
 
 /* other pages */
 section li {
-    margin-left: 20px;
+    margin-left: 15px;
     list-style-type: square;
 }
 

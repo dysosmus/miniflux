@@ -1,6 +1,6 @@
 <?php if (empty($item)): ?>
 
-    <p class="alert alert-info">Article not found.</p>
+    <p class="alert alert-info"><?= t('Item not found') ?></p>
 
 <?php else: ?>
 
@@ -11,7 +11,7 @@
 
         <p class="infos">
             <?= Helper\get_host_from_url($item['url']) ?> |
-            <?= date('l, j F Y H:i', $item['updated']) ?>
+            <?= dt('%A %e %B %Y %k:%M', $item['updated']) ?>
         </p>
 
         <?= $item['content'] ?>
@@ -20,29 +20,29 @@
         <nav>
             <span class="nav-left">
                 <?php if ($item_nav['previous']): ?>
-                    <a href="?action=read&amp;id=<?= urlencode($item_nav['previous']['id']) ?>" id="previous-item">« Previous</a>
+                    <a href="?action=read&amp;id=<?= urlencode($item_nav['previous']['id']) ?>" id="previous-item">« <?= t('Previous') ?></a>
                 <?php else: ?>
-                    « Previous
+                    « <?= t('Previous') ?>
                 <?php endif ?>
             </span>
 
             <span class="nav-middle">
                 <?php if ($item_nav['previous'] && $item_nav['next']): ?>
-                    <a href="?action=default#item-<?= urlencode($item_nav['next']['id']) ?>">Unread items</a>
+                    <a href="?action=default#item-<?= urlencode($item_nav['next']['id']) ?>"><?= t('Unread items') ?></a>
                 <?php elseif ($item_nav['previous'] && ! $item_nav['next']): ?>
-                    <a href="?action=default#item-<?= urlencode($item_nav['previous']['id']) ?>">Unread items</a>
+                    <a href="?action=default#item-<?= urlencode($item_nav['previous']['id']) ?>"><?= t('Unread items') ?></a>
                 <?php elseif (! $item_nav['previous'] && $item_nav['next']): ?>
-                    <a href="?action=default#item-<?= urlencode($item_nav['next']['id']) ?>">Unread items</a>
+                    <a href="?action=default#item-<?= urlencode($item_nav['next']['id']) ?>"><?= t('Unread items') ?></a>
                 <?php elseif (! $item_nav['previous'] && ! $item_nav['next']): ?>
-                    <a href="?action=default">Unread items</a>
+                    <a href="?action=default"><?= t('Unread items') ?></a>
                 <?php endif ?>
             </span>
 
             <span class="nav-right">
                 <?php if ($item_nav['next']): ?>
-                    <a href="?action=read&amp;id=<?= urlencode($item_nav['next']['id']) ?>" id="next-item">Next »</a>
+                    <a href="?action=read&amp;id=<?= urlencode($item_nav['next']['id']) ?>" id="next-item"><?= t('Next') ?> »</a>
                 <?php else: ?>
-                    Next »
+                    <?= t('Next') ?> »
                 <?php endif ?>
             </span>
         </nav>

@@ -3,19 +3,19 @@
 require 'check_setup.php';
 require 'vendor/password.php';
 require 'vendor/PicoTools/Dependency_Injection.php';
+require 'vendor/PicoTools/Translator.php';
 require 'vendor/PicoDb/Database.php';
 require 'vendor/PicoDb/Table.php';
 require 'schema.php';
 require 'model.php';
 
 
-const DB_VERSION = 2;
+const DB_VERSION = 3;
 const APP_VERSION = 'master';
 const APP_USERAGENT = 'Miniflux - http://miniflux.net';
 const HTTP_TIMEOUT = 5;
 
 
-// For future use...
 function get_db_filename()
 {
     return 'data/db.sqlite';

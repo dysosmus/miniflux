@@ -21,6 +21,15 @@ use PicoFeed\Reader;
 use PicoFeed\Export;
 
 
+function get_languages()
+{
+    return array(
+        'en_US' => t('English'),
+        'fr_FR' => t('French')
+    );
+}
+
+
 function export_feeds()
 {
     $opml = new Export(get_feeds());
@@ -359,7 +368,7 @@ function get_config()
 {
     return \PicoTools\singleton('db')
         ->table('config')
-        ->columns('username', 'history')
+        ->columns('username', 'language')
         ->findOne();
 }
 
@@ -368,7 +377,7 @@ function get_user()
 {
     return \PicoTools\singleton('db')
         ->table('config')
-        ->columns('username', 'password')
+        ->columns('username', 'password', 'language')
         ->findOne();
 }
 
@@ -376,9 +385,9 @@ function get_user()
 function validate_login(array $values)
 {
     $v = new Validator($values, array(
-        new Validators\Required('username', 'The user name is required'),
-        new Validators\MaxLength('username', 'The maximum length is 50 characters', 50),
-        new Validators\Required('password', 'The password is required')
+        new Validators\Required('username', t('The user name is required')),
+        new Validators\MaxLength('username', t('The maximum length is 50 characters'), 50),
+        new Validators\Required('password', t('The password is required'))
     ));
 
     $result = $v->execute();
@@ -390,12 +399,13 @@ function validate_login(array $values)
 
         if ($user && \password_verify($values['password'], $user['password'])) {
 
+            unset($user['password']);
             $_SESSION['user'] = $user;
         }
         else {
 
             $result = false;
-            $errors['login'] = 'Bad username or password';
+            $errors['login'] = t('Bad username or password');
         }
     }
 
@@ -411,19 +421,19 @@ function validate_config_update(array $values)
     if (! empty($values['password'])) {
 
         $v = new Validator($values, array(
-            new Validators\Required('username', 'The user name is required'),
-            new Validators\MaxLength('username', 'The maximum length is 50 characters', 50),
-            new Validators\Required('password', 'The password is required'),
-            new Validators\MinLength('password', 'The minimum length is 6 characters', 6),
-            new Validators\Required('confirmation', 'The confirmation is required'),
-            new Validators\Equals('password', 'confirmation', 'Passwords doesn\'t match')
+            new Validators\Required('username', t('The user name is required')),
+            new Validators\MaxLength('username', t('The maximum length is 50 characters'), 50),
+            new Validators\Required('password', t('The password is required')),
+            new Validators\MinLength('password', t('The minimum length is 6 characters'), 6),
+            new Validators\Required('confirmation', t('The confirmation is required')),
+            new Validators\Equals('password', 'confirmation', t('Passwords doesn\'t match'))
         ));
     }
     else {
 
         $v = new Validator($values, array(
-            new Validators\Required('username', 'The user name is required'),
-            new Validators\MaxLength('username', 'The maximum length is 50 characters', 50)
+            new Validators\Required('username', t('The user name is required')),
+            new Validators\MaxLength('username', t('The maximum length is 50 characters'), 50)
         ));
     }
 
@@ -446,6 +456,9 @@ function save_config(array $values)
     }
 
     unset($values['confirmation']);
+
+    $_SESSION['user']['language'] = $values['language'];
+    unset($_COOKIE['language']);
 
     return \PicoTools\singleton('db')->table('config')->update($values);
 }

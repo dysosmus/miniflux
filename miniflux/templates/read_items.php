@@ -1,13 +1,13 @@
 <?php if (empty($items)): ?>
 
-    <p class="alert alert-info">No history.</p>
+    <p class="alert alert-info"><?= t('No history') ?></p>
 
 <?php else: ?>
 
     <div class="page-header">
-        <h2>History</h2>
+        <h2><?= t('History') ?></h2>
         <ul>
-            <li><a href="?action=confirm-flush-history">flush</a></li>
+            <li><a href="?action=confirm-flush-history"><?= t('flush these items') ?></a></li>
         </ul>
     </div>
 
@@ -24,8 +24,8 @@
             </h2>
             <p>
                 <?= Helper\get_host_from_url($item['url']) ?> |
-                <?= date('l, j F Y H:i', $item['updated']) ?> |
-                <a href="?action=mark-item-unread&amp;id=<?= urlencode($item['id']) ?>">mark as unread</a> |
+                <?= dt('%A %e %B %Y %k:%M', $item['updated']) ?> |
+                <a href="?action=mark-item-unread&amp;id=<?= urlencode($item['id']) ?>"><?= t('mark as unread') ?></a> |
                 <a
                     href="<?= $item['url'] ?>"
                     id="original-<?= urlencode($item['id']) ?>"
@@ -34,7 +34,7 @@
                     data-item-id="<?= urlencode($item['id']) ?>"
                     data-action="mark-read"
                 >
-                    direct link
+                    <?= t('original link') ?>
                 </a>
             </p>
         </article>

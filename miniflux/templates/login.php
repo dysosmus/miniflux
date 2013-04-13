@@ -9,7 +9,7 @@
     <body>
 
         <div class="page-header">
-            <h1>Login</h1>
+            <h1><?= t('Sign in') ?></h1>
         </div>
 
         <?php if (isset($errors['login'])): ?>
@@ -20,14 +20,14 @@
 
         <form method="post" action="?action=login">
 
-            <?= Helper\form_label('Username', 'username') ?>
+            <?= Helper\form_label(t('Username'), 'username') ?>
             <?= Helper\form_text('username', $values, $errors, array('autofocus', 'required')) ?><br/>
 
-            <?= Helper\form_label('Password', 'password') ?>
+            <?= Helper\form_label(t('Password'), 'password') ?>
             <?= Helper\form_password('password', $values, $errors, array('required')) ?>
 
             <div class="form-actions">
-                <input type="submit" value="Login" class="btn btn-blue"/>
+                <input type="submit" value="<?= t('Sign in') ?>" class="btn btn-blue"/>
             </div>
         </form>
     </body>
