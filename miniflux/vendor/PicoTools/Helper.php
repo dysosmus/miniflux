@@ -194,6 +194,18 @@ function form_password($name, $values = array(), array $errors = array(), array 
 }
 
 
+function form_email($name, $values = array(), array $errors = array(), array $attributes = array(), $class = '')
+{
+    $class .= error_class($errors, $name);
+
+    $html = '<input type="email" name="'.$name.'" id="form-'.$name.'" '.form_value($values, $name).' class="'.$class.'" ';
+    $html .= implode(' ', $attributes).'/>';
+    $html .= error_list($errors, $name);
+
+    return $html;
+}
+
+
 function form_textarea($name, $values = array(), array $errors = array(), array $attributes = array(), $class = '')
 {
     $class .= error_class($errors, $name);
