@@ -133,6 +133,14 @@ Router\get_action('mark-item-unread', function() {
 });
 
 
+Router\get_action('mark-item-removed', function() {
+
+    $id = Request\param('id');
+    Model\set_item_removed($id);
+    Response\Redirect('?action=history');
+});
+
+
 Router\post_action('mark-item-read', function() {
 
     $id = Request\param('id');
@@ -162,7 +170,7 @@ Router\post_action('change-item-status', function() {
 
 Router\get_action('history', function() {
 
-    Response\html(Template\layout('read_items', array(
+    Response\html(Template\layout('history', array(
         'items' => Model\get_read_items(),
         'menu' => 'history'
     )));

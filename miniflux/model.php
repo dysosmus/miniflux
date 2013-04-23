@@ -261,6 +261,15 @@ function get_nav_item($item)
 }
 
 
+function set_item_removed($id)
+{
+    \PicoTools\singleton('db')
+        ->table('items')
+        ->eq('id', $id)
+        ->save(array('status' => 'removed'));
+}
+
+
 function set_item_read($id)
 {
     \PicoTools\singleton('db')
@@ -339,25 +348,46 @@ function flush_read()
 
 function update_items($feed_id, array $items)
 {
+    $items_in_feed = array();
     $db = \PicoTools\singleton('db');
 
     $db->startTransaction();
 
     foreach ($items as $item) {
 
-        if ($item->id && ! $db->table('items')->eq('id', $item->id)->count()) {
+        // Item parsed correctly?
+        if ($item->id) {
 
-            $db->table('items')->save(array(
-                'id' => $item->id,
-                'title' => $item->title,
-                'url' => $item->url,
-                'updated' => $item->updated,
-                'author' => $item->author,
-                'content' => $item->content,
-                'status' => 'unread',
-                'feed_id' => $feed_id
-            ));
+            // Insert only new item
+            if ($db->table('items')->eq('id', $item->id)->count() !== 1) {
+
+                $db->table('items')->save(array(
+                    'id' => $item->id,
+                    'title' => $item->title,
+                    'url' => $item->url,
+                    'updated' => $item->updated,
+                    'author' => $item->author,
+                    'content' => $item->content,
+                    'status' => 'unread',
+                    'feed_id' => $feed_id
+                ));
+            }
+
+            // Items inside this feed
+            $items_in_feed[] = $item->id;
         }
+    }
+
+    // Remove from the database items marked as "removed"
+    // and not present inside the feed
+    if (! empty($items_in_feed)) {
+
+        \PicoTools\singleton('db')
+            ->table('items')
+            ->notin('id', $items_in_feed)
+            ->eq('status', 'removed')
+            ->eq('feed_id', $feed_id)
+            ->remove();
     }
 
     $db->closeTransaction();
