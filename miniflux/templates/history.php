@@ -26,6 +26,7 @@
                 <?= Helper\get_host_from_url($item['url']) ?> |
                 <?= dt('%A %e %B %Y %k:%M', $item['updated']) ?> |
                 <a href="?action=mark-item-unread&amp;id=<?= urlencode($item['id']) ?>"><?= t('mark as unread') ?></a> |
+                <a href="?action=mark-item-removed&amp;id=<?= urlencode($item['id']) ?>"><?= t('remove') ?></a> |
                 <a
                     href="<?= $item['url'] ?>"
                     id="original-<?= urlencode($item['id']) ?>"
