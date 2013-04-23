@@ -3,6 +3,12 @@
 namespace Schema;
 
 
+function version_4($pdo)
+{
+    $pdo->exec("CREATE INDEX idx_status ON items(status)");
+}
+
+
 function version_3($pdo)
 {
     $pdo->exec("ALTER TABLE config ADD COLUMN language TEXT DEFAULT 'en_US'");

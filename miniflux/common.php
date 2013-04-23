@@ -10,7 +10,7 @@ require 'schema.php';
 require 'model.php';
 
 
-const DB_VERSION = 3;
+const DB_VERSION = 4;
 const APP_VERSION = 'master';
 const APP_USERAGENT = 'Miniflux - http://miniflux.net';
 const HTTP_TIMEOUT = 5;
