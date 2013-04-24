@@ -114,6 +114,9 @@ function update_feeds()
 
         update_feed($feed_id);
     }
+
+    // Auto-vacuum for people using the cronjob
+    \PicoTools\singleton('db')->getConnection()->exec('VACUUM');
 }
 
 
