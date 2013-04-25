@@ -44,7 +44,8 @@ class Filter
         'cite' => array(),
         'time' => array('datetime'),
         'abbr' => array('title'),
-        'iframe' => array('width', 'height', 'frameborder', 'src')
+        'iframe' => array('width', 'height', 'frameborder', 'src'),
+        'q' => array('cite')
     );
 
     public $strip_tags_content = array(
