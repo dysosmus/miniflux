@@ -84,7 +84,7 @@ namespace PicoTools\Translator {
 
     function load($language)
     {
-        setlocale(LC_TIME, $language);
+        setlocale(LC_TIME, $language.'.UTF-8');
 
         $path = PATH.$language;
         $locales = array();
