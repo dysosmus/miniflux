@@ -33,7 +33,6 @@
                     rel="noreferrer"
                     target="_blank"
                     data-item-id="<?= urlencode($item['id']) ?>"
-                    data-action="mark-read"
                 >
                     <?= t('original link') ?>
                 </a>

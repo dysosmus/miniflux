@@ -11,7 +11,7 @@
 
         request.onreadystatechange = function() {
 
-            if (request.readyState === 4) {
+            if (request.readyState === 4 && is_listing()) {
 
                 var response = JSON.parse(request.responseText);
 
@@ -180,8 +180,12 @@
 
         if (link) {
 
-            mark_as_read(link.getAttribute("data-item-id"));
-            find_next_item();
+            if (link.getAttribute("data-action") == "mark-read") {
+
+                mark_as_read(link.getAttribute("data-item-id"));
+                find_next_item();
+            }
+
             link.click();
         }
     }
