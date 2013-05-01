@@ -107,12 +107,13 @@ Router\get_action('read', function() {
 
     $id = Request\param('id');
     $item = Model\get_item($id);
+    $nav = Model\get_nav_item($item); // must be placed before set_item_read()
 
     Model\set_item_read($id);
 
     Response\html(Template\layout('read_item', array(
         'item' => $item,
-        'item_nav' => Model\get_nav_item($item)
+        'item_nav' => $nav
     )));
 });
 
