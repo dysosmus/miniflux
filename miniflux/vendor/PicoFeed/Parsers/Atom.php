@@ -39,6 +39,8 @@ class Atom extends Parser
             $item->author = $author;
             $item->content = $this->filterHtml($this->getContent($entry), $item->url);
 
+            if (empty($item->title)) $item->title = $item->url;
+
             $this->items[] = $item;
         }
 

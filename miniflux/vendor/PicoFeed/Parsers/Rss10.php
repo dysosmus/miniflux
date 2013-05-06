@@ -9,7 +9,6 @@ class Rss10 extends Parser
         $this->content = $this->normalizeData($this->content);
 
         \libxml_use_internal_errors(true);
-
         $xml = \simplexml_load_string($this->content);
 
         if ($xml === false) {
@@ -73,6 +72,8 @@ class Rss10 extends Parser
                     $item->author = (string) $xml->channel->webMaster;
                 }
             }
+
+            if (empty($item->title)) $item->title = $item->url;
 
             $item->id = $item->url;
             $item->content = $this->filterHtml($item->content, $item->url);

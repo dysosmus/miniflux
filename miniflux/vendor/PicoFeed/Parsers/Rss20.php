@@ -91,6 +91,8 @@ class Rss20 extends Parser
                 $item->id = $item->url;
             }
 
+            if (empty($item->title)) $item->title = $item->url;
+
             $item->content = $this->filterHtml($item->content, $item->url);
             $this->items[] = $item;
         }
