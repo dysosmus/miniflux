@@ -164,7 +164,7 @@ function update_feed($feed_id)
 function get_feeds_id($limit = LIMIT_ALL)
 {
     $table_feeds = \PicoTools\singleton('db')->table('feeds')
-                                             ->desc('last_checked');
+                                             ->asc('last_checked');
 
     if($limit !== LIMIT_ALL) {
 
