@@ -19,7 +19,7 @@ namespace PicoTools\Translator {
         $args = \func_get_args();
 
         \array_shift($args);
-        \array_unshift($args, get($identifier));
+        \array_unshift($args, get($identifier, $identifier));
 
         return \call_user_func_array(
             'sprintf',
@@ -61,6 +61,12 @@ namespace PicoTools\Translator {
     }
 
 
+    function datetime($format, $timestamp)
+    {
+        return strftime($format, $timestamp);
+    }
+
+
     function get($identifier, $default = '')
     {
         $locales = container();
@@ -78,6 +84,8 @@ namespace PicoTools\Translator {
 
     function load($language)
     {
+        setlocale(LC_TIME, $language.'.UTF-8');
+
         $path = PATH.$language;
         $locales = array();
 
@@ -102,7 +110,7 @@ namespace PicoTools\Translator {
     {
         static $values = array();
 
-        if ($locales) {
+        if ($locales !== null) {
 
             $values = $locales;
         }
@@ -117,5 +125,11 @@ namespace {
     function t() {
 
         return call_user_func_array('\PicoTools\Translator\translate', func_get_args());
+    }
+
+
+    function dt() {
+
+        return call_user_func_array('\PicoTools\Translator\datetime', func_get_args());
     }
 }

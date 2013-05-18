@@ -7,10 +7,8 @@ class Filter
     private $data = '';
     private $url = '';
     private $input = '';
-    private $empty_tag = false;
+    private $empty_tags = array();
     private $strip_content = false;
-
-    public $ignored_tags = array();
 
     public $allowed_tags = array(
         'dt' => array(),
@@ -45,7 +43,9 @@ class Filter
         'figcaption' => array(),
         'cite' => array(),
         'time' => array('datetime'),
-        'abbr' => array('title')
+        'abbr' => array('title'),
+        'iframe' => array('width', 'height', 'frameborder', 'src'),
+        'q' => array('cite')
     );
 
     public $strip_tags_content = array(
@@ -56,8 +56,11 @@ class Filter
         'http://',
         'https://',
         'ftp://',
-        'mailto://',
-        '//'
+        'mailto:',
+        '//',
+        'data:image/png;base64,',
+        'data:image/gif;base64,',
+        'data:image/jpg;base64,'
     );
 
     public $protocol_attributes = array(
@@ -67,25 +70,46 @@ class Filter
 
     public $blacklist_media = array(
         'feeds.feedburner.com',
-        'feedsportal.com',
+        'da.feedsportal.com',
+        'rss.feedsportal.com',
+        'res.feedsportal.com',
+        'pi.feedsportal.com',
         'rss.nytimes.com',
         'feeds.wordpress.com',
-        'stats.wordpress.com'
+        'stats.wordpress.com',
+        'rss.cnn.com',
+        'twitter.com/home?status=',
+        'twitter.com/share',
+        'twitter_icon_large.png',
+        'www.facebook.com/sharer.php',
+        'facebook_icon_large.png',
+        'plus.google.com/share',
+        'www.gstatic.com/images/icons/gplus-16.png',
+        'www.gstatic.com/images/icons/gplus-32.png',
+        'www.gstatic.com/images/icons/gplus-64.png'
     );
 
     public $required_attributes = array(
         'a' => array('href'),
-        'img' => array('src')
+        'img' => array('src'),
+        'iframe' => array('src')
     );
 
     public $add_attributes = array(
         'a' => 'rel="noreferrer" target="_blank"'
     );
 
+    public $iframe_allowed_resources = array(
+        'http://www.youtube.com/',
+        'https://www.youtube.com/',
+        'http://player.vimeo.com/',
+        'https://player.vimeo.com/'
+    );
 
-    public function __construct($data, $url)
+
+    public function __construct($data, $site_url)
     {
-        $this->url = $url;
+        $this->url = $site_url;
 
         // Convert bad formatted documents to XML
         $dom = new \DOMDocument;
@@ -104,7 +128,7 @@ class Filter
 
         if (! xml_parse($parser, $this->input, true)) {
 
-            var_dump($this->input);
+            //var_dump($this->input);
             die(xml_get_current_line_number($parser).'|'.xml_error_string(xml_get_error_code($parser)));
         }
 
@@ -116,12 +140,12 @@ class Filter
 
     public function startTag($parser, $name, $attributes)
     {
-        $this->empty_tag = false;
+        $empty_tag = false;
         $this->strip_content = false;
 
         if ($this->isPixelTracker($name, $attributes)) {
 
-            $this->empty_tag = true;
+            $empty_tag = true;
         }
         else if ($this->isAllowedTag($name)) {
 
@@ -130,16 +154,32 @@ class Filter
 
             foreach ($attributes as $attribute => $value) {
 
-                if ($this->isAllowedAttribute($name, $attribute)) {
+                if ($value != '' && $this->isAllowedAttribute($name, $attribute)) {
 
                     if ($this->isResource($attribute)) {
 
-                        if ($this->isRelativePath($value)) {
+                        if ($name === 'iframe') {
+
+                            if ($this->isAllowedIframeResource($value)) {
+
+                                $attr_data .= ' '.$attribute.'="'.$value.'"';
+                                $used_attributes[] = $attribute;
+                            }
+                        }
+                        else if ($this->isRelativePath($value)) {
 
                             $attr_data .= ' '.$attribute.'="'.$this->getAbsoluteUrl($value, $this->url).'"';
                             $used_attributes[] = $attribute;
                         }
                         else if ($this->isAllowedProtocol($value) && ! $this->isBlacklistMedia($value)) {
+
+                            if ($attribute == 'src' &&
+                                isset($attributes['data-src']) &&
+                                $this->isAllowedProtocol($attributes['data-src']) &&
+                                ! $this->isBlacklistMedia($attributes['data-src'])) {
+
+                                $value = $attributes['data-src'];
+                            }
 
                             $attr_data .= ' '.$attribute.'="'.$value.'"';
                             $used_attributes[] = $attribute;
@@ -153,45 +193,46 @@ class Filter
                 }
             }
 
+            // Check for required attributes
             if (isset($this->required_attributes[$name])) {
 
                 foreach ($this->required_attributes[$name] as $required_attribute) {
 
                     if (! in_array($required_attribute, $used_attributes)) {
 
-                        $this->empty_tag = true;
+                        $empty_tag = true;
                         break;
                     }
                 }
             }
 
-            if (! $this->empty_tag) {
+            if (! $empty_tag) {
 
                 $this->data .= '<'.$name.$attr_data;
 
+                // Add custom attributes
                 if (isset($this->add_attributes[$name])) {
 
                     $this->data .= ' '.$this->add_attributes[$name].' ';
                 }
 
+                // If img or br, we don't close it here
                 if ($name !== 'img' && $name !== 'br') $this->data .= '>';
             }
-        }
-        else {
-
-            $this->ignored_tags[] = $name;
         }
 
         if (in_array($name, $this->strip_tags_content)) {
 
             $this->strip_content = true;
         }
+
+        $this->empty_tags[] = $empty_tag;
     }
 
 
     public function endTag($parser, $name)
     {
-        if (! $this->empty_tag && $this->isAllowedTag($name)) {
+        if (! array_pop($this->empty_tags) && $this->isAllowedTag($name)) {
 
             $this->data .= $name !== 'img' && $name !== 'br' ? '</'.$name.'>' : '/>';
         }
@@ -216,7 +257,6 @@ class Filter
         else {
 
             // Relative path
-
             $url_path = $components['path'];
 
             if ($url_path{strlen($url_path) - 1} !== '/') {
@@ -236,6 +276,8 @@ class Filter
 
     public function isRelativePath($value)
     {
+        if (strpos($value, 'data:') === 0) return false;
+
         return strpos($value, '://') === false && strpos($value, '//') !== 0;
     }
 
@@ -255,6 +297,20 @@ class Filter
     public function isResource($attribute)
     {
         return in_array($attribute, $this->protocol_attributes);
+    }
+
+
+    public function isAllowedIframeResource($value)
+    {
+        foreach ($this->iframe_allowed_resources as $url) {
+
+            if (strpos($value, $url) === 0) {
+
+                return true;
+            }
+        }
+
+        return false;
     }
 
 

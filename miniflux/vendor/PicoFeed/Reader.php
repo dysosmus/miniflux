@@ -2,6 +2,9 @@
 
 namespace PicoFeed;
 
+require_once __DIR__.'/Parser.php';
+require_once __DIR__.'/RemoteResource.php';
+
 class Reader
 {
     private $url = '';
@@ -16,17 +19,22 @@ class Reader
     }
 
 
-    public function download($url)
+    public function download($url, $last_modified = '', $etag = '', $timeout = 5, $user_agent = 'PicoFeed (https://github.com/fguillot/picoFeed)')
     {
         if (strpos($url, 'http') !== 0) {
 
             $url = 'http://'.$url;
         }
 
-        $this->url = $url;
-        $this->content = @file_get_contents($this->url);
+        $resource = new RemoteResource($url, $timeout, $user_agent);
+        $resource->setLastModified($last_modified);
+        $resource->setEtag($etag);
+        $resource->execute();
 
-        return $this;
+        $this->content = $resource->getContent();
+        $this->url = $resource->getUrl();
+
+        return $resource;
     }
 
 
@@ -67,24 +75,32 @@ class Reader
     {
         $first_tag = $this->getFirstTag($this->content);
 
-        if (strpos($first_tag, '<feed ') !== false) {
+        if (strpos($first_tag, '<feed') !== false) {
 
+            require_once __DIR__.'/Parsers/Atom.php';
             return new Atom($this->content);
         }
-        else if (strpos($first_tag, '<rss ') !== false && strpos($first_tag, 'version="2.0"') !== false) {
+        else if (strpos($first_tag, '<rss') !== false &&
+                (strpos($first_tag, 'version="2.0"') !== false || strpos($first_tag, 'version=\'2.0\'') !== false)) {
 
+            require_once __DIR__.'/Parsers/Rss20.php';
             return new Rss20($this->content);
         }
-        else if (strpos($first_tag, '<rss ') !== false && strpos($first_tag, 'version="0.92"') !== false) {
+        else if (strpos($first_tag, '<rss') !== false &&
+                (strpos($first_tag, 'version="0.92"') !== false || strpos($first_tag, 'version=\'0.92\'') !== false)) {
 
+            require_once __DIR__.'/Parsers/Rss92.php';
             return new Rss92($this->content);
         }
-        else if (strpos($first_tag, '<rss ') !== false && strpos($first_tag, 'version="0.91"') !== false) {
+        else if (strpos($first_tag, '<rss') !== false &&
+                (strpos($first_tag, 'version="0.91"') !== false || strpos($first_tag, 'version=\'0.91\'') !== false)) {
 
+            require_once __DIR__.'/Parsers/Rss91.php';
             return new Rss91($this->content);
         }
         else if (strpos($first_tag, '<rdf:') !== false && strpos($first_tag, 'xmlns="http://purl.org/rss/1.0/"') !== false) {
 
+            require_once __DIR__.'/Parsers/Rss10.php';
             return new Rss10($this->content);
         }
         else if ($discover === true) {

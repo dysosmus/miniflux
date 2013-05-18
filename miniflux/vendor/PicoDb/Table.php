@@ -63,7 +63,14 @@ class Table
             $this->conditions()
         );
 
-        return false !== $this->db->execute($sql, $values);
+        $result = $this->db->execute($sql, $values);
+
+        if ($result !== false && $result->rowCount() > 0) {
+
+            return true;
+        }
+
+        return false;
     }
 
 
@@ -284,6 +291,17 @@ class Table
 
                     $sql = sprintf(
                         '%s IN (%s)',
+                        $this->db->escapeIdentifier($column),
+                        implode(', ', array_fill(0, count($arguments[1]), '?'))
+                    );
+                }
+                break;
+
+            case 'notin':
+                if (is_array($arguments[1])) {
+
+                    $sql = sprintf(
+                        '%s NOT IN (%s)',
                         $this->db->escapeIdentifier($column),
                         implode(', ', array_fill(0, count($arguments[1]), '?'))
                     );

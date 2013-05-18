@@ -14,26 +14,33 @@ Features
 - Import/Export OPML feeds
 - Feeds update by a cronjob or with the user interface in one click
 - Protected by a login/password (only one possible user)
-- Use secure headers (only external images are allowed)
+- Use secure headers (only external images and Youtube/Vimeo videos are allowed)
 - Open external links inside a new tab with a `rel="noreferrer"` attribute
 - Mobile CSS (responsive design)
+- Keyboard shortcuts
 
-Todo
-----
+Todo and known bugs
+-------------------
 
-- Remove older items from the database
+- See Issues: <https://github.com/fguillot/miniflux/issues>
 
 License
 -------
 
 - AGPL: <http://www.gnu.org/licenses/agpl-3.0.txt>
 
+Authors
+-------
+
+- Original author: [Frédéric Guillot](http://fredericguillot.com/)
+- Contributors: [Pull requesters](https://github.com/fguillot/miniflux/pulls?direction=desc&page=1&sort=created&state=closed) and [Bug reporters](https://github.com/fguillot/miniflux/issues?page=1&state=closed)
+
 Requirements
 ------------
 
 - PHP >= 5.3.7
 - PHP XML extensions (SimpleXML, DOM...)
-- PHP Sqlite extensions
+- PHP Sqlite extension
 
 Libraries used
 --------------
@@ -80,6 +87,11 @@ Your life is cluttered.
 ### Why there is no categories? Why the feature X is missing?
 
 Miniflux is a minimalist software. Less is more.
+
+### Why there is no favourites?
+
+Use the right tool for the right job.
+Your browser already have bookmarks, if you don't like it there is many online tools for that.
 
 ### I found a bug, what next?
 

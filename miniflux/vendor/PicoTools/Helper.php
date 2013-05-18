@@ -49,6 +49,15 @@ function flash_error($html)
 }
 
 
+function format_bytes($size, $precision = 2)
+{
+    $base = log($size) / log(1024);
+    $suffixes = array('', 'k', 'M', 'G', 'T');
+
+    return round(pow(1024, $base - floor($base)), $precision).$suffixes[floor($base)];
+}
+
+
 function get_host_from_url($url)
 {
     return escape(parse_url($url, PHP_URL_HOST));
@@ -178,6 +187,18 @@ function form_password($name, $values = array(), array $errors = array(), array 
     $class .= error_class($errors, $name);
 
     $html = '<input type="password" name="'.$name.'" id="form-'.$name.'" '.form_value($values, $name).' class="'.$class.'" ';
+    $html .= implode(' ', $attributes).'/>';
+    $html .= error_list($errors, $name);
+
+    return $html;
+}
+
+
+function form_email($name, $values = array(), array $errors = array(), array $attributes = array(), $class = '')
+{
+    $class .= error_class($errors, $name);
+
+    $html = '<input type="email" name="'.$name.'" id="form-'.$name.'" '.form_value($values, $name).' class="'.$class.'" ';
     $html .= implode(' ', $attributes).'/>';
     $html .= error_list($errors, $name);
 
