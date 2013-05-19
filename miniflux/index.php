@@ -102,6 +102,14 @@ Router\get_action('show', function() {
     )));
 });
 
+Router\get_action('summary', function() {
+
+    $id = Request\param('id');
+
+    Response\html(Template\load('summary_item', array(
+        'item' => Model\get_item($id)
+    )));
+});
 
 Router\get_action('read', function() {
 
@@ -217,7 +225,6 @@ Router\get_action('refresh-feed', function() {
 
     Response\redirect('?action=unread');
 });
-
 
 Router\post_action('refresh-feed', function() {
 

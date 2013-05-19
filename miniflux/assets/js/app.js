@@ -1,9 +1,9 @@
 (function() {
 
-    var feeds = [];
-    var queue = [];
+    var feeds        = [];
+    var queue        = [];
     var queue_length = 5;
-
+    var to_load      = [];
 
     function switch_status(item_id)
     {
@@ -310,6 +310,42 @@
         }
     }
 
+    function lazy_load(el) {
+        var content_url = el.getAttribute('data-content-url')
+        var request     = new XMLHttpRequest();
+
+        request.onreadystatechange = function() {
+
+            if (request.readyState === 4) {
+                el.innerHTML = request.responseText;
+
+                // remove el form list to avoid reload.
+                var index = to_load.indexOf(el);
+
+                if (index >= 0) {
+
+                    to_load.splice(index, 1);
+                }
+            }
+        }
+
+        request.open("GET", content_url, false);
+        request.send();
+    }
+
+    function is_in_viewport(el)
+    {
+        if(typeof el.getBoundingClientRect === 'function') {
+            var bounding_box = el.getBoundingClientRect();
+
+            return bounding_box.top    >= 0 &&
+                   bounding_box.left   >= 0 &&
+                   bounding_box.bottom <= (window.innerHeight || document. documentElement.clientHeight) && 
+                   bounding_box.right  <= (window.innerWidth  || document. documentElement.clientWidth);
+        } 
+
+        return false;
+    }
 
     function is_listing()
     {
@@ -321,8 +357,18 @@
         return false;
     }
 
+    var onscroll = function(e) {
+        for(var i in to_load) {
 
-    document.onclick = function(e) {
+            var el = to_load[i];
+            
+            if(is_in_viewport(el)) {
+                lazy_load(el);
+            }
+        }
+    };
+
+    var onclick = function(e) {
 
         var action = e.target.getAttribute("data-action");
 
@@ -346,7 +392,7 @@
         }
     };
 
-    document.onkeypress = function(e) {
+    var onkeypress = function(e) {
 
         switch (e.keyCode || e.which) {
             case 112:
@@ -367,4 +413,24 @@
         }
     };
 
+    var onready = function() {
+        var to_load_list = document.getElementsByClassName('lazy-load');
+
+        for(var i in to_load_list) {
+            var el = to_load_list[i];
+            to_load.push(el);
+            
+            if(is_in_viewport(el)) {
+                lazy_load(el);
+            }
+        }
+
+        document.onscroll   = onscroll;
+        document.onclick    = onclick;
+        document.onkeypress = onkeypress;
+
+
+    }
+
+    document.addEventListener('DOMContentLoaded', onready, false);
 })();
