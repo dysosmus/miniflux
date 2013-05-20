@@ -19,6 +19,7 @@ body {
     color: #333;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
+    font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
 }
 
@@ -135,8 +136,9 @@ label {
     display: block;
 }
 
-input {
+input:not(input[type="radio"]) {
     -webkit-appearance: none;
+    appearance: none;
 }
 
 input[type="email"],
@@ -186,6 +188,11 @@ select {
 }
 
 :-moz-placeholder {
+    color: #bbb;
+    padding-top: 2px;
+}
+
+::-moz-placeholder { /* firefox 19+ */
     color: #bbb;
     padding-top: 2px;
 }
