@@ -404,7 +404,8 @@ Router\notfound(function() {
     }
 
     Response\html(Template\layout('unread_items', array(
-        'items' => $items,
-        'menu' => 'unread'
+        'config' => Model\get_config(),
+        'items'  => $items,
+        'menu'   => 'unread'
     )));
 });

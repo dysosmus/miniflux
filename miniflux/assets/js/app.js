@@ -1,9 +1,11 @@
 (function() {
 
-    var feeds        = [];
-    var queue        = [];
-    var queue_length = 5;
-    var to_load      = [];
+    var feeds               = [];
+    var queue               = [];
+    var queue_length        = 5;
+    var async_elements      = [];
+    var async_queue_lenght      = 0;
+    var async_queue_max_lenght  = 5;
 
     function switch_status(item_id)
     {
@@ -310,27 +312,51 @@
         }
     }
 
-    function lazy_load(el) {
-        var content_url = el.getAttribute('data-content-url')
-        var request     = new XMLHttpRequest();
+    function async_element_load(el) {
 
-        request.onreadystatechange = function() {
+        if(async_queue_lenght < async_queue_max_lenght) {
+            var img = document.createElement("img");
+            img.src = "./assets/img/refresh.gif";
+            el.appendChild(img);
 
-            if (request.readyState === 4) {
-                el.innerHTML = request.responseText;
+            var content_url = el.getAttribute('data-content-url')
+            var request     = new XMLHttpRequest();
 
-                // remove el form list to avoid reload.
-                var index = to_load.indexOf(el);
+            async_queue_lenght++;
+            
+            request.onreadystatechange = function() {
 
-                if (index >= 0) {
+                if (request.readyState === 4) {
 
-                    to_load.splice(index, 1);
+                    el.innerHTML = request.responseText;
+
+                    // remove el form list to avoid reload.
+                    var index = async_elements.indexOf(el);
+
+                    if (index >= 0) {
+
+                        async_elements.splice(index, 1);
+                    }
+
+                    async_queue_lenght--;
                 }
             }
-        }
 
-        request.open("GET", content_url, false);
-        request.send();
+            request.open("GET", content_url, true);
+            request.send();
+        }
+    }
+
+    function load_async_elements() 
+    {
+        for(var i in async_elements) {
+
+            var el = async_elements[i];
+            
+            if(is_in_viewport(el)) {
+                async_element_load(el);
+            }
+        }
     }
 
     function is_in_viewport(el)
@@ -358,14 +384,7 @@
     }
 
     var onscroll = function(e) {
-        for(var i in to_load) {
-
-            var el = to_load[i];
-            
-            if(is_in_viewport(el)) {
-                lazy_load(el);
-            }
-        }
+        load_async_elements();
     };
 
     var onclick = function(e) {
@@ -387,6 +406,9 @@
                 case 'mark-read':
                     var item_id = e.target.getAttribute("data-item-id");
                     mark_as_read(item_id);
+                    break;
+                case 'load-async':
+                    load_async_elements();
                     break;
             }
         }
@@ -414,14 +436,14 @@
     };
 
     var onready = function() {
-        var to_load_list = document.getElementsByClassName('lazy-load');
+        var async_elements_list = document.getElementsByClassName('lazy-load');
 
-        for(var i in to_load_list) {
-            var el = to_load_list[i];
-            to_load.push(el);
+        for(var i in async_elements_list) { // node list to array
+            var el = async_elements_list[i];
+            async_elements.push(el);
             
             if(is_in_viewport(el)) {
-                lazy_load(el);
+                async_element_load(el);
             }
         }
 
