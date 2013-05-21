@@ -70,6 +70,7 @@ class Filter
 
     public $blacklist_media = array(
         'feeds.feedburner.com',
+        'share.feedsportal.com',
         'da.feedsportal.com',
         'rss.feedsportal.com',
         'res.feedsportal.com',

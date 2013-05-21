@@ -125,6 +125,9 @@ class RemoteResource
             curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
             curl_setopt($ch, CURLOPT_FOLLOWLOCATION, false);
 
+            // Don't check SSL certificates (for auto-signed certificates...)
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+
             $http_response = curl_exec($ch);
             $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
             $http_body = '';
