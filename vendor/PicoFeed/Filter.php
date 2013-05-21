@@ -114,8 +114,11 @@ class Filter
 
         // Convert bad formatted documents to XML
         $dom = new \DOMDocument;
-        $dom->loadHTML('<?xml encoding="UTF-8">'.$data);
+        $dom->loadHTML('<?xml version="1.0" encoding="UTF-8">'.$data);
         $this->input = $dom->saveXML($dom->getElementsByTagName('body')->item(0));
+
+        // Workaround for old libxml2 (Debian Lenny)
+        if (LIBXML_DOTTED_VERSION === '2.6.32') $this->input = utf8_decode($this->input);
     }
 
 
