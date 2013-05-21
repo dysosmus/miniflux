@@ -3,7 +3,6 @@
     <p class="alert alert-info"><?= t('Item not found') ?></p>
 
 <?php else: ?>
-
     <article class="item" id="current-item" data-item-id="<?= urlencode($item['id']) ?>">
         <h1>
             <a href="<?= $item['url'] ?>" rel="noreferrer" target="_blank" id="original-item"><?= Helper\escape($item['title']) ?></a>

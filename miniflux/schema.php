@@ -2,6 +2,10 @@
 
 namespace Schema;
 
+function version_5($pdo)
+{
+    $pdo->exec('ALTER TABLE feeds ADD COLUMN last_checked INTEGER');
+}
 
 function version_4($pdo)
 {
