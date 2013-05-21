@@ -1,14 +1,12 @@
 <?php
 
 // PHP 5.3 minimum
-
 if (version_compare(PHP_VERSION, '5.3.0', '<')) {
 
     die('This software require PHP 5.3.0 minimum');
 }
 
 // Short tags must be enabled for PHP < 5.4
-
 if (version_compare(PHP_VERSION, '5.4.0', '<')) {
 
     if (! ini_get('short_open_tag')) {
@@ -18,7 +16,6 @@ if (version_compare(PHP_VERSION, '5.4.0', '<')) {
 }
 
 // Check XML functions
-
 if (! function_exists('simplexml_load_string')) {
 
     die('PHP extension required: SimpleXML');
@@ -34,8 +31,13 @@ if (! function_exists('dom_import_simplexml')) {
     die('PHP extension required: DOM');
 }
 
-// Check if /data is writeable
+// Check PDO Sqlite
+if (! extension_loaded('pdo_sqlite')) {
 
+    die('PHP extension required: pdo_sqlite');
+}
+
+// Check if /data is writeable
 if (! is_writable('data')) {
 
     die('The directory "data" must be writeable by your web server user');
