@@ -16,15 +16,18 @@ const APP_USERAGENT = 'Miniflux - http://miniflux.net';
 const HTTP_TIMEOUT  = 5;
 const LIMIT_ALL     = -1;
 
+
 function get_db_filename()
 {
     return 'data/db.sqlite';
 }
 
-function is_console() 
+
+function is_console()
 {
     return php_sapi_name() === 'cli';
 }
+
 
 PicoTools\container('db', function() {
 
