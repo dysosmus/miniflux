@@ -71,7 +71,7 @@ You just need to be inside the directory `miniflux` and run the script `cronjob.
 
 Parameters          | Type         		             | Value
 --------------------|--------------------------------|-----------------------------
---limit             | optional                       | time in minutes
+--limit             | optional                       | number of feeds
 --call-interval     | optional, excluded by --limit, require --update-interval | time in minutes < update interval time
 --update-interval   | optional, excluded by --limit, require --call-interval   | time in minutes >= call interval time
 
