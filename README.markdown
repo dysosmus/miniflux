@@ -89,7 +89,7 @@ Examples:
 	# Update all feeds in 60 minutes (updates the 8 oldest feeds each time with a total of 120 feeds).
     * */4 * * *  cd /path/to/miniflux && php cronjob.php --call-interval=4 --update-interval=60 >/dev/null 2>&1
 
-Note: cronjob.php can also be called from the web; in this case specify the options as GET variables. For example: http://yourpersonalserver/miniflux/cronjob.php?call-interval=4&update-interval=60
+Note: cronjob.php can also be called from the web; in this case specify the options as GET variables. For example: <http://yourpersonalserver/miniflux/cronjob.php?call-interval=4&update-interval=60>
 
 ### How Miniflux update my feeds from the user interface?
 
