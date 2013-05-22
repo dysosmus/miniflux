@@ -23,12 +23,6 @@ function get_db_filename()
 }
 
 
-function is_console()
-{
-    return php_sapi_name() === 'cli';
-}
-
-
 PicoTools\container('db', function() {
 
     $db = new PicoDb\Database(array(

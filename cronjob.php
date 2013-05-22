@@ -2,28 +2,27 @@
 
 require 'common.php';
 
-if (is_console()) {
+if (php_sapi_name() === 'cli') {
 
     $options = getopt('', array(
         'limit::',
         'call-interval::',
         'update-interval::'
     ));
-
-    $limit           = empty($options['limit'])           ? LIMIT_ALL : (int)$options['limit'];
-    $update_interval = empty($options['update-interval']) ? null      : (int)$options['update-interval'];
-    $call_interval   = empty($options['call-interval'])   ? null      : (int)$options['call-interval'];
-} else {
-
-    $limit           = empty($_GET['limit'])           ? LIMIT_ALL : (int)$_GET['limit'];
-    $update_interval = empty($_GET['update-interval']) ? null      : (int)$_GET['update-interval'];
-    $call_interval   = empty($_GET['call-interval'])   ? null      : (int)$_GET['call-interval'];
 }
+else {
+
+    $options = $_GET;
+}
+
+$limit = ! empty($options['limit']) && ctype_digit($options['limit']) ? (int) $options['limit'] : LIMIT_ALL;
+$update_interval = ! empty($options['update-interval']) && ctype_digit($options['update-interval']) ? (int) $options['update-interval'] : null;
+$call_interval = ! empty($options['call-interval']) && ctype_digit($options['call-interval']) ? (int) $options['call-interval'] : null;
 
 if ($update_interval !== null && $call_interval !== null && $limit === LIMIT_ALL && $update_interval >= $call_interval) {
 
     $feeds_count = \PicoTools\singleton('db')->table('feeds')->count();
-    $limit       = ceil($feeds_count / ($update_interval / $call_interval)); // compute new limit
+    $limit = ceil($feeds_count / ($update_interval / $call_interval));
 }
 
 Model\update_feeds($limit);
