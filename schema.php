@@ -2,6 +2,11 @@
 
 namespace Schema;
 
+function version_6($pdo) 
+{
+    $pdo->exec('ALTER TABLE config ADD COLUMN lazy_loading INTEGER DEFAULT 0');
+}
+
 
 function version_5($pdo)
 {

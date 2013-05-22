@@ -426,7 +426,7 @@ function get_config()
 {
     return \PicoTools\singleton('db')
         ->table('config')
-        ->columns('username', 'language')
+        ->columns('username', 'language', 'lazy_loading')
         ->findOne();
 }
 
@@ -481,6 +481,7 @@ function validate_config_update(array $values)
         $v = new Validator($values, array(
             new Validators\Required('username', t('The user name is required')),
             new Validators\MaxLength('username', t('The maximum length is 50 characters'), 50),
+            new Validators\Required('lazy_loading', t('This is required')),
             new Validators\Required('password', t('The password is required')),
             new Validators\MinLength('password', t('The minimum length is 6 characters'), 6),
             new Validators\Required('confirmation', t('The confirmation is required')),
@@ -491,7 +492,8 @@ function validate_config_update(array $values)
 
         $v = new Validator($values, array(
             new Validators\Required('username', t('The user name is required')),
-            new Validators\MaxLength('username', t('The maximum length is 50 characters'), 50)
+            new Validators\MaxLength('username', t('The maximum length is 50 characters'), 50),
+            new Validators\Required('lazy_loading', t('This is required')),
         ));
     }
 
@@ -512,6 +514,8 @@ function save_config(array $values)
 
         unset($values['password']);
     }
+
+    $values['lazy_loading'] = (int)$values['lazy_loading'];
 
     unset($values['confirmation']);
 

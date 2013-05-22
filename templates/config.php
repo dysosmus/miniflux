@@ -16,6 +16,11 @@
     <?= Helper\form_label(t('Language'), 'language') ?>
     <?= Helper\form_select('language', $languages, $values, $errors) ?><br/>
 
+    <?php /* @todo helper for input radio :) */ ?>
+    <?= Helper\form_label(t('Lazy loading'), 'lazy-loading') ?>
+    <input type="radio" name="lazy_loading" value="1" <?= $values['lazy_loading'] ? 'checked' : '' ?> /><?= t('yes') ?>
+    <input type="radio" name="lazy_loading" value="0" <?= $values['lazy_loading'] ? ''        : 'checked' ?> /><?= t('no') ?><br />
+
     <div class="form-actions">
         <input type="submit" value="<?= t('Update') ?>" class="btn btn-blue"/>
     </div>

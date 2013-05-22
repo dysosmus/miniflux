@@ -103,6 +103,16 @@ Router\get_action('show', function() {
 });
 
 
+Router\get_action('summary', function() {
+
+    $id = Request\param('id');
+
+    Response\html(Template\load('summary_item', array(
+        'item' => Model\get_item($id)
+    )));
+});
+
+
 Router\get_action('read', function() {
 
     $id = Request\param('id');
@@ -389,7 +399,8 @@ Router\post_action('config', function() {
 
 Router\notfound(function() {
 
-    $items = Model\get_unread_items();
+    $items  = Model\get_unread_items();
+    $config = Model\get_config();
 
     if (empty($items)) {
 
@@ -397,7 +408,8 @@ Router\notfound(function() {
     }
 
     Response\html(Template\layout('unread_items', array(
-        'items' => $items,
-        'menu' => 'unread'
+        'config' => $config,
+        'items'  => $items,
+        'menu'   => 'unread'
     )));
 });

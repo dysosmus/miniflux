@@ -18,6 +18,7 @@ Features
 - Open external links inside a new tab with a `rel="noreferrer"` attribute
 - Mobile CSS (responsive design)
 - Keyboard shortcuts
+- Lazy loading (optional)
 
 Todo and known bugs
 -------------------
