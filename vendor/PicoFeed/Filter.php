@@ -129,13 +129,7 @@ class Filter
         xml_set_element_handler($parser, 'startTag', 'endTag');
         xml_set_character_data_handler($parser, 'dataTag');
         xml_parser_set_option($parser, XML_OPTION_CASE_FOLDING, false);
-
-        if (! xml_parse($parser, $this->input, true)) {
-
-            //var_dump($this->input);
-            die(xml_get_current_line_number($parser).'|'.xml_error_string(xml_get_error_code($parser)));
-        }
-
+        xml_parse($parser, $this->input, true); // We ignore parsing error (for old libxml)
         xml_parser_free($parser);
 
         return $this->data;
