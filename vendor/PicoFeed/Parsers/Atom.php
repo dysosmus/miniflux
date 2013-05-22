@@ -9,7 +9,6 @@ class Atom extends Parser
         $this->content = $this->normalizeData($this->content);
 
         \libxml_use_internal_errors(true);
-
         $xml = \simplexml_load_string($this->content);
 
         if ($xml === false) {

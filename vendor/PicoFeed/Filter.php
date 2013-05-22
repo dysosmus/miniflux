@@ -70,6 +70,7 @@ class Filter
 
     public $blacklist_media = array(
         'feeds.feedburner.com',
+        'share.feedsportal.com',
         'da.feedsportal.com',
         'rss.feedsportal.com',
         'res.feedsportal.com',
@@ -113,8 +114,11 @@ class Filter
 
         // Convert bad formatted documents to XML
         $dom = new \DOMDocument;
-        $dom->loadHTML('<?xml encoding="UTF-8">'.$data);
+        $dom->loadHTML('<?xml version="1.0" encoding="UTF-8">'.$data);
         $this->input = $dom->saveXML($dom->getElementsByTagName('body')->item(0));
+
+        // Workaround for old libxml2 (Debian Lenny)
+        if (LIBXML_DOTTED_VERSION === '2.6.32') $this->input = utf8_decode($this->input);
     }
 
 
@@ -125,13 +129,7 @@ class Filter
         xml_set_element_handler($parser, 'startTag', 'endTag');
         xml_set_character_data_handler($parser, 'dataTag');
         xml_parser_set_option($parser, XML_OPTION_CASE_FOLDING, false);
-
-        if (! xml_parse($parser, $this->input, true)) {
-
-            //var_dump($this->input);
-            die(xml_get_current_line_number($parser).'|'.xml_error_string(xml_get_error_code($parser)));
-        }
-
+        xml_parse($parser, $this->input, true); // We ignore parsing error (for old libxml)
         xml_parser_free($parser);
 
         return $this->data;

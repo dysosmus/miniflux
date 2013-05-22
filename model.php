@@ -107,6 +107,7 @@ function import_feed($url)
     return false;
 }
 
+
 function update_feeds($limit = LIMIT_ALL)
 {
     $feeds_id = get_feeds_id($limit);
@@ -135,6 +136,7 @@ function update_feed($feed_id)
         APP_USERAGENT
     );
 
+    // Update the `last_checked` column each time, HTTP cache or not
     update_feed_last_checked($feed_id);
 
     if (! $resource->isModified()) {
@@ -166,13 +168,12 @@ function get_feeds_id($limit = LIMIT_ALL)
     $table_feeds = \PicoTools\singleton('db')->table('feeds')
                                              ->asc('last_checked');
 
-    if($limit !== LIMIT_ALL) {
+    if ($limit !== LIMIT_ALL) {
 
         $table_feeds->limit((int)$limit);
     }
 
     return $table_feeds->listing('id', 'id');
-
 }
 
 
@@ -193,14 +194,17 @@ function get_feed($feed_id)
         ->findOne();
 }
 
-function update_feed_last_checked($feed_id) {
+
+function update_feed_last_checked($feed_id)
+{
     \PicoTools\singleton('db')
         ->table('feeds')
         ->eq('id', $feed_id)
         ->save(array(
-            'last_checked'  => time(),
+            'last_checked' => time()
         ));
 }
+
 
 function update_feed_cache_infos($feed_id, $last_modified, $etag)
 {
@@ -209,8 +213,7 @@ function update_feed_cache_infos($feed_id, $last_modified, $etag)
         ->eq('id', $feed_id)
         ->save(array(
             'last_modified' => $last_modified,
-            'etag'          => $etag,
-            'last_checked'  => time(),
+            'etag'          => $etag
         ));
 }
 

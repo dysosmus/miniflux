@@ -67,28 +67,30 @@ FAQ
 
 ### How to update your feeds with a cronjob?
 
-You just need to be inside the directory `miniflux` and run the script `cronjob.php`. 
+You just need to be inside the directory `miniflux` and run the script `cronjob.php`.
 
-Prameters          | Type         		             | Value
--------------------|--------------------------------|-----------------------------
---limit            | optional                       |time in minutes
---call-interval    | optional, exclude by --limit, requires --update-interval |time in minutes < update inteval time
---update-interval  | optional, exclude by --limit, requires --call-interval   |time in minutes >= call interval time
+Parameters          | Type         		             | Value
+--------------------|--------------------------------|-----------------------------
+--limit             | optional                       | number of feeds
+--call-interval     | optional, excluded by --limit, require --update-interval | time in minutes < update interval time
+--update-interval   | optional, excluded by --limit, require --call-interval   | time in minutes >= call interval time
 
-			
+
 Examples:
 
     crontab -e
 
+    # Update all feeds
     0 */4 * * *  cd /path/to/miniflux && php cronjob.php >/dev/null 2>&1
-    
-	# Updates the 10 oldest feeds each time
 
+	# Update the 10 oldest feeds each time
     0 */4 * * *  cd /path/to/miniflux && php cronjob.php --limit=10 >/dev/null 2>&1
-    
-	# Updates all feeds in 60mn (updates the 8 oldest feeds each time with a total of 120 feeds).
 
-    0 */4 * * *  cd /path/to/miniflux && php cronjob.php --call-interval=4 --update-interval=60 >/dev/null 2>&1
+	# Update all feeds in 60 minutes (updates the 8 oldest feeds each time with a total of 120 feeds).
+    * */4 * * *  cd /path/to/miniflux && php cronjob.php --call-interval=4 --update-interval=60 >/dev/null 2>&1
+
+Note: cronjob.php can also be called from the web; in this case specify the options as GET variables.
+Example: <http://yourpersonalserver/miniflux/cronjob.php?call-interval=4&update-interval=60>
 
 ### How Miniflux update my feeds from the user interface?
 
