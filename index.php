@@ -228,7 +228,6 @@ Router\get_action('refresh-feed', function() {
     Response\redirect('?action=unread');
 });
 
-
 Router\post_action('refresh-feed', function() {
 
     $id = Request\int_param('feed_id');
