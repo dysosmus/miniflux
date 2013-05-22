@@ -112,6 +112,21 @@ class Filter
     {
         $this->url = $site_url;
 
+        // Workaround for old libxml2 (Debian Lenny)
+        if (LIBXML_DOTTED_VERSION === '2.6.32') {
+
+            do {
+                $unique = md5(uniqid());
+            } while(strpos($data, $unique) !== false);
+            $entity_alpha = array('&amp;', '&lt;', '&gt;');
+            $entity_num = array('&#38;', '&#60;', '&#62;');
+            $token = array($unique.'a', $unique.'l', $unique.'r');
+            $data = str_replace($entity_alpha, $token, $data);
+            $data = str_replace($entity_num, $token, $data);
+            $data = html_entity_decode($data, ENT_NOQUOTES|ENT_XHTML, 'UTF-8');
+            $data = str_replace($token, $entity_alpha, $data);
+        }
+
         // Convert bad formatted documents to XML
         $dom = new \DOMDocument;
         $dom->loadHTML('<?xml version="1.0" encoding="UTF-8">'.$data);
@@ -129,7 +144,13 @@ class Filter
         xml_set_element_handler($parser, 'startTag', 'endTag');
         xml_set_character_data_handler($parser, 'dataTag');
         xml_parser_set_option($parser, XML_OPTION_CASE_FOLDING, false);
-        xml_parse($parser, $this->input, true); // We ignore parsing error (for old libxml)
+
+        if (! xml_parse($parser, $this->input, true)) {
+
+            //var_dump($this->input);
+            die(xml_get_current_line_number($parser).'|'.xml_error_string(xml_get_error_code($parser)));
+        }
+
         xml_parser_free($parser);
 
         return $this->data;
