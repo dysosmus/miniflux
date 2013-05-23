@@ -16,7 +16,7 @@
     <?= Helper\form_label(t('Language'), 'language') ?>
     <?= Helper\form_select('language', $languages, $values, $errors) ?><br/>
 
-    <?= Helper\form_label(t('Number of days to keep (-1 disable auto flush)'), 'max_days') ?>
+    <?= Helper\form_label(t('History : number of days to store (-1 disable auto flush)'), 'max_days') ?>
     <?= Helper\form_text('max_days', $values, $errors) ?><br/>
 
     <div class="form-actions">

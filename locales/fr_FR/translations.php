@@ -14,7 +14,7 @@ return array(
     'Password' => 'Mot de passe',
     'Confirmation' => 'Confirmation',
     'Language' => 'Langue',
-	'Number of days to keep (-1 disable auto flush)' => 'Nombre de jour à conserver (-1 désactive la purge auto)',
+	'History : number of days to store (-1 disable auto flush)' => 'Historique : nombre de jours à conserver (-1 désactive la purge auto)',
     'Update' => 'Mettre à jour',
     'More informations' => 'Plus d\'informations',
     'Database' => 'Base de données',
