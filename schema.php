@@ -2,6 +2,11 @@
 
 namespace Schema;
 
+function version_6($pdo)
+{
+    $pdo->exec('ALTER TABLE config ADD COLUMN max_days INTEGER DEFAULT -1');
+}
+
 
 function version_5($pdo)
 {
@@ -66,3 +71,4 @@ function version_1($pdo)
         )
     ');
 }
+

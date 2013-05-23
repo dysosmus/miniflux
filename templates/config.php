@@ -16,6 +16,9 @@
     <?= Helper\form_label(t('Language'), 'language') ?>
     <?= Helper\form_select('language', $languages, $values, $errors) ?><br/>
 
+    <?= Helper\form_label(t('Number of days to keep (-1 disable auto flush)'), 'max_days') ?>
+    <?= Helper\form_text('max_days', $values, $errors) ?><br/>
+
     <div class="form-actions">
         <input type="submit" value="<?= t('Update') ?>" class="btn btn-blue"/>
     </div>

@@ -258,7 +258,7 @@ function get_item($id)
         ->eq('id', $id)
         ->findOne();
 }
-
+ 
 
 function get_nav_item($item)
 {
@@ -365,11 +365,23 @@ function flush_unread()
 }
 
 
-function flush_read()
-{
+function flush_read() {
+
+	$max_days = \PicoTools\singleton('db')
+        ->table('config')
+        ->columns('max_days')
+        ->findOne();
+    $max_days=$max_days['max_days'];
+	
+	$max_age = 0;
+    if ($max_days != -1 ){
+		$max_age = time()- ($max_days*86400); //86400 = 1 day
+	}
+
     \PicoTools\singleton('db')
         ->table('items')
         ->eq('status', 'read')
+		->lt('updated',$max_age)
         ->save(array('status' => 'removed'));
 }
 
@@ -426,7 +438,7 @@ function get_config()
 {
     return \PicoTools\singleton('db')
         ->table('config')
-        ->columns('username', 'language')
+        ->columns('username', 'language','max_days')
         ->findOne();
 }
 
@@ -435,7 +447,7 @@ function get_user()
 {
     return \PicoTools\singleton('db')
         ->table('config')
-        ->columns('username', 'password', 'language')
+        ->columns('username', 'password', 'language','max_days')
         ->findOne();
 }
 
@@ -484,7 +496,9 @@ function validate_config_update(array $values)
             new Validators\Required('password', t('The password is required')),
             new Validators\MinLength('password', t('The minimum length is 6 characters'), 6),
             new Validators\Required('confirmation', t('The confirmation is required')),
-            new Validators\Equals('password', 'confirmation', t('Passwords doesn\'t match'))
+            new Validators\Equals('password', 'confirmation', t('Passwords doesn\'t match')),
+ 			new Validators\Required('max_days', t('The number of days to keep read item is required'))
+
         ));
     }
     else {

@@ -9,13 +9,11 @@ require 'vendor/PicoDb/Table.php';
 require 'schema.php';
 require 'model.php';
 
-
-const DB_VERSION    = 5;
+const DB_VERSION    = 6;
 const APP_VERSION   = 'master';
 const APP_USERAGENT = 'Miniflux - http://miniflux.net';
 const HTTP_TIMEOUT  = 5;
 const LIMIT_ALL     = -1;
-
 
 function get_db_filename()
 {
@@ -29,13 +27,12 @@ PicoTools\container('db', function() {
         'driver' => 'sqlite',
         'filename' => get_db_filename()
     ));
-
     if ($db->schema()->check(DB_VERSION)) {
 
         return $db;
     }
     else {
-
         die('Unable to migrate database schema.');
     }
 });
+

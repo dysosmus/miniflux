@@ -14,6 +14,7 @@ return array(
     'Password' => 'Mot de passe',
     'Confirmation' => 'Confirmation',
     'Language' => 'Langue',
+	'Number of days to keep (-1 disable auto flush)' => 'Nombre de jour à conserver (-1 désactive la purge auto)',
     'Update' => 'Mettre à jour',
     'More informations' => 'Plus d\'informations',
     'Database' => 'Base de données',
@@ -79,7 +80,7 @@ return array(
     'The password is required' => 'Le mot de passe est obligatoire',
     'The minimum length is 6 characters' => 'La longueur minimale est de 6 caractères',
     'The confirmation is required' => 'La confirmation est obligatoire',
-    'Passwords doesn\'t match' => 'Les mots de passe ne sont pas identique',
+    'Passwords doesn\'t match' => 'Les mots de passe ne sont pas identiques',
     'Do you really want to remove these items from your history?' => 'Voulez-vous vraiment supprimer les éléments de votre historique ?',
     'Do you really want to remove this subscription: "%s"?' => 'Voulez-vous vraiment supprimer cet abonnement : "%s" ?',
     'Nothing to read, do you want to <a href="?action=refresh-all" data-action="refresh-all">update your subscriptions?</a>' =>
