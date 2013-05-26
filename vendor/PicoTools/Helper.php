@@ -164,6 +164,25 @@ function form_select($name, array $options, $values = array(), array $errors = a
 }
 
 
+function form_radios($name, array $options, array $values = array())
+{
+    $html = '';
+
+    foreach ($options as $value => $label) {
+
+        $html .= form_radio($name, $label, $value, isset($values[$name]) && $values[$name] == $value);
+    }
+
+    return $html;
+}
+
+
+function form_radio($name, $label, $value, $selected = false, $class = '')
+{
+    return '<label><input type="radio" name="'.$name.'" class="'.$class.'" value="'.escape($value).'" '.($selected ? 'selected="selected"' : '').'>'.escape($label).'</label>';
+}
+
+
 function form_label($label, $name, $class = '')
 {
     return '<label for="form-'.$name.'" class="'.$class.'">'.escape($label).'</label>';

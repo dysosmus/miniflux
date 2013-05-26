@@ -128,6 +128,18 @@ namespace {
     }
 
 
+    function c() {
+
+        return call_user_func_array('\PicoTools\Translator\currency', func_get_args());
+    }
+
+
+    function n() {
+
+        return call_user_func_array('\PicoTools\Translator\number', func_get_args());
+    }
+
+
     function dt() {
 
         return call_user_func_array('\PicoTools\Translator\datetime', func_get_args());
