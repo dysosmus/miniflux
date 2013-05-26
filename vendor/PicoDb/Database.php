@@ -21,14 +21,6 @@ class Database
                 require_once __DIR__.'/Drivers/Sqlite.php';
                 $this->pdo = new Sqlite($settings['filename']);
                 break;
-/*
-            case 'mysql':
-                $this->pdo = new \PDO(
-                    'mysql:host='.$settings['hostname'].';dbname='.$settings['dbname'],
-                    $settings['username'],
-                    $settings['password']
-                );
-                break;*/
 
             default:
                 throw new \LogicException('This database driver is not supported.');

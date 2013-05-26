@@ -127,23 +127,8 @@ class Table
 
     public function findAll()
     {
-        $sql = sprintf(
-            'SELECT %s FROM %s %s %s %s %s %s',
-            empty($this->columns) ? '*' : implode(', ', $this->columns),
-            $this->db->escapeIdentifier($this->table_name),
-            implode(' ', $this->joins),
-            $this->conditions(),
-            $this->sql_order,
-            $this->sql_limit,
-            $this->sql_offset
-        );
-
-        $rq = $this->db->execute($sql, $this->values);
-
-        if (false === $rq) {
-
-            return false;
-        }
+        $rq = $this->db->execute($this->buildSelectQuery(), $this->values);
+        if (false === $rq) return false;
 
         return $rq->fetchAll(\PDO::FETCH_ASSOC);
     }
@@ -158,23 +143,45 @@ class Table
     }
 
 
+    public function findOneColumn($column)
+    {
+        $this->limit(1);
+        $this->columns = array($column);
+
+        $rq = $this->db->execute($this->buildSelectQuery(), $this->values);
+        if (false === $rq) return false;
+
+        return $rq->fetchColumn();
+    }
+
+
+    public function buildSelectQuery()
+    {
+        return sprintf(
+            'SELECT %s FROM %s %s %s %s %s %s',
+            empty($this->columns) ? '*' : implode(', ', $this->columns),
+            $this->db->escapeIdentifier($this->table_name),
+            implode(' ', $this->joins),
+            $this->conditions(),
+            $this->sql_order,
+            $this->sql_limit,
+            $this->sql_offset
+        );
+    }
+
+
     public function count()
     {
         $sql = sprintf(
-            'SELECT COUNT(*) AS count FROM %s'.$this->conditions().$this->sql_order.$this->sql_limit.$this->sql_offset,
+            'SELECT COUNT(*) FROM %s'.$this->conditions().$this->sql_order.$this->sql_limit.$this->sql_offset,
             $this->db->escapeIdentifier($this->table_name)
         );
 
         $rq = $this->db->execute($sql, $this->values);
+        if (false === $rq) return false;
 
-        if (false === $rq) {
-
-            return false;
-        }
-
-        $result = $rq->fetch(\PDO::FETCH_ASSOC);
-
-        return isset($result['count']) ? (int) $result['count'] : 0;
+        $result = $rq->fetchColumn();
+        return $result ? (int) $result : 0;
     }
 
 
