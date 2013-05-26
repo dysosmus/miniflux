@@ -94,6 +94,7 @@ Router\post_action('login', function() {
 
 
 Router\get_action('show', function() {
+
     $id = Request\param('id');
 
     Response\html(Template\layout('read_item', array(
@@ -169,10 +170,8 @@ Router\post_action('change-item-status', function() {
 
 
 Router\get_action('history', function() {
-	// start auto purge if correctly set in preferences
-	Model\flush_read();
-    
-	Response\html(Template\layout('history', array(
+
+    Response\html(Template\layout('history', array(
         'items' => Model\get_read_items(),
         'menu' => 'history'
     )));
@@ -250,7 +249,7 @@ Router\get_action('confirm-flush-history', function() {
 
 Router\get_action('flush-history', function() {
 
-    Model\flush_read();
+    Model\mark_as_removed();
     Response\redirect('?action=history');
 });
 
@@ -354,6 +353,7 @@ Router\get_action('config', function() {
         'values' => Model\get_config(),
         'db_size' => filesize(get_db_filename()),
         'languages' => Model\get_languages(),
+        'autoflush_options' => Model\get_autoflush_options(),
         'menu' => 'config'
     )));
 });
@@ -383,16 +383,17 @@ Router\post_action('config', function() {
         'values' => $values,
         'db_size' => filesize(get_db_filename()),
         'languages' => Model\get_languages(),
+        'autoflush_options' => Model\get_autoflush_options(),
         'menu' => 'config'
     )));
 });
 
 
 Router\notfound(function() {
-    // start auto purge if correctly set in preferences
-    Model\flush_read();    
 
-	$items = Model\get_unread_items();
+    Model\autoflush();
+
+    $items = Model\get_unread_items();
 
     if (empty($items)) {
 

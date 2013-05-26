@@ -1,6 +1,10 @@
 <?php
 
 return array(
+    'Remove automatically read items' => 'Supprimer automatiquement les éléments lus',
+    'Never' => 'Jamais',
+    'After %d day' => 'Après %d jour',
+    'After %d days' => 'Après %d jours',
     'French' => 'Français',
     'English' => 'Anglais',
     'unread' => 'non lus',
@@ -14,7 +18,6 @@ return array(
     'Password' => 'Mot de passe',
     'Confirmation' => 'Confirmation',
     'Language' => 'Langue',
-	'History : number of days to store (-1 disable auto flush)' => 'Historique : nombre de jours à conserver (-1 désactive la purge auto)',
     'Update' => 'Mettre à jour',
     'More informations' => 'Plus d\'informations',
     'Database' => 'Base de données',
