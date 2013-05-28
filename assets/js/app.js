@@ -1,3 +1,5 @@
+"use strict";
+
 (function() {
 
     var feeds               = [];
@@ -450,9 +452,8 @@
         document.onscroll   = onscroll;
         document.onclick    = onclick;
         document.onkeypress = onkeypress;
+    };
 
-
-    }
-
-    document.addEventListener('DOMContentLoaded', onready, false);
+    
+    onready();
 })();
