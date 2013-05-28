@@ -10,12 +10,12 @@ require 'schema.php';
 require 'model.php';
 
 
-const DB_VERSION    = 6;
-const APP_VERSION   = 'master';
-const APP_USERAGENT = 'Miniflux - http://miniflux.net';
-const HTTP_TIMEOUT  = 5;
-const LIMIT_ALL     = -1;
-
+const DB_VERSION     = 6;
+const APP_VERSION    = 'master';
+const APP_USERAGENT  = 'Miniflux - http://miniflux.net';
+const HTTP_TIMEOUT   = 5;
+const LIMIT_ALL      = -1;
+const PRELOAD_SIZE   = 6;
 
 function get_db_filename()
 {

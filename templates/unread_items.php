@@ -13,13 +13,16 @@
 
     <section class="items" id="listing">
 
-        <?php foreach ($items as $item): ?>
+        <?php $i = 0; foreach ($items as $item): ?>
+
+                <?php $has_lazy_loading = $config['lazy_loading'] && $i > PRELOAD_SIZE; ?>
 
                 <article id="item-<?= urlencode($item['id']) ?>" 
-                         class="<?= $config['lazy_loading'] ? 'lazy-load' : '';?>"
+                         class="<?= $has_lazy_loading ? 'lazy-load' : '';?>"
                          data-item-id="<?= urlencode($item['id']) ?>"
                          data-content-url="?action=summary&amp;id=<?= urlencode($item['id']) ?>">
-                    <?php if(!$config['lazy_loading']): ?>
+
+                    <?php if(!$has_lazy_loading): ?>
 
                         <?= PicoTools\Template\load('summary_item', array('item' => $item)); ?>
 
@@ -27,10 +30,10 @@
 
                 </article>
                 
-        <?php endforeach ?>
+        <?php $i++; endforeach ?>
 
         <?php if($config['lazy_loading']): ?>
-            <a data-action="load-async" href="#load-more">load more</a>
+            <a data-action="load-async" href="#load-more"><?= t('load more'); ?></a>
         <?php endif; ?>
     </section>
 
