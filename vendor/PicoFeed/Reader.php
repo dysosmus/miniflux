@@ -54,6 +54,7 @@ class Reader
     {
         // Strip HTML comments
         $data = preg_replace('/<!--(.*)-->/Uis', '', $data);
+        $data = preg_replace('/<!DOCTYPE(.*)>/Uis', '', $data);
 
         // Find <?xml version....
         if (strpos($data, '<?xml') !== false) {
