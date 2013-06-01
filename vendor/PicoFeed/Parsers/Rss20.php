@@ -6,8 +6,6 @@ class Rss20 extends Parser
 {
     public function execute()
     {
-        $this->content = $this->normalizeData($this->content);
-
         \libxml_use_internal_errors(true);
         $xml = \simplexml_load_string($this->content);
 

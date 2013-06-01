@@ -14,7 +14,6 @@ class Reader
     public function __construct($content = '')
     {
         $this->content = $content;
-
         return $this;
     }
 
@@ -54,6 +53,8 @@ class Reader
     {
         // Strip HTML comments
         $data = preg_replace('/<!--(.*)-->/Uis', '', $data);
+
+        // Strip Doctype
         $data = preg_replace('/<!DOCTYPE(.*)>/Uis', '', $data);
 
         // Find <?xml version....

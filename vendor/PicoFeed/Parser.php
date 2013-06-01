@@ -3,7 +3,7 @@
 namespace PicoFeed;
 
 require_once __DIR__.'/Filter.php';
-
+require_once __DIR__.'/Encoding.php';
 
 abstract class Parser
 {
@@ -22,7 +22,14 @@ abstract class Parser
 
     public function __construct($content)
     {
-        $this->content = $content;
+        // Strip XML tag to avoid multiple encoding/decoding in next XML processing
+        $this->content = $this->stripXmlTag($content);
+
+        // Encode everything in UTF-8
+        $this->content = Encoding::toUTF8($this->content);
+
+        // Workarounds
+        $this->content = $this->normalizeData($this->content);
     }
 
 
@@ -58,5 +65,16 @@ abstract class Parser
     public function normalizeData($data)
     {
         return str_replace("\xc3\x20", '', $data);
+    }
+
+
+    public function stripXmlTag($data)
+    {
+        if (strpos($data, '<?xml') !== false) {
+
+            $data = substr($data, strrpos($data, '?>') + 2);
+        }
+
+        return $data;
     }
 }
