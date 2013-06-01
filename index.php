@@ -95,7 +95,7 @@ Router\post_action('login', function() {
 
 Router\get_action('show', function() {
 
-    $id = Request\param('id');
+    $id = Model\decode_item_id(Request\param('id'));
 
     Response\html(Template\layout('read_item', array(
         'item' => Model\get_item($id)
@@ -105,7 +105,7 @@ Router\get_action('show', function() {
 
 Router\get_action('read', function() {
 
-    $id = Request\param('id');
+    $id = Model\decode_item_id(Request\param('id'));
     $item = Model\get_item($id);
     $nav = Model\get_nav_item($item); // must be placed before set_item_read()
 
@@ -120,7 +120,7 @@ Router\get_action('read', function() {
 
 Router\get_action('mark-item-read', function() {
 
-    $id = Request\param('id');
+    $id = Model\decode_item_id(Request\param('id'));
     Model\set_item_read($id);
     Response\Redirect('?action=default');
 });
@@ -128,7 +128,7 @@ Router\get_action('mark-item-read', function() {
 
 Router\get_action('mark-item-unread', function() {
 
-    $id = Request\param('id');
+    $id = Model\decode_item_id(Request\param('id'));
     Model\set_item_unread($id);
     Response\Redirect('?action=history');
 });
@@ -136,7 +136,7 @@ Router\get_action('mark-item-unread', function() {
 
 Router\get_action('mark-item-removed', function() {
 
-    $id = Request\param('id');
+    $id = Model\decode_item_id(Request\param('id'));
     Model\set_item_removed($id);
     Response\Redirect('?action=history');
 });
@@ -144,7 +144,7 @@ Router\get_action('mark-item-removed', function() {
 
 Router\post_action('mark-item-read', function() {
 
-    $id = Request\param('id');
+    $id = Model\decode_item_id(Request\param('id'));
     Model\set_item_read($id);
     Response\json(array('Ok'));
 });
@@ -152,7 +152,7 @@ Router\post_action('mark-item-read', function() {
 
 Router\post_action('mark-item-unread', function() {
 
-    $id = Request\param('id');
+    $id = Model\decode_item_id(Request\param('id'));
     Model\set_item_unread($id);
     Response\json(array('Ok'));
 });
@@ -160,7 +160,7 @@ Router\post_action('mark-item-unread', function() {
 
 Router\post_action('change-item-status', function() {
 
-    $id = Request\param('id');
+    $id = Model\decode_item_id(Request\param('id'));
 
     Response\json(array(
         'item_id' => urlencode($id),
@@ -182,7 +182,7 @@ Router\get_action('confirm-remove', function() {
 
     $id = Request\int_param('feed_id');
 
-    Response\html(Template\layout('confirm_remove', array(
+    Response\html(Template\layout('confirm_remove_feed', array(
         'feed' => Model\get_feed($id),
         'menu' => 'feeds'
     )));
@@ -241,7 +241,7 @@ Router\get_action('mark-as-read', function() {
 
 Router\get_action('confirm-flush-history', function() {
 
-    Response\html(Template\layout('confirm_flush', array(
+    Response\html(Template\layout('confirm_flush_items', array(
         'menu' => 'history'
     )));
 });

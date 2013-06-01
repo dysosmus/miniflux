@@ -42,6 +42,18 @@ function get_autoflush_options()
 }
 
 
+function encode_item_id($input)
+{
+    return strtr(base64_encode($input), '+/=', '-_,');
+}
+
+
+function decode_item_id($input)
+{
+    return base64_decode(strtr($input, '-_,', '+/='));
+}
+
+
 function export_feeds()
 {
     $opml = new Export(get_feeds());

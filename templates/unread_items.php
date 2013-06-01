@@ -13,11 +13,12 @@
 
     <section class="items" id="listing">
     <?php foreach ($items as $item): ?>
-        <article id="item-<?= urlencode($item['id']) ?>" data-item-id="<?= urlencode($item['id']) ?>">
+        <?php $item_id = Model\encode_item_id($item['id']) ?>
+        <article id="item-<?= $item_id ?>" data-item-id="<?= $item_id ?>">
             <h2>
                 <a
-                    href="?action=read&amp;id=<?= urlencode($item['id']) ?>"
-                    id="open-<?= urlencode($item['id']) ?>"
+                    href="?action=read&amp;id=<?= $item_id ?>"
+                    id="open-<?= $item_id ?>"
                 >
                     <?= Helper\escape($item['title']) ?>
                 </a>
@@ -27,13 +28,13 @@
             </p>
             <p>
                 <?= Helper\get_host_from_url($item['url']) ?> |
-                <a href="?action=mark-item-read&amp;id=<?= urlencode($item['id']) ?>"><?= t('mark as read') ?></a> |
+                <a href="?action=mark-item-read&amp;id=<?= $item_id ?>"><?= t('mark as read') ?></a> |
                 <a
                     href="<?= $item['url'] ?>"
-                    id="original-<?= urlencode($item['id']) ?>"
+                    id="original-<?= $item_id ?>"
                     rel="noreferrer"
                     target="_blank"
-                    data-item-id="<?= urlencode($item['id']) ?>"
+                    data-item-id="<?= $item_id ?>"
                     data-action="mark-read"
                 >
                     <?= t('original link') ?>
