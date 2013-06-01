@@ -336,13 +336,13 @@ Router\post_action('import', function() {
     if (Model\import_feeds(Request\file_content('file'))) {
 
         Session\flash(t('Your feeds have been imported.'));
+        Response\redirect('?action=feeds');
     }
     else {
 
         Session\flash_error(t('Unable to import your OPML file.'));
+        Response\redirect('?action=import');
     }
-
-    Response\redirect('?action=import');
 });
 
 
