@@ -38,6 +38,7 @@ Authors
 Requirements
 ------------
 
+- Recent version of libxml2 >= 2.7.x (version 2.6.32 on Debian Lenny are not supported anymore)
 - PHP >= 5.3.7
 - PHP XML extensions (SimpleXML, DOM...)
 - PHP Sqlite extension
