@@ -1,14 +1,11 @@
 <?php if (empty($items)): ?>
 
-    <p class="alert alert-info"><?= t('Nothing to read') ?></p>
+    <p class="alert alert-info"><?= t('No starred items') ?></p>
 
 <?php else: ?>
 
     <div class="page-header">
-        <h2><?= t('Unread items') ?></h2>
-        <ul>
-            <li><a href="?action=mark-as-read"><?= t('mark all as read') ?></a></li>
-        </ul>
+        <h2><?= t('Starred') ?></h2>
     </div>
 
     <section class="items" id="listing">
@@ -17,26 +14,23 @@
         <article id="item-<?= $item_id ?>" data-item-id="<?= $item_id ?>">
             <h2>
                 <a
-                    href="?action=read&amp;id=<?= $item_id ?>"
+                    href="?action=show_starred_item&amp;id=<?= $item_id ?>"
                     id="open-<?= $item_id ?>"
                 >
                     <?= Helper\escape($item['title']) ?>
                 </a>
             </h2>
-            <p class="preview">
-                <?= Helper\escape(Helper\summary(strip_tags($item['content']), 50, 300)) ?>
-            </p>
             <p>
                 <?= Helper\get_host_from_url($item['url']) ?> |
-                <a href="?action=mark-item-starred&amp;id=<?= $item_id ?>"><?= t('mark as starred') ?></a> |
-                <a href="?action=mark-item-read&amp;id=<?= $item_id ?>"><?= t('mark as read') ?></a> |
+                <?= dt('%A %e %B %Y %k:%M', $item['updated']) ?> |
+                <a href="?action=mark-item-unstarred&amp;id=<?= $item_id ?>"><?= t('mark as unstarred') ?></a> |
+                <a href="?action=mark-starred-item-removed&amp;id=<?= $item_id ?>"><?= t('remove') ?></a> |
                 <a
                     href="<?= $item['url'] ?>"
                     id="original-<?= $item_id ?>"
                     rel="noreferrer"
                     target="_blank"
                     data-item-id="<?= $item_id ?>"
-                    data-action="mark-read"
                 >
                     <?= t('original link') ?>
                 </a>

@@ -275,6 +275,18 @@ function get_read_items()
 }
 
 
+function get_starred_items()
+{
+    return \PicoTools\singleton('db')
+        ->table('items')
+        ->columns('items.id', 'items.title', 'items.updated', 'items.url', 'feeds.site_url')
+        ->join('feeds', 'id', 'feed_id')
+        ->eq('starred', 'starred')
+        ->desc('updated')
+        ->findAll();
+}
+
+
 function get_item($id)
 {
     return \PicoTools\singleton('db')
@@ -313,6 +325,35 @@ function get_nav_item($item)
 }
 
 
+function get_nav_starred_item($item)
+{
+    $starred_items = \PicoTools\singleton('db')
+        ->table('items')
+        ->columns('items.id')
+        ->eq('starred', 'starred')
+        ->desc('updated')
+        ->findAll();
+
+    $next_item = null;
+    $previous_item = null;
+
+    for ($i = 0, $ilen = count($starred_items); $i < $ilen; $i++) {
+
+        if ($starred_items[$i]['id'] == $item['id']) {
+
+            if ($i > 0) $previous_item = $starred_items[$i - 1];
+            if ($i < ($ilen - 1)) $next_item = $starred_items[$i + 1];
+            break;
+        }
+    }
+
+    return array(
+        'next' => $next_item,
+        'previous' => $previous_item
+    );
+}
+
+
 function set_item_removed($id)
 {
     \PicoTools\singleton('db')
@@ -337,6 +378,25 @@ function set_item_unread($id)
         ->table('items')
         ->eq('id', $id)
         ->save(array('status' => 'unread'));
+}
+
+
+
+function set_item_starred($id)
+{
+    \PicoTools\singleton('db')
+        ->table('items')
+        ->eq('id', $id)
+        ->save(array('starred' => 'starred'));
+}
+
+
+function set_item_unstarred($id)
+{
+    \PicoTools\singleton('db')
+        ->table('items')
+        ->eq('id', $id)
+        ->save(array('starred' => 'unstarred'));
 }
 
 
@@ -398,6 +458,7 @@ function autoflush()
         \PicoTools\singleton('db')
             ->table('items')
             ->eq('status', 'read')
+            ->eq('starred', 'starred')
             ->lt('updated', strtotime('-'.$autoflush.'day'))
             ->save(array('status' => 'removed'));
     }

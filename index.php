@@ -103,6 +103,17 @@ Router\get_action('show', function() {
 });
 
 
+Router\get_action('show_starred_item', function() {
+
+    $id = Model\decode_item_id(Request\param('id'));
+
+    Response\html(Template\layout('starred_item', array(
+        'item' => Model\get_item($id)
+    )));
+});
+
+
+
 Router\get_action('read', function() {
 
     $id = Model\decode_item_id(Request\param('id'));
@@ -112,6 +123,21 @@ Router\get_action('read', function() {
     Model\set_item_read($id);
 
     Response\html(Template\layout('read_item', array(
+        'item' => $item,
+        'item_nav' => $nav
+    )));
+});
+
+
+Router\get_action('read_starred', function() {
+
+    $id = Model\decode_item_id(Request\param('id'));
+    $item = Model\get_item($id);
+    $nav = Model\get_nav_starred_item($item); // must be placed before set_item_read()
+
+    Model\set_item_read($id);
+
+    Response\html(Template\layout('starred_item', array(
         'item' => $item,
         'item_nav' => $nav
     )));
@@ -142,6 +168,14 @@ Router\get_action('mark-item-removed', function() {
 });
 
 
+Router\get_action('mark-starred-item-removed', function() {
+
+    $id = Model\decode_item_id(Request\param('id'));
+    Model\set_item_removed($id);
+    Response\Redirect('?action=starred');
+});
+
+
 Router\post_action('mark-item-read', function() {
 
     $id = Model\decode_item_id(Request\param('id'));
@@ -154,6 +188,37 @@ Router\post_action('mark-item-unread', function() {
 
     $id = Model\decode_item_id(Request\param('id'));
     Model\set_item_unread($id);
+    Response\json(array('Ok'));
+});
+
+
+Router\get_action('mark-item-starred', function() {
+
+    $id = Model\decode_item_id(Request\param('id'));
+    Model\set_item_starred($id);
+    Response\Redirect('?action=default');
+});
+
+
+Router\get_action('mark-item-unstarred', function() {
+
+    $id = Model\decode_item_id(Request\param('id'));
+    Model\set_item_unstarred($id);
+    Response\Redirect('?action=starred');
+});
+
+Router\post_action('mark-item-starred', function() {
+
+    $id = Model\decode_item_id(Request\param('id'));
+    Model\set_item_starred($id);
+    Response\json(array('Ok'));
+});
+
+
+Router\post_action('mark-item-unstarred', function() {
+
+    $id = Model\decode_item_id(Request\param('id'));
+    Model\set_item_unstarred($id);
     Response\json(array('Ok'));
 });
 
@@ -176,6 +241,16 @@ Router\get_action('history', function() {
         'menu' => 'history'
     )));
 });
+
+
+Router\get_action('starred', function() {
+
+    Response\html(Template\layout('starred', array(
+        'items' => Model\get_starred_items(),
+        'menu' => 'starred'
+    )));
+});
+
 
 
 Router\get_action('confirm-remove', function() {

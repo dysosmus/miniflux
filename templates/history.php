@@ -26,6 +26,7 @@
             <p>
                 <?= Helper\get_host_from_url($item['url']) ?> |
                 <?= dt('%A %e %B %Y %k:%M', $item['updated']) ?> |
+                <a href="?action=mark-item-starred&amp;id=<?= $item_id ?>"><?= t('mark as starred') ?></a> |
                 <a href="?action=mark-item-unread&amp;id=<?= $item_id ?>"><?= t('mark as unread') ?></a> |
                 <a href="?action=mark-item-removed&amp;id=<?= $item_id ?>"><?= t('remove') ?></a> |
                 <a
