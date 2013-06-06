@@ -19,6 +19,9 @@
     <?= Helper\form_label(t('Remove automatically read items'), 'autoflush') ?>
     <?= Helper\form_select('autoflush', $autoflush_options, $values, $errors) ?><br/>
 
+    <?= Helper\form_label(t('Do not fetch the content of articles (and remove it content for previous entries)'), 'nocontent', "inline-label") ?>
+    <?= Helper\form_checkbox('nocontent', $values) ?><br />
+
     <div class="form-actions">
         <input type="submit" value="<?= t('Update') ?>" class="btn btn-blue"/>
     </div>
