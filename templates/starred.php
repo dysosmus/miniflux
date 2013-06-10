@@ -14,7 +14,7 @@
         <article id="item-<?= $item_id ?>" data-item-id="<?= $item_id ?>">
             <h2>
                 <a
-                    href="?action=show_starred_item&amp;id=<?= $item_id ?>"
+                    href="?action=read_starred&amp;id=<?= $item_id ?>"
                     id="open-<?= $item_id ?>"
                 >
                     <?= Helper\escape($item['title']) ?>
@@ -23,8 +23,8 @@
             <p>
                 <?= Helper\get_host_from_url($item['url']) ?> |
                 <?= dt('%A %e %B %Y %k:%M', $item['updated']) ?> |
-                <a href="?action=mark-starred-item-unstarred&amp;id=<?= $item_id ?>"><?= t('mark as unstarred') ?></a> |
-                <a href="?action=mark-starred-item-removed&amp;id=<?= $item_id ?>"><?= t('remove') ?></a> |
+                <a href="?action=mark-item-unstarred&amp;id=<?= $item_id ?>"><?= t('mark as unstarred') ?></a> |
+                <a href="?action=mark-item-removed&amp;id=<?= $item_id ?>"><?= t('remove') ?></a> |
                 <a
                     href="<?= $item['url'] ?>"
                     id="original-<?= $item_id ?>"

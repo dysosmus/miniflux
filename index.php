@@ -104,7 +104,6 @@ Router\get_action('show', function() {
 
 
 Router\get_action('show_starred_item', function() {
-
     $id = Model\decode_item_id(Request\param('id'));
 
     Response\html(Template\layout('starred_item', array(
@@ -148,7 +147,7 @@ Router\get_action('mark-item-read', function() {
 
     $id = Model\decode_item_id(Request\param('id'));
     Model\set_item_read($id);
-    Response\Redirect('?action=default');
+    Response\Redirect('?action='.$_SESSION['MODE']);
 });
 
 
@@ -156,15 +155,7 @@ Router\get_action('mark-item-unread', function() {
 
     $id = Model\decode_item_id(Request\param('id'));
     Model\set_item_unread($id);
-    Response\Redirect('?action=history');
-});
-
-
-Router\get_action('mark-read-item-unread', function() {
-
-    $id = Model\decode_item_id(Request\param('id'));
-    Model\set_item_unread($id);
-    Response\Redirect('?action=history');
+    Response\Redirect('?action='.$_SESSION['MODE']);
 });
 
 
@@ -172,15 +163,7 @@ Router\get_action('mark-item-removed', function() {
 
     $id = Model\decode_item_id(Request\param('id'));
     Model\set_item_removed($id);
-    Response\Redirect('?action=history');
-});
-
-
-Router\get_action('mark-starred-item-removed', function() {
-
-    $id = Model\decode_item_id(Request\param('id'));
-    Model\set_item_removed($id);
-    Response\Redirect('?action=starred');
+    Response\Redirect('?action='.$_SESSION['MODE']);
 });
 
 
@@ -199,43 +182,20 @@ Router\post_action('mark-item-unread', function() {
     Response\json(array('Ok'));
 });
 
-Router\get_action('mark-read-item-starred', function() {
+
+Router\get_action('mark-item-starred', function() {
 
     $id = Model\decode_item_id(Request\param('id'));
     Model\set_item_starred($id);
-    Response\Redirect('?action=history');
+    Response\Redirect('?action='.$_SESSION['MODE']);
 });
 
 
-Router\get_action('mark-read-item-unstarred', function() {
+Router\get_action('mark-item-unstarred', function() {
 
     $id = Model\decode_item_id(Request\param('id'));
     Model\set_item_unstarred($id);
-    Response\Redirect('?action=history');
-});
-
-
-Router\get_action('mark-starred-item-unstarred', function() {
-
-    $id = Model\decode_item_id(Request\param('id'));
-    Model\set_item_unstarred($id);
-    Response\Redirect('?action=starred');
-});
-
-
-Router\get_action('mark-unread-item-starred', function() {
-
-    $id = Model\decode_item_id(Request\param('id'));
-    Model\set_item_starred($id);
-    Response\Redirect('?action=default');
-});
-
-
-Router\get_action('mark-unread-item-unstarred', function() {
-
-    $id = Model\decode_item_id(Request\param('id'));
-    Model\set_item_unstarred($id);
-    Response\Redirect('?action=default');
+    Response\Redirect('?action='.$_SESSION['MODE']);
 });
 
 
@@ -251,7 +211,7 @@ Router\post_action('change-item-status', function() {
 
 
 Router\get_action('history', function() {
-
+	$_SESSION['MODE']='history';
     Response\html(Template\layout('history', array(
         'items' => Model\get_read_items(),
         'menu' => 'history'
@@ -260,7 +220,7 @@ Router\get_action('history', function() {
 
 
 Router\get_action('starred', function() {
-
+	$_SESSION['MODE']='starred';
     Response\html(Template\layout('starred', array(
         'items' => Model\get_starred_items(),
         'menu' => 'starred'
@@ -481,6 +441,7 @@ Router\post_action('config', function() {
 
 
 Router\notfound(function() {
+	$_SESSION['MODE']='default';
 
     Model\autoflush();
 

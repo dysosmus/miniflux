@@ -27,15 +27,7 @@
             </span>
 
             <span class="nav-middle">
-                <?php if ($item_nav['previous'] && $item_nav['next']): ?>
-                    <a href="?action=default#item-<?= Model\encode_item_id($item_nav['next']['id']) ?>"><?= t('Unread items') ?></a>
-                <?php elseif ($item_nav['previous'] && ! $item_nav['next']): ?>
-                    <a href="?action=default#item-<?= Model\encode_item_id($item_nav['previous']['id']) ?>"><?= t('Unread items') ?></a>
-                <?php elseif (! $item_nav['previous'] && $item_nav['next']): ?>
-                    <a href="?action=default#item-<?= Model\encode_item_id($item_nav['next']['id']) ?>"><?= t('Unread items') ?></a>
-                <?php elseif (! $item_nav['previous'] && ! $item_nav['next']): ?>
-                    <a href="?action=default"><?= t('Unread items') ?></a>
-                <?php endif ?>
+                    <a href="?action=starred"><?= t('Starred') ?></a>
             </span>
 
             <span class="nav-right">
