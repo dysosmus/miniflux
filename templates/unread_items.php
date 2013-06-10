@@ -28,7 +28,14 @@
             </p>
             <p>
                 <?= Helper\get_host_from_url($item['url']) ?> |
-                <a href="?action=mark-item-starred&amp;id=<?= $item_id ?>"><?= t('mark as starred') ?></a> |
+
+
+                <?php if (isset($item['starred']) && $item['starred']=='starred'): ?>
+                    <a href="?action=mark-unread-item-unstarred&amp;id=<?= $item_id ?>"><?= t('mark as unstarred') ?></a> |
+                <?php else: ?>
+                    <a href="?action=mark-unread-item-starred&amp;id=<?= $item_id ?>"><?= t('mark as starred') ?></a> |
+                <?php endif ?>
+
                 <a href="?action=mark-item-read&amp;id=<?= $item_id ?>"><?= t('mark as read') ?></a> |
                 <a
                     href="<?= $item['url'] ?>"

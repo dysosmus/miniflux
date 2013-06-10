@@ -3,6 +3,7 @@
     <p class="alert alert-info"><?= t('Item not found') ?></p>
 
 <?php else: ?>
+	<?php $item_id = Model\encode_item_id($item['id']) ?>
     <article class="item" id="current-item" data-item-id="<?= Model\encode_item_id($item['id']) ?>">
         <h1>
             <a href="<?= $item['url'] ?>" rel="noreferrer" target="_blank" id="original-item"><?= Helper\escape($item['title']) ?></a>
@@ -11,7 +12,12 @@
         <p class="infos">
             <?= Helper\get_host_from_url($item['url']) ?> |
             <?= dt('%A %e %B %Y %k:%M', $item['updated']) ?> |
-		    <a href="?action=mark-item-starred&amp;id=<?= $item_id ?>"><?= t('mark as starred') ?></a>
+                <?php if (isset($item['starred']) && $item['starred']=='starred'): ?>
+                    <a href="?action=mark-read-item-unstarred&amp;id=<?=  $item_id  ?>"><?= t('mark as unstarred') ?></a>
+                <?php else: ?>
+                    <a href="?action=mark-read-item-starred&amp;id=<?= $item_id   ?>"><?= t('mark as starred') ?></a>
+                <?php endif ?>
+
         </p>
 
         <?= $item['content'] ?>

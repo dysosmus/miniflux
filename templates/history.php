@@ -1,5 +1,4 @@
 <?php if (empty($items)): ?>
-
     <p class="alert alert-info"><?= t('No history') ?></p>
 
 <?php else: ?>
@@ -24,10 +23,21 @@
                 </a>
             </h2>
             <p>
+
                 <?= Helper\get_host_from_url($item['url']) ?> |
                 <?= dt('%A %e %B %Y %k:%M', $item['updated']) ?> |
-                <a href="?action=mark-item-starred&amp;id=<?= $item_id ?>"><?= t('mark as starred') ?></a> |
-                <a href="?action=mark-item-unread&amp;id=<?= $item_id ?>"><?= t('mark as unread') ?></a> |
+
+
+                <?php if (isset($item['starred']) && $item['starred']=='starred'): ?>
+                    <a href="?action=mark-unread-item-unstarred&amp;id=<?= $item_id ?>"><?= t('mark as unstarred') ?></a> |
+                <?php else: ?>
+                    <a href="?action=mark-unread-item-starred&amp;id=<?= $item_id ?>"><?= t('mark as starred') ?></a> |
+                <?php endif ?>
+
+
+
+
+                <a href="?action=mark-read-item-unread&amp;id=<?= $item_id ?>"><?= t('mark as unread') ?></a> |
                 <a href="?action=mark-item-removed&amp;id=<?= $item_id ?>"><?= t('remove') ?></a> |
                 <a
                     href="<?= $item['url'] ?>"

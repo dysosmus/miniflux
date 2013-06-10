@@ -255,7 +255,7 @@ function get_unread_items()
 {
     return \PicoTools\singleton('db')
         ->table('items')
-        ->columns('items.id', 'items.title', 'items.updated', 'items.url', 'feeds.site_url', 'items.content')
+        ->columns('items.id', 'items.title', 'items.updated', 'items.url', 'feeds.site_url', 'items.content','starred')
         ->join('feeds', 'id', 'feed_id')
         ->eq('status', 'unread')
         ->desc('updated')
@@ -267,11 +267,13 @@ function get_read_items()
 {
     return \PicoTools\singleton('db')
         ->table('items')
-        ->columns('items.id', 'items.title', 'items.updated', 'items.url', 'feeds.site_url')
+        ->columns('items.id', 'items.title', 'items.updated', 'items.url', 'feeds.site_url','starred')
         ->join('feeds', 'id', 'feed_id')
         ->eq('status', 'read')
         ->desc('updated')
         ->findAll();
+
+
 }
 
 
@@ -359,7 +361,7 @@ function set_item_removed($id)
     \PicoTools\singleton('db')
         ->table('items')
         ->eq('id', $id)
-        ->save(array('status' => 'removed'));
+        ->save(array('status' => 'removed','starred' => 'unstarred'));
 }
 
 

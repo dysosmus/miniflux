@@ -160,6 +160,14 @@ Router\get_action('mark-item-unread', function() {
 });
 
 
+Router\get_action('mark-read-item-unread', function() {
+
+    $id = Model\decode_item_id(Request\param('id'));
+    Model\set_item_unread($id);
+    Response\Redirect('?action=history');
+});
+
+
 Router\get_action('mark-item-removed', function() {
 
     $id = Model\decode_item_id(Request\param('id'));
@@ -191,8 +199,31 @@ Router\post_action('mark-item-unread', function() {
     Response\json(array('Ok'));
 });
 
+Router\get_action('mark-read-item-starred', function() {
 
-Router\get_action('mark-item-starred', function() {
+    $id = Model\decode_item_id(Request\param('id'));
+    Model\set_item_starred($id);
+    Response\Redirect('?action=history');
+});
+
+
+Router\get_action('mark-read-item-unstarred', function() {
+
+    $id = Model\decode_item_id(Request\param('id'));
+    Model\set_item_unstarred($id);
+    Response\Redirect('?action=history');
+});
+
+
+Router\get_action('mark-starred-item-unstarred', function() {
+
+    $id = Model\decode_item_id(Request\param('id'));
+    Model\set_item_unstarred($id);
+    Response\Redirect('?action=starred');
+});
+
+
+Router\get_action('mark-unread-item-starred', function() {
 
     $id = Model\decode_item_id(Request\param('id'));
     Model\set_item_starred($id);
@@ -200,26 +231,11 @@ Router\get_action('mark-item-starred', function() {
 });
 
 
-Router\get_action('mark-item-unstarred', function() {
+Router\get_action('mark-unread-item-unstarred', function() {
 
     $id = Model\decode_item_id(Request\param('id'));
     Model\set_item_unstarred($id);
-    Response\Redirect('?action=starred');
-});
-
-Router\post_action('mark-item-starred', function() {
-
-    $id = Model\decode_item_id(Request\param('id'));
-    Model\set_item_starred($id);
-    Response\json(array('Ok'));
-});
-
-
-Router\post_action('mark-item-unstarred', function() {
-
-    $id = Model\decode_item_id(Request\param('id'));
-    Model\set_item_unstarred($id);
-    Response\json(array('Ok'));
+    Response\Redirect('?action=default');
 });
 
 
