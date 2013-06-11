@@ -361,7 +361,7 @@ Router\get_action('config', function() {
 
 Router\post_action('config', function() {
 
-    $values = Request\values();
+    $values = Request\values() + array('nocontent' => 0);
     list($valid, $errors) = Model\validate_config_update($values);
 
     if ($valid) {

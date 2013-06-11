@@ -182,6 +182,12 @@ function form_radio($name, $label, $value, $selected = false, $class = '')
     return '<label><input type="radio" name="'.$name.'" class="'.$class.'" value="'.escape($value).'" '.($selected ? 'selected="selected"' : '').'>'.escape($label).'</label>';
 }
 
+function form_checkbox($name, $values, $class = '' )
+{
+    $checkedstr = (bool)$values[$name] ? 'checked' : '';
+    return '<input type="checkbox" value="1" name="'.$name.'" class="'.$class.'"'.$checkedstr.'>';
+}
+
 
 function form_label($label, $name, $class = '')
 {

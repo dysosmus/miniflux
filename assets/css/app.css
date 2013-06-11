@@ -135,6 +135,10 @@ label {
     display: block;
 }
 
+.inline-label {
+    display: inline;
+}
+
 input {
     -webkit-appearance: none;
 }

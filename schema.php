@@ -2,6 +2,10 @@
 
 namespace Schema;
 
+function version_7($pdo)
+{
+    $pdo->exec('ALTER TABLE config ADD COLUMN nocontent INTEGER');
+}
 
 function version_6($pdo)
 {

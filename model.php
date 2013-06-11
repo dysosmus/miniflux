@@ -137,7 +137,6 @@ function update_feeds($limit = LIMIT_ALL)
     $feeds_id = get_feeds_id($limit);
 
     foreach ($feeds_id as $feed_id) {
-
         update_feed($feed_id);
     }
 
@@ -406,6 +405,8 @@ function autoflush()
 
 function update_items($feed_id, array $items)
 {
+    $nocontent = (bool)\PicoTools\singleton('db')->table('config')->findOneColumn('nocontent');
+
     $items_in_feed = array();
     $db = \PicoTools\singleton('db');
 
@@ -418,6 +419,7 @@ function update_items($feed_id, array $items)
 
             // Insert only new item
             if ($db->table('items')->eq('id', $item->id)->count() !== 1) {
+                $content = $nocontent ? '' : $item->content;
 
                 $db->table('items')->save(array(
                     'id' => $item->id,
@@ -425,7 +427,7 @@ function update_items($feed_id, array $items)
                     'url' => $item->url,
                     'updated' => $item->updated,
                     'author' => $item->author,
-                    'content' => $item->content,
+                    'content' => $content,
                     'status' => 'unread',
                     'feed_id' => $feed_id
                 ));
@@ -456,7 +458,7 @@ function get_config()
 {
     return \PicoTools\singleton('db')
         ->table('config')
-        ->columns('username', 'language', 'autoflush')
+        ->columns('username', 'language', 'autoflush', 'nocontent')
         ->findOne();
 }
 
@@ -550,6 +552,11 @@ function save_config(array $values)
     unset($_COOKIE['language']);
 
     \PicoTools\Translator\load($values['language']);
+
+    // if the user does not want content of feeds, remote it in previous ones
+    if ((bool)$values['nocontent']) {
+        \PicoTools\singleton('db')->table('items')->update(array('content'=>''));
+    }
 
     return \PicoTools\singleton('db')->table('config')->update($values);
 }
