@@ -2,6 +2,11 @@
 
 namespace Schema;
 
+function version_7($pdo)
+{
+    $pdo->exec('ALTER TABLE items ADD COLUMN starred TEXT');
+}
+
 
 function version_7($pdo)
 {
