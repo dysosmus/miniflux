@@ -1,8 +1,7 @@
 <?php
 
 return array(
-    'Do not fetch the content of articles (and remove it content for previous entries)' =>
-    'Ne pas récupérer le contenu des articles (et supprimer ce contenu pour les articles précédents',
+    'Do not fetch the content of articles' => 'Ne pas récupérer le contenu des articles',
     'Remove automatically read items' => 'Supprimer automatiquement les éléments lus',
     'Never' => 'Jamais',
     'After %d day' => 'Après %d jour',

@@ -405,7 +405,7 @@ function autoflush()
 
 function update_items($feed_id, array $items)
 {
-    $nocontent = (bool)\PicoTools\singleton('db')->table('config')->findOneColumn('nocontent');
+    $nocontent = (bool) \PicoTools\singleton('db')->table('config')->findOneColumn('nocontent');
 
     $items_in_feed = array();
     $db = \PicoTools\singleton('db');
@@ -419,7 +419,6 @@ function update_items($feed_id, array $items)
 
             // Insert only new item
             if ($db->table('items')->eq('id', $item->id)->count() !== 1) {
-                $content = $nocontent ? '' : $item->content;
 
                 $db->table('items')->save(array(
                     'id' => $item->id,
@@ -427,7 +426,7 @@ function update_items($feed_id, array $items)
                     'url' => $item->url,
                     'updated' => $item->updated,
                     'author' => $item->author,
-                    'content' => $content,
+                    'content' => $nocontent ? '' : $item->content,
                     'status' => 'unread',
                     'feed_id' => $feed_id
                 ));
@@ -553,9 +552,10 @@ function save_config(array $values)
 
     \PicoTools\Translator\load($values['language']);
 
-    // if the user does not want content of feeds, remote it in previous ones
-    if ((bool)$values['nocontent']) {
-        \PicoTools\singleton('db')->table('items')->update(array('content'=>''));
+    // If the user does not want content of feeds, remove it in previous ones
+    if ((bool) $values['nocontent']) {
+
+        \PicoTools\singleton('db')->table('items')->update(array('content' => ''));
     }
 
     return \PicoTools\singleton('db')->table('config')->update($values);

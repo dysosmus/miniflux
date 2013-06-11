@@ -135,12 +135,8 @@ label {
     display: block;
 }
 
-.inline-label {
-    display: inline;
-}
-
-input {
-    -webkit-appearance: none;
+input[type="checkbox"] {
+    border: 1px solid #ccc;
 }
 
 input[type="email"],
@@ -154,6 +150,7 @@ input[type="text"] {
     font-size: 99%;
     margin-bottom: 10px;
     margin-top: 5px;
+    -webkit-appearance: none;
 }
 
 input[type="email"]:focus,
@@ -252,6 +249,7 @@ textarea.form-error {
 
 /* buttons */
 .btn {
+    -webkit-appearance: none;
     display: inline-block;
     color: #333;
     border: 1px solid #ccc;
