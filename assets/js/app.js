@@ -171,6 +171,12 @@
     {
         var item = document.getElementById("item-" + item_id);
         if (item) item.parentNode.removeChild(item);
+        
+        var $unread_span = document.getElementById("unread-count");
+        var unread_count = parseInt($unread_span.innerHTML, 10) - 1;
+        
+        $unread_span.innerHTML = unread_count;
+        document.querySelector("title").innerHTML = "miniflux (" + unread_count + ")";
     }
 
 
