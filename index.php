@@ -162,7 +162,7 @@ Router\post_action('change-item-status', function() {
     $id = Model\decode_item_id(Request\param('id'));
 
     Response\json(array(
-        'item_id' => urlencode($id),
+        'item_id' => Model\encode_item_id($id),
         'status' => Model\switch_item_status($id)
     ));
 });
