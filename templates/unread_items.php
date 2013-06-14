@@ -28,6 +28,7 @@
             </p>
             <p>
                 <?= Helper\get_host_from_url($item['url']) ?> |
+                <?= dt('%A %e %B %Y %k:%M', $item['updated']) ?> |
                 <a href="?action=mark-item-read&amp;id=<?= $item_id ?>"><?= t('mark as read') ?></a> |
                 <a
                     href="<?= $item['url'] ?>"
