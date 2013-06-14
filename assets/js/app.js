@@ -230,6 +230,10 @@
 
     function change_item_status()
     {
+        if (! document.getElementById("current-item")) {
+            document.querySelector("article").id = "current-item";
+        }
+        
         var item = document.getElementById("current-item");
         if (item) switch_status(item.getAttribute("data-item-id"));
     }
