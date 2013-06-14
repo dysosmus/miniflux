@@ -36,7 +36,7 @@ return array(
     'About' => 'A propos',
     'Miniflux version:' => 'Version de Miniflux :',
     'Nothing to read' => 'Rien à lire',
-    'Unread items' => 'Éléments non lus',
+    '%d unread items' => '%d éléments non lus',
     'mark all as read' => 'tout marquer comme lu',
     'original link' => 'lien original',
     'mark as read' => 'marquer comme lu',
