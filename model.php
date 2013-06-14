@@ -317,7 +317,7 @@ function set_item_removed($id)
     \PicoTools\singleton('db')
         ->table('items')
         ->eq('id', $id)
-        ->save(array('status' => 'removed'));
+        ->save(array('status' => 'removed', 'content' => ''));
 }
 
 
@@ -384,7 +384,7 @@ function mark_as_removed()
     \PicoTools\singleton('db')
         ->table('items')
         ->eq('status', 'read')
-        ->save(array('status' => 'removed'));
+        ->save(array('status' => 'removed', 'content' => ''));
 }
 
 
@@ -398,7 +398,7 @@ function autoflush()
             ->table('items')
             ->eq('status', 'read')
             ->lt('updated', strtotime('-'.$autoflush.'day'))
-            ->save(array('status' => 'removed'));
+            ->save(array('status' => 'removed', 'content' => ''));
     }
 }
 
