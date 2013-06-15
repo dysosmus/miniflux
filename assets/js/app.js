@@ -171,12 +171,24 @@
     {
         var item = document.getElementById("item-" + item_id);
         if (item) item.parentNode.removeChild(item);
-        
-        var $unread_span = document.getElementById("unread-count");
-        var unread_count = parseInt($unread_span.innerHTML, 10) - 1;
-        
-        $unread_span.innerHTML = unread_count;
-        document.querySelector("title").innerHTML = "miniflux (" + unread_count + ")";
+
+        var container = document.getElementById("page-counter");
+
+        if (container) {
+
+            counter = parseInt(container.textContent.trim(), 10) - 1;
+
+            if (counter == 0) {
+
+                window.location = "?action=feeds&nothing_to_read=1";
+            }
+            else {
+
+                container.textContent = counter + " ";
+                document.title = "miniflux (" + counter + ")";
+                document.getElementById("nav-counter").textContent = "(" + counter + ")";
+            }
+        }
     }
 
 
@@ -239,7 +251,7 @@
         if (! document.getElementById("current-item")) {
             document.querySelector("article").id = "current-item";
         }
-        
+
         var item = document.getElementById("current-item");
         if (item) switch_status(item.getAttribute("data-item-id"));
     }
