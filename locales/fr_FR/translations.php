@@ -19,7 +19,7 @@ return array(
     'Password' => 'Mot de passe',
     'Confirmation' => 'Confirmation',
     'Language' => 'Langue',
-    'Update' => 'Mettre à jour',
+    'Save' => 'Sauvegarder',
     'More informations' => 'Plus d\'informations',
     'Database' => 'Base de données',
     'Database size:' => 'Taille de la base de données :',

@@ -22,7 +22,7 @@
     <?= Helper\form_checkbox('nocontent', t('Do not fetch the content of articles'), 1, $values['nocontent']) ?><br />
 
     <div class="form-actions">
-        <input type="submit" value="<?= t('Update') ?>" class="btn btn-blue"/>
+        <input type="submit" value="<?= t('Save') ?>" class="btn btn-blue"/>
     </div>
 </form>
 </section>
