@@ -417,6 +417,7 @@ function autoflush()
 
         \PicoTools\singleton('db')
             ->table('items')
+            ->eq('bookmark', 0)
             ->eq('status', 'read')
             ->lt('updated', strtotime('-'.$autoflush.'day'))
             ->save(array('status' => 'removed', 'content' => ''));
