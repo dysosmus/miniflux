@@ -5,7 +5,7 @@
 <?php else: ?>
 
     <div class="page-header">
-        <h2><?= t('%d unread items', $nb_items) ?></h2>
+        <h2> <?= t('<span id="unread-count">%d</span> unread items', $nb_items) ?></h2>
         <ul>
             <li><a href="?action=mark-as-read"><?= t('mark all as read') ?></a></li>
         </ul>
