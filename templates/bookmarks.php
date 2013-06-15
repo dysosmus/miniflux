@@ -1,6 +1,6 @@
 <?php if (empty($items)): ?>
 
-    <p class="alert alert-info"><?= t('No starred items') ?></p>
+    <p class="alert alert-info"><?= t('No bookmark') ?></p>
 
 <?php else: ?>
 

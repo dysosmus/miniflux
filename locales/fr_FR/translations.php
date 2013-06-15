@@ -15,7 +15,7 @@ return array(
     'bookmarks' => 'favoris',
 	'Bookmarks' => 'Favoris',
     'Bookmark item' => 'Ajouter l\'élément séléctionné aux favoris',
-	'No bookmark' => 'Pas de favoris',
+	'No bookmark' => 'Aucun favoris',
     'history' => 'historique',
     'subscriptions' => 'abonnements',
     'Subscriptions' => 'Abonnements',
