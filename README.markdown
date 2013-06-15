@@ -18,6 +18,7 @@ Features
 - Open external links inside a new tab with a `rel="noreferrer"` attribute
 - Mobile CSS (responsive design)
 - Keyboard shortcuts
+- Basic bookmarks
 
 Todo and known bugs
 -------------------
@@ -105,11 +106,6 @@ Your life is cluttered.
 ### Why there is no categories? Why the feature X is missing?
 
 Miniflux is a minimalist software. Less is more.
-
-### Why there is no favourites?
-
-Use the right tool for the right job.
-Your browser already have bookmarks, if you don't like it there is many online tools for that.
 
 ### I found a bug, what next?
 
