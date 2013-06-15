@@ -192,7 +192,6 @@ function get_feeds_id($limit = LIMIT_ALL)
                                              ->asc('last_checked');
 
     if ($limit !== LIMIT_ALL) {
-
         $table_feeds->limit((int)$limit);
     }
 
@@ -254,7 +253,7 @@ function get_unread_items()
 {
     return \PicoTools\singleton('db')
         ->table('items')
-        ->columns('items.id', 'items.title', 'items.updated', 'items.url', 'feeds.site_url', 'items.content','starred')
+        ->columns('items.id', 'items.title', 'items.updated', 'items.url', 'items.content', 'items.bookmark', 'items.status', 'feeds.site_url')
         ->join('feeds', 'id', 'feed_id')
         ->eq('status', 'unread')
         ->desc('updated')
@@ -266,23 +265,22 @@ function get_read_items()
 {
     return \PicoTools\singleton('db')
         ->table('items')
-        ->columns('items.id', 'items.title', 'items.updated', 'items.url', 'feeds.site_url','starred')
+        ->columns('items.id', 'items.title', 'items.updated', 'items.url', 'items.bookmark', 'feeds.site_url')
         ->join('feeds', 'id', 'feed_id')
         ->eq('status', 'read')
         ->desc('updated')
         ->findAll();
-
-
 }
 
 
-function get_starred_items()
+function get_bookmarks()
 {
     return \PicoTools\singleton('db')
         ->table('items')
-        ->columns('items.id', 'items.title', 'items.updated', 'items.url', 'feeds.site_url')
+        ->columns('items.id', 'items.title', 'items.updated', 'items.url', 'items.status', 'feeds.site_url')
         ->join('feeds', 'id', 'feed_id')
-        ->eq('starred', 'starred')
+        ->in('status', array('read', 'unread'))
+        ->eq('bookmark', 1)
         ->desc('updated')
         ->findAll();
 }
@@ -326,41 +324,12 @@ function get_nav_item($item)
 }
 
 
-function get_nav_starred_item($item)
-{
-    $starred_items = \PicoTools\singleton('db')
-        ->table('items')
-        ->columns('items.id')
-        ->eq('starred', 'starred')
-        ->desc('updated')
-        ->findAll();
-
-    $next_item = null;
-    $previous_item = null;
-
-    for ($i = 0, $ilen = count($starred_items); $i < $ilen; $i++) {
-
-        if ($starred_items[$i]['id'] == $item['id']) {
-
-            if ($i > 0) $previous_item = $starred_items[$i - 1];
-            if ($i < ($ilen - 1)) $next_item = $starred_items[$i + 1];
-            break;
-        }
-    }
-
-    return array(
-        'next' => $next_item,
-        'previous' => $previous_item
-    );
-}
-
-
 function set_item_removed($id)
 {
     \PicoTools\singleton('db')
         ->table('items')
         ->eq('id', $id)
-        ->save(array('status' => 'removed','starred' => 'unstarred'));
+        ->save(array('status' => 'removed', 'content' => ''));
 }
 
 
@@ -382,22 +351,12 @@ function set_item_unread($id)
 }
 
 
-
-function set_item_starred($id)
+function set_bookmark_value($id, $value)
 {
     \PicoTools\singleton('db')
         ->table('items')
         ->eq('id', $id)
-        ->save(array('starred' => 'starred'));
-}
-
-
-function set_item_unstarred($id)
-{
-    \PicoTools\singleton('db')
-        ->table('items')
-        ->eq('id', $id)
-        ->save(array('starred' => 'unstarred'));
+        ->save(array('bookmark' => $value));
 }
 
 
@@ -446,7 +405,7 @@ function mark_as_removed()
     \PicoTools\singleton('db')
         ->table('items')
         ->eq('status', 'read')
-        ->save(array('status' => 'removed'));
+        ->save(array('status' => 'removed', 'content' => ''));
 }
 
 
@@ -459,9 +418,8 @@ function autoflush()
         \PicoTools\singleton('db')
             ->table('items')
             ->eq('status', 'read')
-            ->eq('starred', 'starred')
             ->lt('updated', strtotime('-'.$autoflush.'day'))
-            ->save(array('status' => 'removed'));
+            ->save(array('status' => 'removed', 'content' => ''));
     }
 }
 

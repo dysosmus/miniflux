@@ -2,9 +2,10 @@
 
 namespace Schema;
 
-function version_7($pdo)
+
+function version_8($pdo)
 {
-    $pdo->exec('ALTER TABLE items ADD COLUMN starred TEXT');
+    $pdo->exec('ALTER TABLE items ADD COLUMN bookmark INTEGER DEFAULT 0');
 }
 
 
@@ -28,7 +29,7 @@ function version_5($pdo)
 
 function version_4($pdo)
 {
-    $pdo->exec("CREATE INDEX idx_status ON items(status)");
+    $pdo->exec('CREATE INDEX idx_status ON items(status)');
 }
 
 

@@ -10,7 +10,7 @@
         <link rel="apple-touch-icon" sizes="72x72" href="./assets/img/touch-icon-ipad.png">
         <link rel="apple-touch-icon" sizes="114x114" href="./assets/img/touch-icon-iphone-retina.png">
         <link rel="apple-touch-icon" sizes="144x144" href="./assets/img/touch-icon-ipad-retina.png">
-        <title>miniflux</title>
+        <title><?= isset($title) ? $title : 'miniflux' ?></title>
         <link href="./assets/css/app.css?v<?= filemtime('assets/css/app.css') ?>" rel="stylesheet" media="screen">
         <script type="text/javascript" src="./assets/js/app.js?v<?= filemtime('assets/js/app.js') ?>" defer></script>
     </head>
@@ -19,12 +19,24 @@
             <nav>
                 <a class="logo" href="?">mini<span>flux</span></a>
                 <ul>
-                    <li <?= isset($menu) && $menu === 'unread' ? 'class="active"' : '' ?>><a href="?action=default"><?= t('unread') ?></a></li>
-                    <li <?= isset($menu) && $menu === 'starred' ? 'class="active"' : '' ?>><a href="?action=starred"><?= t('starred') ?></a></li>
-                    <li <?= isset($menu) && $menu === 'history' ? 'class="active"' : '' ?>><a href="?action=history"><?= t('history') ?></a></li>
-                    <li <?= isset($menu) && $menu === 'feeds' ? 'class="active"' : '' ?>><a href="?action=feeds"><?= t('subscriptions') ?></a></li>
-                    <li <?= isset($menu) && $menu === 'config' ? 'class="active"' : '' ?>><a href="?action=config"><?= t('preferences') ?></a></li>
-                    <li><a href="?action=logout"><?= t('logout') ?></a></li>
+                    <li <?= isset($menu) && $menu === 'unread' ? 'class="active"' : '' ?>>
+                        <a href="?action=default"><?= t('unread') ?> <span id="nav-counter"><?= isset($nb_items) ? '('.$nb_items.')' : '' ?></span></a>
+                    </li>
+                    <li <?= isset($menu) && $menu === 'bookmarks' ? 'class="active"' : '' ?>>
+                        <a href="?action=bookmarks"><?= t('bookmarks') ?></a>
+                    </li>
+                    <li <?= isset($menu) && $menu === 'history' ? 'class="active"' : '' ?>>
+                        <a href="?action=history"><?= t('history') ?></a>
+                    </li>
+                    <li <?= isset($menu) && $menu === 'feeds' ? 'class="active"' : '' ?>>
+                        <a href="?action=feeds"><?= t('subscriptions') ?></a>
+                    </li>
+                    <li <?= isset($menu) && $menu === 'config' ? 'class="active"' : '' ?>>
+                        <a href="?action=config"><?= t('preferences') ?></a>
+                    </li>
+                    <li>
+                        <a href="?action=logout"><?= t('logout') ?></a>
+                    </li>
                 </ul>
             </nav>
         </header>

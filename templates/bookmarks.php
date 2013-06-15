@@ -5,16 +5,16 @@
 <?php else: ?>
 
     <div class="page-header">
-        <h2><?= t('Starred') ?></h2>
+        <h2><?= t('Bookmarks') ?></h2>
     </div>
 
-    <section class="items" id="listing">
+    <section class="items">
     <?php foreach ($items as $item): ?>
         <?php $item_id = Model\encode_item_id($item['id']) ?>
-        <article id="item-<?= $item_id ?>" data-item-id="<?= $item_id ?>">
+        <article id="item-<?= $item_id ?>" data-item-id="<?= $item_id ?>" class="<?= $item['status'] == 'read' ? 'item-status-read' : '' ?>">
             <h2>
                 <a
-                    href="?action=read_starred&amp;id=<?= $item_id ?>"
+                    href="?action=show&amp;id=<?= $item_id ?>"
                     id="open-<?= $item_id ?>"
                 >
                     <?= Helper\escape($item['title']) ?>
@@ -22,9 +22,8 @@
             </h2>
             <p>
                 <?= Helper\get_host_from_url($item['url']) ?> |
-                <?= dt('%A %e %B %Y %k:%M', $item['updated']) ?> |
-                <a href="?action=mark-item-unstarred&amp;id=<?= $item_id ?>"><?= t('mark as unstarred') ?></a> |
-                <a href="?action=mark-item-removed&amp;id=<?= $item_id ?>"><?= t('remove') ?></a> |
+                <?= dt('%e %B %Y %k:%M', $item['updated']) ?> |
+                <a href="?action=bookmark&amp;value=0&amp;id=<?= $item_id ?>&amp;redirect=bookmarks"><?= t('remove bookmark') ?></a> |
                 <a
                     href="<?= $item['url'] ?>"
                     id="original-<?= $item_id ?>"

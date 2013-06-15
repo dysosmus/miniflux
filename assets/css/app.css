@@ -449,11 +449,6 @@ nav .active a {
     max-width: 100%;
 }
 
-.infos {
-    padding-bottom: 20px;
-    color: #ccc;
-}
-
 .item h1 a {
     font-size: 2.1em;
     text-decoration: none;
@@ -493,6 +488,19 @@ nav .active a {
     margin-left: 70%;
     width: 30%;
     display: block;
+}
+
+.infos {
+    padding-bottom: 20px;
+    color: #ddd;
+}
+
+.item .infos a {
+    color: #ddd;
+}
+
+.item-status-read {
+    opacity: 0.4;
 }
 
 /* other pages */

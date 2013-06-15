@@ -45,9 +45,22 @@
     function mark_as_unread(item_id)
     {
         var request = new XMLHttpRequest();
-
         request.open("POST", "?action=mark-item-unread&id=" + item_id, true);
         request.send();
+    }
+
+
+    function bookmark_item()
+    {
+        var item = document.getElementById("current-item");
+
+        if (item) {
+
+            var item_id = item.getAttribute("data-item-id");
+            var redirect = item.getAttribute("data-item-page");
+
+            window.location = "?action=bookmark&value=1&id=" + item_id + "&redirect=" + redirect;
+        }
     }
 
 
@@ -171,6 +184,24 @@
     {
         var item = document.getElementById("item-" + item_id);
         if (item) item.parentNode.removeChild(item);
+
+        var container = document.getElementById("page-counter");
+
+        if (container) {
+
+            counter = parseInt(container.textContent.trim(), 10) - 1;
+
+            if (counter == 0) {
+
+                window.location = "?action=feeds&nothing_to_read=1";
+            }
+            else {
+
+                container.textContent = counter + " ";
+                document.title = "miniflux (" + counter + ")";
+                document.getElementById("nav-counter").textContent = "(" + counter + ")";
+            }
+        }
     }
 
 
@@ -230,6 +261,10 @@
 
     function change_item_status()
     {
+        if (is_listing() && ! document.getElementById("current-item")) {
+            document.querySelector("article").id = "current-item";
+        }
+
         var item = document.getElementById("current-item");
         if (item) switch_status(item.getAttribute("data-item-id"));
     }
@@ -363,6 +398,9 @@
                 break;
             case 109:
                 change_item_status();
+                break;
+            case 102:
+                bookmark_item();
                 break;
         }
     };

@@ -5,7 +5,7 @@
 <?php else: ?>
 
     <div class="page-header">
-        <h2><?= t('Unread items') ?></h2>
+        <h2><span id="page-counter"><?= isset($nb_items) ? $nb_items.' ' : '' ?></span><?= t('unread items') ?></h2>
         <ul>
             <li><a href="?action=mark-as-read"><?= t('mark all as read') ?></a></li>
         </ul>
@@ -14,8 +14,9 @@
     <section class="items" id="listing">
     <?php foreach ($items as $item): ?>
         <?php $item_id = Model\encode_item_id($item['id']) ?>
-        <article id="item-<?= $item_id ?>" data-item-id="<?= $item_id ?>">
+        <article id="item-<?= $item_id ?>" data-item-id="<?= $item_id ?>" data-item-page="<?= $menu ?>">
             <h2>
+                <?= $item['bookmark'] ? '★ ' : '' ?>
                 <a
                     href="?action=read&amp;id=<?= $item_id ?>"
                     id="open-<?= $item_id ?>"
@@ -28,12 +29,12 @@
             </p>
             <p>
                 <?= Helper\get_host_from_url($item['url']) ?> |
+                <?= dt('%e %B %Y %k:%M', $item['updated']) ?> |
 
-
-                <?php if (isset($item['starred']) && $item['starred']=='starred'): ?>
-                    <a href="?action=mark-item-unstarred&amp;id=<?= $item_id ?>"><?= t('mark as unstarred') ?></a> |
+                <?php if ($item['bookmark']): ?>
+                    <a href="?action=bookmark&amp;value=0&amp;id=<?= $item_id ?>&amp;redirect=unread"><?= t('remove bookmark') ?></a> |
                 <?php else: ?>
-                    <a href="?action=mark-item-starred&amp;id=<?= $item_id ?>"><?= t('mark as starred') ?></a> |
+                    <a href="?action=bookmark&amp;value=1&amp;id=<?= $item_id ?>&amp;redirect=unread"><?= t('bookmark') ?></a> |
                 <?php endif ?>
 
                 <a href="?action=mark-item-read&amp;id=<?= $item_id ?>"><?= t('mark as read') ?></a> |

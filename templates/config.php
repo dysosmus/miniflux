@@ -22,7 +22,7 @@
     <?= Helper\form_checkbox('nocontent', t('Do not fetch the content of articles'), 1, $values['nocontent']) ?><br />
 
     <div class="form-actions">
-        <input type="submit" value="<?= t('Update') ?>" class="btn btn-blue"/>
+        <input type="submit" value="<?= t('Save') ?>" class="btn btn-blue"/>
     </div>
 </form>
 </section>
@@ -47,6 +47,7 @@
             <li><?= t('Mark as read or unread') ?> = <strong>m</strong></li>
             <li><?= t('Open original link') ?> = <strong>v</strong></li>
             <li><?= t('Open item') ?> = <strong>o</strong></li>
+            <li><?= t('Bookmark item') ?> = <strong>f</strong></li>
         </ul>
     </div>
     <div class="alert alert-normal">

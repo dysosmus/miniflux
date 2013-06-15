@@ -13,8 +13,9 @@
     <section class="items" id="listing">
     <?php foreach ($items as $item): ?>
         <?php $item_id = Model\encode_item_id($item['id']) ?>
-        <article id="item-<?= $item_id ?>" data-item-id="<?= $item_id ?>">
+        <article id="item-<?= $item_id ?>" data-item-id="<?= $item_id ?>" data-item-page="<?= $menu ?>">
             <h2>
+                <?= $item['bookmark'] ? '★ ' : '' ?>
                 <a
                     href="?action=show&amp;id=<?= $item_id ?>"
                     id="open-<?= $item_id ?>"
@@ -23,19 +24,14 @@
                 </a>
             </h2>
             <p>
-
                 <?= Helper\get_host_from_url($item['url']) ?> |
-                <?= dt('%A %e %B %Y %k:%M', $item['updated']) ?> |
+                <?= dt('%e %B %Y %k:%M', $item['updated']) ?> |
+                <a href="?action=mark-item-unread&amp;id=<?= $item_id ?>"><?= t('mark as unread') ?></a> |
 
-
-                <?php if (isset($item['starred']) && $item['starred']=='starred'): ?>
-                    <a href="?action=mark-item-unstarred&amp;id=<?= $item_id ?>"><?= t('mark as unstarred') ?></a> |
-                <?php else: ?>
-                    <a href="?action=mark-item-starred&amp;id=<?= $item_id ?>"><?= t('mark as starred') ?></a> |
+                <?php if (! $item['bookmark']): ?>
+                    <a href="?action=bookmark&amp;value=1&amp;id=<?= $item_id ?>&amp;redirect=history"><?= t('bookmark') ?></a> |
                 <?php endif ?>
 
-
-                <a href="?action=mark-item-unread&amp;id=<?= $item_id ?>"><?= t('mark as unread') ?></a> |
                 <a href="?action=mark-item-removed&amp;id=<?= $item_id ?>"><?= t('remove') ?></a> |
                 <a
                     href="<?= $item['url'] ?>"

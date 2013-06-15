@@ -73,6 +73,17 @@ function xml($data, $status_code = 200)
 }
 
 
+function js($data, $status_code = 200)
+{
+    status($status_code);
+
+    header('Content-Type: text/javascript; charset=utf-8');
+    echo $data;
+
+    exit;
+}
+
+
 function binary($data, $status_code = 200)
 {
     status($status_code);

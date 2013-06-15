@@ -57,7 +57,6 @@ Router\before(function($action) {
 Router\get_action('logout', function() {
 
     Session\close();
-
     Response\redirect('?action=login');
 });
 
@@ -97,20 +96,13 @@ Router\get_action('show', function() {
 
     $id = Model\decode_item_id(Request\param('id'));
 
-    Response\html(Template\layout('read_item', array(
-        'item' => Model\get_item($id)
+    Model\set_item_read($id);
+
+    Response\html(Template\layout('show_item', array(
+        'item' => Model\get_item($id),
+        'menu' => 'show'
     )));
 });
-
-
-Router\get_action('show_starred_item', function() {
-    $id = Model\decode_item_id(Request\param('id'));
-
-    Response\html(Template\layout('starred_item', array(
-        'item' => Model\get_item($id)
-    )));
-});
-
 
 
 Router\get_action('read', function() {
@@ -121,24 +113,10 @@ Router\get_action('read', function() {
 
     Model\set_item_read($id);
 
-    Response\html(Template\layout('read_item', array(
+    Response\html(Template\layout('show_item', array(
         'item' => $item,
-        'item_nav' => $nav
-    )));
-});
-
-
-Router\get_action('read_starred', function() {
-
-    $id = Model\decode_item_id(Request\param('id'));
-    $item = Model\get_item($id);
-    $nav = Model\get_nav_starred_item($item); // must be placed before set_item_read()
-
-    Model\set_item_read($id);
-
-    Response\html(Template\layout('starred_item', array(
-        'item' => $item,
-        'item_nav' => $nav
+        'item_nav' => $nav,
+        'menu' => 'read'
     )));
 });
 
@@ -147,7 +125,7 @@ Router\get_action('mark-item-read', function() {
 
     $id = Model\decode_item_id(Request\param('id'));
     Model\set_item_read($id);
-    Response\Redirect('?action='.$_SESSION['MODE']);
+    Response\Redirect('?action='.Request\param('redirect', 'default'));
 });
 
 
@@ -155,7 +133,7 @@ Router\get_action('mark-item-unread', function() {
 
     $id = Model\decode_item_id(Request\param('id'));
     Model\set_item_unread($id);
-    Response\Redirect('?action='.$_SESSION['MODE']);
+    Response\Redirect('?action='.Request\param('redirect', 'history'));
 });
 
 
@@ -163,7 +141,7 @@ Router\get_action('mark-item-removed', function() {
 
     $id = Model\decode_item_id(Request\param('id'));
     Model\set_item_removed($id);
-    Response\Redirect('?action='.$_SESSION['MODE']);
+    Response\Redirect('?action='.Request\param('redirect', 'history'));
 });
 
 
@@ -183,19 +161,32 @@ Router\post_action('mark-item-unread', function() {
 });
 
 
-Router\get_action('mark-item-starred', function() {
+Router\post_action('bookmark-item', function() {
 
     $id = Model\decode_item_id(Request\param('id'));
-    Model\set_item_starred($id);
-    Response\Redirect('?action='.$_SESSION['MODE']);
+    Model\bookmark_item($id);
+    Response\json(array('Ok'));
 });
 
 
-Router\get_action('mark-item-unstarred', function() {
+Router\get_action('bookmark', function() {
 
-    $id = Model\decode_item_id(Request\param('id'));
-    Model\set_item_unstarred($id);
-    Response\Redirect('?action='.$_SESSION['MODE']);
+    $param_id = Request\param('id');
+    $id = Model\decode_item_id($param_id);
+    $redirect = Request\param('redirect', 'unread');
+
+    Model\set_bookmark_value($id, Request\int_param('value'));
+
+    if ($redirect === 'show') {
+
+        Response\Redirect('?action=show&id='.$param_id);
+    }
+    else if ($redirect === 'read') {
+
+        Response\Redirect('?action=read&id='.$param_id);
+    }
+
+    Response\Redirect('?action='.$redirect);
 });
 
 
@@ -204,29 +195,30 @@ Router\post_action('change-item-status', function() {
     $id = Model\decode_item_id(Request\param('id'));
 
     Response\json(array(
-        'item_id' => urlencode($id),
+        'item_id' => Model\encode_item_id($id),
         'status' => Model\switch_item_status($id)
     ));
 });
 
 
 Router\get_action('history', function() {
-	$_SESSION['MODE']='history';
+
     Response\html(Template\layout('history', array(
         'items' => Model\get_read_items(),
-        'menu' => 'history'
+        'menu' => 'history',
+        'title' => t('History')
     )));
 });
 
 
-Router\get_action('starred', function() {
-	$_SESSION['MODE']='starred';
-    Response\html(Template\layout('starred', array(
-        'items' => Model\get_starred_items(),
-        'menu' => 'starred'
+Router\get_action('bookmarks', function() {
+
+    Response\html(Template\layout('bookmarks', array(
+        'items' => Model\get_bookmarks(),
+        'menu' => 'bookmarks',
+        'title' => t('Bookmarks')
     )));
 });
-
 
 
 Router\get_action('confirm-remove', function() {
@@ -235,7 +227,8 @@ Router\get_action('confirm-remove', function() {
 
     Response\html(Template\layout('confirm_remove_feed', array(
         'feed' => Model\get_feed($id),
-        'menu' => 'feeds'
+        'menu' => 'feeds',
+        'title' => t('Confirmation')
     )));
 });
 
@@ -293,7 +286,8 @@ Router\get_action('mark-as-read', function() {
 Router\get_action('confirm-flush-history', function() {
 
     Response\html(Template\layout('confirm_flush_items', array(
-        'menu' => 'history'
+        'menu' => 'history',
+        'title' => t('Confirmation')
     )));
 });
 
@@ -318,7 +312,8 @@ Router\get_action('feeds', function() {
     Response\html(Template\layout('feeds', array(
         'feeds' => Model\get_feeds(),
         'nothing_to_read' => Request\int_param('nothing_to_read'),
-        'menu' => 'feeds'
+        'menu' => 'feeds',
+        'title' => t('Subscriptions')
     )));
 });
 
@@ -328,7 +323,8 @@ Router\get_action('add', function() {
     Response\html(Template\layout('add', array(
         'values' => array(),
         'errors' => array(),
-        'menu' => 'feeds'
+        'menu' => 'feeds',
+        'title' => t('New subscription')
     )));
 });
 
@@ -347,7 +343,8 @@ Router\post_action('add', function() {
 
     Response\html(Template\layout('add', array(
         'values' => array('url' => $_POST['url']),
-        'menu' => 'feeds'
+        'menu' => 'feeds',
+        'title' => t('Subscriptions')
     )));
 });
 
@@ -377,7 +374,8 @@ Router\get_action('import', function() {
 
     Response\html(Template\layout('import', array(
         'errors' => array(),
-        'menu' => 'feeds'
+        'menu' => 'feeds',
+        'title' => t('OPML Import')
     )));
 });
 
@@ -405,14 +403,15 @@ Router\get_action('config', function() {
         'db_size' => filesize(get_db_filename()),
         'languages' => Model\get_languages(),
         'autoflush_options' => Model\get_autoflush_options(),
-        'menu' => 'config'
+        'menu' => 'config',
+        'title' => t('Preferences')
     )));
 });
 
 
 Router\post_action('config', function() {
 
-    $values = Request\values() + array('nocontent' => 0);
+    $values = Request\values();
     list($valid, $errors) = Model\validate_config_update($values);
 
     if ($valid) {
@@ -435,25 +434,28 @@ Router\post_action('config', function() {
         'db_size' => filesize(get_db_filename()),
         'languages' => Model\get_languages(),
         'autoflush_options' => Model\get_autoflush_options(),
-        'menu' => 'config'
+        'menu' => 'config',
+        'title' => t('Preferences')
     )));
 });
 
 
 Router\notfound(function() {
-	$_SESSION['MODE']='default';
 
     Model\autoflush();
 
     $items = Model\get_unread_items();
+    $nb_items = count($items);
 
-    if (empty($items)) {
+    if ($nb_items === 0) {
 
         Response\redirect('?action=feeds&nothing_to_read=1');
     }
 
     Response\html(Template\layout('unread_items', array(
         'items' => $items,
+        'nb_items' => $nb_items,
+        'title' => 'miniflux ('.$nb_items.')',
         'menu' => 'unread'
     )));
 });
