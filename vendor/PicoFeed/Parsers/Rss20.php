@@ -17,7 +17,7 @@ class Rss20 extends Parser
 
         $namespaces = $xml->getNamespaces(true);
 
-        if ($xml->channel->link->count() > 1) {
+        if ($xml->channel->link && $xml->channel->link->count() > 1) {
 
             foreach ($xml->channel->link as $xml_link) {
 
@@ -39,6 +39,9 @@ class Rss20 extends Parser
         $this->id = $this->url;
         $this->updated = isset($xml->channel->pubDate) ? (string) $xml->channel->pubDate : (string) $xml->channel->lastBuildDate;
         $this->updated = $this->updated ? strtotime($this->updated) : time();
+
+        // RSS feed might be empty
+        if (! $xml->channel->item) return $this;
 
         foreach ($xml->channel->item as $entry) {
 

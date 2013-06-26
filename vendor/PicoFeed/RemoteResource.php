@@ -124,6 +124,7 @@ class RemoteResource
             curl_setopt($ch, CURLOPT_USERAGENT, $this->user_agent);
             curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
             curl_setopt($ch, CURLOPT_FOLLOWLOCATION, false);
+            curl_setopt($ch, CURLOPT_ENCODING, '');
 
             // Don't check SSL certificates (for auto-signed certificates...)
             curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);

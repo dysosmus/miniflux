@@ -51,11 +51,15 @@ class Reader
 
     public function getFirstTag($data)
     {
-        // Strip HTML comments
-        $data = preg_replace('/<!--(.*)-->/Uis', '', $data);
+        // Strip HTML comments (max of 5,000 characters long to prevent crashing)
+        $data = preg_replace('/<!--(.{0,5000}?)-->/Uis', '', $data);
 
-        // Strip Doctype
-        $data = preg_replace('/<!DOCTYPE(.*)>/Uis', '', $data);
+        /* Strip Doctype:
+         * Doctype needs to be within the first 500 characters. (Ideally the first!)
+         * If it's not found by then, we need to stop looking to prevent PREG
+         * from reaching max backtrack depth and crashing.
+         */
+        $data = preg_replace('/^.{0,500}<!DOCTYPE([^>]*)>/Uis', '', $data);
 
         // Find <?xml version....
         if (strpos($data, '<?xml') !== false) {
