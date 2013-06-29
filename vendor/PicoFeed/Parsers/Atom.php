@@ -1,8 +1,8 @@
 <?php
 
-namespace PicoFeed;
+namespace PicoFeed\Parsers;
 
-class Atom extends Parser
+class Atom extends \PicoFeed\Parser
 {
     public function execute()
     {

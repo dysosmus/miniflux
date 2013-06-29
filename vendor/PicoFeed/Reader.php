@@ -84,30 +84,30 @@ class Reader
         if (strpos($first_tag, '<feed') !== false) {
 
             require_once __DIR__.'/Parsers/Atom.php';
-            return new Atom($this->content);
+            return new Parsers\Atom($this->content);
         }
         else if (strpos($first_tag, '<rss') !== false &&
                 (strpos($first_tag, 'version="2.0"') !== false || strpos($first_tag, 'version=\'2.0\'') !== false)) {
 
             require_once __DIR__.'/Parsers/Rss20.php';
-            return new Rss20($this->content);
+            return new Parsers\Rss20($this->content);
         }
         else if (strpos($first_tag, '<rss') !== false &&
                 (strpos($first_tag, 'version="0.92"') !== false || strpos($first_tag, 'version=\'0.92\'') !== false)) {
 
             require_once __DIR__.'/Parsers/Rss92.php';
-            return new Rss92($this->content);
+            return new Parsers\Rss92($this->content);
         }
         else if (strpos($first_tag, '<rss') !== false &&
                 (strpos($first_tag, 'version="0.91"') !== false || strpos($first_tag, 'version=\'0.91\'') !== false)) {
 
             require_once __DIR__.'/Parsers/Rss91.php';
-            return new Rss91($this->content);
+            return new Parsers\Rss91($this->content);
         }
         else if (strpos($first_tag, '<rdf:') !== false && strpos($first_tag, 'xmlns="http://purl.org/rss/1.0/"') !== false) {
 
             require_once __DIR__.'/Parsers/Rss10.php';
-            return new Rss10($this->content);
+            return new Parsers\Rss10($this->content);
         }
         else if ($discover === true) {
 
@@ -149,18 +149,21 @@ class Reader
 
                 $link = $nodes->item(0)->getAttribute('href');
 
-                // Relative links
-                if (strpos($link, 'http') !== 0) {
+                if (! empty($link)) {
 
-                    if ($link{0} === '/') $link = substr($link, 1);
-                    if ($this->url{strlen($this->url) - 1} !== '/') $this->url .= '/';
+                    // Relative links
+                    if (strpos($link, 'http') !== 0) {
 
-                    $link = $this->url.$link;
+                        if ($link{0} === '/') $link = substr($link, 1);
+                        if ($this->url{strlen($this->url) - 1} !== '/') $this->url .= '/';
+
+                        $link = $this->url.$link;
+                    }
+
+                    $this->download($link);
+
+                    return true;
                 }
-
-                $this->download($link);
-
-                return true;
             }
         }
 

@@ -257,7 +257,24 @@ class Filter
 
     public function getAbsoluteUrl($path, $url)
     {
+        //if (! filter_var($url, FILTER_VALIDATE_URL)) return '';
+
         $components = parse_url($url);
+
+        if (! isset($components['scheme'])) $components['scheme'] = 'http';
+
+        if (! isset($components['host'])) {
+
+            if ($url) {
+
+                $components['host'] = $url;
+                $components['path'] = '/';
+            }
+            else {
+
+                return '';
+            }
+        }
 
         if ($path{0} === '/') {
 
@@ -267,9 +284,10 @@ class Filter
         else {
 
             // Relative path
-            $url_path = $components['path'];
+            $url_path = isset($components['path']) && ! empty($components['path']) ? $components['path'] : '/';
+            $length = strlen($url_path);
 
-            if ($url_path{strlen($url_path) - 1} !== '/') {
+            if ($length > 1 && $url_path{$length - 1} !== '/') {
 
                 $url_path = dirname($url_path).'/';
             }

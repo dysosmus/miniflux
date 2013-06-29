@@ -1,8 +1,8 @@
 <?php
 
-namespace PicoFeed;
+namespace PicoFeed\Parsers;
 
-class Rss10 extends Parser
+class Rss10 extends \PicoFeed\Parser
 {
     public function execute()
     {
