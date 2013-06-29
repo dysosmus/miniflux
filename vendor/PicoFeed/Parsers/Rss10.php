@@ -17,7 +17,7 @@ class Rss10 extends \PicoFeed\Parser
 
         $namespaces = $xml->getNamespaces(true);
 
-        $this->title = (string) $xml->channel->title;
+        $this->title = $this->stripWhiteSpace((string) $xml->channel->title);
         $this->url = (string) $xml->channel->link;
         $this->id = $this->url;
 
@@ -34,7 +34,7 @@ class Rss10 extends \PicoFeed\Parser
         foreach ($xml->item as $entry) {
 
             $item = new \StdClass;
-            $item->title = (string) $entry->title;
+            $item->title = $this->stripWhiteSpace((string) $entry->title);
             $item->url = '';
             $item->author= '';
             $item->updated = '';

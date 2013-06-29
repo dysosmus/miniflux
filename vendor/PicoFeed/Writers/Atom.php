@@ -6,116 +6,144 @@ require_once __DIR__.'/../Writer.php';
 
 class Atom extends \PicoFeed\Writer
 {
-    protected $required_properties = array(
+    private $required_feed_properties = array(
         'title',
         'site_url',
-        'feed_url'
+        'feed_url',
+    );
+
+    private $required_item_properties = array(
+        'title',
+        'url',
     );
 
 
     public function execute($filename = '')
     {
-        $this->checkRequiredProperties();
+        $this->checkRequiredProperties($this->required_feed_properties, $this);
 
-        $dom = new \DomDocument('1.0', 'UTF-8');
-        $dom->formatOutput = true;
+        $this->dom = new \DomDocument('1.0', 'UTF-8');
+        $this->dom->formatOutput = true;
 
         // <feed/>
-        $feed = $dom->createElement('feed');
+        $feed = $this->dom->createElement('feed');
         $feed->setAttributeNodeNS(new \DomAttr('xmlns', 'http://www.w3.org/2005/Atom'));
 
         // <generator/>
-        $generator = $dom->createElement('generator', 'PicoFeed');
+        $generator = $this->dom->createElement('generator', 'PicoFeed');
         $generator->setAttribute('url', 'https://github.com/fguillot/picoFeed');
         $feed->appendChild($generator);
 
         // <title/>
-        $feed->appendChild($dom->createElement('title', $this->title));
+        $feed->appendChild($this->dom->createElement('title', $this->title));
+
+        // <id/>
+        $feed->appendChild($this->dom->createElement('id', $this->site_url));
 
         // <updated/>
-        $feed->appendChild($dom->createElement('updated', date(DATE_ATOM, isset($this->updated) ? $this->updated : time())));
+        $this->addUpdated($feed, isset($this->updated) ? $this->updated : '');
 
         // <link rel="alternate" type="text/html" href="http://example.org/"/>
-        $link = $dom->createElement('link');
-        $link->setAttribute('rel', 'alternate');
-        $link->setAttribute('type', 'text/html');
-        $link->setAttribute('href', $this->site_url);
-        $feed->appendChild($link);
+        $this->addLink($feed, $this->site_url);
 
         // <link rel="self" type="application/atom+xml" href="http://example.org/feed.atom"/>
-        $link = $dom->createElement('link');
-        $link->setAttribute('rel', 'self');
-        $link->setAttribute('type', 'application/atom+xml');
-        $link->setAttribute('href', $this->feed_url);
-        $feed->appendChild($link);
+        $this->addLink($feed, $this->feed_url, 'self', 'application/atom+xml');
 
         // <author/>
-        if (isset($this->author)) {
-
-            $name = $dom->createElement('name', $this->author);
-
-            $author = $dom->createElement('author');
-            $author->appendChild($name);
-            $feed->appendChild($author);
-        }
+        if (isset($this->author)) $this->addAuthor($feed, $this->author);
 
         // <entry/>
         foreach ($this->items as $item) {
 
-            $entry = $dom->createElement('entry');
+            $this->checkRequiredProperties($this->required_item_properties, $item);
+
+            $entry = $this->dom->createElement('entry');
 
             // <title/>
-            $entry->appendChild($dom->createElement('title', $item['title']));
+            $entry->appendChild($this->dom->createElement('title', $item['title']));
+
+            // <id/>
+            $entry->appendChild($this->dom->createElement('id', $item['url']));
 
             // <updated/>
-            $entry->appendChild($dom->createElement('updated', date(DATE_ATOM, isset($item['updated']) ? $item['updated'] : time())));
+            $this->addUpdated($entry, isset($item['updated']) ? $item['updated'] : '');
 
             // <published/>
             if (isset($item['published'])) {
-                $entry->appendChild($dom->createElement('published', date(DATE_ATOM, $item['published'])));
+                $entry->appendChild($this->dom->createElement('published', date(DATE_ATOM, $item['published'])));
             }
 
             // <link rel="alternate" type="text/html" href="http://example.org/"/>
-            $link = $dom->createElement('link');
-            $link->setAttribute('rel', 'alternate');
-            $link->setAttribute('type', 'text/html');
-            $link->setAttribute('href', $item['url']);
-            $entry->appendChild($link);
+            $this->addLink($entry, $item['url']);
 
             // <summary/>
             if (isset($item['summary'])) {
-                $entry->appendChild($dom->createElement('summary', $item['summary']));
+                $entry->appendChild($this->dom->createElement('summary', $item['summary']));
             }
 
             // <content/>
             if (isset($item['content'])) {
-                $content = $dom->createElement('content');
+                $content = $this->dom->createElement('content');
                 $content->setAttribute('type', 'html');
-                $content->appendChild($dom->createCDATASection($item['content']));
+                $content->appendChild($this->dom->createCDATASection($item['content']));
                 $entry->appendChild($content);
             }
 
             // <author/>
-            if (isset($item['author'])) {
-
-                $name = $dom->createElement('name', $item['author']);
-
-                $author = $dom->createElement('author');
-                $author->appendChild($name);
-
-                $entry->appendChild($author);
-            }
+            if (isset($item['author'])) $this->addAuthor($entry, $item['author']);
 
             $feed->appendChild($entry);
         }
 
-        $dom->appendChild($feed);
+        $this->dom->appendChild($feed);
 
         if ($filename) {
-            $dom->save($filename);
+            $this->dom->save($filename);
         }
         else {
-            return $dom->saveXML();
+            return $this->dom->saveXML();
         }
+    }
+
+
+    public function addLink($xml, $url, $rel = 'alternate', $type = 'text/html')
+    {
+        $link = $this->dom->createElement('link');
+        $link->setAttribute('rel', $rel);
+        $link->setAttribute('type', $type);
+        $link->setAttribute('href', $url);
+        $xml->appendChild($link);
+    }
+
+
+    public function addUpdated($xml, $value = '')
+    {
+        $xml->appendChild($this->dom->createElement(
+            'updated',
+            date(DATE_ATOM, $value ?: time())
+        ));
+    }
+
+
+    public function addAuthor($xml, array $values)
+    {
+        $author = $this->dom->createElement('author');
+
+        if (isset($values['name'])) {
+            $name = $this->dom->createElement('name', $values['name']);
+            $author->appendChild($name);
+        }
+
+        if (isset($values['email'])) {
+            $email = $this->dom->createElement('email', $values['email']);
+            $author->appendChild($email);
+        }
+
+        if (isset($values['url'])) {
+            $uri = $this->dom->createElement('uri', $values['url']);
+            $author->appendChild($uri);
+        }
+
+        $xml->appendChild($author);
     }
 }

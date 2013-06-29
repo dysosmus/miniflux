@@ -77,4 +77,14 @@ abstract class Parser
 
         return $data;
     }
+
+
+    // Trim whitespace from the begining, the end and inside a string and don't break utf-8 string
+    public function stripWhiteSpace($value)
+    {
+        $value = str_replace("\r", "", $value);
+        $value = str_replace("\t", "", $value);
+        $value = str_replace("\n", "", $value);
+        return trim($value);
+    }
 }

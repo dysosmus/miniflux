@@ -35,7 +35,7 @@ class Rss20 extends \PicoFeed\Parser
             $this->url = (string) $xml->channel->link;
         }
 
-        $this->title = (string) $xml->channel->title;
+        $this->title = $this->stripWhiteSpace((string) $xml->channel->title);
         $this->id = $this->url;
         $this->updated = isset($xml->channel->pubDate) ? (string) $xml->channel->pubDate : (string) $xml->channel->lastBuildDate;
         $this->updated = $this->updated ? strtotime($this->updated) : time();
@@ -46,7 +46,7 @@ class Rss20 extends \PicoFeed\Parser
         foreach ($xml->channel->item as $entry) {
 
             $item = new \StdClass;
-            $item->title = (string) $entry->title;
+            $item->title = $this->stripWhiteSpace((string) $entry->title);
             $item->url = '';
             $item->author= '';
             $item->updated = '';
@@ -63,7 +63,16 @@ class Rss20 extends \PicoFeed\Parser
                 if (! $item->content && ! empty($namespace->encoded)) $item->content = (string) $namespace->encoded;
             }
 
-            if (empty($item->url)) $item->url = (string) $entry->link;
+            if (empty($item->url)) {
+
+                if (isset($entry->link)) {
+                    $item->url = (string) $entry->link;
+                }
+                else if (isset($entry->guid)) {
+                    $item->url = (string) $entry->guid;
+                }
+            }
+
             if (empty($item->updated)) $item->updated = strtotime((string) $entry->pubDate) ?: $this->updated;
 
             if (empty($item->content)) {

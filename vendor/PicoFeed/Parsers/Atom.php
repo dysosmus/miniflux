@@ -16,7 +16,7 @@ class Atom extends \PicoFeed\Parser
         }
 
         $this->url = $this->getUrl($xml);
-        $this->title = (string) $xml->title;
+        $this->title = $this->stripWhiteSpace((string) $xml->title);
         $this->id = (string) $xml->id;
         $this->updated = strtotime((string) $xml->updated);
         $author = (string) $xml->author->name;
@@ -30,7 +30,7 @@ class Atom extends \PicoFeed\Parser
 
             $item = new \StdClass;
             $item->id = (string) $entry->id;
-            $item->title = (string) $entry->title;
+            $item->title = $this->stripWhiteSpace((string) $entry->title);
             $item->url = $this->getUrl($entry);
             $item->updated = strtotime((string) $entry->updated);
             $item->author = $author;
