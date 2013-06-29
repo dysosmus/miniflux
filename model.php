@@ -242,9 +242,8 @@ function update_feed_cache_infos($feed_id, $last_modified, $etag)
 
 function remove_feed($feed_id)
 {
+    // Items are removed by a sql constraint
     $db = \PicoTools\singleton('db');
-    $db->table('items')->eq('feed_id', $feed_id)->remove();
-
     return $db->table('feeds')->eq('id', $feed_id)->remove();
 }
 
