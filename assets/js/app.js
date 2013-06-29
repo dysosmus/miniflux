@@ -34,6 +34,7 @@
 
         request.onload = function() {
 
+            find_next_item();
             remove_item(item_id);
         };
 
@@ -113,11 +114,6 @@
                     if (callback) {
 
                         callback(response);
-                    }
-
-                    if (! response.result) {
-
-                        //window.alert('Unable to refresh this feed: ' + feed_id);
                     }
                 }
                 catch (e) {}
@@ -211,12 +207,8 @@
 
         if (link) {
 
-            if (link.getAttribute("data-action") == "mark-read") {
-
-                mark_as_read(link.getAttribute("data-item-id"));
-                find_next_item();
-            }
-
+            if (is_listing()) mark_as_read(link.getAttribute("data-item-id"));
+            link.removeAttribute("data-action");
             link.click();
         }
     }
