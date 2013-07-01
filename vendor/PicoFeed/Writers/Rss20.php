@@ -9,6 +9,7 @@ class Rss20 extends \PicoFeed\Writer
     private $required_feed_properties = array(
         'title',
         'site_url',
+        'feed_url',
     );
 
     private $required_item_properties = array(
@@ -28,6 +29,7 @@ class Rss20 extends \PicoFeed\Writer
         $rss = $this->dom->createElement('rss');
         $rss->setAttribute('version', '2.0');
         $rss->setAttributeNodeNS(new \DomAttr('xmlns:content', 'http://purl.org/rss/1.0/modules/content/'));
+        $rss->setAttributeNodeNS(new \DomAttr('xmlns:atom', 'http://www.w3.org/2005/Atom'));
 
         $channel = $this->dom->createElement('channel');
 
@@ -44,6 +46,13 @@ class Rss20 extends \PicoFeed\Writer
         // <pubDate/>
         $this->addPubDate($channel, isset($this->updated) ? $this->updated : '');
 
+        // <atom:link/>
+        $link = $this->dom->createElement('atom:link');
+        $link->setAttribute('href', $this->feed_url);
+        $link->setAttribute('rel', 'self');
+        $link->setAttribute('type', 'application/rss+xml');
+        $channel->appendChild($link);
+
         // <link/>
         $channel->appendChild($this->dom->createElement('link', $this->site_url));
 
@@ -55,7 +64,7 @@ class Rss20 extends \PicoFeed\Writer
 
             $this->checkRequiredProperties($this->required_item_properties, $item);
 
-            $entry = $this->dom->createElement('entry');
+            $entry = $this->dom->createElement('item');
 
             // <title/>
             $entry->appendChild($this->dom->createElement('title', $item['title']));

@@ -574,8 +574,7 @@ function save_config(array $values)
     \PicoTools\Translator\load($values['language']);
 
     // If the user does not want content of feeds, remove it in previous ones
-    if ((bool) $values['nocontent']) {
-
+    if (isset($values['nocontent']) && (bool) $values['nocontent']) {
         \PicoTools\singleton('db')->table('items')->update(array('content' => ''));
     }
 
