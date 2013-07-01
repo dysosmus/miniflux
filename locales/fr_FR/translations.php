@@ -8,6 +8,7 @@ return array(
     'After %d days' => 'Après %d jours',
     'French' => 'Français',
     'English' => 'Anglais',
+    'German' => 'Allemand',
     'unread' => 'non lus',
     'bookmarks' => 'favoris',
 	'bookmark' => 'ajouter aux favoris',

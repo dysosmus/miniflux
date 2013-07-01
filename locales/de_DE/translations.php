@@ -68,7 +68,7 @@ return array(
     'No subscription' => 'Keine Abonnements',
     'remove' => 'löschen',
     'refresh' => 'aktualisieren',
-    'feed link' => 'Feed Adresse',
+    'feed link' => 'feed adresse',
     'New subscription' => 'Neue Abonnements',
     'Website or Feed URL' => 'Webseiten- oder Feed-URL',
     'Add' => 'Hinzufügen',
