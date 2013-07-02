@@ -394,6 +394,14 @@
             case 102:
                 bookmark_item();
                 break;
+
+            //vim like navigation
+            case 107:
+                open_previous_item();
+                break;
+            case 106:
+                open_next_item();
+                break;      
         }
     };
 
