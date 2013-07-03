@@ -376,32 +376,26 @@
     document.onkeypress = function(e) {
 
         switch (e.keyCode || e.which) {
-            case 112:
+            case 112: // p
+            case 107: // k
                 open_previous_item();
                 break;
-            case 110:
+            case 110: // n
+            case 106: // j
                 open_next_item();
                 break;
-            case 118:
+            case 118: // v
                 open_original_item();
                 break;
-            case 111:
+            case 111: // o
                 open_item();
                 break;
-            case 109:
+            case 109: // m
                 change_item_status();
                 break;
-            case 102:
+            case 102: // f
                 bookmark_item();
                 break;
-
-            //vim like navigation
-            case 107:
-                open_previous_item();
-                break;
-            case 106:
-                open_next_item();
-                break;      
         }
     };
 

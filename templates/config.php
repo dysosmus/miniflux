@@ -42,8 +42,8 @@
     <div class="alert alert-normal">
         <h3><?= t('Keyboard shortcuts') ?></h3>
         <ul>
-            <li><?= t('Previous item') ?> = <strong>p</strong></li>
-            <li><?= t('Next item') ?> = <strong>n</strong></li>
+            <li><?= t('Previous item') ?> = <strong>p</strong> <?= t('or') ?> <strong>j</strong></li>
+            <li><?= t('Next item') ?> = <strong>n</strong> <?= t('or') ?> <strong>k</strong></li>
             <li><?= t('Mark as read or unread') ?> = <strong>m</strong></li>
             <li><?= t('Open original link') ?> = <strong>v</strong></li>
             <li><?= t('Open item') ?> = <strong>o</strong></li>
