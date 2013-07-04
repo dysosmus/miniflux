@@ -103,7 +103,7 @@ By default, there is only 5 feeds updated in parallel.
 
 Your life is cluttered.
 
-### Why are there is no categories? Why is feature X missing?
+### Why are there no categories? Why is feature X missing?
 
 Miniflux is a minimalist software. Less is more.
 
