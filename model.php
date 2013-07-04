@@ -484,11 +484,12 @@ function get_config()
 }
 
 
-function get_user()
+function get_user($username)
 {
     return \PicoTools\singleton('db')
         ->table('config')
         ->columns('username', 'password', 'language')
+        ->eq('username', $username)
         ->findOne();
 }
 
@@ -506,7 +507,7 @@ function validate_login(array $values)
 
     if ($result) {
 
-        $user = get_user();
+        $user = get_user($values['username']);
 
         if ($user && \password_verify($values['password'], $user['password'])) {
 
