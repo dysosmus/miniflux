@@ -63,7 +63,7 @@ namespace PicoTools\Translator {
 
     function datetime($format, $timestamp)
     {
-        return strftime($format, $timestamp);
+        return strftime($format, (int) $timestamp);
     }
 
 
