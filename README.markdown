@@ -9,10 +9,10 @@ Features
 - Host anywhere (shared hosting, vps or localhost)
 - Easy setup => copy and paste and you are done!
 - CSS optimized for readability
-- Keep an history of read items
+- Keeps history of read items
 - Remove Feedburner Ads and analytics trackers
-- Import/Export OPML feeds
-- Feeds update by a cronjob or with the user interface in one click
+- Import/Export of OPML feeds
+- Feed updates via a cronjob or with the user interface with one click
 - Protected by a login/password (only one possible user)
 - Use secure headers (only external images and Youtube/Vimeo videos are allowed)
 - Open external links inside a new tab with a `rel="noreferrer"` attribute
@@ -58,8 +58,8 @@ Installation
 ------------
 
 1. You must have a web server with PHP installed (version 5.3.7 minimum) with the Sqlite and XML extensions
-2. Download the source code and copy the directory miniflux where you want
-3. Check if the directory data is writeable (Miniflux store everything inside a Sqlite database)
+2. Download the source code and copy the directory `miniflux` where you want
+3. Check if the directory `data` is writeable (Miniflux stores everything inside a Sqlite database)
 4. With your browser go to <http://yourpersonalserver/miniflux>
 5. The default login and password is **admin/admin**
 6. Start to use the software
@@ -67,7 +67,7 @@ Installation
 FAQ
 ----
 
-### How to update your feeds with a cronjob?
+### How do I update my feeds with a cronjob?
 
 You just need to be inside the directory `miniflux` and run the script `cronjob.php`.
 
@@ -94,16 +94,16 @@ Examples:
 Note: cronjob.php can also be called from the web; in this case specify the options as GET variables.
 Example: <http://yourpersonalserver/miniflux/cronjob.php?call-interval=4&update-interval=60>
 
-### How Miniflux update my feeds from the user interface?
+### How does Miniflux update my feeds from the user interface?
 
-Miniflux use an Ajax request to refresh each subscription.
+Miniflux uses an Ajax request to refresh each subscription.
 By default, there is only 5 feeds updated in parallel.
 
-### I have 600 subscriptions, how Miniflux handle that?
+### I have 600 subscriptions, can Miniflux handle that?
 
 Your life is cluttered.
 
-### Why there is no categories? Why the feature X is missing?
+### Why are there is no categories? Why is feature X missing?
 
 Miniflux is a minimalist software. Less is more.
 
@@ -115,6 +115,6 @@ You can report feeds that doesn't works properly too.
 
 ### Which browser is compatible with Miniflux?
 
-Miniflux is tested with the last version of Mozilla Firefox, Google Chrome and Safari.
+Miniflux is tested with the latest versions of Mozilla Firefox, Google Chrome and Safari.
 
 I don't use Microsoft products, then I have no idea if Miniflux works correctly with Internet Explorer.
