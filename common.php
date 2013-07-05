@@ -13,7 +13,7 @@ require 'model.php';
 const DB_VERSION    = 8;
 const APP_VERSION   = 'master';
 const APP_USERAGENT = 'Miniflux - http://miniflux.net';
-const HTTP_TIMEOUT  = 5;
+const HTTP_TIMEOUT  = 10;
 const LIMIT_ALL     = -1;
 
 
