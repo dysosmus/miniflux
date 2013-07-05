@@ -405,6 +405,7 @@ function mark_as_removed()
     \PicoTools\singleton('db')
         ->table('items')
         ->eq('status', 'read')
+        ->eq('bookmark', 0)
         ->save(array('status' => 'removed', 'content' => ''));
 }
 
