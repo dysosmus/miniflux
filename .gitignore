@@ -38,3 +38,7 @@ Thumbs.db
 *~
 *.lock
 *.out
+
+# App specific #
+################
+config.php

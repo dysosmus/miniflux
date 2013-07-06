@@ -394,7 +394,7 @@ Router\get_action('optimize-db', function() {
 Router\get_action('download-db', function() {
 
     Response\force_download('db.sqlite.gz');
-    Response\binary(gzencode(file_get_contents(get_db_filename())));
+    Response\binary(gzencode(file_get_contents(DB_FILENAME)));
 });
 
 
@@ -439,7 +439,7 @@ Router\get_action('config', function() {
     Response\html(Template\layout('config', array(
         'errors' => array(),
         'values' => Model\get_config(),
-        'db_size' => filesize(get_db_filename()),
+        'db_size' => filesize(DB_FILENAME),
         'languages' => Model\get_languages(),
         'autoflush_options' => Model\get_autoflush_options(),
         'paging_options' => Model\get_paging_options(),
@@ -472,7 +472,7 @@ Router\post_action('config', function() {
     Response\html(Template\layout('config', array(
         'errors' => $errors,
         'values' => $values,
-        'db_size' => filesize(get_db_filename()),
+        'db_size' => filesize(DB_FILENAME),
         'languages' => Model\get_languages(),
         'autoflush_options' => Model\get_autoflush_options(),
         'paging_options' => Model\get_paging_options(),

@@ -9,26 +9,20 @@ require 'vendor/PicoDb/Table.php';
 require 'schema.php';
 require 'model.php';
 
+if (file_exists('config.php')) require 'config.php';
 
-const DB_VERSION     = 9;
-const APP_VERSION    = 'master';
-const HTTP_TIMEOUT   = 10;
-
-
-function get_db_filename()
-{
-    return 'data/db.sqlite';
-}
-
+defined('APP_VERSION') or define('APP_VERSION', 'master');
+defined('HTTP_TIMEOUT') or define('HTTP_TIMEOUT', 10);
+defined('DB_FILENAME') or define('DB_FILENAME', 'data/db.sqlite');
 
 PicoTools\container('db', function() {
 
     $db = new PicoDb\Database(array(
         'driver' => 'sqlite',
-        'filename' => get_db_filename()
+        'filename' => DB_FILENAME
     ));
 
-    if ($db->schema()->check(DB_VERSION)) {
+    if ($db->schema()->check(Model\DB_VERSION)) {
 
         return $db;
     }
