@@ -23,7 +23,7 @@
             <p>
                 <?= Helper\get_host_from_url($item['url']) ?> |
                 <?= dt('%e %B %Y %k:%M', $item['updated']) ?> |
-                <a href="?action=bookmark&amp;value=0&amp;id=<?= $item_id ?>&amp;redirect=bookmarks"><?= t('remove bookmark') ?></a> |
+                <a href="?action=bookmark&amp;value=0&amp;id=<?= $item_id ?>&amp;redirect=bookmarks&amp;offset=<?= $offset ?>"><?= t('remove bookmark') ?></a> |
                 <a
                     href="<?= $item['url'] ?>"
                     id="original-<?= $item_id ?>"
@@ -39,11 +39,11 @@
 
     <nav id="items-paging">
     <?php if ($offset > 0): ?>
-        <a id="previous-page" href="?action=bookmarks&amp;offset=<?= ($offset - ITEMS_PER_PAGE) ?>">⇽ <?= t('Previous page') ?></a>
+        <a id="previous-page" href="?action=bookmarks&amp;offset=<?= ($offset - $items_per_page) ?>">⇽ <?= t('Previous page') ?></a>
     <?php endif ?>
     &nbsp;
-    <?php if (($nb_items - $offset) > ITEMS_PER_PAGE): ?>
-        <a id="next-page" href="?action=bookmarks&amp;offset=<?= ($offset + ITEMS_PER_PAGE) ?>"><?= t('Next page') ?> ⇾</a>
+    <?php if (($nb_items - $offset) > $items_per_page): ?>
+        <a id="next-page" href="?action=bookmarks&amp;offset=<?= ($offset + $items_per_page) ?>"><?= t('Next page') ?> ⇾</a>
     <?php endif ?>
     </nav>
 

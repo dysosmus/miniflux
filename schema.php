@@ -3,6 +3,12 @@
 namespace Schema;
 
 
+function version_9($pdo)
+{
+    $pdo->exec('ALTER TABLE config ADD COLUMN items_per_page INTEGER DEFAULT 100');
+}
+
+
 function version_8($pdo)
 {
     $pdo->exec('ALTER TABLE items ADD COLUMN bookmark INTEGER DEFAULT 0');
@@ -77,7 +83,7 @@ function version_1($pdo)
             title TEXT,
             author TEXT,
             content TEXT,
-            updated TEXT,
+            updated INTEGER,
             status TEXT,
             feed_id INTEGER,
             FOREIGN KEY(feed_id) REFERENCES feeds(id) ON DELETE CASCADE

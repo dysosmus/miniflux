@@ -18,6 +18,7 @@ use PicoTools\Template;
 Session\open(dirname($_SERVER['PHP_SELF']));
 
 
+// Called before each action
 Router\before(function($action) {
 
     if ($action !== 'login' && ! isset($_SESSION['user'])) {
@@ -54,6 +55,7 @@ Router\before(function($action) {
 });
 
 
+// Logout and destroy session
 Router\get_action('logout', function() {
 
     Session\close();
@@ -61,12 +63,10 @@ Router\get_action('logout', function() {
 });
 
 
+// Display form login
 Router\get_action('login', function() {
 
-    if (isset($_SESSION['user'])) {
-
-        Response\redirect('./index.php');
-    }
+    if (isset($_SESSION['user'])) Response\redirect('index.php');
 
     Response\html(Template\load('login', array(
         'errors' => array(),
@@ -75,15 +75,13 @@ Router\get_action('login', function() {
 });
 
 
+// Check credentials and redirect to unread items
 Router\post_action('login', function() {
 
     $values = Request\values();
     list($valid, $errors) = Model\validate_login($values);
 
-    if ($valid) {
-
-        Response\redirect('?action=default');
-    }
+    if ($valid) Response\redirect('?action=unread');
 
     Response\html(Template\load('login', array(
         'errors' => $errors,
@@ -92,6 +90,7 @@ Router\post_action('login', function() {
 });
 
 
+// Show item without bottom nav
 Router\get_action('show', function() {
 
     $id = Model\decode_item_id(Request\param('id'));
@@ -105,6 +104,7 @@ Router\get_action('show', function() {
 });
 
 
+// Show item with bottom nav
 Router\get_action('read', function() {
 
     $id = Model\decode_item_id(Request\param('id'));
@@ -121,30 +121,46 @@ Router\get_action('read', function() {
 });
 
 
+// Mark item as read and redirect to the listing page
 Router\get_action('mark-item-read', function() {
 
     $id = Model\decode_item_id(Request\param('id'));
+    $redirect = Request\param('redirect', 'unread');
+    $offset = Request\int_param('offset', 0);
+
     Model\set_item_read($id);
-    Response\Redirect('?action='.Request\param('redirect', 'default'));
+
+    Response\Redirect('?action='.$redirect.'&offset='.$offset);
 });
 
 
+// Mark item as unread and redirect to the listing page
 Router\get_action('mark-item-unread', function() {
 
     $id = Model\decode_item_id(Request\param('id'));
+    $redirect = Request\param('redirect', 'history');
+    $offset = Request\int_param('offset', 0);
+
     Model\set_item_unread($id);
-    Response\Redirect('?action='.Request\param('redirect', 'history'));
+
+    Response\Redirect('?action='.$redirect.'&offset='.$offset);
 });
 
 
+// Mark item as removed and redirect to the listing page
 Router\get_action('mark-item-removed', function() {
 
     $id = Model\decode_item_id(Request\param('id'));
+    $redirect = Request\param('redirect', 'history');
+    $offset = Request\int_param('offset', 0);
+
     Model\set_item_removed($id);
-    Response\Redirect('?action='.Request\param('redirect', 'history'));
+
+    Response\Redirect('?action='.$redirect.'&offset='.$offset);
 });
 
 
+// Ajax call to mark item read
 Router\post_action('mark-item-read', function() {
 
     $id = Model\decode_item_id(Request\param('id'));
@@ -153,6 +169,7 @@ Router\post_action('mark-item-read', function() {
 });
 
 
+// Ajax call to mark item unread
 Router\post_action('mark-item-unread', function() {
 
     $id = Model\decode_item_id(Request\param('id'));
@@ -161,6 +178,7 @@ Router\post_action('mark-item-unread', function() {
 });
 
 
+// Ajax call to bookmark an item
 Router\post_action('bookmark-item', function() {
 
     $id = Model\decode_item_id(Request\param('id'));
@@ -169,11 +187,25 @@ Router\post_action('bookmark-item', function() {
 });
 
 
+// Ajax call change item status
+Router\post_action('change-item-status', function() {
+
+    $id = Model\decode_item_id(Request\param('id'));
+
+    Response\json(array(
+        'item_id' => Model\encode_item_id($id),
+        'status' => Model\switch_item_status($id)
+    ));
+});
+
+
+// Add new bookmark
 Router\get_action('bookmark', function() {
 
     $param_id = Request\param('id');
     $id = Model\decode_item_id($param_id);
     $redirect = Request\param('redirect', 'unread');
+    $offset = Request\int_param('offset', 0);
 
     Model\set_bookmark_value($id, Request\int_param('value'));
 
@@ -186,52 +218,46 @@ Router\get_action('bookmark', function() {
         Response\Redirect('?action=read&id='.$param_id);
     }
 
-    Response\Redirect('?action='.$redirect);
+    Response\Redirect('?action='.$redirect.'&offset='.$offset);
 });
 
 
-Router\post_action('change-item-status', function() {
-
-    $id = Model\decode_item_id(Request\param('id'));
-
-    Response\json(array(
-        'item_id' => Model\encode_item_id($id),
-        'status' => Model\switch_item_status($id)
-    ));
-});
-
-
+// Display history page
 Router\get_action('history', function() {
 
     $offset = Request\int_param('offset', 0);
     $nb_items = Model\count_items('read');
 
     Response\html(Template\layout('history', array(
-        'items' => Model\get_read_items($offset, ITEMS_PER_PAGE),
+        'items' => Model\get_read_items($offset, Model\get_config_value('items_per_page')),
         'nb_items' => $nb_items,
         'offset' => $offset,
+        'items_per_page' => Model\get_config_value('items_per_page'),
         'menu' => 'history',
         'title' => t('History').' ('.$nb_items.')'
     )));
 });
 
 
+// Display bookmarks page
 Router\get_action('bookmarks', function() {
 
     $offset = Request\int_param('offset', 0);
     $nb_items = Model\count_bookmarks();
 
     Response\html(Template\layout('bookmarks', array(
-        'items' => Model\get_bookmarks($offset, ITEMS_PER_PAGE),
+        'items' => Model\get_bookmarks($offset, Model\get_config_value('items_per_page')),
         'nb_items' => $nb_items,
         'offset' => $offset,
+        'items_per_page' => Model\get_config_value('items_per_page'),
         'menu' => 'bookmarks',
         'title' => t('Bookmarks').' ('.$nb_items.')'
     )));
 });
 
 
-Router\get_action('confirm-remove', function() {
+// Confirmation box to remove a feed
+Router\get_action('confirm-remove-feed', function() {
 
     $id = Request\int_param('feed_id');
 
@@ -243,7 +269,8 @@ Router\get_action('confirm-remove', function() {
 });
 
 
-Router\get_action('remove', function() {
+// Remove a feed
+Router\get_action('remove-feed', function() {
 
     $id = Request\int_param('feed_id');
 
@@ -260,25 +287,22 @@ Router\get_action('remove', function() {
 });
 
 
+// Refresh one feed and redirect to unread items
 Router\get_action('refresh-feed', function() {
 
     $id = Request\int_param('feed_id');
-
-    if ($id) {
-
-        Model\update_feed($id);
-    }
+    if ($id) Model\update_feed($id);
 
     Response\redirect('?action=unread');
 });
 
 
+// Ajax call to refresh one feed
 Router\post_action('refresh-feed', function() {
 
     $id = Request\int_param('feed_id');
 
     if ($id) {
-
         Response\json(array('feed_id' => $id, 'result' => Model\update_feed($id)));
     }
 
@@ -286,6 +310,7 @@ Router\post_action('refresh-feed', function() {
 });
 
 
+// Mark all unread items as read
 Router\get_action('mark-as-read', function() {
 
     Model\mark_as_read();
@@ -293,6 +318,7 @@ Router\get_action('mark-as-read', function() {
 });
 
 
+// Confirmation box to flush history
 Router\get_action('confirm-flush-history', function() {
 
     Response\html(Template\layout('confirm_flush_items', array(
@@ -302,6 +328,7 @@ Router\get_action('confirm-flush-history', function() {
 });
 
 
+// Flush history
 Router\get_action('flush-history', function() {
 
     Model\mark_as_removed();
@@ -309,6 +336,7 @@ Router\get_action('flush-history', function() {
 });
 
 
+// Refresh all feeds, used when Javascript is disabled
 Router\get_action('refresh-all', function() {
 
     Model\update_feeds();
@@ -317,6 +345,7 @@ Router\get_action('refresh-all', function() {
 });
 
 
+// Display all feeds
 Router\get_action('feeds', function() {
 
     Response\html(Template\layout('feeds', array(
@@ -328,6 +357,7 @@ Router\get_action('feeds', function() {
 });
 
 
+// Display form to add one feed
 Router\get_action('add', function() {
 
     Response\html(Template\layout('add', array(
@@ -339,6 +369,7 @@ Router\get_action('add', function() {
 });
 
 
+// Add the feed
 Router\post_action('add', function() {
 
     if (Model\import_feed($_POST['url'])) {
@@ -359,6 +390,7 @@ Router\post_action('add', function() {
 });
 
 
+// Optimize the database manually
 Router\get_action('optimize-db', function() {
 
     \PicoTools\singleton('db')->getConnection()->exec('VACUUM');
@@ -366,6 +398,7 @@ Router\get_action('optimize-db', function() {
 });
 
 
+// Download the compressed database
 Router\get_action('download-db', function() {
 
     Response\force_download('db.sqlite.gz');
@@ -373,6 +406,7 @@ Router\get_action('download-db', function() {
 });
 
 
+// OPML export
 Router\get_action('export', function() {
 
     Response\force_download('feeds.opml');
@@ -380,6 +414,7 @@ Router\get_action('export', function() {
 });
 
 
+// OPML import form
 Router\get_action('import', function() {
 
     Response\html(Template\layout('import', array(
@@ -390,6 +425,7 @@ Router\get_action('import', function() {
 });
 
 
+// OPML importation
 Router\post_action('import', function() {
 
     if (Model\import_feeds(Request\file_content('file'))) {
@@ -405,6 +441,7 @@ Router\post_action('import', function() {
 });
 
 
+// Display preferences page
 Router\get_action('config', function() {
 
     Response\html(Template\layout('config', array(
@@ -413,12 +450,14 @@ Router\get_action('config', function() {
         'db_size' => filesize(get_db_filename()),
         'languages' => Model\get_languages(),
         'autoflush_options' => Model\get_autoflush_options(),
+        'paging_options' => Model\get_paging_options(),
         'menu' => 'config',
         'title' => t('Preferences')
     )));
 });
 
 
+// Update preferences
 Router\post_action('config', function() {
 
     $values = Request\values() + array('nocontent' => 0);
@@ -444,30 +483,30 @@ Router\post_action('config', function() {
         'db_size' => filesize(get_db_filename()),
         'languages' => Model\get_languages(),
         'autoflush_options' => Model\get_autoflush_options(),
+        'paging_options' => Model\get_paging_options(),
         'menu' => 'config',
         'title' => t('Preferences')
     )));
 });
 
 
+// Display unread items
 Router\notfound(function() {
 
     Model\autoflush();
 
     $offset = Request\int_param('offset', 0);
-    $items = Model\get_unread_items($offset, ITEMS_PER_PAGE);
+    $items = Model\get_unread_items($offset, Model\get_config_value('items_per_page'));
     $nb_items = Model\count_items('unread');;
 
-    if ($nb_items === 0) {
-
-        Response\redirect('?action=feeds&nothing_to_read=1');
-    }
+    if ($nb_items === 0) Response\redirect('?action=feeds&nothing_to_read=1');
 
     Response\html(Template\layout('unread_items', array(
         'items' => $items,
         'nb_items' => $nb_items,
         'nb_unread_items' => $nb_items,
         'offset' => $offset,
+        'items_per_page' => Model\get_config_value('items_per_page'),
         'title' => 'miniflux ('.$nb_items.')',
         'menu' => 'unread'
     )));

@@ -19,7 +19,7 @@
                 <a class="logo" href="?">mini<span>flux</span></a>
                 <ul>
                     <li <?= isset($menu) && $menu === 'unread' ? 'class="active"' : '' ?>>
-                        <a href="?action=default"><?= t('unread') ?> <span id="nav-counter"><?= isset($nb_unread_items) ? '('.$nb_unread_items.')' : '' ?></span></a>
+                        <a href="?action=unread"><?= t('unread') ?> <span id="nav-counter"><?= isset($nb_unread_items) ? '('.$nb_unread_items.')' : '' ?></span></a>
                     </li>
                     <li <?= isset($menu) && $menu === 'bookmarks' ? 'class="active"' : '' ?>>
                         <a href="?action=bookmarks"><?= t('bookmarks') ?></a>

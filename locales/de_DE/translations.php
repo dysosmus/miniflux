@@ -1,6 +1,7 @@
 <?php
 
 return array(
+    'Items per page' => 'Artikel pro Seite',
     'Previous page' => 'Vorheriger Seite',
     'Next page' => 'Nächster Seite',
     'Do not fetch the content of articles' => 'Lade die Inhalte der Feeds nicht',

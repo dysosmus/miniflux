@@ -25,13 +25,13 @@
             <p>
                 <?= Helper\get_host_from_url($item['url']) ?> |
                 <?= dt('%e %B %Y %k:%M', $item['updated']) ?> |
-                <a href="?action=mark-item-unread&amp;id=<?= $item_id ?>"><?= t('mark as unread') ?></a> |
+                <a href="?action=mark-item-unread&amp;id=<?= $item_id ?>&amp;offset=<?= $offset ?>"><?= t('mark as unread') ?></a> |
 
                 <?php if (! $item['bookmark']): ?>
-                    <a href="?action=bookmark&amp;value=1&amp;id=<?= $item_id ?>&amp;redirect=history"><?= t('bookmark') ?></a> |
+                    <a href="?action=bookmark&amp;value=1&amp;id=<?= $item_id ?>&amp;redirect=history&amp;offset=<?= $offset ?>"><?= t('bookmark') ?></a> |
                 <?php endif ?>
 
-                <a href="?action=mark-item-removed&amp;id=<?= $item_id ?>"><?= t('remove') ?></a> |
+                <a href="?action=mark-item-removed&amp;id=<?= $item_id ?>&amp;offset=<?= $offset ?>"><?= t('remove') ?></a> |
                 <a
                     href="<?= $item['url'] ?>"
                     id="original-<?= $item_id ?>"
@@ -47,11 +47,11 @@
 
     <nav id="items-paging">
     <?php if ($offset > 0): ?>
-        <a id="previous-page" href="?action=history&amp;offset=<?= ($offset - ITEMS_PER_PAGE) ?>">⇽ <?= t('Previous page') ?></a>
+        <a id="previous-page" href="?action=history&amp;offset=<?= ($offset - $items_per_page) ?>">⇽ <?= t('Previous page') ?></a>
     <?php endif ?>
     &nbsp;
-    <?php if (($nb_items - $offset) > ITEMS_PER_PAGE): ?>
-        <a id="next-page" href="?action=history&amp;offset=<?= ($offset + ITEMS_PER_PAGE) ?>"><?= t('Next page') ?> ⇾</a>
+    <?php if (($nb_items - $offset) > $items_per_page): ?>
+        <a id="next-page" href="?action=history&amp;offset=<?= ($offset + $items_per_page) ?>"><?= t('Next page') ?> ⇾</a>
     <?php endif ?>
     </nav>
 

@@ -15,11 +15,11 @@ else {
     $options = $_GET;
 }
 
-$limit = ! empty($options['limit']) && ctype_digit($options['limit']) ? (int) $options['limit'] : LIMIT_ALL;
+$limit = ! empty($options['limit']) && ctype_digit($options['limit']) ? (int) $options['limit'] : Model\LIMIT_ALL;
 $update_interval = ! empty($options['update-interval']) && ctype_digit($options['update-interval']) ? (int) $options['update-interval'] : null;
 $call_interval = ! empty($options['call-interval']) && ctype_digit($options['call-interval']) ? (int) $options['call-interval'] : null;
 
-if ($update_interval !== null && $call_interval !== null && $limit === LIMIT_ALL && $update_interval >= $call_interval) {
+if ($update_interval !== null && $call_interval !== null && $limit === Model\LIMIT_ALL && $update_interval >= $call_interval) {
 
     $feeds_count = \PicoTools\singleton('db')->table('feeds')->count();
     $limit = ceil($feeds_count / ($update_interval / $call_interval));

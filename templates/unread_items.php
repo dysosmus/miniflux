@@ -32,12 +32,12 @@
                 <?= dt('%e %B %Y %k:%M', $item['updated']) ?> |
 
                 <?php if ($item['bookmark']): ?>
-                    <a href="?action=bookmark&amp;value=0&amp;id=<?= $item_id ?>&amp;redirect=unread"><?= t('remove bookmark') ?></a> |
+                    <a id="bookmark-<?= $item_id ?>" href="?action=bookmark&amp;value=0&amp;id=<?= $item_id ?>&amp;redirect=unread&amp;offset=<?= $offset ?>"><?= t('remove bookmark') ?></a> |
                 <?php else: ?>
-                    <a href="?action=bookmark&amp;value=1&amp;id=<?= $item_id ?>&amp;redirect=unread"><?= t('bookmark') ?></a> |
+                    <a id="bookmark-<?= $item_id ?>" href="?action=bookmark&amp;value=1&amp;id=<?= $item_id ?>&amp;redirect=unread&amp;offset=<?= $offset ?>"><?= t('bookmark') ?></a> |
                 <?php endif ?>
 
-                <a href="?action=mark-item-read&amp;id=<?= $item_id ?>"><?= t('mark as read') ?></a> |
+                <a href="?action=mark-item-read&amp;id=<?= $item_id ?>&amp;offset=<?= $offset ?>"><?= t('mark as read') ?></a> |
                 <a
                     href="<?= $item['url'] ?>"
                     id="original-<?= $item_id ?>"
@@ -54,11 +54,11 @@
 
     <nav id="items-paging">
     <?php if ($offset > 0): ?>
-        <a id="previous-page" href="?action=unread&amp;offset=<?= ($offset - ITEMS_PER_PAGE) ?>">⇽ <?= t('Previous page') ?></a>
+        <a id="previous-page" href="?action=unread&amp;offset=<?= ($offset - $items_per_page) ?>">⇽ <?= t('Previous page') ?></a>
     <?php endif ?>
     &nbsp;
-    <?php if (($nb_items - $offset) > ITEMS_PER_PAGE): ?>
-        <a id="next-page" href="?action=unread&amp;offset=<?= ($offset + ITEMS_PER_PAGE) ?>"><?= t('Next page') ?> ⇾</a>
+    <?php if (($nb_items - $offset) > $items_per_page): ?>
+        <a id="next-page" href="?action=unread&amp;offset=<?= ($offset + $items_per_page) ?>"><?= t('Next page') ?> ⇾</a>
     <?php endif ?>
     </nav>
 

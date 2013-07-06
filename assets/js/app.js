@@ -58,9 +58,9 @@
         if (item) {
 
             var item_id = item.getAttribute("data-item-id");
-            var redirect = item.getAttribute("data-item-page");
+            var link = document.getElementById("bookmark-" + item_id);
 
-            window.location = "?action=bookmark&value=1&id=" + item_id + "&redirect=" + redirect;
+            if (link) link.click();
         }
     }
 
@@ -354,11 +354,7 @@
 
     function is_listing()
     {
-        if (document.getElementById("listing")) {
-
-            return true;
-        }
-
+        if (document.getElementById("listing")) return true;
         return false;
     }
 

@@ -28,7 +28,7 @@
             <p>
                 <a href="<?= $feed['site_url'] ?>" rel="noreferrer" target="_blank"><?= Helper\get_host_from_url($feed['site_url']) ?></a> |
                 <a href="<?= Helper\escape($feed['feed_url']) ?>" rel="noreferrer" target="_blank"><?= t('feed link') ?></a> |
-                <a href="?action=confirm-remove&amp;feed_id=<?= $feed['id'] ?>"><?= t('remove') ?></a> |
+                <a href="?action=confirm-remove-feed&amp;feed_id=<?= $feed['id'] ?>"><?= t('remove') ?></a> |
                 <a href="?action=refresh-feed&amp;feed_id=<?= $feed['id'] ?>" data-feed-id="<?= $feed['id'] ?>" data-action="refresh-feed"><?= t('refresh') ?></a>
             </p>
         </article>

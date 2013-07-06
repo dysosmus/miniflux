@@ -13,12 +13,17 @@ require_once 'vendor/SimpleValidator/Validators/MaxLength.php';
 require_once 'vendor/SimpleValidator/Validators/MinLength.php';
 require_once 'vendor/SimpleValidator/Validators/Integer.php';
 require_once 'vendor/SimpleValidator/Validators/Equals.php';
+require_once 'vendor/SimpleValidator/Validators/Integer.php';
 
 use SimpleValidator\Validator;
 use SimpleValidator\Validators;
 use PicoFeed\Import;
 use PicoFeed\Reader;
 use PicoFeed\Export;
+
+
+const HTTP_USERAGENT = 'Miniflux - http://miniflux.net';
+const LIMIT_ALL      = -1;
 
 
 function get_languages()
@@ -39,6 +44,18 @@ function get_autoflush_options()
         '5' => t('After %d days', 5),
         '15' => t('After %d days', 15),
         '30' => t('After %d days', 30)
+    );
+}
+
+
+function get_paging_options()
+{
+    return array(
+        50 => 50,
+        100 => 100,
+        150 => 150,
+        200 => 200,
+        250 => 250,
     );
 }
 
@@ -97,7 +114,7 @@ function import_feeds($content)
 function import_feed($url)
 {
     $reader = new Reader;
-    $resource = $reader->download($url, '', '', HTTP_TIMEOUT, APP_USERAGENT);
+    $resource = $reader->download($url, '', '', HTTP_TIMEOUT, HTTP_USERAGENT);
 
     $parser = $reader->getParser();
 
@@ -157,16 +174,13 @@ function update_feed($feed_id)
         $feed['last_modified'],
         $feed['etag'],
         HTTP_TIMEOUT,
-        APP_USERAGENT
+        HTTP_USERAGENT
     );
 
     // Update the `last_checked` column each time, HTTP cache or not
     update_feed_last_checked($feed_id);
 
-    if (! $resource->isModified()) {
-
-        return true;
-    }
+    if (! $resource->isModified()) return true;
 
     $parser = $reader->getParser();
 
@@ -437,7 +451,7 @@ function mark_as_removed()
 
 function autoflush()
 {
-    $autoflush = \PicoTools\singleton('db')->table('config')->findOneColumn('autoflush');
+    $autoflush = get_config_value('autoflush');
 
     if ($autoflush) {
 
@@ -453,7 +467,7 @@ function autoflush()
 
 function update_items($feed_id, array $items)
 {
-    $nocontent = (bool) \PicoTools\singleton('db')->table('config')->findOneColumn('nocontent');
+    $nocontent = (bool) get_config_value('nocontent');
 
     $items_in_feed = array();
     $db = \PicoTools\singleton('db');
@@ -501,11 +515,32 @@ function update_items($feed_id, array $items)
 }
 
 
+function get_config_value($name)
+{
+    if (! isset($_SESSION)) {
+
+        return \PicoTools\singleton('db')->table('config')->findOneColumn($name);
+    }
+    else {
+
+        if (! isset($_SESSION['config'])) {
+            $_SESSION['config'] = get_config();
+        }
+
+        if (isset($_SESSION['config'][$name])) {
+            return $_SESSION['config'][$name];
+        }
+    }
+
+    return null;
+}
+
+
 function get_config()
 {
     return \PicoTools\singleton('db')
         ->table('config')
-        ->columns('username', 'language', 'autoflush', 'nocontent')
+        ->columns('username', 'language', 'autoflush', 'nocontent', 'items_per_page')
         ->findOne();
 }
 
@@ -538,7 +573,9 @@ function validate_login(array $values)
         if ($user && \password_verify($values['password'], $user['password'])) {
 
             unset($user['password']);
+
             $_SESSION['user'] = $user;
+            $_SESSION['config'] = get_config();
         }
         else {
 
@@ -565,7 +602,9 @@ function validate_config_update(array $values)
             new Validators\MinLength('password', t('The minimum length is 6 characters'), 6),
             new Validators\Required('confirmation', t('The confirmation is required')),
             new Validators\Equals('password', 'confirmation', t('Passwords doesn\'t match')),
-            new Validators\Required('autoflush', t('Value required'))
+            new Validators\Required('autoflush', t('Value required')),
+            new Validators\Required('items_per_page', t('Value required')),
+            new Validators\Integer('items_per_page', t('Must be an integer')),
         ));
     }
     else {
@@ -595,6 +634,9 @@ function save_config(array $values)
     }
 
     unset($values['confirmation']);
+
+    // Reload configuration in session
+    $_SESSION['config'] = $values;
 
     $_SESSION['user']['language'] = $values['language'];
     unset($_COOKIE['language']);

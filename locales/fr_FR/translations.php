@@ -1,6 +1,7 @@
 <?php
 
 return array(
+    'Items per page' => 'Nombre d\'éléments par page',
     'Previous page' => 'Page précédente',
     'Next page' => 'Page suivante',
     'Do not fetch the content of articles' => 'Ne pas récupérer le contenu des articles',
