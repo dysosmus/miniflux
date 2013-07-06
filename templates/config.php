@@ -19,7 +19,7 @@
     <?= Helper\form_label(t('Remove automatically read items'), 'autoflush') ?>
     <?= Helper\form_select('autoflush', $autoflush_options, $values, $errors) ?><br/>
 
-    <?= Helper\form_checkbox('nocontent', t('Do not fetch the content of articles'), 1, $values['nocontent']) ?><br />
+    <?= Helper\form_checkbox('nocontent', t('Do not fetch the content of articles'), 1, isset($values['nocontent']) ? $values['nocontent'] : false) ?><br />
 
     <div class="form-actions">
         <input type="submit" value="<?= t('Save') ?>" class="btn btn-blue"/>
