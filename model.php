@@ -624,6 +624,7 @@ function validate_config_update(array $values)
 
 function save_config(array $values)
 {
+    // Update the password if needed
     if (! empty($values['password'])) {
 
         $values['password'] = \password_hash($values['password'], PASSWORD_BCRYPT);
@@ -638,9 +639,7 @@ function save_config(array $values)
     // Reload configuration in session
     $_SESSION['config'] = $values;
 
-    $_SESSION['user']['language'] = $values['language'];
-    unset($_COOKIE['language']);
-
+    // Reload translations for flash session message
     \PicoTools\Translator\load($values['language']);
 
     // If the user does not want content of feeds, remove it in previous ones

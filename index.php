@@ -26,27 +26,19 @@ Router\before(function($action) {
         Response\redirect('?action=login');
     }
 
-    $language = 'en_US';
+    // Load translations
+    $language = Model\get_config_value('language') ?: 'en_US';
+    if ($language !== 'en_US') PicoTools\Translator\load($language);
 
-    if (isset($_SESSION['user']['language'])) {
-
-        $language = $_SESSION['user']['language'];
-    }
-    else if (isset($_COOKIE['language'])) {
-
-        $language = $_COOKIE['language'];
-    }
-
-    if ($language !== 'en_US') {
-
-        PicoTools\Translator\load($language);
-    }
-
-    setcookie('language', $language, time()+365*24*3600, dirname($_SERVER['PHP_SELF']));
-
+    // HTTP secure headers
     Response\csp(array(
         'img-src' => '*',
-        'frame-src' => 'http://www.youtube.com https://www.youtube.com http://player.vimeo.com https://player.vimeo.com'
+        'frame-src' => implode(' ', array(
+            'http://www.youtube.com',
+            'https://www.youtube.com',
+            'http://player.vimeo.com',
+            'https://player.vimeo.com',
+        ))
     ));
 
     Response\xframe();
