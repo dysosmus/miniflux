@@ -2,6 +2,8 @@
 
 namespace PicoFeed;
 
+require_once __DIR__.'/Logging.php';
+
 class RemoteResource
 {
     public $user_agent;
@@ -69,7 +71,7 @@ class RemoteResource
 
     public function execute()
     {
-        $response = $this->makeRequest();
+        $response = $this->doRequest();
 
         $this->etag = isset($response['headers']['ETag']) ? $response['headers']['ETag'] : '';
         $this->last_modified = isset($response['headers']['Last-Modified']) ? $response['headers']['Last-Modified'] : '';
@@ -98,7 +100,7 @@ class RemoteResource
     }
 
 
-    public function makeRequest()
+    public function doRequest()
     {
         $http_code = 200;
         $http_body = '';
@@ -109,6 +111,10 @@ class RemoteResource
             $http_body = @file_get_contents($this->url);
         }
         else {
+
+            Logging::log('Fetch URL: '.$this->url);
+            Logging::log('Etag: '.$this->etag);
+            Logging::log('Last-Modified: '.$this->last_modified);
 
             $headers = array('Connection: close');
 
@@ -131,6 +137,25 @@ class RemoteResource
             curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
             $http_response = curl_exec($ch);
+
+            if (curl_errno($ch)) {
+
+                Logging::log('cURL error: '.curl_error($ch));
+
+                curl_close($ch);
+
+                return array(
+                    'status' => $http_code,
+                    'body' => $http_body,
+                    'headers' => $http_headers
+                );
+            }
+
+            Logging::log('cURL total time: '.curl_getinfo($ch, CURLINFO_TOTAL_TIME));
+            Logging::log('cURL dns lookup time: '.curl_getinfo($ch, CURLINFO_NAMELOOKUP_TIME));
+            Logging::log('cURL connect time: '.curl_getinfo($ch, CURLINFO_CONNECT_TIME));
+            Logging::log('cURL speed download: '.curl_getinfo($ch, CURLINFO_SPEED_DOWNLOAD));
+
             $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
             $http_body = '';
             $http_headers = array();
@@ -160,6 +185,13 @@ class RemoteResource
             }
 
             $http_body = implode("\r\n", array_splice($lines, $i + 1));
+        }
+
+        Logging::log('HTTP status code: '.$http_code);
+
+        foreach ($http_headers as $header_name => $header_value) {
+
+            Logging::log('HTTP headers: '.$header_name.' => '.$header_value);
         }
 
         return array(

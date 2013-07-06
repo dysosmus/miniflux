@@ -26,3 +26,4 @@ if ($update_interval !== null && $call_interval !== null && $limit === Model\LIM
 }
 
 Model\update_feeds($limit);
+Model\write_debug();

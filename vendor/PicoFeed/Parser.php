@@ -2,6 +2,7 @@
 
 namespace PicoFeed;
 
+require_once __DIR__.'/Logging.php';
 require_once __DIR__.'/Filter.php';
 require_once __DIR__.'/Encoding.php';
 
@@ -14,7 +15,6 @@ abstract class Parser
     public $title = '';
     public $updated = '';
     public $items = array();
-    public $debug = false;
 
 
     abstract public function execute();
@@ -47,17 +47,21 @@ abstract class Parser
     }
 
 
-    public function displayXmlErrors()
+    public function getXmlErrors()
     {
+        $errors = array();
+
         foreach(\libxml_get_errors() as $error) {
 
-            printf("Message: %s\nLine: %d\nColumn: %d\nCode: %d\n",
+            $errors[] = sprintf('XML error: %s (Line: %d - Column: %d - Code: %d)',
                 $error->message,
                 $error->line,
                 $error->column,
                 $error->code
             );
         }
+
+        return implode(', ', $errors);
     }
 
 

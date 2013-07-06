@@ -284,7 +284,7 @@ Router\get_action('refresh-feed', function() {
 
     $id = Request\int_param('feed_id');
     if ($id) Model\update_feed($id);
-
+    Model\write_debug();
     Response\redirect('?action=unread');
 });
 
@@ -292,13 +292,15 @@ Router\get_action('refresh-feed', function() {
 // Ajax call to refresh one feed
 Router\post_action('refresh-feed', function() {
 
-    $id = Request\int_param('feed_id');
+    $id = Request\int_param('feed_id', 0);
 
     if ($id) {
-        Response\json(array('feed_id' => $id, 'result' => Model\update_feed($id)));
+
+        $result = Model\update_feed($id);
+        Model\write_debug();
     }
 
-    Response\json(array('feed_id' => 0, 'result' => false));
+    Response\json(array('feed_id' => $id, 'result' => $result));
 });
 
 
@@ -332,6 +334,8 @@ Router\get_action('flush-history', function() {
 Router\get_action('refresh-all', function() {
 
     Model\update_feeds();
+    Model\write_debug();
+
     Session\flash(t('Your subscriptions are updated'));
     Response\redirect('?action=unread');
 });
@@ -364,7 +368,10 @@ Router\get_action('add', function() {
 // Add the feed
 Router\post_action('add', function() {
 
-    if (Model\import_feed($_POST['url'])) {
+    $result = Model\import_feed($_POST['url']);
+    Model\write_debug();
+
+    if ($result) {
 
         Session\flash(t('Subscription added successfully.'));
         Response\redirect('?action=feeds');

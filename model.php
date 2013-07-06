@@ -61,6 +61,19 @@ function get_paging_options()
 }
 
 
+function write_debug()
+{
+    if (DEBUG) {
+
+        file_put_contents(
+            DEBUG_DIRECTORY.'/miniflux_'.date('YmdH').'.debug',
+            var_export(\PicoFeed\Logging::$messages, true).PHP_EOL,
+            FILE_APPEND | LOCK_EX
+        );
+    }
+}
+
+
 function encode_item_id($input)
 {
     return strtr(base64_encode($input), '+/=', '-_,');

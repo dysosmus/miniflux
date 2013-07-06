@@ -140,3 +140,5 @@ Actually, the following constants can be overrided:
 - `HTTP_TIMEOUT` => default value is 10 seconds
 - `APP_VERSION` => default value is master
 - `DB_FILENAME` => default value is `data/db.sqlite`
+- `DEBUG` => default is false (enable logs dump of picoFeed)
+- `DEBUG_DIRECTORY` => default is /tmp (place to store log files)

@@ -11,7 +11,7 @@ class Rss10 extends \PicoFeed\Parser
 
         if ($xml === false) {
 
-            if ($this->debug) $this->displayXmlErrors();
+            \PicoFeed\Logging::log($this->getXmlErrors());
             return false;
         }
 
