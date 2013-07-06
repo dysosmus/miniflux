@@ -501,10 +501,6 @@ nav .active a {
     color: #ddd;
 }
 
-.item-status-read {
-    opacity: 0.4;
-}
-
 #items-paging {
     margin-top: 50px;
     font-size: 75%;

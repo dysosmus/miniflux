@@ -11,7 +11,7 @@
     <section class="items">
     <?php foreach ($items as $item): ?>
         <?php $item_id = Model\encode_item_id($item['id']) ?>
-        <article id="item-<?= $item_id ?>" data-item-id="<?= $item_id ?>" class="<?= $item['status'] == 'read' ? 'item-status-read' : '' ?>">
+        <article id="item-<?= $item_id ?>" data-item-id="<?= $item_id ?>">
             <h2>
                 <a
                     href="?action=show&amp;id=<?= $item_id ?>"

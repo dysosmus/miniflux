@@ -291,6 +291,7 @@ function count_bookmarks()
     return \PicoTools\singleton('db')
         ->table('items')
         ->eq('bookmark', 1)
+        ->in('status', array('read', 'unread'))
         ->count();
 }
 
