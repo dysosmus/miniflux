@@ -37,6 +37,12 @@ if (! extension_loaded('pdo_sqlite')) {
     die('PHP extension required: pdo_sqlite');
 }
 
+// Check for curl
+if (! function_exists('curl_init')) {
+
+    die('PHP extension required: curl');
+}
+
 // Check if /data is writeable
 if (! is_writable('data')) {
 
