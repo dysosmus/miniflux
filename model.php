@@ -249,7 +249,7 @@ function remove_feed($feed_id)
 }
 
 
-function get_unread_items()
+function get_unread_items($offset = null, $limit = null)
 {
     return \PicoTools\singleton('db')
         ->table('items')
@@ -257,11 +257,22 @@ function get_unread_items()
         ->join('feeds', 'id', 'feed_id')
         ->eq('status', 'unread')
         ->desc('updated')
+        ->offset($offset)
+        ->limit($limit)
         ->findAll();
 }
 
 
-function get_read_items()
+function count_items($status)
+{
+    return \PicoTools\singleton('db')
+        ->table('items')
+        ->eq('status', $status)
+        ->count();
+}
+
+
+function get_read_items($offset = null, $limit = null)
 {
     return \PicoTools\singleton('db')
         ->table('items')
@@ -269,11 +280,22 @@ function get_read_items()
         ->join('feeds', 'id', 'feed_id')
         ->eq('status', 'read')
         ->desc('updated')
+        ->offset($offset)
+        ->limit($limit)
         ->findAll();
 }
 
 
-function get_bookmarks()
+function count_bookmarks()
+{
+    return \PicoTools\singleton('db')
+        ->table('items')
+        ->eq('bookmark', 1)
+        ->count();
+}
+
+
+function get_bookmarks($offset = null, $limit = null)
 {
     return \PicoTools\singleton('db')
         ->table('items')
@@ -282,6 +304,8 @@ function get_bookmarks()
         ->in('status', array('read', 'unread'))
         ->eq('bookmark', 1)
         ->desc('updated')
+        ->offset($offset)
+        ->limit($limit)
         ->findAll();
 }
 

@@ -48,6 +48,8 @@
             <li><?= t('Open original link') ?> = <strong>v</strong></li>
             <li><?= t('Open item') ?> = <strong>o</strong></li>
             <li><?= t('Bookmark item') ?> = <strong>f</strong></li>
+            <li><?= t('Previous page') ?> = <strong>h</strong></li>
+            <li><?= t('Next page') ?> = <strong>l</strong></li>
         </ul>
     </div>
     <div class="alert alert-normal">

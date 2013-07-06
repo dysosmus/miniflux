@@ -505,6 +505,12 @@ nav .active a {
     opacity: 0.4;
 }
 
+#items-paging {
+    margin-top: 50px;
+    font-size: 75%;
+    text-align: center;
+}
+
 /* other pages */
 section li {
     margin-left: 15px;

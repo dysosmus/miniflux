@@ -5,7 +5,7 @@
 <?php else: ?>
 
     <div class="page-header">
-        <h2><?= t('Bookmarks') ?></h2>
+        <h2><?= t('Bookmarks') ?> (<?= $nb_items ?>)</h2>
     </div>
 
     <section class="items">
@@ -36,6 +36,17 @@
             </p>
         </article>
     <?php endforeach ?>
+
+    <nav id="items-paging">
+    <?php if ($offset > 0): ?>
+        <a id="previous-page" href="?action=bookmarks&amp;offset=<?= ($offset - ITEMS_PER_PAGE) ?>">⇽ <?= t('Previous page') ?></a>
+    <?php endif ?>
+    &nbsp;
+    <?php if (($nb_items - $offset) > ITEMS_PER_PAGE): ?>
+        <a id="next-page" href="?action=bookmarks&amp;offset=<?= ($offset + ITEMS_PER_PAGE) ?>"><?= t('Next page') ?> ⇾</a>
+    <?php endif ?>
+    </nav>
+
     </section>
 
 <?php endif ?>

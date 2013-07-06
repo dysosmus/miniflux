@@ -203,20 +203,30 @@ Router\post_action('change-item-status', function() {
 
 Router\get_action('history', function() {
 
+    $offset = Request\int_param('offset', 0);
+    $nb_items = Model\count_items('read');
+
     Response\html(Template\layout('history', array(
-        'items' => Model\get_read_items(),
+        'items' => Model\get_read_items($offset, ITEMS_PER_PAGE),
+        'nb_items' => $nb_items,
+        'offset' => $offset,
         'menu' => 'history',
-        'title' => t('History')
+        'title' => t('History').' ('.$nb_items.')'
     )));
 });
 
 
 Router\get_action('bookmarks', function() {
 
+    $offset = Request\int_param('offset', 0);
+    $nb_items = Model\count_bookmarks();
+
     Response\html(Template\layout('bookmarks', array(
-        'items' => Model\get_bookmarks(),
+        'items' => Model\get_bookmarks($offset, ITEMS_PER_PAGE),
+        'nb_items' => $nb_items,
+        'offset' => $offset,
         'menu' => 'bookmarks',
-        'title' => t('Bookmarks')
+        'title' => t('Bookmarks').' ('.$nb_items.')'
     )));
 });
 
@@ -411,7 +421,7 @@ Router\get_action('config', function() {
 
 Router\post_action('config', function() {
 
-    $values = Request\values();
+    $values = Request\values() + array('nocontent' => 0);
     list($valid, $errors) = Model\validate_config_update($values);
 
     if ($valid) {
@@ -444,8 +454,9 @@ Router\notfound(function() {
 
     Model\autoflush();
 
-    $items = Model\get_unread_items();
-    $nb_items = count($items);
+    $offset = Request\int_param('offset', 0);
+    $items = Model\get_unread_items($offset, ITEMS_PER_PAGE);
+    $nb_items = Model\count_items('unread');;
 
     if ($nb_items === 0) {
 
@@ -455,6 +466,8 @@ Router\notfound(function() {
     Response\html(Template\layout('unread_items', array(
         'items' => $items,
         'nb_items' => $nb_items,
+        'nb_unread_items' => $nb_items,
+        'offset' => $offset,
         'title' => 'miniflux ('.$nb_items.')',
         'menu' => 'unread'
     )));

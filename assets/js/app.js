@@ -176,6 +176,20 @@
     }
 
 
+    function open_next_page()
+    {
+        var link = document.getElementById("next-page");
+        if (link) link.click();
+    }
+
+
+    function open_previous_page()
+    {
+        var link = document.getElementById("previous-page");
+        if (link) link.click();
+    }
+
+
     function remove_item(item_id)
     {
         var item = document.getElementById("item-" + item_id);
@@ -395,6 +409,12 @@
                 break;
             case 102: // f
                 bookmark_item();
+                break;
+            case 104: // h
+                open_previous_page();
+                break
+            case 108: // l
+                open_next_page();
                 break;
         }
     };

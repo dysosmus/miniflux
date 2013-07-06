@@ -10,11 +10,12 @@ require 'schema.php';
 require 'model.php';
 
 
-const DB_VERSION    = 8;
-const APP_VERSION   = 'master';
-const APP_USERAGENT = 'Miniflux - http://miniflux.net';
-const HTTP_TIMEOUT  = 10;
-const LIMIT_ALL     = -1;
+const DB_VERSION     = 8;
+const APP_VERSION    = 'master';
+const APP_USERAGENT  = 'Miniflux - http://miniflux.net';
+const HTTP_TIMEOUT   = 10;
+const LIMIT_ALL      = -1;
+const ITEMS_PER_PAGE = 80;
 
 
 function get_db_filename()

@@ -1,6 +1,8 @@
 <?php
 
 return array(
+    'Previous page' => 'Page précédente',
+    'Next page' => 'Page suivante',
     'Do not fetch the content of articles' => 'Ne pas récupérer le contenu des articles',
     'Remove automatically read items' => 'Supprimer automatiquement les éléments lus',
     'Never' => 'Jamais',
@@ -51,7 +53,7 @@ return array(
     'No history' => 'Aucun historique',
     'mark as unread' => 'marquer comme non lu',
     'History' => 'Historique',
-    'flush these items' => 'supprimer ces éléments',
+    'flush all items' => 'supprimer tous les éléments',
     'Item not found' => 'Élément introuvable',
     'Unread items' => 'Éléments non lus',
     'Next' => 'Suivant',

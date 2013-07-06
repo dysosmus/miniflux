@@ -1,6 +1,8 @@
 <?php
 
 return array(
+    'Previous page' => 'Vorheriger Seite',
+    'Next page' => 'Nächster Seite',
     'Do not fetch the content of articles' => 'Lade die Inhalte der Feeds nicht',
     'Remove automatically read items' => 'Lösche gelesene Artikel automatisch',
     'Never' => 'Nie',
@@ -51,7 +53,7 @@ return array(
     'No history' => 'Kein Verlauf',
     'mark as unread' => 'als ungelesen markieren',
     'History' => 'Verlauf',
-    'flush these items' => 'diese Einträge löschen',
+    'flush all items' => 'diese Einträge löschen',
     'Item not found' => 'Eintrag nicht gefunden',
     'Unread items' => 'Ungelesene Einträge',
     'Next' => 'Weiter',
