@@ -36,7 +36,7 @@ a:focus {
 }
 
 a:hover {
-	color: #333;
+    color: #333;
     text-decoration: none;
 }
 
@@ -369,8 +369,8 @@ nav .active a {
 .items article {
     border: 1px dotted #ddd;
     margin-bottom: 20px;
-	padding: 5px;
-	background-color: #fff;
+    padding: 5px;
+    background-color: #fff;
 }
 
 .items h2 {
@@ -406,8 +406,13 @@ nav .active a {
 }
 
 .items #current-item {
-	border: 3px solid #bce;
+    border: 3px solid #bce;
     padding: 3px;
+}
+
+.items article:hover .preview,
+.items #current-item .preview {
+    color: #555;
 }
 
 /* item */
