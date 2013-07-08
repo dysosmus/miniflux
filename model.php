@@ -32,7 +32,8 @@ function get_languages()
     return array(
         'en_US' => t('English'),
         'fr_FR' => t('French'),
-        'de_DE' => t('German')
+        'de_DE' => t('German'),
+        'it_IT' => t('Italian')
     );
 }
 
