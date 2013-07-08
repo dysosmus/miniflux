@@ -33,8 +33,25 @@ License
 Authors
 -------
 
-- Original author: [Frédéric Guillot](http://fredericguillot.com/)
-- Contributors: [Pull requesters](https://github.com/fguillot/miniflux/pulls?direction=desc&page=1&sort=created&state=closed) and [Bug reporters](https://github.com/fguillot/miniflux/issues?page=1&state=closed)
+Original author: [Frédéric Guillot](http://fredericguillot.com/)
+
+### Contributors
+
+People who sent one or many pull-requests:
+
+- André Kelpe: https://github.com/fs111
+- Ayodio: https://github.com/ayodio
+- Derjus: https://github.com/derjus
+- Eauland: https://github.com/eauland
+- Félix: https://github.com/dysosmus
+- Horsely: https://github.com/horsley
+- Luca Marra: https://github.com/facciocose
+- MonsieurPaulLeBoulanger: https://github.com/MonsieurPaulLeBoulanger
+- Necku: https://github.com/Necku
+- Thiriot Christophe: https://github.com/doubleface
+- Ygbillet: https://github.com/ygbillet
+
+PS: Many people sent a bug report too (see [issues tracker(https://github.com/fguillot/miniflux/issues)])
 
 Requirements
 ------------
