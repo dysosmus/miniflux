@@ -19,6 +19,7 @@ Features
 - Mobile CSS (responsive design)
 - Keyboard shortcuts
 - Basic bookmarks
+- Translated in English, French, German, Italian and Simplified Chinese
 
 Todo and known bugs
 -------------------
@@ -51,7 +52,16 @@ People who sent one or many pull-requests:
 - Thiriot Christophe: https://github.com/doubleface
 - Ygbillet: https://github.com/ygbillet
 
-PS: Many people sent a bug report too (see [issues tracker(https://github.com/fguillot/miniflux/issues)])
+PS: Many people sent a bug report too (see [issues tracker](https://github.com/fguillot/miniflux/issues)])
+
+Roadmap
+-------
+
+- http://miniflux.net/roadmap.html
+
+ChangeLog
+
+- http://miniflux.net/changes.html
 
 Requirements
 ------------
