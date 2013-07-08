@@ -33,7 +33,8 @@ function get_languages()
         'en_US' => t('English'),
         'fr_FR' => t('French'),
         'de_DE' => t('German'),
-        'it_IT' => t('Italian')
+        'it_IT' => t('Italian'),
+        'zh_CN' => t('Simplified Chinese'),
     );
 }
 
