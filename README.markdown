@@ -52,7 +52,7 @@ People who sent one or many pull-requests:
 - Thiriot Christophe: https://github.com/doubleface
 - Ygbillet: https://github.com/ygbillet
 
-PS: Many people sent a bug report too (see [issues tracker](https://github.com/fguillot/miniflux/issues)])
+PS: Many people sent a bug report too (see [issues tracker](https://github.com/fguillot/miniflux/issues))
 
 Roadmap
 -------
@@ -60,6 +60,7 @@ Roadmap
 - http://miniflux.net/roadmap.html
 
 ChangeLog
+---------
 
 - http://miniflux.net/changes.html
 
