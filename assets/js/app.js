@@ -275,9 +275,19 @@
         if (item) switch_status(item.getAttribute("data-item-id"));
     }
 
+    function scroll_page_to(item) {
+        var clientHeight = pageYOffset + document.documentElement.clientHeight;
+        var itemPosition = item.offsetTop + item.offsetHeight;
+        if (clientHeight - itemPosition < 0 || clientHeight - item.offsetTop > document.documentElement.clientHeight) {
+            scrollTo(0, item.offsetTop - 10);
+        }
+    }
 
     function set_links_item(item_id)
     {
+        var link = document.getElementById("current-item");
+        if (link) scroll_page_to(link);
+
         var link = document.getElementById("original-item");
         if (link) link.id = "original-" + link.getAttribute("data-item-id");
 
