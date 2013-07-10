@@ -72,7 +72,7 @@ function version_1($pdo)
             id INTEGER PRIMARY KEY,
             site_url TEXT,
             feed_url TEXT UNIQUE,
-            title TEXT collate nocase
+            title TEXT COLLATE NOCASE
         )
     ');
 
