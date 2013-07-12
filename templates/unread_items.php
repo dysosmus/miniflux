@@ -14,11 +14,12 @@
     <section class="items" id="listing">
     <?php foreach ($items as $item): ?>
         <?php $item_id = Model\encode_item_id($item['id']) ?>
-        <article id="item-<?= $item_id ?>" data-item-id="<?= $item_id ?>" data-item-page="<?= $menu ?>">
+        <article id="item-<?= $item_id ?>" data-item-id="<?= $item_id ?>" data-item-page="<?= $menu ?>" data-hide="true">
             <h2>
                 <?= $item['bookmark'] ? '★ ' : '' ?>
                 <a
                     href="?action=read&amp;id=<?= $item_id ?>"
+                    data-item-id="<?= $item_id ?>"
                     id="open-<?= $item_id ?>"
                 >
                     <?= Helper\escape($item['title']) ?>
@@ -45,6 +46,7 @@
                     target="_blank"
                     data-item-id="<?= $item_id ?>"
                     data-action="mark-read"
+                    data-hide="true"
                 >
                     <?= t('original link') ?>
                 </a>

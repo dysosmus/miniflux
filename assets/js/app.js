@@ -5,7 +5,7 @@
     var queue_length = 5;
 
 
-    function switch_status(item_id)
+    function switch_status(item_id, hide)
     {
         var request = new XMLHttpRequest();
 
@@ -18,7 +18,7 @@
                 if (response.status == "read" || response.status == "unread") {
 
                     find_next_item();
-                    remove_item(response.item_id);
+                    if (hide) remove_item(response.item_id);
                 }
             }
         }
@@ -193,23 +193,27 @@
     function remove_item(item_id)
     {
         var item = document.getElementById("item-" + item_id);
-        if (item) item.parentNode.removeChild(item);
 
-        var container = document.getElementById("page-counter");
+        if (item) {
 
-        if (container) {
+            item.parentNode.removeChild(item);
 
-            counter = parseInt(container.textContent.trim(), 10) - 1;
+            var container = document.getElementById("page-counter");
 
-            if (counter == 0) {
+            if (container) {
 
-                window.location = "?action=feeds&nothing_to_read=1";
-            }
-            else {
+                counter = parseInt(container.textContent.trim(), 10) - 1;
 
-                container.textContent = counter + " ";
-                document.title = "miniflux (" + counter + ")";
-                document.getElementById("nav-counter").textContent = "(" + counter + ")";
+                if (counter == 0) {
+
+                    window.location = "?action=feeds&nothing_to_read=1";
+                }
+                else {
+
+                    container.textContent = counter + " ";
+                    document.title = "miniflux (" + counter + ")";
+                    document.getElementById("nav-counter").textContent = "(" + counter + ")";
+                }
             }
         }
     }
@@ -221,7 +225,10 @@
 
         if (link) {
 
-            if (is_listing()) mark_as_read(link.getAttribute("data-item-id"));
+            if (is_listing() && link.getAttribute("data-hide")) {
+                mark_as_read(link.getAttribute("data-item-id"));
+            }
+
             link.removeAttribute("data-action");
             link.click();
         }
@@ -268,11 +275,14 @@
     function change_item_status()
     {
         if (is_listing() && ! document.getElementById("current-item")) {
-            document.querySelector("article").id = "current-item";
+            find_next_item();
         }
 
         var item = document.getElementById("current-item");
-        if (item) switch_status(item.getAttribute("data-item-id"));
+
+        if (item) {
+            switch_status(item.getAttribute("data-item-id"), item.getAttribute("data-hide"));
+        }
     }
 
 
