@@ -1,6 +1,8 @@
 <?php
 
 return array(
+    'The following feeds are empty, there may be an error : ' =>
+    'Les abonnements suivants sont vides, il doit y avoir une erreur :',
     'Items per page' => 'Nombre d\'éléments par page',
     'Previous page' => 'Page précédente',
     'Next page' => 'Page suivante',
