@@ -38,14 +38,20 @@
                     <a id="bookmark-<?= $item_id ?>" href="?action=bookmark&amp;value=1&amp;id=<?= $item_id ?>&amp;redirect=unread&amp;offset=<?= $offset ?>"><?= t('bookmark') ?></a> |
                 <?php endif ?>
 
-                <a href="?action=mark-item-read&amp;id=<?= $item_id ?>&amp;offset=<?= $offset ?>"><?= t('mark as read') ?></a> |
+                <a
+                    href="?action=mark-item-read&amp;id=<?= $item_id ?>&amp;offset=<?= $offset ?>"
+                    data-action="mark-read"
+                    data-item-id="<?= $item_id ?>"
+                >
+                    <?= t('mark as read') ?>
+                </a> |
                 <a
                     href="<?= $item['url'] ?>"
                     id="original-<?= $item_id ?>"
                     rel="noreferrer"
                     target="_blank"
                     data-item-id="<?= $item_id ?>"
-                    data-action="mark-read"
+                    data-action="original-link"
                     data-hide="true"
                 >
                     <?= t('original link') ?>

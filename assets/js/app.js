@@ -400,6 +400,11 @@
                     refresh_feed(feed_id);
                     break;
                 case 'mark-read':
+                    e.preventDefault();
+                    var item_id = e.target.getAttribute("data-item-id");
+                    mark_as_read(item_id);
+                    break;
+                case 'original-link':
                     var item_id = e.target.getAttribute("data-item-id");
                     mark_as_read(item_id);
                     break;
