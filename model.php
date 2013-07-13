@@ -30,6 +30,7 @@ const LIMIT_ALL      = -1;
 function get_languages()
 {
     return array(
+        'cs_CZ' => t('Czech'),
         'en_US' => t('English'),
         'fr_FR' => t('French'),
         'de_DE' => t('German'),
