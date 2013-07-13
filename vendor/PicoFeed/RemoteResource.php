@@ -73,9 +73,6 @@ class RemoteResource
     {
         $response = $this->doRequest();
 
-        $this->etag = isset($response['headers']['ETag']) ? $response['headers']['ETag'] : '';
-        $this->last_modified = isset($response['headers']['Last-Modified']) ? $response['headers']['Last-Modified'] : '';
-
         if ($response['status'] == 304) {
 
             $this->is_modified = false;
@@ -94,7 +91,8 @@ class RemoteResource
             $this->execute();
         }
         else {
-
+            $this->etag = isset($response['headers']['ETag']) ? $response['headers']['ETag'] : '';
+            $this->last_modified = isset($response['headers']['Last-Modified']) ? $response['headers']['Last-Modified'] : '';
             $this->content = $response['body'];
         }
     }
