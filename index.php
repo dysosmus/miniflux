@@ -231,6 +231,26 @@ Router\get_action('history', function() {
 });
 
 
+// Display feed items page
+Router\get_action('feed-items', function() {
+
+    $feed_id = Request\int_param('feed_id', 0);
+    $offset = Request\int_param('offset', 0);
+    $nb_items = Model\count_feed_items($feed_id);
+    $feed = Model\get_feed($feed_id);
+
+    Response\html(Template\layout('feed_items', array(
+        'feed' => $feed,
+        'items' => Model\get_feed_items($feed_id, $offset, Model\get_config_value('items_per_page')),
+        'nb_items' => $nb_items,
+        'offset' => $offset,
+        'items_per_page' => Model\get_config_value('items_per_page'),
+        'menu' => 'feeds',
+        'title' => '('.$nb_items.') '.$feed['title']
+    )));
+});
+
+
 // Display bookmarks page
 Router\get_action('bookmarks', function() {
 

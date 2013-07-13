@@ -362,6 +362,31 @@ function get_bookmarks($offset = null, $limit = null)
 }
 
 
+function count_feed_items($feed_id)
+{
+    return \PicoTools\singleton('db')
+        ->table('items')
+        ->eq('feed_id', $feed_id)
+        ->in('status', array('read', 'unread'))
+        ->count();
+}
+
+
+function get_feed_items($feed_id, $offset = null, $limit = null)
+{
+    return \PicoTools\singleton('db')
+        ->table('items')
+        ->columns('items.id', 'items.title', 'items.updated', 'items.url', 'items.status', 'items.bookmark', 'feeds.site_url')
+        ->join('feeds', 'id', 'feed_id')
+        ->in('status', array('read', 'unread'))
+        ->eq('feed_id', $feed_id)
+        ->desc('updated')
+        ->offset($offset)
+        ->limit($limit)
+        ->findAll();
+}
+
+
 function get_item($id)
 {
     return \PicoTools\singleton('db')
