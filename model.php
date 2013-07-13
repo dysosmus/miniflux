@@ -247,28 +247,25 @@ function get_feed($feed_id)
         ->findOne();
 }
 
+
 function get_empty_feeds()
 {
     $feeds = \PicoTools\singleton('db')
         ->table('feeds')
-        ->gt('last_checked', 0)
-        ->asc('id')
-        ->listing('id', 'title');
-    $ids = array_keys($feeds);
+        ->columns('feeds.id', 'feeds.title', 'COUNT(items.id) AS nb_items')
+        ->join('items', 'feed_id', 'id')
+        ->isNull('feeds.last_checked')
+        ->groupBy('items.feed_id')
+        ->findAll();
 
-    // fake DISTINCT
-    $not_empty_feeds = \PicoTools\singleton('db')
-        ->table('items')
-        ->asc('feed_id')
-        ->listing('feed_id', 'feed_id');
-    $not_empty_ids = array_keys($not_empty_feeds);
+    foreach ($feeds as $key => &$feed) {
 
-    $diff = array_diff($ids, $not_empty_ids);
-    $return = array();
-    foreach ($diff as $id) {
-        $return[$id] = $feeds[$id];
+        if ($feed['nb_items'] > 0) {
+            unset($feeds[$key]);
+        }
     }
-    return $return;
+
+    return $feeds;
 }
 
 

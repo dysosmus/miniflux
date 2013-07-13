@@ -345,10 +345,19 @@ Router\get_action('refresh-all', function() {
 Router\get_action('feeds', function() {
 
     $empty_feeds = Model\get_empty_feeds();
-    if (count($empty_feeds) > 0) {
-        $message = t('The following feeds are empty, there may be an error : ') . implode(', ', $empty_feeds);
+
+    if (! empty($empty_feeds)) {
+
+        $listing = array();
+
+        foreach ($empty_feeds as &$feed) {
+            $listing[] = '"'.$feed['title'].'"';
+        }
+
+        $message = t('The following feeds are empty, there is maybe an error: %s', implode(', ', $listing));
         Session\flash_error($message);
     }
+
     Response\html(Template\layout('feeds', array(
         'feeds' => Model\get_feeds(),
         'nothing_to_read' => Request\int_param('nothing_to_read'),

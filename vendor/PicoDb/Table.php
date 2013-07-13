@@ -14,6 +14,8 @@ class Table
     private $is_or_condition = false;
     private $columns = array();
     private $values = array();
+    private $distinct = false;
+    private $group_by = array();
 
     private $db;
 
@@ -134,6 +136,15 @@ class Table
     }
 
 
+    public function findAllByColumn($column)
+    {
+        $rq = $this->db->execute($this->buildSelectQuery(), $this->values);
+        if (false === $rq) return false;
+
+        return $rq->fetchAll(\PDO::FETCH_COLUMN, 0);
+    }
+
+
     public function findOne()
     {
         $this->limit(1);
@@ -158,11 +169,13 @@ class Table
     public function buildSelectQuery()
     {
         return sprintf(
-            'SELECT %s FROM %s %s %s %s %s %s',
+            'SELECT %s %s FROM %s %s %s %s %s %s %s',
+            $this->distinct ? 'DISTINCT' : '',
             empty($this->columns) ? '*' : implode(', ', $this->columns),
             $this->db->escapeIdentifier($this->table_name),
             implode(' ', $this->joins),
             $this->conditions(),
+            empty($this->group_by) ? '' : 'GROUP BY '.implode(', ', $this->group_by),
             $this->sql_order,
             $this->sql_limit,
             $this->sql_offset
@@ -286,6 +299,13 @@ class Table
     }
 
 
+    public function groupBy()
+    {
+        $this->group_by = \func_get_args();
+        return $this;
+    }
+
+
     public function columns()
     {
         $this->columns = \func_get_args();
@@ -293,20 +313,23 @@ class Table
     }
 
 
+    public function distinct()
+    {
+        $this->columns = \func_get_args();
+        $this->distinct = true;
+        return $this;
+    }
+
+
     public function __call($name, array $arguments)
     {
-        if (2 !== count($arguments)) {
-
-            throw new \LogicException('You must define a column and a value.');
-        }
-
         $column = $arguments[0];
         $sql = '';
 
-        switch ($name) {
+        switch (strtolower($name)) {
 
             case 'in':
-                if (is_array($arguments[1])) {
+                if (isset($arguments[1]) && is_array($arguments[1])) {
 
                     $sql = sprintf(
                         '%s IN (%s)',
@@ -317,7 +340,7 @@ class Table
                 break;
 
             case 'notin':
-                if (is_array($arguments[1])) {
+                if (isset($arguments[1]) && is_array($arguments[1])) {
 
                     $sql = sprintf(
                         '%s NOT IN (%s)',
@@ -338,40 +361,50 @@ class Table
                 break;
 
             case 'gt':
-            case 'greaterThan':
+            case 'greaterthan':
                 $sql = sprintf('%s > ?', $this->db->escapeIdentifier($column));
                 break;
 
             case 'lt':
-            case 'lowerThan':
+            case 'lowerthan':
                 $sql = sprintf('%s < ?', $this->db->escapeIdentifier($column));
                 break;
 
             case 'gte':
-            case 'greaterThanOrEquals':
+            case 'greaterthanorequals':
                 $sql = sprintf('%s >= ?', $this->db->escapeIdentifier($column));
                 break;
 
             case 'lte':
-            case 'lowerThanOrEquals':
+            case 'lowerthanorequals':
                 $sql = sprintf('%s <= ?', $this->db->escapeIdentifier($column));
+                break;
+
+            case 'isnull':
+                $sql = sprintf('%s IS NULL', $this->db->escapeIdentifier($column));
+                break;
+
+            case 'notnull':
+                $sql = sprintf('%s IS NOT NULL', $this->db->escapeIdentifier($column));
                 break;
         }
 
-        if ('' !== $sql) {
+        if ($sql !== '') {
 
             $this->addCondition($sql);
 
-            if (is_array($arguments[1])) {
+            if (isset($arguments[1])) {
 
-                foreach ($arguments[1] as $value) {
+                if (is_array($arguments[1])) {
 
-                    $this->values[] = $value;
+                    foreach ($arguments[1] as $value) {
+                        $this->values[] = $value;
+                    }
                 }
-            }
-            else {
+                else {
 
-                $this->values[] = $arguments[1];
+                    $this->values[] = $arguments[1];
+                }
             }
         }
 

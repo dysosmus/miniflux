@@ -38,7 +38,7 @@ class Database
 
     public function getLogMessages()
     {
-        return implode(', ', $this->logs);
+        return $this->logs;
     }
 
 
