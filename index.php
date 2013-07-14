@@ -402,7 +402,7 @@ Router\get_action('add', function() {
 // Add the feed
 Router\post_action('add', function() {
 
-    $result = Model\import_feed($_POST['url']);
+    $result = Model\import_feed(trim($_POST['url']));
     Model\write_debug();
 
     if ($result) {
