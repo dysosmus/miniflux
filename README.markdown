@@ -42,10 +42,12 @@ People who sent one or many pull-requests:
 
 - André Kelpe: https://github.com/fs111
 - Ayodio: https://github.com/ayodio
+- Chris Lemonier
 - Derjus: https://github.com/derjus
 - Eauland: https://github.com/eauland
 - Félix: https://github.com/dysosmus
 - Horsely: https://github.com/horsley
+- Ing. Jan Kaláb: https://github.com/Pitel
 - Luca Marra: https://github.com/facciocose
 - MonsieurPaulLeBoulanger: https://github.com/MonsieurPaulLeBoulanger
 - Necku: https://github.com/Necku
