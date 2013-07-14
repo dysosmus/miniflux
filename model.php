@@ -565,12 +565,28 @@ function update_items($feed_id, array $items)
     // and not present inside the feed
     if (! empty($items_in_feed)) {
 
-        \PicoTools\singleton('db')
+        $removed_items = \PicoTools\singleton('db')
             ->table('items')
+            ->columns('id')
             ->notin('id', $items_in_feed)
             ->eq('status', 'removed')
             ->eq('feed_id', $feed_id)
-            ->remove();
+            ->desc('updated')
+            ->findAllByColumn('id');
+
+        // Keep a buffer of 2 items
+        // It's workaround for buggy feeds (cache issue with some Wordpress plugins)
+        $items_to_remove = array_slice($removed_items, 2);
+
+        if (! empty($items_to_remove)) {
+
+            \PicoTools\singleton('db')
+                ->table('items')
+                ->in('id', $items_to_remove)
+                ->eq('status', 'removed')
+                ->eq('feed_id', $feed_id)
+                ->remove();
+        }
     }
 
     $db->closeTransaction();
