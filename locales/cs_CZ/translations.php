@@ -18,6 +18,7 @@ return array(
     'German' => 'Němčina',
     'Italian' => 'Italština',
     'Simplified Chinese' => 'Zjednodušená čínština',
+    'Czech' => 'Čeština',
     'unread' => 'nepřečtené',
     'bookmark' => 'přidat do záložek',
     'remove bookmark' => 'odstranit záložku',

@@ -14,6 +14,7 @@ return array(
     'German'                                    => '德语',
     'Italian'                                   => '意大利人',
     'Simplified Chinese'                        => '简体中文',
+    'Czech'                                     => '捷克语',
     'unread'                                    => '未读',
     'bookmarks'                                 => '收藏',
     'bookmark'                                  => '收藏',

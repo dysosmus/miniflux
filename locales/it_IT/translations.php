@@ -14,6 +14,7 @@ return array(
     'German' => 'Tedesco',
     'Italian' => 'Italiano',
     'Simplified Chinese' => 'Cinese semplificato',
+    'Czech' => 'Ceco',
     'unread' => 'non letti',
     'bookmarks' => 'bookmark',
     'bookmark' => 'bookmark',
