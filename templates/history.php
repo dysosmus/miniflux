@@ -25,12 +25,20 @@
             </h2>
             <p>
                 <?= Helper\get_host_from_url($item['url']) ?> |
+
                 <?= dt('%e %B %Y %k:%M', $item['updated']) ?> |
-                <a href="?action=mark-item-unread&amp;id=<?= $item_id ?>&amp;offset=<?= $offset ?>"><?= t('mark as unread') ?></a> |
 
                 <?php if (! $item['bookmark']): ?>
                     <a id="bookmark-<?= $item_id ?>" href="?action=bookmark&amp;value=1&amp;id=<?= $item_id ?>&amp;redirect=history&amp;offset=<?= $offset ?>"><?= t('bookmark') ?></a> |
                 <?php endif ?>
+
+                <a
+                    href="?action=mark-item-unread&amp;id=<?= $item_id ?>&amp;offset=<?= $offset ?>"
+                    data-action="mark-unread"
+                    data-item-id="<?= $item_id ?>"
+                >
+                    <?= t('mark as unread') ?>
+                </a> |
 
                 <a href="?action=mark-item-removed&amp;id=<?= $item_id ?>&amp;offset=<?= $offset ?>"><?= t('remove') ?></a> |
                 <a

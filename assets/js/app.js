@@ -34,7 +34,7 @@
 
         request.onload = function() {
 
-            find_next_item();
+            //find_next_item();
             remove_item(item_id);
         };
 
@@ -46,6 +46,13 @@
     function mark_as_unread(item_id)
     {
         var request = new XMLHttpRequest();
+
+        request.onload = function() {
+
+            //find_next_item();
+            remove_item(item_id);
+        };
+
         request.open("POST", "?action=mark-item-unread&id=" + item_id, true);
         request.send();
     }
@@ -82,20 +89,13 @@
     function hide_refresh_icon(feed_id)
     {
         var container = document.getElementById("loading-feed-" + feed_id);
-
-        if (container) {
-
-            container.innerHTML = "";
-        }
+        if (container) container.innerHTML = "";
     }
 
 
     function refresh_feed(feed_id, callback)
     {
-        if (! feed_id) {
-
-            return false;
-        }
+        if (! feed_id) return false;
 
         show_refresh_icon(feed_id);
 
@@ -193,6 +193,12 @@
     function remove_item(item_id)
     {
         var item = document.getElementById("item-" + item_id);
+
+        if (! item) {
+
+            item = document.getElementById("current-item");
+            if (item.getAttribute("data-item-id") != item_id) item = false;
+        }
 
         if (item) {
 
@@ -403,6 +409,11 @@
                     e.preventDefault();
                     var item_id = e.target.getAttribute("data-item-id");
                     mark_as_read(item_id);
+                    break;
+                case 'mark-unread':
+                    e.preventDefault();
+                    var item_id = e.target.getAttribute("data-item-id");
+                    mark_as_unread(item_id);
                     break;
                 case 'original-link':
                     var item_id = e.target.getAttribute("data-item-id");
