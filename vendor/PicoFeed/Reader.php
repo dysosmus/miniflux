@@ -4,7 +4,7 @@ namespace PicoFeed;
 
 require_once __DIR__.'/Logging.php';
 require_once __DIR__.'/Parser.php';
-require_once __DIR__.'/RemoteResource.php';
+require_once __DIR__.'/Client.php';
 
 class Reader
 {
@@ -26,15 +26,18 @@ class Reader
             $url = 'http://'.$url;
         }
 
-        $resource = new RemoteResource($url, $timeout, $user_agent);
-        $resource->setLastModified($last_modified);
-        $resource->setEtag($etag);
-        $resource->execute();
+        $client = Client::create();
+        $client->url = $url;
+        $client->timeout = $timeout;
+        $client->user_agent = $user_agent;
+        $client->last_modified = $last_modified;
+        $client->etag = $etag;
+        $client->execute();
 
-        $this->content = $resource->getContent();
-        $this->url = $resource->getUrl();
+        $this->content = $client->getContent();
+        $this->url = $client->getUrl();
 
-        return $resource;
+        return $client;
     }
 
 

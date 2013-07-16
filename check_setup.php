@@ -38,9 +38,9 @@ if (! extension_loaded('pdo_sqlite')) {
 }
 
 // Check for curl
-if (! function_exists('curl_init')) {
+if (! function_exists('curl_init') || ! ini_get('allow_url_fopen')) {
 
-    die('PHP extension required: curl');
+    die('You must have "allow_url_fopen=1" or curl extension installed');
 }
 
 // Check if /data is writeable

@@ -259,6 +259,25 @@ class Table
     }
 
 
+    public function orderBy($column)
+    {
+        if ($column[0] == '-') {
+            $order = 'DESC';
+        } else {
+            $order = 'ASC';
+        }
+
+        if ($this->sql_order === '') {
+            $this->sql_order = ' ORDER BY '.$this->db->escapeIdentifier($column).' '.$order;
+        }
+        else {
+            $this->sql_order .= ', '.$this->db->escapeIdentifier($column).' '.$order;
+        }
+
+        return $this;
+    }
+
+
     public function asc($column)
     {
         if ($this->sql_order === '') {
