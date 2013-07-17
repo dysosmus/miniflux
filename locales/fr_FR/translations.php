@@ -3,8 +3,8 @@
 return array(
     'No item' => 'Aucun élément',
     'items' => 'éléments',
-    'The following feeds are empty, there is maybe an error: %s' =>
-    'Les abonnements suivants sont vides, il y a peut-être une erreur : %s',
+    'There is %d empty feeds, there is maybe an error: %s...' =>
+    'Il y a %d abonnements vides, il y a peut-être un problème : %s...',
     'Items per page' => 'Nombre d\'éléments par page',
     'Previous page' => 'Page précédente',
     'Next page' => 'Page suivante',

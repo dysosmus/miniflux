@@ -256,7 +256,7 @@ function get_empty_feeds()
         ->columns('feeds.id', 'feeds.title', 'COUNT(items.id) AS nb_items')
         ->join('items', 'feed_id', 'id')
         ->isNull('feeds.last_checked')
-        ->groupBy('items.feed_id')
+        ->groupBy('feeds.id')
         ->findAll();
 
     foreach ($feeds as $key => &$feed) {

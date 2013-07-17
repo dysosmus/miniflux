@@ -3,8 +3,8 @@
 return array(
     'No item' => 'Žádný článěk',
     'items' => 'články',
-    'The following feeds are empty, there is maybe an error: %s' =>
-    'Následující zdroje jsou prázdně, možná je tu chyba: %s',
+    'There is %d empty feeds, there is maybe an error: %s...' =>
+    'K dispozici je %d prázdné kanály, je možná chyba: %s...',
     'Items per page' => 'Článků na stránku',
     'Previous page' => 'Předchozí stránka',
     'Next page' => 'Další stránka',
