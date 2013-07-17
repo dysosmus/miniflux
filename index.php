@@ -7,6 +7,7 @@ require 'vendor/PicoFarad/Response.php';
 require 'vendor/PicoFarad/Request.php';
 require 'vendor/PicoFarad/Session.php';
 require 'vendor/PicoFarad/Router.php';
+require 'helpers.php';
 
 use PicoFarad\Router;
 use PicoFarad\Response;
@@ -492,6 +493,7 @@ Router\get_action('config', function() {
         'languages' => Model\get_languages(),
         'autoflush_options' => Model\get_autoflush_options(),
         'paging_options' => Model\get_paging_options(),
+        'theme_options' => Model\get_themes(),
         'menu' => 'config',
         'title' => t('Preferences')
     )));
@@ -525,6 +527,7 @@ Router\post_action('config', function() {
         'languages' => Model\get_languages(),
         'autoflush_options' => Model\get_autoflush_options(),
         'paging_options' => Model\get_paging_options(),
+        'theme_options' => Model\get_themes(),
         'menu' => 'config',
         'title' => t('Preferences')
     )));

@@ -1,0 +1,11 @@
+@font-face {
+    font-family: Inconsolata;
+    src: url(../fonts/Inconsolata-Regular.ttf);
+}
+
+body {
+    margin-left: 300px;
+    padding-left: 10px;
+    border-left: 5px solid #000;
+    font-family: 'Inconsolata', sans-serif;
+}

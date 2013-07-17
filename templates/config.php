@@ -22,6 +22,9 @@
     <?= Helper\form_label(t('Items per page'), 'items_per_page') ?>
     <?= Helper\form_select('items_per_page', $paging_options, $values, $errors) ?><br/>
 
+    <?= Helper\form_label(t('Theme'), 'theme') ?>
+    <?= Helper\form_select('theme', $theme_options, $values, $errors) ?><br/>
+
     <?= Helper\form_checkbox('nocontent', t('Do not fetch the content of articles'), 1, isset($values['nocontent']) ? $values['nocontent'] : false) ?><br />
 
     <div class="form-actions">

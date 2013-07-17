@@ -172,3 +172,29 @@ Actually, the following constants can be overrided:
 - `DB_FILENAME` => default value is `data/db.sqlite`
 - `DEBUG` => default is false (enable logs dump of picoFeed)
 - `DEBUG_DIRECTORY` => default is /tmp (place to store log files)
+- `THEME_DIRECTORY` => default is themes
+
+### How to create a theme for Miniflux?
+
+It's very easy to write a custom theme for Miniflux.
+
+A theme is just a CSS file, images and fonts.
+A theme doesn't change the behaviour of the application but only the page design.
+
+The first step is to create a new directory structure for your theme:
+
+    mkdir -p themes/mysuperskin/{css,img,fonts}
+
+The name of your theme should be only alphanumeric.
+There is the following directories inside your theme:
+
+- `css`: Your stylesheet, the file must be named `app.css` (required)
+- `img`: Theme images (not required)
+- `fonts`: Theme fonts (not required)
+
+For a very basic theme example, have a look to the directory `examples\mytheme`.
+
+Miniflux use responsive design, so it's better if your theme can handle mobile devices.
+
+If you write a very cool theme for Miniflux, **send me your code to be available in the default installation!**
+It would be awesome for everybody :)

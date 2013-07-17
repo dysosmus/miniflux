@@ -3,6 +3,12 @@
 namespace Schema;
 
 
+function version_10($pdo)
+{
+    $pdo->exec('ALTER TABLE config ADD COLUMN theme TEXT DEFAULT "original"');
+}
+
+
 function version_9($pdo)
 {
     $pdo->exec('ALTER TABLE config ADD COLUMN items_per_page INTEGER DEFAULT 100');

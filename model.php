@@ -22,7 +22,7 @@ use PicoFeed\Reader;
 use PicoFeed\Export;
 
 
-const DB_VERSION     = 9;
+const DB_VERSION     = 10;
 const HTTP_USERAGENT = 'Miniflux - http://miniflux.net';
 const LIMIT_ALL      = -1;
 
@@ -37,6 +37,28 @@ function get_languages()
         'it_IT' => t('Italian'),
         'zh_CN' => t('Simplified Chinese'),
     );
+}
+
+
+function get_themes()
+{
+    $themes = array(
+        'original' => t('Original')
+    );
+
+    if (file_exists(THEME_DIRECTORY)) {
+
+        $dir = new \DirectoryIterator(THEME_DIRECTORY);
+
+        foreach ($dir as $fileinfo) {
+
+            if (! $fileinfo->isDot() && $fileinfo->isDir()) {
+                $themes[$dir->getFilename()] = ucfirst($dir->getFilename());
+            }
+        }
+    }
+
+    return $themes;
 }
 
 
@@ -622,7 +644,7 @@ function get_config()
 {
     return \PicoTools\singleton('db')
         ->table('config')
-        ->columns('username', 'language', 'autoflush', 'nocontent', 'items_per_page')
+        ->columns('username', 'language', 'autoflush', 'nocontent', 'items_per_page', 'theme')
         ->findOne();
 }
 
@@ -687,6 +709,7 @@ function validate_config_update(array $values)
             new Validators\Required('autoflush', t('Value required')),
             new Validators\Required('items_per_page', t('Value required')),
             new Validators\Integer('items_per_page', t('Must be an integer')),
+            new Validators\Required('theme', t('Value required')),
         ));
     }
     else {
@@ -710,8 +733,8 @@ function save_config(array $values)
     if (! empty($values['password'])) {
 
         $values['password'] = \password_hash($values['password'], PASSWORD_BCRYPT);
-    }
-    else {
+
+    } else {
 
         unset($values['password']);
     }

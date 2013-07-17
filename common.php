@@ -16,6 +16,7 @@ defined('HTTP_TIMEOUT') or define('HTTP_TIMEOUT', 10);
 defined('DB_FILENAME') or define('DB_FILENAME', 'data/db.sqlite');
 defined('DEBUG') or define('DEBUG', false);
 defined('DEBUG_DIRECTORY') or define('DEBUG_DIRECTORY', '/tmp');
+defined('THEME_DIRECTORY') or define('THEME_DIRECTORY', 'themes');
 
 PicoTools\container('db', function() {
 

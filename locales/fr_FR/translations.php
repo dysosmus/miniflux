@@ -1,6 +1,7 @@
 <?php
 
 return array(
+    'Theme' => 'Thème',
     'No item' => 'Aucun élément',
     'items' => 'éléments',
     'There is %d empty feeds, there is maybe an error: %s...' =>
