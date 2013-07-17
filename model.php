@@ -515,12 +515,26 @@ function switch_item_status($id)
 }
 
 
+// Mark all items as read
 function mark_as_read()
 {
     \PicoTools\singleton('db')
         ->table('items')
         ->eq('status', 'unread')
         ->save(array('status' => 'read'));
+}
+
+
+// Mark only specified items as read
+function mark_items_as_read(array $items_id)
+{
+    \PicoTools\singleton('db')->startTransaction();
+
+    foreach($items_id as $encoded_id) {
+        set_item_read(decode_item_id($encoded_id));
+    }
+
+    \PicoTools\singleton('db')->closeTransaction();
 }
 
 

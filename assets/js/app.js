@@ -27,15 +27,16 @@
         request.send();
     }
 
-    function mark_all_as_read()
+
+    function mark_items_as_read()
     {
-        var $articles = document.getElementsByTagName("article");
+        var articles = document.getElementsByTagName("article");
         var idlist = [];
-        for (var i=0;i<$articles.length;i++)
-        {
-            idlist.push($articles[i].getAttribute("data-item-id"));
+
+        for (var i = 0, ilen = articles.length; i < ilen; i++) {
+            idlist.push(articles[i].getAttribute("data-item-id"));
         }
-        
+
         var request = new XMLHttpRequest();
 
         request.onload = function() {
@@ -43,9 +44,10 @@
             window.location.href = "?action=unread";
         };
 
-        request.open("POST", "?action=mark-all-read", true);
+        request.open("POST", "?action=mark-items-as-read", true);
         request.send(JSON.stringify(idlist));
     }
+
 
     function mark_as_read(item_id)
     {
@@ -436,7 +438,7 @@
                     break;
                 case 'mark-all-read':
                     e.preventDefault();
-                    mark_all_as_read();
+                    mark_items_as_read();
                     break;
                 case 'original-link':
                     var item_id = e.target.getAttribute("data-item-id");
