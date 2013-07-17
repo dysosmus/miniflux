@@ -106,5 +106,7 @@ return array(
     'Do you really want to remove these items from your history?' => 'Voulez-vous vraiment supprimer les éléments de votre historique ?',
     'Do you really want to remove this subscription: "%s"?' => 'Voulez-vous vraiment supprimer cet abonnement : "%s" ?',
     'Nothing to read, do you want to <a href="?action=refresh-all" data-action="refresh-all">update your subscriptions?</a>' =>
-    'Il n\'y a rien à lire, voulez-vous <a href="?action=refresh-all" data-action="refresh-all">mettre à jour vos abonnements ?</a>'
+    'Il n\'y a rien à lire, voulez-vous <a href="?action=refresh-all" data-action="refresh-all">mettre à jour vos abonnements ?</a>',
+    'Show shortcuts' => 'Afficher les raccourcis',
+    'Close shortcut list' => 'Fermer la liste des raccourcis'
 );

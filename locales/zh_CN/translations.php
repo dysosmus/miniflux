@@ -101,5 +101,7 @@ return array(
     'Do you really want to remove these items from your history?'   => '你确认要移除这些历史记录吗？',
     'Do you really want to remove this subscription: "%s"?'         => '你确定要移除这个订阅源: "%s" ？',
     'Nothing to read, do you want to <a href="?action=refresh-all" data-action="refresh-all">update your subscriptions?</a>' =>
-    '空空如也，你想要<a href="?action=refresh-all" data-action="refresh-all">更新订阅源</a>嘛？'
+    '空空如也，你想要<a href="?action=refresh-all" data-action="refresh-all">更新订阅源</a>嘛？',
+    'Show shortcuts' => '显示捷径',
+    'Close shortcut list' => '关闭快捷键列表'
 );

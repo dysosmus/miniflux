@@ -214,6 +214,10 @@ textarea.form-error {
     margin-bottom: 15px;
 }
 
+.invisible {
+    display:none;	
+}
+
 /* alerts */
 .alert {
     padding: 8px 35px 8px 14px;
