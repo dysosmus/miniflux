@@ -332,6 +332,16 @@ Router\get_action('mark-as-read', function() {
     Response\redirect('?action=unread');
 });
 
+Router\post_action('mark-all-read', function(){
+
+    $values = Request\values();
+    foreach($values as $value) {
+        $id = Model\decode_item_id($value);
+        Model\set_item_read($id);
+    }
+
+    Response\json(array('OK'));
+});
 
 // Confirmation box to flush history
 Router\get_action('confirm-flush-history', function() {

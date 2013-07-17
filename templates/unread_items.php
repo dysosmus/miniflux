@@ -7,7 +7,11 @@
     <div class="page-header">
         <h2><span id="page-counter"><?= isset($nb_items) ? $nb_items.' ' : '' ?></span><?= t('unread items') ?></h2>
         <ul>
-            <li><a href="?action=mark-as-read"><?= t('mark all as read') ?></a></li>
+            <li>
+            <a href="?action=mark-as-read" data-action="mark-all-read">
+                <?= t('mark all as read') ?>
+            </a>
+            </li>
         </ul>
     </div>
 
