@@ -87,11 +87,14 @@ Router\post_action('login', function() {
 Router\get_action('show', function() {
 
     $id = Model\decode_item_id(Request\param('id'));
+    $item = Model\get_item($id);
+    $feed = Model\get_feed($item['feed_id']);
 
     Model\set_item_read($id);
 
     Response\html(Template\layout('show_item', array(
-        'item' => Model\get_item($id),
+        'item' => $item,
+        'feed' => $feed,
         'menu' => 'show'
     )));
 });
@@ -102,12 +105,14 @@ Router\get_action('read', function() {
 
     $id = Model\decode_item_id(Request\param('id'));
     $item = Model\get_item($id);
+    $feed = Model\get_feed($item['feed_id']);
     $nav = Model\get_nav_item($item); // must be placed before set_item_read()
 
     Model\set_item_read($id);
 
     Response\html(Template\layout('show_item', array(
         'item' => $item,
+        'feed' => $feed,
         'item_nav' => $nav,
         'menu' => 'read'
     )));

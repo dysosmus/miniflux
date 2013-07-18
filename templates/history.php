@@ -24,6 +24,7 @@
                 </a>
             </h2>
             <p>
+            	<?= Helper\escape($item['feed_title']) ?> |
                 <?= Helper\get_host_from_url($item['url']) ?> |
 
                 <?= dt('%e %B %Y %k:%M', $item['updated']) ?> |
