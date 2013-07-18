@@ -79,8 +79,8 @@ abstract class Client
             }
             else if (strpos($line, ':') !== false) {
 
-                list($name, $value) = explode(': ', $line);
-                $headers[trim($name)] = trim($value);
+                @list($name, $value) = explode(': ', $line);
+                if ($value) $headers[trim($name)] = trim($value);
             }
         }
 
