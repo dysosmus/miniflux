@@ -104,10 +104,15 @@ class Filter
     );
 
     public $iframe_allowed_resources = array(
+        '//www.youtube.com',
         'http://www.youtube.com/',
         'https://www.youtube.com/',
         'http://player.vimeo.com/',
-        'https://player.vimeo.com/'
+        'https://player.vimeo.com/',
+        '//player.vimeo.com/',
+        'http://www.dailymotion.com',
+        'https://www.dailymotion.com',
+        '//www.dailymotion.com',
     );
 
 

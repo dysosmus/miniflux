@@ -39,6 +39,8 @@ Router\before(function($action) {
             'https://www.youtube.com',
             'http://player.vimeo.com',
             'https://player.vimeo.com',
+            'http://www.dailymotion.com',
+            'https://www.dailymotion.com',
         ))
     ));
 
