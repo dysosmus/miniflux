@@ -1,0 +1,126 @@
+@import url("../../../assets/css/app.css");
+
+body {
+    background: #222;
+    color: #efefef;
+}
+
+h1, h2, h3 {
+    color: #999;
+}
+
+a:hover {
+    color: #ccc;
+}
+
+.page-header h2 {
+    border-bottom: 1px dotted #333;
+}
+
+.items article {
+    border: 1px dotted #333;
+    background-color: #222;
+    margin-top: 20px
+}
+
+.items p {
+    color: #444;
+}
+
+.items article:hover .preview,
+.items #current-item .preview {
+    color: #999;
+}
+
+.items #current-item {
+    border: 3px solid #679;
+}
+
+.infos {
+    color: #444;
+}
+
+.item .infos a {
+    color: #444;
+}
+
+.item {
+    color: #efefef;
+}
+
+blockquote {
+    color: #999;
+}
+
+blockquote + p {
+    color: #999;
+}
+
+nav .active a {
+    color: #ccc;
+}
+
+.logo {
+    color: #efefef;
+}
+
+.alert {
+    color: #c09853;
+    background-color: #fcf8e3;
+    border: 1px solid #fbeed5;
+}
+
+.alert-success {
+    color: #468847;
+    background-color: #dff0d8;
+    border-color: #d6e9c6;
+}
+
+.alert-error {
+    color: #b94a48;
+    background-color: #f2dede;
+    border-color: #eed3d7;
+}
+
+.alert-info {
+    color: #3a87ad;
+    background-color: #d9edf7;
+    border-color: #bce8f1;
+}
+
+.alert-normal {
+    color: #efefef;
+    background-color: #333;
+    border-color: #444;
+}
+
+input[type="email"],
+input[type="tel"],
+input[type="password"],
+input[type="text"] {
+    border: 1px solid #333;
+    background: #111;
+    color: #ccc;
+}
+
+input[type="email"]:focus,
+input[type="tel"]:focus,
+input[type="password"]:focus,
+input[type="text"]:focus,
+textarea:focus {
+    color: #efefef;
+    border-color: rgba(82, 168, 236, 0.8);
+    box-shadow: 0 0 8px rgba(82, 168, 236, 0.6);
+}
+
+::-webkit-input-placeholder {
+    color: #666;
+}
+
+::-ms-input-placeholder {
+    color: #666;
+}
+
+::-moz-placeholder {
+    color: #666;
+}
