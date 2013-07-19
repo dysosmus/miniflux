@@ -1,6 +1,7 @@
 <?php
 
 return array(
+    'Theme' => 'Tema',
     'Items per page' => 'Articoli per pagina',
     'Previous page' => 'Pagina precedente',
     'Next page' => 'Pagina successiva',
