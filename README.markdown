@@ -50,6 +50,7 @@ People who sent one or many pull-requests:
 - Horsely: https://github.com/horsley
 - Ing. Jan Kaláb: https://github.com/Pitel
 - Luca Marra: https://github.com/facciocose
+- Maxime: https://github.com/EpocDotFr
 - MonsieurPaulLeBoulanger: https://github.com/MonsieurPaulLeBoulanger
 - Necku: https://github.com/Necku
 - Thiriot Christophe: https://github.com/doubleface
@@ -202,5 +203,12 @@ It would be awesome for everybody :)
 
 ### List of themes:
 
-- Original theme
-- Midnight By Luca Marra (dark theme)
+- Original theme By Frederic Guillot
+- Midnight By Luca Marra
+- Green by Maxime (aka EpocDotFr)
+
+### Coding standards for contributors
+
+- Line indentation: 4 spaces
+- Line endings: Unix
+- File encoding: UTF-8
