@@ -20,6 +20,7 @@ Features
 - Keyboard shortcuts
 - Basic bookmarks
 - Translated in English, French, German, Italian and Simplified Chinese
+- Themes
 
 Todo and known bugs
 -------------------
@@ -42,7 +43,7 @@ People who sent one or many pull-requests:
 
 - André Kelpe: https://github.com/fs111
 - Ayodio: https://github.com/ayodio
-- Chris Lemonier
+- Chris Lemonier: https://github.com/chrislemonier
 - Derjus: https://github.com/derjus
 - Eauland: https://github.com/eauland
 - Félix: https://github.com/dysosmus
@@ -198,3 +199,8 @@ Miniflux use responsive design, so it's better if your theme can handle mobile d
 
 If you write a very cool theme for Miniflux, **send me your code to be available in the default installation!**
 It would be awesome for everybody :)
+
+### List of themes:
+
+- Original theme
+- Midnight By Luca Marra (dark theme)

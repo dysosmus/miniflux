@@ -52,6 +52,12 @@ a:hover {
     color: #efefef;
 }
 
+.item nav span,
+.item nav a,
+.item nav a:visited {
+    color: #bbb;
+}
+
 blockquote {
     color: #999;
 }
