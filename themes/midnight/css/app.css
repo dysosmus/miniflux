@@ -9,12 +9,16 @@ h1, h2, h3 {
     color: #999;
 }
 
-a:hover {
+a {
     color: #ccc;
 }
 
+a:hover {
+    color: #fff;
+}
+
 .page-header h2 {
-    border-bottom: 1px dotted #333;
+    border-bottom: 1px dotted #555;
 }
 
 .items article {
@@ -24,24 +28,24 @@ a:hover {
 }
 
 .items p {
-    color: #444;
+    color: #666;
 }
 
 .items article:hover .preview,
 .items #current-item .preview {
-    color: #999;
+    color: #aaa;
 }
 
 .items #current-item {
-    border: 3px solid #679;
+    border: 3px solid #999;
 }
 
 .infos {
-    color: #444;
+    color: #666;
 }
 
 .item .infos a {
-    color: #444;
+    color: #666;
 }
 
 .item {
@@ -70,24 +74,9 @@ nav .active a {
     border: 1px solid #fbeed5;
 }
 
-.alert-success {
-    color: #468847;
-    background-color: #dff0d8;
-    border-color: #d6e9c6;
-}
-
-.alert-error {
-    color: #b94a48;
-    background-color: #f2dede;
-    border-color: #eed3d7;
-}
-
-.alert-info {
-    color: #3a87ad;
-    background-color: #d9edf7;
-    border-color: #bce8f1;
-}
-
+.alert-success,
+.alert-error,
+.alert-info,
 .alert-normal {
     color: #efefef;
     background-color: #333;
@@ -123,4 +112,19 @@ textarea:focus {
 
 ::-moz-placeholder {
     color: #666;
+}
+
+.btn-red,
+.btn-blue {
+    border-color: #444;
+    background: #333;
+    color: #efefef;
+}
+
+.btn-red:hover,
+.btn-red:focus,
+.btn-blue:hover,
+.btn-blue:focus {
+    border-color: #888;
+    background: #555;
 }

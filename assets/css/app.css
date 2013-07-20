@@ -254,6 +254,7 @@ textarea.form-error {
 /* buttons */
 .btn {
     -webkit-appearance: none;
+    appearance: none;
     display: inline-block;
     color: #333;
     border: 1px solid #ccc;
