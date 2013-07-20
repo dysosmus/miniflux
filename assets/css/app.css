@@ -129,6 +129,8 @@ p code {
 form {
     padding-top: 5px;
     padding-bottom: 5px;
+    padding-left: 15px;
+    border-left: 2px dotted #ddd;
 }
 
 label {
@@ -523,6 +525,10 @@ section li {
 /* mobile design */
 @media only screen and (max-width: 480px) {
 
+    .hide-mobile {
+        display: none;
+    }
+
     body {
         margin-left: 5px;
         margin-right: 5px;
@@ -536,7 +542,6 @@ section li {
     .logo {
         display: block;
         float: none;
-        border-bottom: 1px dotted #ddd;
     }
 
     header {
@@ -580,5 +585,13 @@ section li {
     .item .infos {
         font-size: 0.9em;
         padding: 0;
+    }
+
+    section li {
+        font-size: 0.85em;
+    }
+
+    iframe {
+        max-width: 95%;
     }
 }

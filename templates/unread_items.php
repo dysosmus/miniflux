@@ -34,13 +34,15 @@
             </p>
             <p>
                 <?= Helper\get_host_from_url($item['url']) ?> |
-                <?= dt('%e %B %Y %k:%M', $item['updated']) ?> |
+                <span class="hide-mobile"><?= dt('%e %B %Y %k:%M', $item['updated']) ?> |</span>
 
+                <span class="hide-mobile">
                 <?php if ($item['bookmark']): ?>
                     <a id="bookmark-<?= $item_id ?>" href="?action=bookmark&amp;value=0&amp;id=<?= $item_id ?>&amp;redirect=unread&amp;offset=<?= $offset ?>"><?= t('remove bookmark') ?></a> |
                 <?php else: ?>
                     <a id="bookmark-<?= $item_id ?>" href="?action=bookmark&amp;value=1&amp;id=<?= $item_id ?>&amp;redirect=unread&amp;offset=<?= $offset ?>"><?= t('bookmark') ?></a> |
                 <?php endif ?>
+                </span>
 
                 <a
                     href="?action=mark-item-read&amp;id=<?= $item_id ?>&amp;offset=<?= $offset ?>"
