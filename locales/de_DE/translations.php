@@ -1,6 +1,7 @@
 <?php
 
 return array(
+    'Help' => 'Hilfe',
     'Items per page' => 'Artikel pro Seite',
     'Previous page' => 'Vorheriger Seite',
     'Next page' => 'Nächster Seite',
@@ -102,6 +103,6 @@ return array(
     'Do you really want to remove this subscription: "%s"?' => 'Willst du dieses Abonnement wirklich löschen: "%s" ?',
     'Nothing to read, do you want to <a href="?action=refresh-all" data-action="refresh-all">update your subscriptions?</a>' =>
     'Nichts zu lesen, willst du <a href="?action=refresh-all" data-action="refresh-all">alle Abonemments aktualisieren?</a>',
-    'Show shortcuts' => 'Verknüpfungen anzeigen',
-    'Close shortcut list' => 'Schließen Liste für Schnellzugriffe'
+    'Show help' => 'Hilfe anzeigen',
+    'Close help' => 'Hilfe schließen'
 );

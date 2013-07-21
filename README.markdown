@@ -19,7 +19,7 @@ Features
 - Mobile CSS (responsive design)
 - Keyboard shortcuts (pressing '?' displays a pop-up listing the shortcuts; pressing 'q' closes it)
 - Basic bookmarks
-- Translated in English, French, German, Italian and Simplified Chinese
+- Translated in English, French, German, Italian, Czech and Simplified Chinese
 - Themes
 
 Todo and known bugs
@@ -49,6 +49,7 @@ People who sent one or many pull-requests:
 - Félix: https://github.com/dysosmus
 - Horsely: https://github.com/horsley
 - Ing. Jan Kaláb: https://github.com/Pitel
+- James Scott-Brown: https://github.com/jamesscottbrown
 - Luca Marra: https://github.com/facciocose
 - Maxime: https://github.com/EpocDotFr
 - MonsieurPaulLeBoulanger: https://github.com/MonsieurPaulLeBoulanger

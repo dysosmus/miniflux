@@ -1,6 +1,7 @@
 <?php
 
 return array(
+    'Help' => 'Aide',
     'Theme' => 'Thème',
     'No item' => 'Aucun élément',
     'items' => 'éléments',
@@ -25,7 +26,7 @@ return array(
     'remove bookmark' => 'supprimer des favoris',
     'bookmarks' => 'favoris',
     'Bookmarks' => 'Favoris',
-    'Bookmark item' => 'Ajouter l\'élément séléctionné aux favoris',
+    'Bookmark item' => 'Ajouter l\'élément aux favoris',
     'No bookmark' => 'Aucun favoris',
     'history' => 'historique',
     'subscriptions' => 'abonnements',
@@ -107,6 +108,6 @@ return array(
     'Do you really want to remove this subscription: "%s"?' => 'Voulez-vous vraiment supprimer cet abonnement : "%s" ?',
     'Nothing to read, do you want to <a href="?action=refresh-all" data-action="refresh-all">update your subscriptions?</a>' =>
     'Il n\'y a rien à lire, voulez-vous <a href="?action=refresh-all" data-action="refresh-all">mettre à jour vos abonnements ?</a>',
-    'Show shortcuts' => 'Afficher les raccourcis',
-    'Close shortcut list' => 'Fermer la liste des raccourcis'
+    'Show help' => 'Afficher l\'aide',
+    'Close help' => 'Fermer l\'aide',
 );

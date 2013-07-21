@@ -85,6 +85,13 @@ Router\post_action('login', function() {
 });
 
 
+// Show help
+Router\get_action('show-help', function() {
+
+    Response\html(Template\load('show_help'));
+});
+
+
 // Show item without bottom nav
 Router\get_action('show', function() {
 

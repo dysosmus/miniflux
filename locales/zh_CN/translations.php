@@ -1,6 +1,7 @@
 <?php
 
 return array(
+    'Help'                                      => '帮助',
     'Items per page'                            => '每页条目数',
     'Previous page'                             => '上一页',
     'Next page'                                 => '下一页',
@@ -102,6 +103,6 @@ return array(
     'Do you really want to remove this subscription: "%s"?'         => '你确定要移除这个订阅源: "%s" ？',
     'Nothing to read, do you want to <a href="?action=refresh-all" data-action="refresh-all">update your subscriptions?</a>' =>
     '空空如也，你想要<a href="?action=refresh-all" data-action="refresh-all">更新订阅源</a>嘛？',
-    'Show shortcuts' => '显示捷径',
-    'Close shortcut list' => '关闭快捷键列表'
+    'Show help' => '显示帮助',
+    'Close help' => '关闭帮助',
 );

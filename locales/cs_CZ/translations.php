@@ -1,6 +1,7 @@
 <?php
 
 return array(
+    'Help' => 'Pomoc',
     'No item' => 'Žádný článěk',
     'items' => 'články',
     'There is %d empty feeds, there is maybe an error: %s...' =>
@@ -106,6 +107,6 @@ return array(
     'Do you really want to remove this subscription: "%s"?' => 'Opravdu chcete odstranit tento odběr: "%s"?',
     'Nothing to read, do you want to <a href="?action=refresh-all" data-action="refresh-all">update your subscriptions?</a>' =>
     'Nic ke čtení, chete <a href="?action=refresh-all" data-action="refresh-all">aktualizovat vaše odběry?</a>',
-    'Show shortcuts' => 'Ukázat zkratky',
-    'Close shortcut list' => 'Zavřít seznam zkratek'
+    'Show help' => 'Zobrazit nápovědu',
+    'Close help' => 'Zobrazit nápovědu'
 );

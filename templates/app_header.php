@@ -42,19 +42,3 @@
         <section class="page">
             <?= Helper\flash('<div class="alert alert-success">%s</div>') ?>
             <?= Helper\flash_error('<div class="alert alert-error">%s</div>') ?>
-
-		    <div class="invisible" id="shortcuts">
-		        <h3><?= t('Keyboard shortcuts') ?></h3>
-		        <ul>
-		            <li><?= t('Previous item') ?> = <strong>p</strong> <?= t('or') ?> <strong>j</strong></li>
-		            <li><?= t('Next item') ?> = <strong>n</strong> <?= t('or') ?> <strong>k</strong></li>
-		            <li><?= t('Mark as read or unread') ?> = <strong>m</strong></li>
-		            <li><?= t('Open original link') ?> = <strong>v</strong></li>
-		            <li><?= t('Open item') ?> = <strong>o</strong></li>
-		            <li><?= t('Bookmark item') ?> = <strong>f</strong></li>
-		            <li><?= t('Previous page') ?> = <strong>h</strong></li>
-		            <li><?= t('Next page') ?> = <strong>l</strong></li><br />
-		            <li><?= t('Show shortcuts') ?> = <strong>?</strong></li>
-		            <li><?= t('Close shortcut list') ?> = <strong>q</strong></li>
-		        </ul>
-		    </div>

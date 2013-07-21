@@ -216,8 +216,8 @@ textarea.form-error {
     margin-bottom: 15px;
 }
 
-.invisible {
-    display:none;	
+.hide {
+    display: none;
 }
 
 /* alerts */
