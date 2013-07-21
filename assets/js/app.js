@@ -477,6 +477,12 @@
             case 108: // l
                 open_next_page();
                 break;
+            case 63: // ?
+                var jsFile = document.URL.substr(0, document.URL.lastIndexOf('/') + 1) + "assets/js/popupHelp.js";
+                var htmlHelp = document.getElementById("shortcuts").innerHTML;
+                var encodedHelp = "data:text/html;charset=utf-8,<script src=\"" + jsFile + "\"></script>" +  htmlHelp;
+                var popup = open(encodedHelp, "Shortcuts", "width=300,height=300,location=no,scrollbars=no,status=no,toolbar=no");
+              break;
         }
     };
 

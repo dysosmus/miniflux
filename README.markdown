@@ -17,7 +17,7 @@ Features
 - Use secure headers (only external images and Youtube/Vimeo videos are allowed)
 - Open external links inside a new tab with a `rel="noreferrer"` attribute
 - Mobile CSS (responsive design)
-- Keyboard shortcuts
+- Keyboard shortcuts (pressing '?' displays a pop-up listing the shortcuts; pressing 'q' closes it)
 - Basic bookmarks
 - Translated in English, French, German, Italian and Simplified Chinese
 - Themes

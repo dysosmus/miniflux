@@ -105,5 +105,7 @@ return array(
     'Do you really want to remove these items from your history?' => 'Opravdu chcete odstranit tyto články z historie?',
     'Do you really want to remove this subscription: "%s"?' => 'Opravdu chcete odstranit tento odběr: "%s"?',
     'Nothing to read, do you want to <a href="?action=refresh-all" data-action="refresh-all">update your subscriptions?</a>' =>
-    'Nic ke čtení, chete <a href="?action=refresh-all" data-action="refresh-all">aktualizovat vaše odběry?</a>'
+    'Nic ke čtení, chete <a href="?action=refresh-all" data-action="refresh-all">aktualizovat vaše odběry?</a>',
+    'Show shortcuts' => 'Ukázat zkratky',
+    'Close shortcut list' => 'Zavřít seznam zkratek'
 );

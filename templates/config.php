@@ -45,7 +45,7 @@
             <li><a href="?action=download-db"><?= t('Download the entire database') ?></a> <?= t('(Gzip compressed Sqlite file)') ?></li>
         </ul>
     </div>
-    <div class="alert alert-normal">
+    <div class="alert alert-normal" id="shortcuts">
         <h3><?= t('Keyboard shortcuts') ?></h3>
         <ul>
             <li><?= t('Previous item') ?> = <strong>p</strong> <?= t('or') ?> <strong>j</strong></li>
@@ -55,7 +55,9 @@
             <li><?= t('Open item') ?> = <strong>o</strong></li>
             <li><?= t('Bookmark item') ?> = <strong>f</strong></li>
             <li><?= t('Previous page') ?> = <strong>h</strong></li>
-            <li><?= t('Next page') ?> = <strong>l</strong></li>
+            <li><?= t('Next page') ?> = <strong>l</strong></li><br />
+            <li><?= t('Show shortcuts') ?> = <strong>?</strong></li>
+            <li><?= t('Close shortcut list') ?> = <strong>q</strong></li>
         </ul>
     </div>
     <div class="alert alert-normal">
