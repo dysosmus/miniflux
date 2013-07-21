@@ -22,6 +22,7 @@
                 </a>
             </h2>
             <p>
+            	<?= Helper\escape($item['feed_title']) ?> |
                 <?= Helper\get_host_from_url($item['url']) ?> |
                 <?= dt('%e %B %Y %k:%M', $item['updated']) ?> |
                 <a href="?action=bookmark&amp;value=0&amp;id=<?= $item_id ?>&amp;redirect=bookmarks&amp;offset=<?= $offset ?>"><?= t('remove bookmark') ?></a> |
