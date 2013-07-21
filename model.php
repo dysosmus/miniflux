@@ -412,7 +412,7 @@ function get_feed_items($feed_id, $offset = null, $limit = null)
 
 function get_item($id)
 {
-     return \PicoTools\singleton('db')
+    return \PicoTools\singleton('db')
         ->table('items')
         ->eq('id', $id)
         ->findOne();

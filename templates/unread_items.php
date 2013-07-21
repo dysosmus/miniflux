@@ -33,8 +33,7 @@
                 <?= Helper\escape(Helper\summary(strip_tags($item['content']), 50, 300)) ?>
             </p>
             <p>
-            	<?= Helper\escape($item['feed_title']) ?> |
-                <?= Helper\get_host_from_url($item['url']) ?> |
+                <?= Helper\escape($item['feed_title']) ?> |
                 <span class="hide-mobile"><?= dt('%e %B %Y %k:%M', $item['updated']) ?> |</span>
 
                 <span class="hide-mobile">
