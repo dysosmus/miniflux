@@ -13,7 +13,6 @@
 
         <p class="infos">
             <?= Helper\escape($feed['title']) ?> |
-            <?= Helper\get_host_from_url($item['url']) ?> |
             <span class="hide-mobile"><?= dt('%A %e %B %Y %k:%M', $item['updated']) ?> |</span>
             <?php if ($item['bookmark']): ?>
                 <a href="?action=bookmark&amp;value=0&amp;id=<?= $item_id ?>&amp;redirect=<?= $menu ?>"><?= t('remove bookmark') ?></a>
