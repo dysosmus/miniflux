@@ -12,7 +12,7 @@
         <title>miniflux</title>
         <link href="<?= Helper\css() ?>" rel="stylesheet" media="screen">
     </head>
-    <body>
+    <body id="login-page">
 
         <div class="page-header">
             <h1><?= t('Sign in') ?></h1>
