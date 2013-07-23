@@ -16,6 +16,7 @@ use PicoFarad\Session;
 use PicoTools\Template;
 
 
+if (SESSION_SAVE_PATH !== '') session_save_path(SESSION_SAVE_PATH);
 Session\open(dirname($_SERVER['PHP_SELF']));
 
 

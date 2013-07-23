@@ -17,6 +17,7 @@ defined('DB_FILENAME') or define('DB_FILENAME', 'data/db.sqlite');
 defined('DEBUG') or define('DEBUG', false);
 defined('DEBUG_DIRECTORY') or define('DEBUG_DIRECTORY', '/tmp');
 defined('THEME_DIRECTORY') or define('THEME_DIRECTORY', 'themes');
+defined('SESSION_SAVE_PATH') or define('SESSION_SAVE_PATH', '');
 
 PicoTools\container('db', function() {
 

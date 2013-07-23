@@ -176,6 +176,18 @@ Actually, the following constants can be overrided:
 - `DEBUG` => default is false (enable logs dump of picoFeed)
 - `DEBUG_DIRECTORY` => default is /tmp (place to store log files)
 - `THEME_DIRECTORY` => default is themes
+- `SESSION_SAVE_PATH` => default is empty (used to store session files in a custom directory)
+
+### How to change the session save path ?
+
+With several shared hosting providers, sessions are cleaned frequently, to avoid to login too often,
+you can save sessions in a custom directory.
+
+- Create a directory, by example `sessions`
+- This directory must be writeable by the web server user
+- This directory must NOT be accessible from the outside world (add a `.htaccess` if necessary)
+- Override the application variable like described above: `define('SESSION_SAVE_PATH', 'sessions');`
+- Now, your sessions are saved in the directory `sessions`
 
 ### How to create a theme for Miniflux?
 
