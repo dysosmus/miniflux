@@ -596,7 +596,8 @@ section li {
         font-size: 0.85em;
     }
 
+    video,
     iframe {
-        max-width: 95%;
+        max-width: 98%;
     }
 }

@@ -33,6 +33,7 @@ Router\before(function($action) {
 
     // HTTP secure headers
     Response\csp(array(
+        'media-src' => '*',
         'img-src' => '*',
         'frame-src' => implode(' ', array(
             'http://www.youtube.com',
