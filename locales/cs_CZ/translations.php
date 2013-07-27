@@ -54,7 +54,7 @@ return array(
     'About' => 'O aplikaci',
     'Miniflux version:' => 'Verze Miniflux:',
     'Nothing to read' => 'Nic ke čtení',
-    'unread items' => 'nepřečtené články',
+    '<span id="page-counter">%s</span>unread items' => '<span id="page-counter">%s</span>nepřečtené články',
     'mark all as read' => 'označit vše jako přečtené',
     'original link' => 'původní odkaz',
     'mark as read' => 'označit jako přečtené',
