@@ -11,6 +11,7 @@ class Filter
     private $strip_content = false;
 
     public $allowed_tags = array(
+        'audio' => array('controls', 'src'),
         'video' => array('poster', 'controls', 'height', 'width', 'src'),
         'source' => array('src', 'type'),
         'dt' => array(),
@@ -54,15 +55,41 @@ class Filter
         'script'
     );
 
+    // http://en.wikipedia.org/wiki/URI_scheme
     public $allowed_protocols = array(
-        'http://',
-        'https://',
-        'ftp://',
-        'mailto:',
         '//',
         'data:image/png;base64,',
         'data:image/gif;base64,',
-        'data:image/jpg;base64,'
+        'data:image/jpg;base64,',
+        'bitcoin:',
+        'callto:',
+        'ed2k://',
+        'facetime://',
+        'feed:',
+        'ftp://',
+        'geo:',
+        'git://',
+        'http://',
+        'https://',
+        'irc://',
+        'irc6://',
+        'ircs://',
+        'jabber:',
+        'magnet:',
+        'mailto:',
+        'nntp://',
+        'rtmp://',
+        'sftp://',
+        'sip:',
+        'sips:',
+        'skype:',
+        'smb://',
+        'sms:',
+        'spotify:',
+        'ssh:',
+        'steam:',
+        'svn://',
+        'tel:',
     );
 
     public $protocol_attributes = array(
