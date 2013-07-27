@@ -178,7 +178,7 @@ Actually, the following constants can be overrided:
 - `THEME_DIRECTORY` => default is themes
 - `SESSION_SAVE_PATH` => default is empty (used to store session files in a custom directory)
 
-### How to change the session save path ?
+### How to change the session save path?
 
 With several shared hosting providers, sessions are cleaned frequently, to avoid to login too often,
 you can save sessions in a custom directory.

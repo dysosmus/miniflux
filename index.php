@@ -97,7 +97,7 @@ Router\get_action('show-help', function() {
 // Show item without bottom nav
 Router\get_action('show', function() {
 
-    $id = Model\decode_item_id(Request\param('id'));
+    $id = Request\param('id');
     $item = Model\get_item($id);
     $feed = Model\get_feed($item['feed_id']);
 
@@ -114,7 +114,7 @@ Router\get_action('show', function() {
 // Show item with bottom nav
 Router\get_action('read', function() {
 
-    $id = Model\decode_item_id(Request\param('id'));
+    $id = Request\param('id');
     $item = Model\get_item($id);
     $feed = Model\get_feed($item['feed_id']);
     $nav = Model\get_nav_item($item); // must be placed before set_item_read()
@@ -133,7 +133,7 @@ Router\get_action('read', function() {
 // Mark item as read and redirect to the listing page
 Router\get_action('mark-item-read', function() {
 
-    $id = Model\decode_item_id(Request\param('id'));
+    $id = Request\param('id');
     $redirect = Request\param('redirect', 'unread');
     $offset = Request\int_param('offset', 0);
 
@@ -146,7 +146,7 @@ Router\get_action('mark-item-read', function() {
 // Mark item as unread and redirect to the listing page
 Router\get_action('mark-item-unread', function() {
 
-    $id = Model\decode_item_id(Request\param('id'));
+    $id = Request\param('id');
     $redirect = Request\param('redirect', 'history');
     $offset = Request\int_param('offset', 0);
 
@@ -159,7 +159,7 @@ Router\get_action('mark-item-unread', function() {
 // Mark item as removed and redirect to the listing page
 Router\get_action('mark-item-removed', function() {
 
-    $id = Model\decode_item_id(Request\param('id'));
+    $id = Request\param('id');
     $redirect = Request\param('redirect', 'history');
     $offset = Request\int_param('offset', 0);
 
@@ -172,7 +172,7 @@ Router\get_action('mark-item-removed', function() {
 // Ajax call to mark item read
 Router\post_action('mark-item-read', function() {
 
-    $id = Model\decode_item_id(Request\param('id'));
+    $id = Request\param('id');
     Model\set_item_read($id);
     Response\json(array('Ok'));
 });
@@ -181,7 +181,7 @@ Router\post_action('mark-item-read', function() {
 // Ajax call to mark item unread
 Router\post_action('mark-item-unread', function() {
 
-    $id = Model\decode_item_id(Request\param('id'));
+    $id = Request\param('id');
     Model\set_item_unread($id);
     Response\json(array('Ok'));
 });
@@ -190,7 +190,7 @@ Router\post_action('mark-item-unread', function() {
 // Ajax call to bookmark an item
 Router\post_action('bookmark-item', function() {
 
-    $id = Model\decode_item_id(Request\param('id'));
+    $id = Request\param('id');
     Model\bookmark_item($id);
     Response\json(array('Ok'));
 });
@@ -199,10 +199,10 @@ Router\post_action('bookmark-item', function() {
 // Ajax call change item status
 Router\post_action('change-item-status', function() {
 
-    $id = Model\decode_item_id(Request\param('id'));
+    $id = Request\param('id');
 
     Response\json(array(
-        'item_id' => Model\encode_item_id($id),
+        'item_id' => $id,
         'status' => Model\switch_item_status($id)
     ));
 });
@@ -211,8 +211,7 @@ Router\post_action('change-item-status', function() {
 // Add new bookmark
 Router\get_action('bookmark', function() {
 
-    $param_id = Request\param('id');
-    $id = Model\decode_item_id($param_id);
+    $id = Request\param('id');
     $redirect = Request\param('redirect', 'unread');
     $offset = Request\int_param('offset', 0);
 
@@ -220,11 +219,11 @@ Router\get_action('bookmark', function() {
 
     if ($redirect === 'show') {
 
-        Response\Redirect('?action=show&id='.$param_id);
+        Response\Redirect('?action=show&id='.$id);
     }
     else if ($redirect === 'read') {
 
-        Response\Redirect('?action=read&id='.$param_id);
+        Response\Redirect('?action=read&id='.$id);
     }
 
     Response\Redirect('?action='.$redirect.'&offset='.$offset);

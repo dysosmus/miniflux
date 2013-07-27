@@ -25,13 +25,15 @@ class Atom extends \PicoFeed\Parser
 
             if (isset($entry->author->name)) {
 
-                $author = $entry->author->name;
+                $author = (string) $entry->author->name;
             }
 
+            $id = (string) $entry->id;
+
             $item = new \StdClass;
-            $item->id = (string) $entry->id;
-            $item->title = $this->stripWhiteSpace((string) $entry->title);
             $item->url = $this->getUrl($entry);
+            $item->id = $this->generateId($id !== $item->url ? $id : $item->$url, $this->url);
+            $item->title = $this->stripWhiteSpace((string) $entry->title);
             $item->updated = strtotime((string) $entry->updated);
             $item->author = $author;
             $item->content = $this->filterHtml($this->getContent($entry), $item->url);

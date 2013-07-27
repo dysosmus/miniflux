@@ -22,7 +22,7 @@ use PicoFeed\Reader;
 use PicoFeed\Export;
 
 
-const DB_VERSION     = 10;
+const DB_VERSION     = 11;
 const HTTP_USERAGENT = 'Miniflux - http://miniflux.net';
 const LIMIT_ALL      = -1;
 
@@ -96,18 +96,6 @@ function write_debug()
             FILE_APPEND | LOCK_EX
         );
     }
-}
-
-
-function encode_item_id($input)
-{
-    return strtr(base64_encode($input), '+/=', '-_,');
-}
-
-
-function decode_item_id($input)
-{
-    return base64_decode(strtr($input, '-_,', '+/='));
 }
 
 
@@ -530,8 +518,8 @@ function mark_items_as_read(array $items_id)
 {
     \PicoTools\singleton('db')->startTransaction();
 
-    foreach($items_id as $encoded_id) {
-        set_item_read(decode_item_id($encoded_id));
+    foreach ($items_id as $id) {
+        set_item_read($id);
     }
 
     \PicoTools\singleton('db')->closeTransaction();

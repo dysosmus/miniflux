@@ -10,14 +10,13 @@
 
     <section class="items" id="listing">
     <?php foreach ($items as $item): ?>
-        <?php $item_id = Model\encode_item_id($item['id']) ?>
-        <article id="item-<?= $item_id ?>" data-item-id="<?= $item_id ?>">
+        <article id="item-<?= $item['id'] ?>" data-item-id="<?= $item['id'] ?>">
             <h2>
                 <?= $item['bookmark'] ? '★ ' : '' ?>
                 <a
-                    href="?action=show&amp;id=<?= $item_id ?>"
-                    data-item-id="<?= $item_id ?>"
-                    id="open-<?= $item_id ?>"
+                    href="?action=show&amp;id=<?= $item['id'] ?>"
+                    data-item-id="<?= $item['id'] ?>"
+                    id="open-<?= $item['id'] ?>"
                 >
                     <?= Helper\escape($item['title']) ?>
                 </a>
@@ -28,10 +27,10 @@
 
                 <a
                     href="<?= $item['url'] ?>"
-                    id="original-<?= $item_id ?>"
+                    id="original-<?= $item['id'] ?>"
                     rel="noreferrer"
                     target="_blank"
-                    data-item-id="<?= $item_id ?>"
+                    data-item-id="<?= $item['id'] ?>"
                 >
                     <?= t('original link') ?>
                 </a>

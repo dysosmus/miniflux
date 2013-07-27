@@ -91,4 +91,11 @@ abstract class Parser
         $value = str_replace("\n", "", $value);
         return trim($value);
     }
+
+
+    public function generateId()
+    {
+        // crc32b seems to be faster and shorter than other hash algorithms
+        return hash('crc32b', implode(func_get_args()));
+    }
 }

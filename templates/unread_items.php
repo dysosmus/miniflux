@@ -17,14 +17,13 @@
 
     <section class="items" id="listing">
     <?php foreach ($items as $item): ?>
-        <?php $item_id = Model\encode_item_id($item['id']) ?>
-        <article id="item-<?= $item_id ?>" data-item-id="<?= $item_id ?>" data-item-page="<?= $menu ?>" data-hide="true">
+        <article id="item-<?= $item['id'] ?>" data-item-id="<?= $item['id'] ?>" data-item-page="<?= $menu ?>" data-hide="true">
             <h2>
                 <?= $item['bookmark'] ? '★ ' : '' ?>
                 <a
-                    href="?action=read&amp;id=<?= $item_id ?>"
-                    data-item-id="<?= $item_id ?>"
-                    id="open-<?= $item_id ?>"
+                    href="?action=read&amp;id=<?= $item['id'] ?>"
+                    data-item-id="<?= $item['id'] ?>"
+                    id="open-<?= $item['id'] ?>"
                 >
                     <?= Helper\escape($item['title']) ?>
                 </a>
@@ -38,25 +37,25 @@
 
                 <span class="hide-mobile">
                 <?php if ($item['bookmark']): ?>
-                    <a id="bookmark-<?= $item_id ?>" href="?action=bookmark&amp;value=0&amp;id=<?= $item_id ?>&amp;redirect=unread&amp;offset=<?= $offset ?>"><?= t('remove bookmark') ?></a> |
+                    <a id="bookmark-<?= $item['id'] ?>" href="?action=bookmark&amp;value=0&amp;id=<?= $item['id'] ?>&amp;redirect=unread&amp;offset=<?= $offset ?>"><?= t('remove bookmark') ?></a> |
                 <?php else: ?>
-                    <a id="bookmark-<?= $item_id ?>" href="?action=bookmark&amp;value=1&amp;id=<?= $item_id ?>&amp;redirect=unread&amp;offset=<?= $offset ?>"><?= t('bookmark') ?></a> |
+                    <a id="bookmark-<?= $item['id'] ?>" href="?action=bookmark&amp;value=1&amp;id=<?= $item['id'] ?>&amp;redirect=unread&amp;offset=<?= $offset ?>"><?= t('bookmark') ?></a> |
                 <?php endif ?>
                 </span>
 
                 <a
-                    href="?action=mark-item-read&amp;id=<?= $item_id ?>&amp;offset=<?= $offset ?>"
+                    href="?action=mark-item-read&amp;id=<?= $item['id'] ?>&amp;offset=<?= $offset ?>"
                     data-action="mark-read"
-                    data-item-id="<?= $item_id ?>"
+                    data-item-id="<?= $item['id'] ?>"
                 >
                     <?= t('mark as read') ?>
                 </a> |
                 <a
                     href="<?= $item['url'] ?>"
-                    id="original-<?= $item_id ?>"
+                    id="original-<?= $item['id'] ?>"
                     rel="noreferrer"
                     target="_blank"
-                    data-item-id="<?= $item_id ?>"
+                    data-item-id="<?= $item['id'] ?>"
                     data-action="original-link"
                     data-hide="true"
                 >
