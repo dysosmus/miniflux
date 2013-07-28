@@ -36,14 +36,7 @@ Router\before(function($action) {
     Response\csp(array(
         'media-src' => '*',
         'img-src' => '*',
-        'frame-src' => implode(' ', array(
-            'http://www.youtube.com',
-            'https://www.youtube.com',
-            'http://player.vimeo.com',
-            'https://player.vimeo.com',
-            'http://www.dailymotion.com',
-            'https://www.dailymotion.com',
-        ))
+        'frame-src' => implode(' ', \PicoFeed\Filter::$iframe_whitelist)
     ));
 
     Response\xframe();

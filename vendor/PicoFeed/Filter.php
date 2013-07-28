@@ -10,7 +10,8 @@ class Filter
     private $empty_tags = array();
     private $strip_content = false;
 
-    public $allowed_tags = array(
+    // Allow only these tags and attributes
+    public static $whitelist_tags = array(
         'audio' => array('controls', 'src'),
         'video' => array('poster', 'controls', 'height', 'width', 'src'),
         'source' => array('src', 'type'),
@@ -51,12 +52,14 @@ class Filter
         'q' => array('cite')
     );
 
-    public $strip_tags_content = array(
+    // Strip content of these tags
+    public static $blacklist_tags = array(
         'script'
     );
 
-    // http://en.wikipedia.org/wiki/URI_scheme
-    public $allowed_protocols = array(
+    // Allowed URI scheme
+    // For a complete list go to http://en.wikipedia.org/wiki/URI_scheme
+    public static $scheme_whitelist = array(
         '//',
         'data:image/png;base64,',
         'data:image/gif;base64,',
@@ -92,12 +95,15 @@ class Filter
         'tel:',
     );
 
-    public $protocol_attributes = array(
+    // Attributes used for external resources
+    public static $media_attributes = array(
         'src',
         'href',
+        'poster',
     );
 
-    public $blacklist_media = array(
+    // Blacklisted resources
+    public static $media_blacklist = array(
         'feeds.feedburner.com',
         'share.feedsportal.com',
         'da.feedsportal.com',
@@ -119,20 +125,32 @@ class Filter
         'plus.google.com/share',
         'www.gstatic.com/images/icons/gplus-16.png',
         'www.gstatic.com/images/icons/gplus-32.png',
-        'www.gstatic.com/images/icons/gplus-64.png'
+        'www.gstatic.com/images/icons/gplus-64.png',
     );
 
-    public $required_attributes = array(
+    // Mandatory attributes for specified tags
+    public static $required_attributes = array(
         'a' => array('href'),
         'img' => array('src'),
-        'iframe' => array('src')
+        'iframe' => array('src'),
+        'audio' => array('src'),
+        'source' => array('src'),
     );
 
-    public $add_attributes = array(
+    // Add attributes to specified tags
+    public static $add_attributes = array(
         'a' => 'rel="noreferrer" target="_blank"'
     );
 
-    public $iframe_allowed_resources = array(
+    // Attributes that must be integer
+    public static $integer_attributes = array(
+        'width',
+        'height',
+        'frameborder',
+    );
+
+    // Iframe source whitelist, everything else is ignored
+    public static $iframe_whitelist = array(
         '//www.youtube.com',
         'http://www.youtube.com/',
         'https://www.youtube.com/',
@@ -218,12 +236,12 @@ class Filter
                             $attr_data .= ' '.$attribute.'="'.$this->getAbsoluteUrl($value, $this->url).'"';
                             $used_attributes[] = $attribute;
                         }
-                        else if ($this->isAllowedProtocol($value) && ! $this->isBlacklistMedia($value)) {
+                        else if ($this->isAllowedProtocol($value) && ! $this->isBlacklistedMedia($value)) {
 
                             if ($attribute == 'src' &&
                                 isset($attributes['data-src']) &&
                                 $this->isAllowedProtocol($attributes['data-src']) &&
-                                ! $this->isBlacklistMedia($attributes['data-src'])) {
+                                ! $this->isBlacklistedMedia($attributes['data-src'])) {
 
                                 $value = $attributes['data-src'];
                             }
@@ -232,7 +250,7 @@ class Filter
                             $used_attributes[] = $attribute;
                         }
                     }
-                    else {
+                    else if ($this->validateAttributeValue($attribute, $value)) {
 
                         $attr_data .= ' '.$attribute.'="'.$value.'"';
                         $used_attributes[] = $attribute;
@@ -241,9 +259,9 @@ class Filter
             }
 
             // Check for required attributes
-            if (isset($this->required_attributes[$name])) {
+            if (isset(self::$required_attributes[$name])) {
 
-                foreach ($this->required_attributes[$name] as $required_attribute) {
+                foreach (self::$required_attributes[$name] as $required_attribute) {
 
                     if (! in_array($required_attribute, $used_attributes)) {
 
@@ -258,9 +276,9 @@ class Filter
                 $this->data .= '<'.$name.$attr_data;
 
                 // Add custom attributes
-                if (isset($this->add_attributes[$name])) {
+                if (isset(self::$add_attributes[$name])) {
 
-                    $this->data .= ' '.$this->add_attributes[$name].' ';
+                    $this->data .= ' '.self::$add_attributes[$name].' ';
                 }
 
                 // If img or br, we don't close it here
@@ -268,7 +286,7 @@ class Filter
             }
         }
 
-        if (in_array($name, $this->strip_tags_content)) {
+        if (in_array($name, self::$blacklist_tags)) {
 
             $this->strip_content = true;
         }
@@ -294,8 +312,6 @@ class Filter
 
     public function getAbsoluteUrl($path, $url)
     {
-        //if (! filter_var($url, FILTER_VALIDATE_URL)) return '';
-
         $components = parse_url($url);
 
         if (! isset($components['scheme'])) $components['scheme'] = 'http';
@@ -325,12 +341,10 @@ class Filter
             $length = strlen($url_path);
 
             if ($length > 1 && $url_path{$length - 1} !== '/') {
-
                 $url_path = dirname($url_path).'/';
             }
 
             if (substr($path, 0, 2) === './') {
-
                 $path = substr($path, 2);
             }
 
@@ -342,35 +356,33 @@ class Filter
     public function isRelativePath($value)
     {
         if (strpos($value, 'data:') === 0) return false;
-
         return strpos($value, '://') === false && strpos($value, '//') !== 0;
     }
 
 
     public function isAllowedTag($name)
     {
-        return isset($this->allowed_tags[$name]);
+        return isset(self::$whitelist_tags[$name]);
     }
 
 
     public function isAllowedAttribute($tag, $attribute)
     {
-        return in_array($attribute, $this->allowed_tags[$tag]);
+        return in_array($attribute, self::$whitelist_tags[$tag]);
     }
 
 
     public function isResource($attribute)
     {
-        return in_array($attribute, $this->protocol_attributes);
+        return in_array($attribute, self::$media_attributes);
     }
 
 
     public function isAllowedIframeResource($value)
     {
-        foreach ($this->iframe_allowed_resources as $url) {
+        foreach (self::$iframe_whitelist as $url) {
 
             if (strpos($value, $url) === 0) {
-
                 return true;
             }
         }
@@ -381,10 +393,9 @@ class Filter
 
     public function isAllowedProtocol($value)
     {
-        foreach ($this->allowed_protocols as $protocol) {
+        foreach (self::$scheme_whitelist as $protocol) {
 
             if (strpos($value, $protocol) === 0) {
-
                 return true;
             }
         }
@@ -393,12 +404,11 @@ class Filter
     }
 
 
-    public function isBlacklistMedia($resource)
+    public function isBlacklistedMedia($resource)
     {
-        foreach ($this->blacklist_media as $name) {
+        foreach (self::$media_blacklist as $name) {
 
             if (strpos($resource, $name) !== false) {
-
                 return true;
             }
         }
@@ -412,5 +422,15 @@ class Filter
         return $tag === 'img' &&
                 isset($attributes['height']) && isset($attributes['width']) &&
                 $attributes['height'] == 1 && $attributes['width'] == 1;
+    }
+
+
+    public function validateAttributeValue($attribute, $value)
+    {
+        if (in_array($attribute, self::$integer_attributes)) {
+            return ctype_digit($value);
+        }
+
+        return true;
     }
 }

@@ -161,12 +161,12 @@ To override them, create a `config.php` file at the root of the project and chan
 
 By example, to override the default HTTP timeout value:
 
-    # file config.php
-
     <?php
 
     // My specific HTTP timeout (5 seconds)
     define('HTTP_TIMEOUT', 5);
+
+PS: This file must be a PHP file (nothing before the open tag `<?php`).
 
 Actually, the following constants can be overrided:
 
@@ -188,6 +188,54 @@ you can save sessions in a custom directory.
 - This directory must NOT be accessible from the outside world (add a `.htaccess` if necessary)
 - Override the application variable like described above: `define('SESSION_SAVE_PATH', 'sessions');`
 - Now, your sessions are saved in the directory `sessions`
+
+### How to override/extends the content filtering blacklist/whitelist?
+
+Miniflux use [PicoFeed](https://github.com/fguillot/picoFeed) to parse the content of each item.
+These variables are public static arrays, extends the actual array or replace it.
+
+**Be careful, you can break everything by doing that!!!**
+
+Put your modifications in your custom `config.php` like described above.
+
+By example to add a new iframe whitelist:
+
+    \PicoFeed\Filter::$iframe_whitelist[] = 'http://www.kickstarter.com';
+
+Or to replace the entire whitelist:
+
+    \PicoFeed\Filter::$iframe_whitelist = array('http://www.kickstarter.com');
+
+Available variables:
+
+    // Allow only specified tags and attributes
+    \PicoFeed\Filter::$whitelist_tags
+
+    // Strip content of these tags
+    \PicoFeed\Filter::$blacklist_tags
+
+    // Allow only specified URI scheme
+    \PicoFeed\Filter::$whitelist_scheme
+
+    // List of attributes used for external resources: src and href
+    \PicoFeed\Filter::$media_attributes
+
+    // Blacklist of external resources
+    \PicoFeed\Filter::$media_blacklist
+
+    // Required attributes for tags, if the attribute is missing the tag is dropped
+    \PicoFeed\Filter::$required_attributes
+
+    // Add attribute to specified tags
+    \PicoFeed\Filter::$add_attributes
+
+    // Attributes that must be integer
+    \PicoFeed\Filter::$integer_attributes
+
+    // Iframe allowed source
+    \PicoFeed\Filter::$iframe_whitelist
+
+For more details, have a look to the class `vendor/PicoFeed/Filter.php`.
 
 ### How to create a theme for Miniflux?
 
