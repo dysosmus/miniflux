@@ -2,25 +2,25 @@
 
 namespace Helper;
 
+function get_current_base_url()
+{
+    $url = isset($_SERVER['HTTPS']) ? 'https://' : 'http://';
+    $url .= $_SERVER['SERVER_NAME'];
+    $url .= dirname($_SERVER['PHP_SELF']).'/';
+
+    return $url;
+}
 
 function escape($value)
 {
     return htmlspecialchars($value, ENT_QUOTES, 'UTF-8', false);
 }
 
-
-/**
- * Get the flash message if there is something
- *
- * @param string $html HTML tags of the flash message parsed with sprintf
- * return string HTML tags with the message or empty string if nothing
- */
 function flash($html)
 {
     $data = '';
 
     if (isset($_SESSION['flash_message'])) {
-
         $data = sprintf($html, escape($_SESSION['flash_message']));
         unset($_SESSION['flash_message']);
     }
@@ -28,26 +28,17 @@ function flash($html)
     return $data;
 }
 
-
-/**
- * Get the flash error message if there is something
- *
- * @param string $html HTML tags of the flash message parsed with sprintf
- * return string HTML tags with the message or empty string if nothing
- */
 function flash_error($html)
 {
     $data = '';
 
     if (isset($_SESSION['flash_error_message'])) {
-
         $data = sprintf($html, escape($_SESSION['flash_error_message']));
         unset($_SESSION['flash_error_message']);
     }
 
     return $data;
 }
-
 
 function format_bytes($size, $precision = 2)
 {
@@ -57,46 +48,38 @@ function format_bytes($size, $precision = 2)
     return round(pow(1024, $base - floor($base)), $precision).$suffixes[floor($base)];
 }
 
-
 function get_host_from_url($url)
 {
     return escape(parse_url($url, PHP_URL_HOST));
 }
-
 
 function summary($value, $min_length = 5, $max_length = 120, $end = '[...]')
 {
     $length = strlen($value);
 
     if ($length > $max_length) {
-
         return substr($value, 0, strpos($value, ' ', $max_length)).' '.$end;
     }
     else if ($length < $min_length) {
-
         return '';
     }
 
     return $value;
 }
 
-
 function in_list($id, array $listing)
 {
     if (isset($listing[$id])) {
-
         return escape($listing[$id]);
     }
 
     return '?';
 }
 
-
 function error_class(array $errors, $name)
 {
     return ! isset($errors[$name]) ? '' : ' form-error';
 }
-
 
 function error_list(array $errors, $name)
 {
@@ -107,7 +90,6 @@ function error_list(array $errors, $name)
         $html .= '<ul class="form-errors">';
 
         foreach ($errors[$name] as $error) {
-
             $html .= '<li>'.escape($error).'</li>';
         }
 
@@ -117,31 +99,25 @@ function error_list(array $errors, $name)
     return $html;
 }
 
-
 function form_value($values, $name)
 {
     if (isset($values->$name)) {
-
         return 'value="'.escape($values->$name).'"';
     }
 
     return isset($values[$name]) ? 'value="'.escape($values[$name]).'"' : '';
 }
 
-
 function form_hidden($name, $values = array())
 {
     return '<input type="hidden" name="'.$name.'" id="form-'.$name.'" '.form_value($values, $name).'/>';
 }
 
-
 function form_default_select($name, array $options, $values = array(), array $errors = array(), $class = '')
 {
     $options = array('' => '?') + $options;
-
     return form_select($name, $options, $values, $errors, $class);
 }
-
 
 function form_select($name, array $options, $values = array(), array $errors = array(), $class = '')
 {
@@ -163,73 +139,31 @@ function form_select($name, array $options, $values = array(), array $errors = a
     return $html;
 }
 
-
 function form_radios($name, array $options, array $values = array())
 {
     $html = '';
 
     foreach ($options as $value => $label) {
-
         $html .= form_radio($name, $label, $value, isset($values[$name]) && $values[$name] == $value);
     }
 
     return $html;
 }
 
-
 function form_radio($name, $label, $value, $selected = false, $class = '')
 {
     return '<label><input type="radio" name="'.$name.'" class="'.$class.'" value="'.escape($value).'" '.($selected ? 'selected="selected"' : '').'>'.escape($label).'</label>';
 }
-
 
 function form_checkbox($name, $label, $value, $checked = false, $class = '')
 {
     return '<label><input type="checkbox" name="'.$name.'" class="'.$class.'" value="'.escape($value).'" '.($checked ? 'checked="checked"' : '').'>'.escape($label).'</label>';
 }
 
-
 function form_label($label, $name, $class = '')
 {
     return '<label for="form-'.$name.'" class="'.$class.'">'.escape($label).'</label>';
 }
-
-
-function form_text($name, $values = array(), array $errors = array(), array $attributes = array(), $class = '')
-{
-    $class .= error_class($errors, $name);
-
-    $html = '<input type="text" name="'.$name.'" id="form-'.$name.'" '.form_value($values, $name).' class="'.$class.'" ';
-    $html .= implode(' ', $attributes).'/>';
-    $html .= error_list($errors, $name);
-
-    return $html;
-}
-
-
-function form_password($name, $values = array(), array $errors = array(), array $attributes = array(), $class = '')
-{
-    $class .= error_class($errors, $name);
-
-    $html = '<input type="password" name="'.$name.'" id="form-'.$name.'" '.form_value($values, $name).' class="'.$class.'" ';
-    $html .= implode(' ', $attributes).'/>';
-    $html .= error_list($errors, $name);
-
-    return $html;
-}
-
-
-function form_email($name, $values = array(), array $errors = array(), array $attributes = array(), $class = '')
-{
-    $class .= error_class($errors, $name);
-
-    $html = '<input type="email" name="'.$name.'" id="form-'.$name.'" '.form_value($values, $name).' class="'.$class.'" ';
-    $html .= implode(' ', $attributes).'/>';
-    $html .= error_list($errors, $name);
-
-    return $html;
-}
-
 
 function form_textarea($name, $values = array(), array $errors = array(), array $attributes = array(), $class = '')
 {
@@ -242,4 +176,35 @@ function form_textarea($name, $values = array(), array $errors = array(), array 
     $html .= error_list($errors, $name);
 
     return $html;
+}
+
+function form_input($type, $name, $values = array(), array $errors = array(), array $attributes = array(), $class = '')
+{
+    $class .= error_class($errors, $name);
+
+    $html = '<input type="'.$type.'" name="'.$name.'" id="form-'.$name.'" '.form_value($values, $name).' class="'.$class.'" ';
+    $html .= implode(' ', $attributes).'/>';
+    $html .= error_list($errors, $name);
+
+    return $html;
+}
+
+function form_text($name, $values = array(), array $errors = array(), array $attributes = array(), $class = '')
+{
+    return form_input('text', $name, $values, $errors, $attributes, $class);
+}
+
+function form_password($name, $values = array(), array $errors = array(), array $attributes = array(), $class = '')
+{
+    return form_input('password', $name, $values, $errors, $attributes, $class);
+}
+
+function form_email($name, $values = array(), array $errors = array(), array $attributes = array(), $class = '')
+{
+    return form_input('email', $name, $values, $errors, $attributes, $class);
+}
+
+function form_date($name, $values = array(), array $errors = array(), array $attributes = array(), $class = '')
+{
+    return form_input('date', $name, $values, $errors, $attributes, $class);
 }

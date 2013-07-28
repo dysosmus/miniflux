@@ -3,6 +3,12 @@
 namespace Schema;
 
 
+function version_12($pdo)
+{
+    $pdo->exec('ALTER TABLE config ADD COLUMN api_token TEXT DEFAULT "'.\Model\generate_api_token().'"');
+}
+
+
 function version_11($pdo)
 {
     $rq = $pdo->prepare('

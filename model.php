@@ -22,7 +22,7 @@ use PicoFeed\Reader;
 use PicoFeed\Export;
 
 
-const DB_VERSION     = 11;
+const DB_VERSION     = 12;
 const HTTP_USERAGENT = 'Miniflux - http://miniflux.net';
 const LIMIT_ALL      = -1;
 
@@ -99,6 +99,12 @@ function write_debug()
 }
 
 
+function generate_api_token()
+{
+    return substr(base64_encode(file_get_contents('/dev/urandom', false, null, 0, 20)), 0, 15);
+}
+
+
 function export_feeds()
 {
     $opml = new Export(get_feeds());
@@ -167,10 +173,10 @@ function import_feed($url)
 
                 $feed_id = $db->getConnection()->getLastId();
                 update_items($feed_id, $feed->items);
+
+                return (int) $feed_id;
             }
         }
-
-        return true;
     }
 
     return false;
@@ -193,6 +199,7 @@ function update_feeds($limit = LIMIT_ALL)
 function update_feed($feed_id)
 {
     $feed = get_feed($feed_id);
+    if (empty($feed)) return false;
 
     $reader = new Reader;
 
@@ -438,7 +445,7 @@ function get_nav_item($item)
 
 function set_item_removed($id)
 {
-    \PicoTools\singleton('db')
+    return \PicoTools\singleton('db')
         ->table('items')
         ->eq('id', $id)
         ->save(array('status' => 'removed', 'content' => ''));
@@ -447,7 +454,7 @@ function set_item_removed($id)
 
 function set_item_read($id)
 {
-    \PicoTools\singleton('db')
+    return \PicoTools\singleton('db')
         ->table('items')
         ->eq('id', $id)
         ->save(array('status' => 'read'));
@@ -456,7 +463,7 @@ function set_item_read($id)
 
 function set_item_unread($id)
 {
-    \PicoTools\singleton('db')
+    return \PicoTools\singleton('db')
         ->table('items')
         ->eq('id', $id)
         ->save(array('status' => 'unread'));
@@ -465,7 +472,7 @@ function set_item_unread($id)
 
 function set_bookmark_value($id, $value)
 {
-    \PicoTools\singleton('db')
+    return \PicoTools\singleton('db')
         ->table('items')
         ->eq('id', $id)
         ->save(array('bookmark' => $value));
@@ -506,7 +513,7 @@ function switch_item_status($id)
 // Mark all items as read
 function mark_as_read()
 {
-    \PicoTools\singleton('db')
+    return \PicoTools\singleton('db')
         ->table('items')
         ->eq('status', 'unread')
         ->save(array('status' => 'read'));
@@ -528,7 +535,7 @@ function mark_items_as_read(array $items_id)
 
 function mark_as_removed()
 {
-    \PicoTools\singleton('db')
+    return \PicoTools\singleton('db')
         ->table('items')
         ->eq('status', 'read')
         ->eq('bookmark', 0)
@@ -646,7 +653,7 @@ function get_config()
 {
     return \PicoTools\singleton('db')
         ->table('config')
-        ->columns('username', 'language', 'autoflush', 'nocontent', 'items_per_page', 'theme')
+        ->columns('username', 'language', 'autoflush', 'nocontent', 'items_per_page', 'theme', 'api_token')
         ->findOne();
 }
 
@@ -718,7 +725,11 @@ function validate_config_update(array $values)
 
         $v = new Validator($values, array(
             new Validators\Required('username', t('The user name is required')),
-            new Validators\MaxLength('username', t('The maximum length is 50 characters'), 50)
+            new Validators\MaxLength('username', t('The maximum length is 50 characters'), 50),
+            new Validators\Required('autoflush', t('Value required')),
+            new Validators\Required('items_per_page', t('Value required')),
+            new Validators\Integer('items_per_page', t('Must be an integer')),
+            new Validators\Required('theme', t('Value required')),
         ));
     }
 

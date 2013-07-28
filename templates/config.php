@@ -38,9 +38,17 @@
 </div>
 <section>
     <div class="alert alert-normal">
+        <h3><?= t('API') ?></h3>
+        <ul>
+            <li><?= t('API endpoint:') ?> <strong><?= Helper\get_current_base_url().'jsonrpc.php' ?></strong></li>
+            <li><?= t('API username:') ?> <strong><?= Helper\escape($values['username']) ?></strong></li>
+            <li><?= t('API token:') ?> <strong><?= Helper\escape($values['api_token']) ?></strong></li>
+        </ul>
+    </div>
+    <div class="alert alert-normal">
         <h3><?= t('Database') ?></h3>
         <ul>
-            <li><?= t('Database size:') ?> <?= Helper\format_bytes($db_size) ?></li>
+            <li><?= t('Database size:') ?> <strong><?= Helper\format_bytes($db_size) ?></strong></li>
             <li><a href="?action=optimize-db"><?= t('Optimize the database') ?></a> <?= t('(VACUUM command)') ?></li>
             <li><a href="?action=download-db"><?= t('Download the entire database') ?></a> <?= t('(Gzip compressed Sqlite file)') ?></li>
         </ul>
