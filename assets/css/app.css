@@ -507,11 +507,21 @@ nav .active a {
 
 .infos {
     padding-bottom: 20px;
-    color: #ddd;
+    color: #ccc;
 }
 
 .item .infos a {
-    color: #ddd;
+    color: #ccc;
+}
+
+.downloading img {
+    display: inline;
+    margin: 0;
+    padding: 0;
+}
+
+.downloading {
+    color: #000;
 }
 
 #items-paging {

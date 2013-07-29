@@ -162,6 +162,13 @@ Router\get_action('mark-item-removed', function() {
 });
 
 
+// Ajax call to download an item (fetch the full content from the original website)
+Router\post_action('download-item', function() {
+
+    Response\json(Model\download_item(Request\param('id')));
+});
+
+
 // Ajax call to mark item read
 Router\post_action('mark-item-read', function() {
 

@@ -1,6 +1,11 @@
 <?php
 
 return array(
+    'content downloaded' => 'contenu téléchargé',
+    'in progress...' => 'en cours...',
+    'unable to fetch content' => 'impossible de récupérer l\'article',
+    'Download content' => 'Télécharger le contenu',
+    'download content' => 'télécharger le contenu',
     'Help' => 'Aide',
     'Theme' => 'Thème',
     'No item' => 'Aucun élément',

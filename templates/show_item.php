@@ -13,14 +13,27 @@
         <p class="infos">
             <?= Helper\escape($feed['title']) ?> |
             <span class="hide-mobile"><?= dt('%A %e %B %Y %k:%M', $item['updated']) ?> |</span>
+
             <?php if ($item['bookmark']): ?>
                 <a href="?action=bookmark&amp;value=0&amp;id=<?= $item['id'] ?>&amp;redirect=<?= $menu ?>"><?= t('remove bookmark') ?></a>
             <?php else: ?>
                 <a href="?action=bookmark&amp;value=1&amp;id=<?= $item['id'] ?>&amp;redirect=<?= $menu ?>"><?= t('bookmark') ?></a>
-            <?php endif ?>
+            <?php endif ?> |
+
+            <span id="download-item"
+                  data-item-id="<?= $item['id'] ?>"
+                  data-failure-message="<?= t('unable to fetch content') ?>"
+                  data-before-message="<?= t('in progress...') ?>"
+                  data-after-message="<?= t('content downloaded') ?>">
+                <a href="#" data-action="download-item">
+                    <?= t('download content') ?>
+                </a>
+            </span>
         </p>
 
-        <?= $item['content'] ?>
+        <div id="item-content">
+            <?= $item['content'] ?>
+        </div>
 
         <?php if (isset($item_nav)): ?>
         <nav>

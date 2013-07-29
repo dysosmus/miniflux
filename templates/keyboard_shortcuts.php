@@ -1,6 +1,7 @@
 <div class="alert alert-normal" id="shortcuts">
     <h3><?= t('Keyboard shortcuts') ?></h3>
     <ul>
+        <li><?= t('Download content') ?> = <strong>d</strong></li>
         <li><?= t('Previous item') ?> = <strong>p</strong> <?= t('or') ?> <strong>j</strong></li>
         <li><?= t('Next item') ?> = <strong>n</strong> <?= t('or') ?> <strong>k</strong></li>
         <li><?= t('Mark as read or unread') ?> = <strong>m</strong></li>

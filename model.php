@@ -2,6 +2,9 @@
 
 namespace Model;
 
+require_once 'vendor/PicoFeed/Encoding.php';
+require_once 'vendor/PicoFeed/Filter.php';
+require_once 'vendor/PicoFeed/Client.php';
 require_once 'vendor/PicoFeed/Export.php';
 require_once 'vendor/PicoFeed/Import.php';
 require_once 'vendor/PicoFeed/Reader.php';
@@ -307,6 +310,55 @@ function update_feed_cache_infos($feed_id, $last_modified, $etag)
             'last_modified' => $last_modified,
             'etag'          => $etag
         ));
+}
+
+
+function download_item($item_id)
+{
+    require_once 'vendor/Readability/Readability.php';
+
+    $item = get_item($item_id);
+
+    $client = \PicoFeed\Client::create();
+    $client->url = $item['url'];
+    $client->timeout = HTTP_TIMEOUT;
+    $client->user_agent = HTTP_USERAGENT;
+    $client->execute();
+
+    $content = $client->getContent();
+
+    if (! empty($content)) {
+
+        $content = \PicoFeed\Encoding::toUTF8($content);
+
+        $readability = new \Readability($content, $item['url']);
+
+        if ($readability->init()) {
+
+            // Get relevant content
+            $content = $readability->getContent()->innerHTML;
+
+            // Filter content
+            $filter = new \PicoFeed\Filter($content, $item['url']);
+            $content = $filter->execute();
+
+            // Save content
+            \PicoTools\singleton('db')
+                ->table('items')
+                ->eq('id', $item['id'])
+                ->save(array('content' => $content));
+
+            return array(
+                'result' => true,
+                'content' => $content
+            );
+        }
+    }
+
+    return array(
+        'result' => false,
+        'content' => ''
+    );
 }
 
 

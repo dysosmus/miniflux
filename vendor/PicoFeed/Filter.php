@@ -167,25 +167,12 @@ class Filter
     {
         $this->url = $site_url;
 
-        // Workaround for old libxml2 (Debian Lenny)
-        if (LIBXML_DOTTED_VERSION === '2.6.32') {
-
-            $entities = get_html_translation_table(HTML_ENTITIES, ENT_NOQUOTES|ENT_XHTML, 'UTF-8');
-
-            unset($entities['&']);
-            unset($entities['>']);
-            unset($entities['<']);
-
-            $data = str_replace(array_values($entities), array_keys($entities), $data);
-        }
+        \libxml_use_internal_errors(true);
 
         // Convert bad formatted documents to XML
         $dom = new \DOMDocument;
         $dom->loadHTML('<?xml version="1.0" encoding="UTF-8">'.$data);
         $this->input = $dom->saveXML($dom->getElementsByTagName('body')->item(0));
-
-        // Workaround for old libxml2 (Debian Lenny)
-        if (LIBXML_DOTTED_VERSION === '2.6.32') $this->input = utf8_decode($this->input);
     }
 
 
