@@ -342,11 +342,15 @@ function download_item($item_id)
             $filter = new \PicoFeed\Filter($content, $item['url']);
             $content = $filter->execute();
 
-            // Save content
-            \PicoTools\singleton('db')
-                ->table('items')
-                ->eq('id', $item['id'])
-                ->save(array('content' => $content));
+            $nocontent = (bool) get_config_value('nocontent');
+            if ($nocontent === false) {
+
+                // Save content
+                \PicoTools\singleton('db')
+                    ->table('items')
+                    ->eq('id', $item['id'])
+                    ->save(array('content' => $content));
+            }
 
             return array(
                 'result' => true,
