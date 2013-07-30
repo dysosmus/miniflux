@@ -50,7 +50,7 @@ return array(
     'About'                                     => '关于',
     'Miniflux version:'                         => 'Miniflux 版本:',
     'Nothing to read'                           => '没有未读条目',
-    'unread items'                              => '个未读条目',
+    '<span id="page-counter">%s</span>unread items'     => '<span id="page-counter">%s</span>个未读条目',
     'mark all as read'                          => '全部标记为已读',
     'original link'                             => '来源链接',
     'mark as read'                              => '标记为已读',

@@ -51,7 +51,7 @@ return array(
     'About' => 'Informazioni sul software',
     'Miniflux version:' => 'Versione Miniflux:',
     'Nothing to read' => 'Nichts zu lesen',
-    'unread items' => 'articoli non letti',
+    '<span id="page-counter">%s</span>unread items' => '<span id="page-counter">%s</span>articoli non letti',
     'mark all as read' => 'segna tutti come già letti',
     'original link' => 'link originale',
     'mark as read' => 'segna come già letto',
