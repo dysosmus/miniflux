@@ -74,7 +74,7 @@ $server->register('item.bookmark.create', function ($item_id) {
 });
 
 // Remove a bookmark
-$server->register('item.bookmark.remove', function ($item_id) {
+$server->register('item.bookmark.delete', function ($item_id) {
 
     return Model\set_bookmark_value($item_id, 0);
 });
@@ -122,7 +122,7 @@ $server->register('item.mark_as_read', function($item_id) {
 });
 
 // Mark item as unread
-$server->register('item.mark_as_read', function($item_id) {
+$server->register('item.mark_as_unread', function($item_id) {
 
     return Model\set_item_unread($item_id);
 });

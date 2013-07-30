@@ -237,6 +237,10 @@ Available variables:
 
 For more details, have a look to the class `vendor/PicoFeed/Filter.php`.
 
+### Where is the API documentation?
+
+<http://miniflux.net/api.html>
+
 ### How to create a theme for Miniflux?
 
 It's very easy to write a custom theme for Miniflux.
