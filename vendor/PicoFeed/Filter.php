@@ -9,6 +9,7 @@ class Filter
     private $input = '';
     private $empty_tags = array();
     private $strip_content = false;
+    private $is_code = false;
 
     // Allow only these tags and attributes
     public static $whitelist_tags = array(
@@ -186,6 +187,9 @@ class Filter
         xml_parse($parser, $this->input, true); // We ignore parsing error (for old libxml)
         xml_parser_free($parser);
 
+        $this->data = $this->removeEmptyTags($this->data);
+        $this->data = $this->removeMultipleTags($this->data);
+
         return $this->data;
     }
 
@@ -194,6 +198,8 @@ class Filter
     {
         $empty_tag = false;
         $this->strip_content = false;
+
+        if ($this->is_code === false && $name === 'pre') $this->is_code = true;
 
         if ($this->isPixelTracker($name, $attributes)) {
 
@@ -274,7 +280,6 @@ class Filter
         }
 
         if (in_array($name, self::$blacklist_tags)) {
-
             $this->strip_content = true;
         }
 
@@ -285,15 +290,25 @@ class Filter
     public function endTag($parser, $name)
     {
         if (! array_pop($this->empty_tags) && $this->isAllowedTag($name)) {
-
             $this->data .= $name !== 'img' && $name !== 'br' ? '</'.$name.'>' : '/>';
         }
+
+        if ($this->is_code && $name === 'pre') $this->is_code = false;
     }
 
 
     public function dataTag($parser, $content)
     {
-        if (! $this->strip_content) $this->data .= htmlspecialchars($content, ENT_QUOTES, 'UTF-8', false);
+        $content = str_replace("\xc2\xa0", ' ', $content); // Replace &nbsp; with normal space
+
+        // Replace mutliple space by a single one
+        if (! $this->is_code) {
+            $content = preg_replace('!\s+!', ' ', $content);
+        }
+
+        if (! $this->strip_content && trim($content) !== '') {
+            $this->data .= htmlspecialchars($content, ENT_QUOTES, 'UTF-8', false);
+        }
     }
 
 
@@ -419,5 +434,24 @@ class Filter
         }
 
         return true;
+    }
+
+
+    public function removeMultipleTags($data)
+    {
+        // Replace <br/><br/> by only one
+        return preg_replace("/(<br\s*\/?>\s*)+/", "<br/>", $data);
+    }
+
+
+    public function removeEmptyTags($data)
+    {
+        return preg_replace('/<([^<\/>]*)>([\s]*?|(?R))<\/\1>/imsU', '', $data);
+    }
+
+
+    public function removeHTMLTags($data)
+    {
+        return preg_replace('~<(?:!DOCTYPE|/?(?:html|head|body))[^>]*>\s*~i', '', $data);
     }
 }
