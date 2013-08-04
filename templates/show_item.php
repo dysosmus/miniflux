@@ -53,7 +53,7 @@
                 <?php elseif (! $item_nav['previous'] && $item_nav['next']): ?>
                     <a href="?action=<?= $menu ?>&amp;feed_id=<?= $feed['id'] ?>#item-<?= $item_nav['next']['id'] ?>"><?= t('Listing') ?></a>
                 <?php elseif (! $item_nav['previous'] && ! $item_nav['next']): ?>
-                    <a href="?action=<?= $menu ?>&amp;feed_id=<?= $feed['id'] ?>"><?= t('Unread items') ?></a>
+                    <a href="?action=<?= $menu ?>&amp;feed_id=<?= $feed['id'] ?>"><?= t('Listing') ?></a>
                 <?php endif ?>
             </span>
 

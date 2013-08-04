@@ -486,8 +486,7 @@ function get_nav_item($item, $status = array('unread'), $bookmark = array(1, 0))
 {
     $items = \PicoTools\singleton('db')
         ->table('items')
-        ->columns('id', 'status', 'title')
-        ->in('bookmark', $bookmark)
+        ->columns('id', 'status', 'title', 'bookmark')
         ->neq('status', 'removed')
         ->desc('updated')
         ->findAll();
@@ -505,7 +504,7 @@ function get_nav_item($item, $status = array('unread'), $bookmark = array(1, 0))
 
                 while ($j >= 0) {
 
-                    if (in_array($items[$j]['status'], $status)) {
+                    if (in_array($items[$j]['status'], $status) && in_array($items[$j]['bookmark'], $bookmark)) {
                         $previous_item = $items[$j];
                         break;
                     }
@@ -520,7 +519,7 @@ function get_nav_item($item, $status = array('unread'), $bookmark = array(1, 0))
 
                 while ($j < $ilen) {
 
-                    if (in_array($items[$j]['status'], $status)) {
+                    if (in_array($items[$j]['status'], $status) && in_array($items[$j]['bookmark'], $bookmark)) {
                         $next_item = $items[$j];
                         break;
                     }
