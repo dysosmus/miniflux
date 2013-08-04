@@ -188,8 +188,12 @@ textarea:focus {
     border-color: #065806;
 }
 
+a.btn-red:hover,
+a.btn-red:focus,
 .btn-red:hover,
 .btn-red:focus,
+a.btn-blue:hover,
+a.btn-blue:focus,
 .btn-blue:hover,
 .btn-blue:focus {
     background-color: #609C22;
