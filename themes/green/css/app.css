@@ -147,6 +147,11 @@ form {
     margin-top: 20px;
 }
 
+section > .form-actions {
+    margin-left: 10px;
+    margin-bottom: 10px;
+}
+
 input[type="email"],
 input[type="tel"],
 input[type="password"],
@@ -177,11 +182,14 @@ textarea:focus {
     margin-bottom: 10px;
 }
 
+.btn-red,
 .btn-blue {
     background-color: #708F51;
     border-color: #065806;
 }
 
+.btn-red:hover,
+.btn-red:focus,
 .btn-blue:hover,
 .btn-blue:focus {
     background-color: #609C22;
