@@ -87,38 +87,37 @@ Router\get_action('show-help', function() {
 });
 
 
-// Show item without bottom nav
+// Show item
 Router\get_action('show', function() {
 
     $id = Request\param('id');
+    $menu = Request\param('menu');
     $item = Model\get_item($id);
     $feed = Model\get_feed($item['feed_id']);
 
     Model\set_item_read($id);
 
-    Response\html(Template\layout('show_item', array(
-        'item' => $item,
-        'feed' => $feed,
-        'menu' => 'show'
-    )));
-});
-
-
-// Show item with bottom nav
-Router\get_action('read', function() {
-
-    $id = Request\param('id');
-    $item = Model\get_item($id);
-    $feed = Model\get_feed($item['feed_id']);
-    $nav = Model\get_nav_item($item); // must be placed before set_item_read()
-
-    Model\set_item_read($id);
+    switch ($menu) {
+        case 'unread':
+            $nav = Model\get_nav_item($item);
+            break;
+        case 'history':
+            $nav = Model\get_nav_item($item, array('read'));
+            break;
+        case 'feed-items':
+            $nav = Model\get_nav_item($item, array('unread', 'read'));
+            break;
+        case 'bookmarks':
+            $nav = Model\get_nav_item($item, array('unread', 'read'), array(1));
+            break;
+    }
 
     Response\html(Template\layout('show_item', array(
         'item' => $item,
         'feed' => $feed,
-        'item_nav' => $nav,
-        'menu' => 'read'
+        'item_nav' => isset($nav) ? $nav : null,
+        'menu' => $menu,
+        'title' => $item['title']
     )));
 });
 
@@ -212,21 +211,17 @@ Router\post_action('change-item-status', function() {
 Router\get_action('bookmark', function() {
 
     $id = Request\param('id');
-    $redirect = Request\param('redirect', 'unread');
+    $menu = Request\param('menu', 'unread');
+    $source = Request\param('source', 'unread');
     $offset = Request\int_param('offset', 0);
 
     Model\set_bookmark_value($id, Request\int_param('value'));
 
-    if ($redirect === 'show') {
-
-        Response\Redirect('?action=show&id='.$id);
-    }
-    else if ($redirect === 'read') {
-
-        Response\Redirect('?action=read&id='.$id);
+    if ($source === 'show') {
+        Response\Redirect('?action=show&menu='.$menu.'&id='.$id);
     }
 
-    Response\Redirect('?action='.$redirect.'&offset='.$offset);
+    Response\Redirect('?action='.$menu.'&offset='.$offset);
 });
 
 

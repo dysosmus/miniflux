@@ -21,7 +21,7 @@
             <h2>
                 <?= $item['bookmark'] ? '★ ' : '' ?>
                 <a
-                    href="?action=read&amp;id=<?= $item['id'] ?>"
+                    href="?action=show&amp;menu=unread&amp;id=<?= $item['id'] ?>"
                     data-item-id="<?= $item['id'] ?>"
                     id="open-<?= $item['id'] ?>"
                 >
@@ -37,9 +37,9 @@
 
                 <span class="hide-mobile">
                 <?php if ($item['bookmark']): ?>
-                    <a id="bookmark-<?= $item['id'] ?>" href="?action=bookmark&amp;value=0&amp;id=<?= $item['id'] ?>&amp;redirect=unread&amp;offset=<?= $offset ?>"><?= t('remove bookmark') ?></a> |
+                    <a id="bookmark-<?= $item['id'] ?>" href="?action=bookmark&amp;value=0&amp;id=<?= $item['id'] ?>&amp;menu=unread&amp;offset=<?= $offset ?>"><?= t('remove bookmark') ?></a> |
                 <?php else: ?>
-                    <a id="bookmark-<?= $item['id'] ?>" href="?action=bookmark&amp;value=1&amp;id=<?= $item['id'] ?>&amp;redirect=unread&amp;offset=<?= $offset ?>"><?= t('bookmark') ?></a> |
+                    <a id="bookmark-<?= $item['id'] ?>" href="?action=bookmark&amp;value=1&amp;id=<?= $item['id'] ?>&amp;menu=unread&amp;offset=<?= $offset ?>"><?= t('bookmark') ?></a> |
                 <?php endif ?>
                 </span>
 

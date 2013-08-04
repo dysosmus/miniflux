@@ -15,7 +15,7 @@
             <h2>
                 <?= $item['bookmark'] ? '★ ' : '' ?>
                 <a
-                    href="?action=show&amp;id=<?= $item['id'] ?>"
+                    href="?action=show&amp;menu=history&amp;id=<?= $item['id'] ?>"
                     data-item-id="<?= $item['id'] ?>"
                     id="open-<?= $item['id'] ?>"
                 >
@@ -29,7 +29,7 @@
 
                 <?php if (! $item['bookmark']): ?>
                     <span class="hide-mobile">
-                    <a id="bookmark-<?= $item['id'] ?>" href="?action=bookmark&amp;value=1&amp;id=<?= $item['id'] ?>&amp;redirect=history&amp;offset=<?= $offset ?>"><?= t('bookmark') ?></a> |
+                    <a id="bookmark-<?= $item['id'] ?>" href="?action=bookmark&amp;value=1&amp;id=<?= $item['id'] ?>&amp;menu=history&amp;offset=<?= $offset ?>"><?= t('bookmark') ?></a> |
                     </span>
                 <?php endif ?>
 

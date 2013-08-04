@@ -470,24 +470,53 @@ function get_item($id)
 }
 
 
-function get_nav_item($item)
+function get_nav_item($item, $status = array('unread'), $bookmark = array(1, 0))
 {
-    $unread_items = \PicoTools\singleton('db')
+    $items = \PicoTools\singleton('db')
         ->table('items')
-        ->columns('items.id')
-        ->eq('status', 'unread')
+        ->columns('id', 'status', 'title')
+        ->in('bookmark', $bookmark)
+        ->neq('status', 'removed')
         ->desc('updated')
         ->findAll();
 
     $next_item = null;
     $previous_item = null;
 
-    for ($i = 0, $ilen = count($unread_items); $i < $ilen; $i++) {
+    for ($i = 0, $ilen = count($items); $i < $ilen; $i++) {
 
-        if ($unread_items[$i]['id'] == $item['id']) {
+        if ($items[$i]['id'] == $item['id']) {
 
-            if ($i > 0) $previous_item = $unread_items[$i - 1];
-            if ($i < ($ilen - 1)) $next_item = $unread_items[$i + 1];
+            if ($i > 0) {
+
+                $j = $i - 1;
+
+                while ($j >= 0) {
+
+                    if (in_array($items[$j]['status'], $status)) {
+                        $previous_item = $items[$j];
+                        break;
+                    }
+
+                    $j--;
+                }
+            }
+
+            if ($i < ($ilen - 1)) {
+
+                $j = $i + 1;
+
+                while ($j < $ilen) {
+
+                    if (in_array($items[$j]['status'], $status)) {
+                        $next_item = $items[$j];
+                        break;
+                    }
+
+                    $j++;
+                }
+            }
+
             break;
         }
     }

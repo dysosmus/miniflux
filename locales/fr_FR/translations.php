@@ -1,6 +1,7 @@
 <?php
 
 return array(
+    'Listing' => 'Liste',
     'content downloaded' => 'contenu téléchargé',
     'in progress...' => 'en cours...',
     'unable to fetch content' => 'impossible de récupérer l\'article',

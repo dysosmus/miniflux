@@ -13,7 +13,7 @@
         <article id="item-<?= $item['id'] ?>" data-item-id="<?= $item['id'] ?>">
             <h2>
                 <a
-                    href="?action=show&amp;id=<?= $item['id'] ?>"
+                    href="?action=show&amp;menu=bookmarks&amp;id=<?= $item['id'] ?>"
                     data-item-id="<?= $item['id'] ?>"
                     id="open-<?= $item['id'] ?>"
                 >
@@ -25,7 +25,7 @@
                 <?= dt('%e %B %Y %k:%M', $item['updated']) ?> |
 
                 <span class="hide-mobile">
-                    <a href="?action=bookmark&amp;value=0&amp;id=<?= $item['id'] ?>&amp;redirect=bookmarks&amp;offset=<?= $offset ?>">
+                    <a href="?action=bookmark&amp;value=0&amp;id=<?= $item['id'] ?>&amp;menu=bookmarks&amp;offset=<?= $offset ?>">
                         <?= t('remove bookmark') ?>
                     </a> |
                 </span>

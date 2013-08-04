@@ -14,7 +14,7 @@
             <h2>
                 <?= $item['bookmark'] ? '★ ' : '' ?>
                 <a
-                    href="?action=show&amp;id=<?= $item['id'] ?>"
+                    href="?action=show&amp;menu=feed-items&amp;id=<?= $item['id'] ?>"
                     data-item-id="<?= $item['id'] ?>"
                     id="open-<?= $item['id'] ?>"
                 >
