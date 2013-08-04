@@ -210,7 +210,6 @@
             var feed_id = links[i].getAttribute('data-feed-id');
 
             if (feed_id) {
-
                 feeds.push(parseInt(feed_id));
             }
         }

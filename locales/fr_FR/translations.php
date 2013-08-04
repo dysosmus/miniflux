@@ -1,6 +1,14 @@
 <?php
 
 return array(
+    'Unable to enable this subscription.' => 'Impossible d\'activer cet abonnement.',
+    'This subscription has been enabled successfully.' => 'L\'abonnement a été activé avec succès.',
+    'Unable to disable this subscription.' => 'Impossible de désactiver cet abonnement.',
+    'This subscription has been disabled successfully.' => 'L\'abonnement a été désactivé avec succès.',
+    'Do you really want to disable this subscription: "%s"?' => 'Voulez-vous vraiment désactiver cet abonnement : "%s" ?',
+    'enable' => 'activer',
+    'disable' => 'désactiver',
+    'Subscription disabled' => 'Abonnement désactivé',
     'Listing' => 'Liste',
     'content downloaded' => 'contenu téléchargé',
     'in progress...' => 'en cours...',

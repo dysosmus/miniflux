@@ -21,16 +21,29 @@
     <section class="items">
     <?php foreach ($feeds as $feed): ?>
         <article>
-            <h2>
-                <span id="loading-feed-<?= $feed['id'] ?>"></span>
+            <h2 class="<?= (! $feed['enabled']) ? 'feed-disabled' : '' ?>">
+                <?php if (! $feed['enabled']): ?>
+                    <span title="<?= t('Subscription disabled') ?>">∅</a>
+                <?php else: ?>
+                    <span id="loading-feed-<?= $feed['id'] ?>"></span>
+                <?php endif ?>
+
                 <a href="<?= $feed['site_url'] ?>" rel="noreferrer" target="_blank"><?= Helper\escape($feed['title']) ?></a>
+
             </h2>
             <p>
                 <a href="<?= $feed['site_url'] ?>" rel="noreferrer" target="_blank"><?= Helper\get_host_from_url($feed['site_url']) ?></a> |
-                <span class="hide-mobile"><a href="<?= Helper\escape($feed['feed_url']) ?>" rel="noreferrer" target="_blank"><?= t('feed link') ?></a> |</span>
+
                 <span class="hide-mobile"><a href="?action=confirm-remove-feed&amp;feed_id=<?= $feed['id'] ?>"><?= t('remove') ?></a> |</span>
-                <span class="hide-mobile"><a href="?action=feed-items&amp;feed_id=<?= $feed['id'] ?>"><?= t('items') ?></a> |</span>
-                <a href="?action=refresh-feed&amp;feed_id=<?= $feed['id'] ?>" data-feed-id="<?= $feed['id'] ?>" data-action="refresh-feed"><?= t('refresh') ?></a>
+
+                <?php if ($feed['enabled']): ?>
+                    <span class="hide-mobile"><a href="?action=confirm-disable-feed&amp;feed_id=<?= $feed['id'] ?>"><?= t('disable') ?></a> |</span>
+                    <a href="?action=refresh-feed&amp;feed_id=<?= $feed['id'] ?>" data-feed-id="<?= $feed['id'] ?>" data-action="refresh-feed"><?= t('refresh') ?></a> |
+                <?php else: ?>
+                    <span class="hide-mobile"><a href="?action=enable-feed&amp;feed_id=<?= $feed['id'] ?>"><?= t('enable') ?></a> |</span>
+                <?php endif ?>
+
+                <span class="hide-mobile"><a href="?action=feed-items&amp;feed_id=<?= $feed['id'] ?>"><?= t('items') ?></a></span>
             </p>
         </article>
     <?php endforeach ?>

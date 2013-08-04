@@ -375,6 +375,11 @@ nav .active a {
     padding-right: 0;
 }
 
+.feed-disabled,
+.feed-disabled a {
+    color: #aaa;
+}
+
 
 /* items listing */
 .items article {

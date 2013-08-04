@@ -3,6 +3,12 @@
 namespace Schema;
 
 
+function version_13($pdo)
+{
+    $pdo->exec('ALTER TABLE feeds ADD COLUMN enabled INTEGER DEFAULT 1');
+}
+
+
 function version_12($pdo)
 {
     $pdo->exec('ALTER TABLE config ADD COLUMN api_token TEXT DEFAULT "'.\Model\generate_api_token().'"');

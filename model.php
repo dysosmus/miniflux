@@ -25,7 +25,7 @@ use PicoFeed\Reader;
 use PicoFeed\Export;
 
 
-const DB_VERSION     = 12;
+const DB_VERSION     = 13;
 const HTTP_USERAGENT = 'Miniflux - http://miniflux.net';
 const LIMIT_ALL      = -1;
 
@@ -241,6 +241,7 @@ function update_feed($feed_id)
 function get_feeds_id($limit = LIMIT_ALL)
 {
     $table_feeds = \PicoTools\singleton('db')->table('feeds')
+                                             ->eq('enabled', 1)
                                              ->asc('last_checked');
 
     if ($limit !== LIMIT_ALL) {
@@ -369,8 +370,19 @@ function download_item($item_id)
 function remove_feed($feed_id)
 {
     // Items are removed by a sql constraint
-    $db = \PicoTools\singleton('db');
-    return $db->table('feeds')->eq('id', $feed_id)->remove();
+    return \PicoTools\singleton('db')->table('feeds')->eq('id', $feed_id)->remove();
+}
+
+
+function enable_feed($feed_id)
+{
+    return \PicoTools\singleton('db')->table('feeds')->eq('id', $feed_id)->save((array('enabled' => 1)));
+}
+
+
+function disable_feed($feed_id)
+{
+    return \PicoTools\singleton('db')->table('feeds')->eq('id', $feed_id)->save((array('enabled' => 0)));
 }
 
 

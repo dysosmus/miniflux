@@ -279,62 +279,6 @@ Router\get_action('bookmarks', function() {
 });
 
 
-// Confirmation box to remove a feed
-Router\get_action('confirm-remove-feed', function() {
-
-    $id = Request\int_param('feed_id');
-
-    Response\html(Template\layout('confirm_remove_feed', array(
-        'feed' => Model\get_feed($id),
-        'menu' => 'feeds',
-        'title' => t('Confirmation')
-    )));
-});
-
-
-// Remove a feed
-Router\get_action('remove-feed', function() {
-
-    $id = Request\int_param('feed_id');
-
-    if ($id && Model\remove_feed($id)) {
-
-        Session\flash(t('This subscription has been removed successfully.'));
-    }
-    else {
-
-        Session\flash_error(t('Unable to remove this subscription.'));
-    }
-
-    Response\redirect('?action=feeds');
-});
-
-
-// Refresh one feed and redirect to unread items
-Router\get_action('refresh-feed', function() {
-
-    $id = Request\int_param('feed_id');
-    if ($id) Model\update_feed($id);
-    Model\write_debug();
-    Response\redirect('?action=unread');
-});
-
-
-// Ajax call to refresh one feed
-Router\post_action('refresh-feed', function() {
-
-    $id = Request\int_param('feed_id', 0);
-
-    if ($id) {
-
-        $result = Model\update_feed($id);
-        Model\write_debug();
-    }
-
-    Response\json(array('feed_id' => $id, 'result' => $result));
-});
-
-
 // Mark all unread items as read
 Router\get_action('mark-as-read', function() {
 
@@ -377,6 +321,104 @@ Router\get_action('refresh-all', function() {
 
     Session\flash(t('Your subscriptions are updated'));
     Response\redirect('?action=unread');
+});
+
+
+// Confirmation box to disable a feed
+Router\get_action('confirm-disable-feed', function() {
+
+    $id = Request\int_param('feed_id');
+
+    Response\html(Template\layout('confirm_disable_feed', array(
+        'feed' => Model\get_feed($id),
+        'menu' => 'feeds',
+        'title' => t('Confirmation')
+    )));
+});
+
+
+// Disable a feed
+Router\get_action('disable-feed', function() {
+
+    $id = Request\int_param('feed_id');
+
+    if ($id && Model\disable_feed($id)) {
+        Session\flash(t('This subscription has been disabled successfully.'));
+    }
+    else {
+        Session\flash_error(t('Unable to disable this subscription.'));
+    }
+
+    Response\redirect('?action=feeds');
+});
+
+
+// Enable a feed
+Router\get_action('enable-feed', function() {
+
+    $id = Request\int_param('feed_id');
+
+    if ($id && Model\enable_feed($id)) {
+        Session\flash(t('This subscription has been enabled successfully.'));
+    }
+    else {
+        Session\flash_error(t('Unable to enable this subscription.'));
+    }
+
+    Response\redirect('?action=feeds');
+});
+
+
+// Confirmation box to remove a feed
+Router\get_action('confirm-remove-feed', function() {
+
+    $id = Request\int_param('feed_id');
+
+    Response\html(Template\layout('confirm_remove_feed', array(
+        'feed' => Model\get_feed($id),
+        'menu' => 'feeds',
+        'title' => t('Confirmation')
+    )));
+});
+
+
+// Remove a feed
+Router\get_action('remove-feed', function() {
+
+    $id = Request\int_param('feed_id');
+
+    if ($id && Model\remove_feed($id)) {
+        Session\flash(t('This subscription has been removed successfully.'));
+    }
+    else {
+        Session\flash_error(t('Unable to remove this subscription.'));
+    }
+
+    Response\redirect('?action=feeds');
+});
+
+
+// Refresh one feed and redirect to unread items
+Router\get_action('refresh-feed', function() {
+
+    $id = Request\int_param('feed_id');
+    if ($id) Model\update_feed($id);
+    Model\write_debug();
+    Response\redirect('?action=unread');
+});
+
+
+// Ajax call to refresh one feed
+Router\post_action('refresh-feed', function() {
+
+    $id = Request\int_param('feed_id', 0);
+
+    if ($id) {
+        $result = Model\update_feed($id);
+        Model\write_debug();
+    }
+
+    Response\json(array('feed_id' => $id, 'result' => $result));
 });
 
 
