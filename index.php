@@ -105,7 +105,7 @@ Router\get_action('show', function() {
             $nav = Model\get_nav_item($item, array('read'));
             break;
         case 'feed-items':
-            $nav = Model\get_nav_item($item, array('unread', 'read'));
+            $nav = Model\get_nav_item($item, array('unread', 'read'), array(1, 0), $item['feed_id']);
             break;
         case 'bookmarks':
             $nav = Model\get_nav_item($item, array('unread', 'read'), array(1));

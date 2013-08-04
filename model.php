@@ -482,14 +482,17 @@ function get_item($id)
 }
 
 
-function get_nav_item($item, $status = array('unread'), $bookmark = array(1, 0))
+function get_nav_item($item, $status = array('unread'), $bookmark = array(1, 0), $feed_id = null)
 {
-    $items = \PicoTools\singleton('db')
+    $query = \PicoTools\singleton('db')
         ->table('items')
         ->columns('id', 'status', 'title', 'bookmark')
         ->neq('status', 'removed')
-        ->desc('updated')
-        ->findAll();
+        ->desc('updated');
+
+    if ($feed_id) $query->eq('feed_id', $feed_id);
+
+    $items = $query->findAll();
 
     $next_item = null;
     $previous_item = null;
