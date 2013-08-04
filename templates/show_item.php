@@ -11,8 +11,8 @@
         </h1>
 
         <p class="infos">
-            <?= Helper\escape($feed['title']) ?> |
-            <span class="hide-mobile"><?= dt('%A %e %B %Y %k:%M', $item['updated']) ?> |</span>
+            <a href="?action=feed-items&amp;feed_id=<?= $feed['id'] ?>"><?= Helper\escape($feed['title']) ?></a> |
+            <span class="hide-mobile"><?= dt('%e %B %Y - %k:%M', $item['updated']) ?> |</span>
 
             <?php if ($item['bookmark']): ?>
                 <a href="?action=bookmark&amp;value=0&amp;id=<?= $item['id'] ?>&amp;redirect=<?= $menu ?>"><?= t('remove bookmark') ?></a>
