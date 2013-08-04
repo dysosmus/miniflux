@@ -25,7 +25,6 @@ body {
 
 a {
     color: #3366CC;
-    border: 1px solid rgba(255, 255, 255, 0);
 }
 
 a:focus {
@@ -51,6 +50,11 @@ h2 {
 
 h3 {
     font-size: 1.2em;
+}
+
+h5, h6 {
+    margin: 0;
+    padding: 0;
 }
 
 blockquote {
@@ -459,7 +463,11 @@ nav .active a {
     margin-left: 25px;
 }
 
+#item-content > a img,
+#item-content > img,
 .item p img {
+    margin-top: 10px;
+    margin-bottom: 10px;
     display: block;
     max-width: 100%;
 }
