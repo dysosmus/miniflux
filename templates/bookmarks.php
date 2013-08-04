@@ -21,7 +21,7 @@
                 </a>
             </h2>
             <p>
-                <?= Helper\escape($item['feed_title']) ?> |
+                <a href="?action=feed-items&amp;feed_id=<?= $item['feed_id'] ?>"><?= Helper\escape($item['feed_title']) ?></a> |
                 <?= dt('%e %B %Y %k:%M', $item['updated']) ?> |
 
                 <span class="hide-mobile">

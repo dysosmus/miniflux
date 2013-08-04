@@ -569,7 +569,7 @@ Router\notfound(function() {
         'nb_unread_items' => $nb_items,
         'offset' => $offset,
         'items_per_page' => Model\get_config_value('items_per_page'),
-        'title' => 'miniflux ('.$nb_items.')',
+        'title' => 'Miniflux ('.$nb_items.')',
         'menu' => 'unread'
     )));
 });
