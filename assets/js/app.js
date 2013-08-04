@@ -164,6 +164,9 @@
     {
         var container = document.getElementById("loading-feed-" + feed_id);
         if (container) container.innerHTML = "";
+
+        var container = document.getElementById("last-checked-feed-" + feed_id);
+        if (container) container.innerHTML = container.getAttribute("data-after-update");
     }
 
 
@@ -186,7 +189,6 @@
                     var response = JSON.parse(this.responseText);
 
                     if (callback) {
-
                         callback(response);
                     }
                 }

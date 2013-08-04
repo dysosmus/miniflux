@@ -1,6 +1,9 @@
 <?php
 
 return array(
+    'updated just now' => 'mis à jour à l\'instant',
+    'checked at' => 'vérifié le',
+    'never updated after creation' => 'jamais mis à jour après la création',
     'Unable to enable this subscription.' => 'Impossible d\'activer cet abonnement.',
     'This subscription has been enabled successfully.' => 'L\'abonnement a été activé avec succès.',
     'Unable to disable this subscription.' => 'Impossible de désactiver cet abonnement.',

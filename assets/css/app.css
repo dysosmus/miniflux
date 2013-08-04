@@ -380,6 +380,11 @@ nav .active a {
     color: #aaa;
 }
 
+.feed-last-checked {
+    color: brown;
+    font-size: 0.7em;
+    font-weight: normal;
+}
 
 /* items listing */
 .items article {

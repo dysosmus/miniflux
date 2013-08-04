@@ -30,6 +30,17 @@
 
                 <a href="<?= $feed['site_url'] ?>" rel="noreferrer" target="_blank"><?= Helper\escape($feed['title']) ?></a>
 
+                <?php if ($feed['enabled']): ?>
+                    <?php if ($feed['last_checked']): ?>
+                        <time class="feed-last-checked" id="last-checked-feed-<?= $feed['id'] ?>" data-after-update="<?= t('updated just now') ?>">
+                            <?= t('checked at').' '.dt('%e %B %Y %k:%M', $feed['last_checked']) ?>
+                        </time>
+                    <?php else: ?>
+                        <span class="feed-last-checked" id="last-checked-feed-<?= $feed['id'] ?>" data-after-update="<?= t('now') ?>">
+                            <?= t('never updated after creation') ?>
+                        </span>
+                    <?php endif ?>
+                <?php endif ?>
             </h2>
             <p>
                 <a href="<?= $feed['site_url'] ?>" rel="noreferrer" target="_blank"><?= Helper\get_host_from_url($feed['site_url']) ?></a> |
