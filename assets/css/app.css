@@ -428,13 +428,15 @@ nav .active a {
     padding-right: 5px;
     padding-bottom: 50px;
     color: #555;
-}
-
-.item p,
-.item li {
     font-family: Georgia, serif;
     line-height: 1.6em;
     font-size: 1.1em;
+}
+
+.item pre {
+    font-family: "Lucida Console", Monaco, monospace;
+    font-size: 0.85em;
+    line-height: 0.9em;
 }
 
 .item h2,
@@ -457,10 +459,8 @@ nav .active a {
     margin-left: 25px;
 }
 
-.item img {
+.item p img {
     display: block;
-    margin-top: 15px;
-    margin-bottom: 15px;
     max-width: 100%;
 }
 
@@ -514,7 +514,7 @@ nav .active a {
     color: #ccc;
 }
 
-.downloading img {
+span.downloading img {
     display: inline;
     margin: 0;
     padding: 0;
