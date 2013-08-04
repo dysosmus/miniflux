@@ -43,6 +43,7 @@ People who sent one or many pull-requests:
 
 - André Kelpe: https://github.com/fs111
 - Ayodio: https://github.com/ayodio
+- Bjauy: https://github.com/bjauy
 - Chris Lemonier: https://github.com/chrislemonier
 - Derjus: https://github.com/derjus
 - Eauland: https://github.com/eauland
