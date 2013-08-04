@@ -23,7 +23,7 @@
         <article>
             <h2 class="<?= (! $feed['enabled']) ? 'feed-disabled' : '' ?>">
                 <?php if (! $feed['enabled']): ?>
-                    <span title="<?= t('Subscription disabled') ?>">∅</a>
+                    <span title="<?= t('Subscription disabled') ?>">✖</a>
                 <?php else: ?>
                     <span id="loading-feed-<?= $feed['id'] ?>"></span>
                 <?php endif ?>

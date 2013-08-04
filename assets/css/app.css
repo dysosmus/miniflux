@@ -548,6 +548,11 @@ span.downloading img {
     text-align: center;
 }
 
+.item .infos a.bookmark-icon {
+    color: #333;
+    text-decoration: none;
+}
+
 /* other pages */
 section li {
     margin-left: 15px;

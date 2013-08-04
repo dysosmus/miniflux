@@ -11,14 +11,15 @@
         </h1>
 
         <p class="infos">
-            <a href="?action=feed-items&amp;feed_id=<?= $feed['id'] ?>"><?= Helper\escape($feed['title']) ?></a> |
-            <span class="hide-mobile"><?= dt('%e %B %Y - %k:%M', $item['updated']) ?> |</span>
-
             <?php if ($item['bookmark']): ?>
-                <a href="?action=bookmark&amp;value=0&amp;id=<?= $item['id'] ?>&amp;source=show&amp;menu=<?= $menu ?>"><?= t('remove bookmark') ?></a>
+                <a href="?action=bookmark&amp;value=0&amp;id=<?= $item['id'] ?>&amp;source=show&amp;menu=<?= $menu ?>" title="<?= t('remove bookmark') ?>" class="bookmark-icon">★</a>
             <?php else: ?>
-                <a href="?action=bookmark&amp;value=1&amp;id=<?= $item['id'] ?>&amp;source=show&amp;menu=<?= $menu ?>"><?= t('bookmark') ?></a>
+                <a href="?action=bookmark&amp;value=1&amp;id=<?= $item['id'] ?>&amp;source=show&amp;menu=<?= $menu ?>" title="<?= t('bookmark') ?>" class="bookmark-icon">☆</a>
             <?php endif ?> |
+
+            <a href="?action=feed-items&amp;feed_id=<?= $feed['id'] ?>"><?= Helper\escape($feed['title']) ?></a> |
+
+            <span class="hide-mobile"><?= dt('%e %B %Y - %k:%M', $item['updated']) ?> |</span>
 
             <span id="download-item"
                   data-item-id="<?= $item['id'] ?>"
