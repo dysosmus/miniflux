@@ -1,7 +1,7 @@
 <?php
 
 return array(
-    'Help' => 'Pomoc',
+    'Help' => 'Nápověda',
     'No item' => 'Žádný článěk',
     'items' => 'články',
     'There is %d empty feeds, there is maybe an error: %s...' =>
@@ -108,5 +108,20 @@ return array(
     'Nothing to read, do you want to <a href="?action=refresh-all" data-action="refresh-all">update your subscriptions?</a>' =>
     'Nic ke čtení, chete <a href="?action=refresh-all" data-action="refresh-all">aktualizovat vaše odběry?</a>',
     'Show help' => 'Zobrazit nápovědu',
-    'Close help' => 'Zobrazit nápovědu'
+    'Close help' => 'Zavřít nápovědu',
+    'checked at' => 'zkontrolováno',
+    'disable' => 'zakázat',
+    'enable' => 'povolit',
+    'This subscription has been enabled successfully.' => 'Odběr byl úspěšně povolen.',
+    'This subscription has been disabled successfully.' => 'Odběr byl úspěšně zakázán.',
+    'Do you really want to disable this subscription: "%s"?' => 'Opravdu chcete zakázet odběr "%s"?',
+    'download content' => 'stáhnout obsah',
+    'Download content' => 'Stáhnout obsah',
+    'in progress...' => 'probíhá&hellip;',
+    'content downloaded' => 'obsah stažen',
+    'Listing' => 'Seznam',
+    'Theme' => 'Vzhled',
+    'API endpoint:' => 'Koncový bod:',
+    'API username:' => 'Uživatelské jméno:',
+    'API token:' => 'Heslo:'
 );
