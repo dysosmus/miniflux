@@ -36,7 +36,7 @@ Router\before(function($action) {
     Response\csp(array(
         'media-src' => '*',
         'img-src' => '*',
-        'frame-src' => implode(' ', \PicoFeed\Filter::$iframe_whitelist)
+        'frame-src' => \PicoFeed\Filter::$iframe_whitelist
     ));
 
     Response\xframe();
