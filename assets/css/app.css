@@ -111,22 +111,26 @@ th {
     text-align: left;
 }
 
-pre {
-    border: 1px solid #ccc;
-    border-radius: 10px;
+pre, code {
     background: #f0f0f0;
-    padding: 0.8em;
+    border: 1px solid #ccc;
+    font-family: monospace;
+    color: brown;
+    line-height: 1.0em;
+    border-radius: 5px;
+}
+
+pre {
+    padding: 10px;
     overflow: auto;
-    color: brown;
 }
 
-code {
-    color: brown;
+pre > code {
+    border: none;
 }
 
-caption code,
-p code {
-    font-size: 1.1em;
+p > code {
+    padding: 3px;
 }
 
 /* forms */
@@ -447,10 +451,9 @@ nav .active a {
     font-size: 1.1em;
 }
 
-.item pre {
-    font-family: "Lucida Console", Monaco, monospace;
-    font-size: 0.85em;
-    line-height: 0.9em;
+.item li pre,
+.item p code {
+
 }
 
 .item h2,
