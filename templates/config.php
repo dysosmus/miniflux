@@ -40,6 +40,9 @@
     <div class="alert alert-normal">
         <h3><?= t('API') ?></h3>
         <ul>
+            <li><?= t('Bookmarks RSS Feed:') ?>
+                <a href="<?= Helper\get_current_base_url().'feed.php?token='.urlencode($values['feed_token']) ?>" target="_blank"><?= Helper\get_current_base_url().'feed.php?token='.urlencode($values['feed_token']) ?></a>
+            </li>
             <li><?= t('API endpoint:') ?> <strong><?= Helper\get_current_base_url().'jsonrpc.php' ?></strong></li>
             <li><?= t('API username:') ?> <strong><?= Helper\escape($values['username']) ?></strong></li>
             <li><?= t('API token:') ?> <strong><?= Helper\escape($values['api_token']) ?></strong></li>

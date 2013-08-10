@@ -25,7 +25,7 @@ use PicoFeed\Reader;
 use PicoFeed\Export;
 
 
-const DB_VERSION     = 13;
+const DB_VERSION     = 14;
 const HTTP_USERAGENT = 'Miniflux - http://miniflux.net';
 const LIMIT_ALL      = -1;
 
@@ -752,7 +752,7 @@ function get_config()
 {
     return \PicoTools\singleton('db')
         ->table('config')
-        ->columns('username', 'language', 'autoflush', 'nocontent', 'items_per_page', 'theme', 'api_token')
+        ->columns('username', 'language', 'autoflush', 'nocontent', 'items_per_page', 'theme', 'api_token', 'feed_token')
         ->findOne();
 }
 

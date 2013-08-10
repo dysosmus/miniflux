@@ -73,9 +73,16 @@ class Rss20 extends \PicoFeed\Writer
             $entry->appendChild($this->dom->createElement('link', $item['url']));
 
             // <guid/>
-            $guid = $this->dom->createElement('guid', $item['url']);
-            $guid->setAttribute('isPermaLink', 'true');
-            $entry->appendChild($guid);
+            if (isset($item['id'])) {
+                $guid = $this->dom->createElement('guid', $item['id']);
+                $guid->setAttribute('isPermaLink', 'false');
+                $entry->appendChild($guid);
+            }
+            else {
+                $guid = $this->dom->createElement('guid', $item['url']);
+                $guid->setAttribute('isPermaLink', 'true');
+                $entry->appendChild($guid);
+            }
 
             // <pubDate/>
             $this->addPubDate($entry, isset($item['updated']) ? $item['updated'] : '');

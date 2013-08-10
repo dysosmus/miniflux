@@ -1,6 +1,7 @@
 <?php
 
 return array(
+    'Bookmarks RSS Feed:' => 'Flux RSS des favoris :',
     'updated just now' => 'mis à jour à l\'instant',
     'checked at' => 'vérifié le',
     'never updated after creation' => 'jamais mis à jour après la création',

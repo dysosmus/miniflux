@@ -63,7 +63,13 @@ class Atom extends \PicoFeed\Writer
             $entry->appendChild($this->dom->createElement('title', $item['title']));
 
             // <id/>
-            $entry->appendChild($this->dom->createElement('id', $item['url']));
+            if (isset($item['id'])) {
+                $entry->appendChild($this->dom->createElement('id', $item['id']));
+            }
+            else {
+                $entry->appendChild($this->dom->createElement('id', $item['url']));
+            }
+
 
             // <updated/>
             $this->addUpdated($entry, isset($item['updated']) ? $item['updated'] : '');
