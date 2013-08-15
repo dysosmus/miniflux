@@ -102,9 +102,25 @@ function write_debug()
 }
 
 
-function generate_api_token()
+function generate_token()
 {
-    return substr(base64_encode(file_get_contents('/dev/urandom', false, null, 0, 20)), 0, 15);
+    if (ini_get('open_basedir') === '') {
+        return substr(base64_encode(file_get_contents('/dev/urandom', false, null, 0, 20)), 0, 15);
+    }
+    else {
+        return substr(base64_encode(uniqid(mt_rand(), true)), 0, 20);
+    }
+}
+
+
+function new_tokens()
+{
+    $values = array(
+        'api_token' => generate_token(),
+        'feed_token' => generate_token(),
+    );
+
+    return \PicoTools\singleton('db')->table('config')->update($values);
 }
 
 

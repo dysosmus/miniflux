@@ -492,6 +492,14 @@ Router\post_action('add', function() {
 });
 
 
+// Re-generate tokens
+Router\get_action('generate-tokens', function() {
+
+    Model\new_tokens();
+    Response\redirect('?action=config#api');
+});
+
+
 // Optimize the database manually
 Router\get_action('optimize-db', function() {
 
