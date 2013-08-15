@@ -73,7 +73,7 @@ abstract class Client
 
         foreach ($lines as $line) {
 
-            if (strpos($line, 'HTTP') === 0 && strpos($line, '301') === false && strpos($line, '302') === false) {
+            if (strpos($line, 'HTTP') === 0/* && strpos($line, '301') === false && strpos($line, '302') === false*/) {
 
                 $status = (int) substr($line, 9, 3);
             }

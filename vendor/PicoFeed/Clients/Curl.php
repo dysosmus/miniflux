@@ -18,7 +18,6 @@ class Curl extends \PicoFeed\Client
         $this->body_length += $length;
 
         if ($this->body_length > $this->max_body_size) return -1;
-
         $this->body .= $buffer;
 
         return $length;
@@ -45,7 +44,7 @@ class Curl extends \PicoFeed\Client
     }
 
 
-    public function doRequest()
+    public function doRequest($follow_location = true)
     {
         $request_headers = array('Connection: close');
 
@@ -59,7 +58,7 @@ class Curl extends \PicoFeed\Client
         curl_setopt($ch, CURLOPT_TIMEOUT, $this->timeout);
         curl_setopt($ch, CURLOPT_USERAGENT, $this->user_agent);
         curl_setopt($ch, CURLOPT_HTTPHEADER, $request_headers);
-        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, ini_get('open_basedir') === '');
         curl_setopt($ch, CURLOPT_MAXREDIRS, $this->max_redirects);
         curl_setopt($ch, CURLOPT_ENCODING, '');
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // For auto-signed certificates...
@@ -83,6 +82,35 @@ class Curl extends \PicoFeed\Client
         curl_close($ch);
 
         list($status, $headers) = $this->parseHeaders(explode("\r\n", $this->headers[$this->headers_counter - 1]));
+
+        if ($follow_location && ini_get('open_basedir') !== '' && ($status == 301 || $status == 302)) {
+
+            $nb_redirects = 0;
+            $this->url = $headers['Location'];
+            $this->body = '';
+            $this->body_length = 0;
+            $this->headers = array();
+            $this->headers_counter = 0;
+
+            while (true) {
+
+                $nb_redirects++;
+                if ($nb_redirects >= $this->max_redirects) return false;
+
+                $result = $this->doRequest(false);
+
+                if ($result['status'] == 301 || $result['status'] == 302) {
+                    $this->url = $result['headers']['Location'];
+                    $this->body = '';
+                    $this->body_length = 0;
+                    $this->headers = array();
+                    $this->headers_counter = 0;
+                }
+                else {
+                    return $result;
+                }
+            }
+        }
 
         return array(
             'status' => $status,
