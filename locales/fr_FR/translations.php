@@ -1,6 +1,10 @@
 <?php
 
 return array(
+    'API endpoint:' => 'URL de l\'API : ',
+    'API username:' => 'Identifiant pour l\'API : ',
+    'API token:' => 'Clé pour l\'API : ',
+    'Generate new tokens' => 'Générer des nouvelles clés d\'authentification',
     'Bookmarks RSS Feed:' => 'Flux RSS des favoris :',
     'updated just now' => 'mis à jour à l\'instant',
     'checked at' => 'vérifié le',
