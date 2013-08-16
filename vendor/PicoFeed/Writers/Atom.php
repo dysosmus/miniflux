@@ -35,10 +35,14 @@ class Atom extends \PicoFeed\Writer
         $feed->appendChild($generator);
 
         // <title/>
-        $feed->appendChild($this->dom->createElement('title', $this->title));
+        $title = $this->dom->createElement('title');
+        $title->appendChild($this->dom->createTextNode($this->title));
+        $feed->appendChild($title);
 
         // <id/>
-        $feed->appendChild($this->dom->createElement('id', $this->site_url));
+        $id = $this->dom->createElement('id');
+        $id->appendChild($this->dom->createTextNode($this->site_url));
+        $feed->appendChild($id);
 
         // <updated/>
         $this->addUpdated($feed, isset($this->updated) ? $this->updated : '');
@@ -60,16 +64,14 @@ class Atom extends \PicoFeed\Writer
             $entry = $this->dom->createElement('entry');
 
             // <title/>
-            $entry->appendChild($this->dom->createElement('title', $item['title']));
+            $title = $this->dom->createElement('title');
+            $title->appendChild($this->dom->createTextNode($item['title']));
+            $entry->appendChild($title);
 
             // <id/>
-            if (isset($item['id'])) {
-                $entry->appendChild($this->dom->createElement('id', $item['id']));
-            }
-            else {
-                $entry->appendChild($this->dom->createElement('id', $item['url']));
-            }
-
+            $id = $this->dom->createElement('id');
+            $id->appendChild($this->dom->createTextNode(isset($item['id']) ? $item['id'] : $item['url']));
+            $entry->appendChild($id);
 
             // <updated/>
             $this->addUpdated($entry, isset($item['updated']) ? $item['updated'] : '');
@@ -84,7 +86,9 @@ class Atom extends \PicoFeed\Writer
 
             // <summary/>
             if (isset($item['summary'])) {
-                $entry->appendChild($this->dom->createElement('summary', $item['summary']));
+                $summary = $this->dom->createElement('summary');
+                $summary->appendChild($this->dom->createTextNode($item['summary']));
+                $entry->appendChild($summary);
             }
 
             // <content/>
@@ -136,17 +140,20 @@ class Atom extends \PicoFeed\Writer
         $author = $this->dom->createElement('author');
 
         if (isset($values['name'])) {
-            $name = $this->dom->createElement('name', $values['name']);
+            $name = $this->dom->createElement('name');
+            $name->appendChild($this->dom->createTextNode($values['name']));
             $author->appendChild($name);
         }
 
         if (isset($values['email'])) {
-            $email = $this->dom->createElement('email', $values['email']);
+            $email = $this->dom->createElement('email');
+            $email->appendChild($this->dom->createTextNode($values['email']));
             $author->appendChild($email);
         }
 
         if (isset($values['url'])) {
-            $uri = $this->dom->createElement('uri', $values['url']);
+            $uri = $this->dom->createElement('uri');
+            $uri->appendChild($this->dom->createTextNode($values['url']));
             $author->appendChild($uri);
         }
 

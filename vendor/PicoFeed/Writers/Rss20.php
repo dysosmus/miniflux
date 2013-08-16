@@ -38,10 +38,14 @@ class Rss20 extends \PicoFeed\Writer
         $channel->appendChild($generator);
 
         // <title/>
-        $channel->appendChild($this->dom->createElement('title', $this->title));
+        $title = $this->dom->createElement('title');
+        $title->appendChild($this->dom->createTextNode($this->title));
+        $channel->appendChild($title);
 
         // <description/>
-        $channel->appendChild($this->dom->createElement('description', isset($this->description) ? $this->description : $this->title));
+        $description = $this->dom->createElement('description');
+        $description->appendChild($this->dom->createTextNode(isset($this->description) ? $this->description : $this->title));
+        $channel->appendChild($description);
 
         // <pubDate/>
         $this->addPubDate($channel, isset($this->updated) ? $this->updated : '');
@@ -54,7 +58,9 @@ class Rss20 extends \PicoFeed\Writer
         $channel->appendChild($link);
 
         // <link/>
-        $channel->appendChild($this->dom->createElement('link', $this->site_url));
+        $link = $this->dom->createElement('link');
+        $link->appendChild($this->dom->createTextNode($this->site_url));
+        $channel->appendChild($link);
 
         // <webMaster/>
         if (isset($this->author)) $this->addAuthor($channel, 'webMaster', $this->author);
@@ -67,20 +73,26 @@ class Rss20 extends \PicoFeed\Writer
             $entry = $this->dom->createElement('item');
 
             // <title/>
-            $entry->appendChild($this->dom->createElement('title', $item['title']));
+            $title = $this->dom->createElement('title');
+            $title->appendChild($this->dom->createTextNode($item['title']));
+            $entry->appendChild($title);
 
             // <link/>
-            $entry->appendChild($this->dom->createElement('link', $item['url']));
+            $link = $this->dom->createElement('link');
+            $link->appendChild($this->dom->createTextNode($item['url']));
+            $entry->appendChild($link);
 
             // <guid/>
             if (isset($item['id'])) {
-                $guid = $this->dom->createElement('guid', $item['id']);
+                $guid = $this->dom->createElement('guid');
                 $guid->setAttribute('isPermaLink', 'false');
+                $guid->appendChild($this->dom->createTextNode($item['id']));
                 $entry->appendChild($guid);
             }
             else {
-                $guid = $this->dom->createElement('guid', $item['url']);
+                $guid = $this->dom->createElement('guid');
                 $guid->setAttribute('isPermaLink', 'true');
+                $guid->appendChild($this->dom->createTextNode($item['url']));
                 $entry->appendChild($guid);
             }
 
@@ -89,7 +101,9 @@ class Rss20 extends \PicoFeed\Writer
 
             // <description/>
             if (isset($item['summary'])) {
-                $entry->appendChild($this->dom->createElement('description', $item['summary']));
+                $description = $this->dom->createElement('description');
+                $description->appendChild($this->dom->createTextNode($item['summary']));
+                $entry->appendChild($description);
             }
 
             // <content/>
@@ -134,7 +148,8 @@ class Rss20 extends \PicoFeed\Writer
         if ($value && isset($values['name'])) $value .= ' ('.$values['name'].')';
 
         if ($value) {
-            $author = $this->dom->createElement($tag, $value);
+            $author = $this->dom->createElement($tag);
+            $author->appendChild($this->dom->createTextNode($value));
             $xml->appendChild($author);
         }
     }

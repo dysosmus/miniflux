@@ -51,6 +51,7 @@ class Import
                 else if ((isset($item['text']) || isset($item['title'])) && isset($item['xmlUrl'])) {
 
                     $entry = new \StdClass;
+                    $entry->category = isset($tree['title']) ? (string) $tree['title'] : (string) $tree['text'];
                     $entry->title = isset($item['title']) ? (string) $item['title'] : (string) $item['text'];
                     $entry->feed_url = (string) $item['xmlUrl'];
                     $entry->site_url = isset($item['htmlUrl']) ? (string) $item['htmlUrl'] : $entry->feed_url;
