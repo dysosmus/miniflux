@@ -151,14 +151,14 @@ You can report feeds that doesn't works properly too.
 
 Miniflux is tested with the latest versions of Mozilla Firefox, Google Chrome and Safari.
 
-I don't use Microsoft products, then I have no idea if Miniflux works correctly with Internet Explorer.
+I don't use Microsoft products, and as such I have no idea if Miniflux works correctly with Internet Explorer.
 
-### How to override application variables?
+### How do I override application variables?
 
-There is few settings that can't be changed by the user interface.
+There are few settings that can't be changed by the user interface.
 These parameters are defined with PHP constants.
 
-To override them, create a `config.php` file at the root of the project and change yourself the values.
+To override them, create a `config.php` file at the root of the project and change the values.
 
 By example, to override the default HTTP timeout value:
 
