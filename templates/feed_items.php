@@ -21,6 +21,9 @@
                     <?= Helper\escape($item['title']) ?>
                 </a>
             </h2>
+            <p class="preview">
+                <?= Helper\escape(Helper\summary(strip_tags($item['content']), 50, 300)) ?>
+            </p>
             <p>
                 <?= Helper\get_host_from_url($item['url']) ?> |
                 <?= dt('%e %B %Y %k:%M', $item['updated']) ?> |

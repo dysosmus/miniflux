@@ -22,6 +22,9 @@
                     <?= Helper\escape($item['title']) ?>
                 </a>
             </h2>
+            <p class="preview">
+                <?= Helper\escape(Helper\summary(strip_tags($item['content']), 50, 300)) ?>
+            </p>
             <p>
                 <a href="?action=feed-items&amp;feed_id=<?= $item['feed_id'] ?>"><?= Helper\escape($item['feed_title']) ?></a> |
 

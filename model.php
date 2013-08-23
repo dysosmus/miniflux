@@ -402,13 +402,24 @@ function disable_feed($feed_id)
 }
 
 
-function get_unread_items($offset = null, $limit = null)
+function get_items($status, $offset = null, $limit = null)
 {
     return \PicoTools\singleton('db')
         ->table('items')
-        ->columns('items.id', 'items.title', 'items.updated', 'items.url', 'items.content', 'items.bookmark', 'items.status', 'items.feed_id', 'feeds.site_url', 'feeds.title AS feed_title')
+        ->columns(
+            'items.id',
+            'items.title',
+            'items.updated',
+            'items.url',
+            'items.bookmark',
+            'items.feed_id',
+            'items.status',
+            'items.content',
+            'feeds.site_url',
+            'feeds.title AS feed_title'
+        )
         ->join('feeds', 'id', 'feed_id')
-        ->eq('status', 'unread')
+        ->eq('status', $status)
         ->desc('updated')
         ->offset($offset)
         ->limit($limit)
@@ -422,20 +433,6 @@ function count_items($status)
         ->table('items')
         ->eq('status', $status)
         ->count();
-}
-
-
-function get_read_items($offset = null, $limit = null)
-{
-    return \PicoTools\singleton('db')
-        ->table('items')
-        ->columns('items.id', 'items.title', 'items.updated', 'items.url', 'items.bookmark', 'items.feed_id', 'feeds.site_url', 'feeds.title AS feed_title')
-        ->join('feeds', 'id', 'feed_id')
-        ->eq('status', 'read')
-        ->desc('updated')
-        ->offset($offset)
-        ->limit($limit)
-        ->findAll();
 }
 
 
@@ -453,7 +450,17 @@ function get_bookmarks($offset = null, $limit = null)
 {
     return \PicoTools\singleton('db')
         ->table('items')
-        ->columns('items.id', 'items.title', 'items.updated', 'items.url', 'items.status', 'items.feed_id', 'feeds.site_url', 'feeds.title AS feed_title')
+        ->columns(
+            'items.id',
+            'items.title',
+            'items.updated',
+            'items.url',
+            'items.status',
+            'items.content',
+            'items.feed_id',
+            'feeds.site_url',
+            'feeds.title AS feed_title'
+        )
         ->join('feeds', 'id', 'feed_id')
         ->in('status', array('read', 'unread'))
         ->eq('bookmark', 1)
@@ -478,7 +485,17 @@ function get_feed_items($feed_id, $offset = null, $limit = null)
 {
     return \PicoTools\singleton('db')
         ->table('items')
-        ->columns('items.id', 'items.title', 'items.updated', 'items.url', 'items.feed_id', 'items.status', 'items.bookmark', 'feeds.site_url')
+        ->columns(
+            'items.id',
+            'items.title',
+            'items.updated',
+            'items.url',
+            'items.feed_id',
+            'items.status',
+            'items.content',
+            'items.bookmark',
+            'feeds.site_url'
+        )
         ->join('feeds', 'id', 'feed_id')
         ->in('status', array('read', 'unread'))
         ->eq('feed_id', $feed_id)

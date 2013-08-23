@@ -94,7 +94,7 @@ $server->register('item.bookmark.delete', function ($item_id) {
 // Get all unread items
 $server->register('item.list_unread', function ($offset = null, $limit = null) {
 
-    return Model\get_unread_items($offset, $limit);
+    return Model\get_items('unread', $offset, $limit);
 });
 
 // Count all unread items
@@ -106,7 +106,7 @@ $server->register('item.count_unread', function () {
 // Get all read items
 $server->register('item.list_read', function ($offset = null, $limit = null) {
 
-    return Model\get_read_items($offset, $limit);
+    return Model\get_items('read', $offset, $limit);
 });
 
 // Count all read items

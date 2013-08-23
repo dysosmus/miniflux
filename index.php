@@ -232,7 +232,7 @@ Router\get_action('history', function() {
     $nb_items = Model\count_items('read');
 
     Response\html(Template\layout('history', array(
-        'items' => Model\get_read_items($offset, Model\get_config_value('items_per_page')),
+        'items' => Model\get_items('read', $offset, Model\get_config_value('items_per_page')),
         'nb_items' => $nb_items,
         'offset' => $offset,
         'items_per_page' => Model\get_config_value('items_per_page'),
@@ -608,7 +608,7 @@ Router\notfound(function() {
     Model\autoflush();
 
     $offset = Request\int_param('offset', 0);
-    $items = Model\get_unread_items($offset, Model\get_config_value('items_per_page'));
+    $items = Model\get_items('unread', $offset, Model\get_config_value('items_per_page'));
     $nb_items = Model\count_items('unread');;
 
     if ($nb_items === 0) Response\redirect('?action=feeds&nothing_to_read=1');
