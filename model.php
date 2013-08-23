@@ -602,6 +602,17 @@ function set_item_unread($id)
 }
 
 
+function set_items_status($status, array $items)
+{
+    if (! in_array($status, array('read', 'unread', 'removed'))) return false;
+
+    return \PicoTools\singleton('db')
+        ->table('items')
+        ->in('id', $items)
+        ->save(array('status' => $status));
+}
+
+
 function set_bookmark_value($id, $value)
 {
     return \PicoTools\singleton('db')

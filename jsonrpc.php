@@ -139,6 +139,12 @@ $server->register('item.mark_as_unread', function($item_id) {
     return Model\set_item_unread($item_id);
 });
 
+// Change the status of list of items
+$server->register('item.set_list_status', function($status, array $items) {
+
+    return Model\set_items_status($status, $items);
+});
+
 // Flush all read items
 $server->register('item.flush', function() {
 
