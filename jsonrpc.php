@@ -37,6 +37,12 @@ $server->register('feed.delete', function($feed_id) {
     return Model\remove_feed($feed_id);
 });
 
+// Delete all feeds
+$server->register('feed.delete_all', function() {
+
+    return Model\remove_feeds();
+});
+
 // Enable a feed
 $server->register('feed.enable', function($feed_id) {
 

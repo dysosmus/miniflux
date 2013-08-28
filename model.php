@@ -390,6 +390,12 @@ function remove_feed($feed_id)
 }
 
 
+function remove_feeds()
+{
+    return \PicoTools\singleton('db')->table('feeds')->remove();
+}
+
+
 function enable_feed($feed_id)
 {
     return \PicoTools\singleton('db')->table('feeds')->eq('id', $feed_id)->save((array('enabled' => 1)));
