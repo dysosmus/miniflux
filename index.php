@@ -317,8 +317,6 @@ Router\get_action('flush-history', function() {
 Router\get_action('refresh-all', function() {
 
     Model\update_feeds();
-    Model\write_debug();
-
     Session\flash(t('Your subscriptions are updated'));
     Response\redirect('?action=unread');
 });
@@ -403,7 +401,6 @@ Router\get_action('refresh-feed', function() {
 
     $id = Request\int_param('feed_id');
     if ($id) Model\update_feed($id);
-    Model\write_debug();
     Response\redirect('?action=unread');
 });
 
@@ -415,7 +412,6 @@ Router\post_action('refresh-feed', function() {
 
     if ($id) {
         $result = Model\update_feed($id);
-        Model\write_debug();
     }
 
     Response\json(array('feed_id' => $id, 'result' => $result));
@@ -472,7 +468,6 @@ Router\get_action('add', function() {
 Router\post_action('add', function() {
 
     $result = Model\import_feed(trim($_POST['url']));
-    Model\write_debug();
 
     if ($result) {
 
@@ -489,30 +484,6 @@ Router\post_action('add', function() {
         'menu' => 'feeds',
         'title' => t('Subscriptions')
     )));
-});
-
-
-// Re-generate tokens
-Router\get_action('generate-tokens', function() {
-
-    Model\new_tokens();
-    Response\redirect('?action=config#api');
-});
-
-
-// Optimize the database manually
-Router\get_action('optimize-db', function() {
-
-    \PicoTools\singleton('db')->getConnection()->exec('VACUUM');
-    Response\redirect('?action=config');
-});
-
-
-// Download the compressed database
-Router\get_action('download-db', function() {
-
-    Response\force_download('db.sqlite.gz');
-    Response\binary(gzencode(file_get_contents(DB_FILENAME)));
 });
 
 
@@ -548,6 +519,48 @@ Router\post_action('import', function() {
         Session\flash_error(t('Unable to import your OPML file.'));
         Response\redirect('?action=import');
     }
+});
+
+
+// Re-generate tokens
+Router\get_action('generate-tokens', function() {
+
+    Model\new_tokens();
+    Response\redirect('?action=config#api');
+});
+
+
+// Optimize the database manually
+Router\get_action('optimize-db', function() {
+
+    \PicoTools\singleton('db')->getConnection()->exec('VACUUM');
+    Response\redirect('?action=config');
+});
+
+
+// Download the compressed database
+Router\get_action('download-db', function() {
+
+    Response\force_download('db.sqlite.gz');
+    Response\binary(gzencode(file_get_contents(DB_FILENAME)));
+});
+
+
+// Flush console messages
+Router\get_action('flush-console', function() {
+
+    @unlink(DEBUG_FILENAME);
+    Response\redirect('?action=console');
+});
+
+
+// Display console
+Router\get_action('console', function() {
+
+    Response\html(Template\layout('console', array(
+        'content' => @file_get_contents(DEBUG_FILENAME),
+        'title' => t('Console')
+    )));
 });
 
 

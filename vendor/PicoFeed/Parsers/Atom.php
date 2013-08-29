@@ -6,11 +6,13 @@ class Atom extends \PicoFeed\Parser
 {
     public function execute()
     {
+        \PicoFeed\Logging::log(\get_called_class().': begin parsing');
+
         \libxml_use_internal_errors(true);
         $xml = \simplexml_load_string($this->content);
 
         if ($xml === false) {
-
+            \PicoFeed\Logging::log(\get_called_class().': XML parsing error');
             \PicoFeed\Logging::log($this->getXmlErrors());
             return false;
         }
@@ -42,6 +44,8 @@ class Atom extends \PicoFeed\Parser
 
             $this->items[] = $item;
         }
+
+        \PicoFeed\Logging::log(\get_called_class().': parsing finished ('.count($this->items).' items)');
 
         return $this;
     }

@@ -15,7 +15,7 @@ body {
 
 body {
     margin: 0 auto;
-    max-width: 750px;
+    max-width: 780px;
     color: #333;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
@@ -116,7 +116,7 @@ pre, code {
     border: 1px solid #ccc;
     font-family: monospace;
     color: brown;
-    line-height: 1.0em;
+    line-height: 1.3em;
     border-radius: 5px;
 }
 

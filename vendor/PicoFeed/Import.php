@@ -16,6 +16,8 @@ class Import
 
     public function execute()
     {
+        \PicoFeed\Logging::log(\get_called_class().': start importation');
+
         try {
 
             \libxml_use_internal_errors(true);
@@ -23,14 +25,16 @@ class Import
             $xml = new \SimpleXMLElement(trim($this->content));
 
             if ($xml->getName() !== 'opml' || ! isset($xml->body)) {
-
+                \PicoFeed\Logging::log(\get_called_class().': OPML tag not found');
                 return false;
             }
 
             $this->parseEntries($xml->body);
+
+            \PicoFeed\Logging::log(\get_called_class().': '.count($this->items).' subscriptions found');
         }
         catch (\Exception $e) {
-
+            \PicoFeed\Logging::log(\get_called_class().': '.$e->getMessage());
             return false;
         }
 

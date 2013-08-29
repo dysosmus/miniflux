@@ -63,6 +63,7 @@
         <ul>
             <li><?= t('Miniflux version:') ?> <strong><?= APP_VERSION ?></strong></li>
             <li><?= t('Official website:') ?> <a href="http://miniflux.net" target="_blank">http://miniflux.net</a></li>
+            <li><a href="?action=console"><?= t('Console') ?></a></li>
         </ul>
     </div>
 </section>

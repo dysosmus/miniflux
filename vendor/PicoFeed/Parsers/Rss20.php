@@ -6,11 +6,13 @@ class Rss20 extends \PicoFeed\Parser
 {
     public function execute()
     {
+        \PicoFeed\Logging::log(\get_called_class().': begin parsing');
+
         \libxml_use_internal_errors(true);
         $xml = \simplexml_load_string($this->content);
 
         if ($xml === false) {
-
+            \PicoFeed\Logging::log(\get_called_class().': XML parsing error');
             \PicoFeed\Logging::log($this->getXmlErrors());
             return false;
         }
@@ -41,7 +43,10 @@ class Rss20 extends \PicoFeed\Parser
         $this->updated = $this->updated ? strtotime($this->updated) : time();
 
         // RSS feed might be empty
-        if (! $xml->channel->item) return $this;
+        if (! $xml->channel->item) {
+            \PicoFeed\Logging::log(\get_called_class().': feed empty or malformed');
+            return $this;
+        }
 
         foreach ($xml->channel->item as $entry) {
 
@@ -107,6 +112,8 @@ class Rss20 extends \PicoFeed\Parser
             $item->content = $this->filterHtml($item->content, $item->url);
             $this->items[] = $item;
         }
+
+        \PicoFeed\Logging::log(\get_called_class().': parsing finished ('.count($this->items).' items)');
 
         return $this;
     }

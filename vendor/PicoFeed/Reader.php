@@ -87,7 +87,7 @@ class Reader
 
         if (strpos($first_tag, '<feed') !== false) {
 
-            Logging::log('Reader: discover Atom feed');
+            Logging::log(\get_called_class().': discover Atom feed');
 
             require_once __DIR__.'/Parsers/Atom.php';
             return new Parsers\Atom($this->content);
@@ -95,7 +95,7 @@ class Reader
         else if (strpos($first_tag, '<rss') !== false &&
                 (strpos($first_tag, 'version="2.0"') !== false || strpos($first_tag, 'version=\'2.0\'') !== false)) {
 
-            Logging::log('Reader: discover RSS 2.0 feed');
+            Logging::log(\get_called_class().': discover RSS 2.0 feed');
 
             require_once __DIR__.'/Parsers/Rss20.php';
             return new Parsers\Rss20($this->content);
@@ -103,7 +103,7 @@ class Reader
         else if (strpos($first_tag, '<rss') !== false &&
                 (strpos($first_tag, 'version="0.92"') !== false || strpos($first_tag, 'version=\'0.92\'') !== false)) {
 
-            Logging::log('Reader: discover RSS 0.92 feed');
+            Logging::log(\get_called_class().': discover RSS 0.92 feed');
 
             require_once __DIR__.'/Parsers/Rss92.php';
             return new Parsers\Rss92($this->content);
@@ -111,19 +111,22 @@ class Reader
         else if (strpos($first_tag, '<rss') !== false &&
                 (strpos($first_tag, 'version="0.91"') !== false || strpos($first_tag, 'version=\'0.91\'') !== false)) {
 
-            Logging::log('Reader: discover RSS 0.91 feed');
+            Logging::log(\get_called_class().': discover RSS 0.91 feed');
 
             require_once __DIR__.'/Parsers/Rss91.php';
             return new Parsers\Rss91($this->content);
         }
         else if (strpos($first_tag, '<rdf:') !== false && strpos($first_tag, 'xmlns="http://purl.org/rss/1.0/"') !== false) {
 
-            Logging::log('Reader: discover RSS 1.0 feed');
+            Logging::log(\get_called_class().': discover RSS 1.0 feed');
 
             require_once __DIR__.'/Parsers/Rss10.php';
             return new Parsers\Rss10($this->content);
         }
         else if ($discover === true) {
+
+            Logging::log(\get_called_class().': Format not supported or malformed');
+            Logging::log(\get_called_class().':'.PHP_EOL.$this->content);
 
             return false;
         }
@@ -131,6 +134,9 @@ class Reader
 
             return $this->getParser(true);
         }
+
+        Logging::log(\get_called_class().': Subscription not found');
+        Logging::log(\get_called_class().': Content => '.PHP_EOL.$this->content);
 
         return false;
     }
@@ -143,7 +149,7 @@ class Reader
             return false;
         }
 
-        Logging::log('Reader: run discover()');
+        Logging::log(\get_called_class().': Try to discover a subscription');
 
         \libxml_use_internal_errors(true);
 
@@ -176,6 +182,7 @@ class Reader
                         $link = $this->url.$link;
                     }
 
+                    Logging::log(\get_called_class().': Find subscription link: '.$link);
                     $this->download($link);
 
                     return true;

@@ -66,14 +66,14 @@ class Curl extends \PicoFeed\Client
         curl_setopt($ch, CURLOPT_HEADERFUNCTION, array($this, 'readHeaders'));
         curl_exec($ch);
 
-        Logging::log('cURL total time: '.curl_getinfo($ch, CURLINFO_TOTAL_TIME));
-        Logging::log('cURL dns lookup time: '.curl_getinfo($ch, CURLINFO_NAMELOOKUP_TIME));
-        Logging::log('cURL connect time: '.curl_getinfo($ch, CURLINFO_CONNECT_TIME));
-        Logging::log('cURL speed download: '.curl_getinfo($ch, CURLINFO_SPEED_DOWNLOAD));
+        Logging::log(\get_called_class().' cURL total time: '.curl_getinfo($ch, CURLINFO_TOTAL_TIME));
+        Logging::log(\get_called_class().' cURL dns lookup time: '.curl_getinfo($ch, CURLINFO_NAMELOOKUP_TIME));
+        Logging::log(\get_called_class().' cURL connect time: '.curl_getinfo($ch, CURLINFO_CONNECT_TIME));
+        Logging::log(\get_called_class().' cURL speed download: '.curl_getinfo($ch, CURLINFO_SPEED_DOWNLOAD));
 
         if (curl_errno($ch)) {
 
-            Logging::log('cURL error: '.curl_error($ch));
+            Logging::log(\get_called_class().' cURL error: '.curl_error($ch));
 
             curl_close($ch);
             return false;

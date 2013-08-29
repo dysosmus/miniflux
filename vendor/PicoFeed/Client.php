@@ -46,9 +46,9 @@ abstract class Client
             throw new \LogicException('The URL is missing');
         }
 
-        Logging::log('Fetch URL: '.$this->url);
-        Logging::log('Etag: '.$this->etag);
-        Logging::log('Last-Modified: '.$this->last_modified);
+        Logging::log(\get_called_class().' Fetch URL: '.$this->url);
+        Logging::log(\get_called_class().' Etag provided: '.$this->etag);
+        Logging::log(\get_called_class().' Last-Modified provided: '.$this->last_modified);
 
         $response = $this->doRequest();
 
@@ -84,10 +84,10 @@ abstract class Client
             }
         }
 
-        Logging::log('HTTP status code: '.$status);
+        Logging::log(\get_called_class().' HTTP status code: '.$status);
 
         foreach ($headers as $name => $value) {
-            Logging::log('HTTP headers: '.$name.' => '.$value);
+            Logging::log(\get_called_class().' HTTP headers: '.$name.' => '.$value);
         }
 
         return array($status, $headers);

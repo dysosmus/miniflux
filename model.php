@@ -93,11 +93,13 @@ function write_debug()
 {
     if (DEBUG) {
 
-        file_put_contents(
-            DEBUG_DIRECTORY.'/miniflux_'.date('YmdH').'.debug',
-            var_export(\PicoFeed\Logging::$messages, true).PHP_EOL,
-            FILE_APPEND | LOCK_EX
-        );
+        $data = '';
+
+        foreach (\PicoFeed\Logging::$messages as $line) {
+            $data .= $line.PHP_EOL;
+        }
+
+        file_put_contents(DEBUG_FILENAME, $data);
     }
 }
 
@@ -156,8 +158,12 @@ function import_feeds($content)
 
         $db->closeTransaction();
 
+        write_debug();
+
         return true;
     }
+
+    write_debug();
 
     return false;
 }
@@ -192,11 +198,14 @@ function import_feed($url)
 
                 $feed_id = $db->getConnection()->getLastId();
                 update_items($feed_id, $feed->items);
+                write_debug();
 
                 return (int) $feed_id;
             }
         }
     }
+
+    write_debug();
 
     return false;
 }
@@ -212,6 +221,8 @@ function update_feeds($limit = LIMIT_ALL)
 
     // Auto-vacuum for people using the cronjob
     \PicoTools\singleton('db')->getConnection()->exec('VACUUM');
+
+    return true;
 }
 
 
@@ -233,7 +244,10 @@ function update_feed($feed_id)
     // Update the `last_checked` column each time, HTTP cache or not
     update_feed_last_checked($feed_id);
 
-    if (! $resource->isModified()) return true;
+    if (! $resource->isModified()) {
+        write_debug();
+        return true;
+    }
 
     $parser = $reader->getParser();
 
@@ -245,10 +259,13 @@ function update_feed($feed_id)
 
             update_feed_cache_infos($feed_id, $resource->getLastModified(), $resource->getEtag());
             update_items($feed_id, $feed->items);
+            write_debug();
 
             return true;
         }
     }
+
+    write_debug();
 
     return false;
 }
