@@ -56,6 +56,7 @@ abstract class Client
 
             if ($response['status'] == 304) {
                 $this->is_modified = false;
+                Logging::log(\get_called_class().' Resource not modified');
             }
             else {
                 $this->etag = isset($response['headers']['ETag']) ? $response['headers']['ETag'] : '';
@@ -74,7 +75,6 @@ abstract class Client
         foreach ($lines as $line) {
 
             if (strpos($line, 'HTTP') === 0/* && strpos($line, '301') === false && strpos($line, '302') === false*/) {
-
                 $status = (int) substr($line, 9, 3);
             }
             else if (strpos($line, ':') !== false) {
@@ -87,7 +87,7 @@ abstract class Client
         Logging::log(\get_called_class().' HTTP status code: '.$status);
 
         foreach ($headers as $name => $value) {
-            Logging::log(\get_called_class().' HTTP headers: '.$name.' => '.$value);
+            Logging::log(\get_called_class().' HTTP header: '.$name.' => '.$value);
         }
 
         return array($status, $headers);

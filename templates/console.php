@@ -7,7 +7,7 @@
 </div>
 
 <?php if (empty($content)): ?>
-    <p class="alert alert-info"><?= t('No messages') ?></p>
+    <p class="alert alert-info"><?= t('No message') ?></p>
 <?php else: ?>
     <pre id="console"><code><?= Helper\escape($content) ?></code></pre>
 <?php endif ?>

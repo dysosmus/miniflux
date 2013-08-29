@@ -1,6 +1,7 @@
 <?php
 
 return array(
+    'No message' => 'Aucun message',
     'flush messages' => 'supprimer les messages',
     'API endpoint:' => 'URL de l\'API : ',
     'API username:' => 'Identifiant pour l\'API : ',
