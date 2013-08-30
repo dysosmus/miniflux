@@ -180,8 +180,10 @@ function import_feed($url)
 
         $feed = $parser->execute();
 
-        if ($feed === false) return false;
-        if (! $feed->title || ! $feed->url) return false;
+        if ($feed === false || ! $feed->title || ! $feed->url) {
+            write_debug();
+            return false;
+        }
 
         $db = \PicoTools\singleton('db');
 

@@ -58,6 +58,9 @@ abstract class Client
                 $this->is_modified = false;
                 Logging::log(\get_called_class().' Resource not modified');
             }
+            else if ($response['status'] == 404) {
+                Logging::log(\get_called_class().' Resource not found');
+            }
             else {
                 $this->etag = isset($response['headers']['ETag']) ? $response['headers']['ETag'] : '';
                 $this->last_modified = isset($response['headers']['Last-Modified']) ? $response['headers']['Last-Modified'] : '';
