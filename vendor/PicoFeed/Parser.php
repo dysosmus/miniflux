@@ -18,8 +18,8 @@ abstract class Parser
     public $items = array();
     public $grabber = false;
     public $grabber_ignore_urls = array();
-    public $grabber_timeout = 5;
-    public $grabber_user_agent = 'PicoFeed (https://github.com/fguillot/picoFeed)';
+    public $grabber_timeout = null;
+    public $grabber_user_agent = null;
 
 
     abstract public function execute();
@@ -45,8 +45,7 @@ abstract class Parser
         if ($this->grabber && ! in_array($item_url, $this->grabber_ignore_urls)) {
             $grabber = new Grabber($item_url);
             $grabber->download($this->grabber_timeout, $this->grabber_user_agent);
-            $grabber->parse();
-            if ($grabber->content) $item_content = $grabber->content;
+            if ($grabber->parse()) $item_content = $grabber->content;
         }
 
         if ($item_content) {

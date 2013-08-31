@@ -367,11 +367,9 @@ function update_feed_cache_infos($feed_id, $last_modified, $etag)
 function parse_content_with_readability($content, $url)
 {
     require_once 'vendor/Readability/Readability.php';
-    require_once 'vendor/PicoFeed/Encoding.php';
 
     if (! empty($content)) {
 
-        $content = \PicoFeed\Encoding::toUTF8($content);
         $readability = new \Readability($content, $url);
 
         if ($readability->init()) {
@@ -400,13 +398,14 @@ function download_content($url)
         // Try first with PicoFeed grabber and with Readability after
         $grabber = new \PicoFeed\Grabber($url);
         $grabber->html = $html;
+        $content = '';
 
         if ($grabber->parse()) {
             $content = $grabber->content;
         }
 
         if (empty($content)) {
-            $content = parse_content_with_readability($html, $url);
+            $content = parse_content_with_readability($grabber->html, $url);
         }
 
         // Filter content

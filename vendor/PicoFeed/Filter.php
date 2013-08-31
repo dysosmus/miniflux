@@ -464,4 +464,10 @@ class Filter
 
         return $data;
     }
+
+
+    public static function stripMetaTags($data)
+    {
+        return preg_replace('/<meta\s.*?\/>/is', '', $data);
+    }
 }

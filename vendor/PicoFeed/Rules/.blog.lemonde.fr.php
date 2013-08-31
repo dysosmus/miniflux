@@ -6,5 +6,5 @@ return array(
     ),
     'strip' => array(
         '//*[contains(@class, "fb-like") or contains(@class, "social")]'
-    )
+    ),
 );
