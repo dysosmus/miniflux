@@ -333,11 +333,15 @@ Don't forget to send a pull request or a ticket to share your contribution with 
 - *.blog.nytimes.com
 - *.nytimes.php
 - *.slate.com
+- *.wikipedia.org
 - *.wsj.com
 - rue89.com
+- smallhousebliss.com
+- techcrunch.com
 - www.bbc.co.uk
 - www.cnn.com
 - www.egscomics.com
 - www.lemonde.fr
 - www.numerama.com
 - www.slate.fr
+- www.theguardian.com
