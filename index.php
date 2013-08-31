@@ -322,6 +322,38 @@ Router\get_action('refresh-all', function() {
 });
 
 
+// Disable content grabber for a feed
+Router\get_action('disable-grabber-feed', function() {
+
+    $id = Request\int_param('feed_id');
+
+    if ($id && Model\disable_grabber_feed($id)) {
+        Session\flash(t('The content grabber is disabled successfully.'));
+    }
+    else {
+        Session\flash_error(t('Unable to disable the content grabber for this subscription.'));
+    }
+
+    Response\redirect('?action=feeds');
+});
+
+
+// Enable content grabber for a feed
+Router\get_action('enable-grabber-feed', function() {
+
+    $id = Request\int_param('feed_id');
+
+    if ($id && Model\enable_grabber_feed($id)) {
+        Session\flash(t('The content grabber is enabled successfully.'));
+    }
+    else {
+        Session\flash_error(t('Unable to activate the content grabber for this subscription.'));
+    }
+
+    Response\redirect('?action=feeds');
+});
+
+
 // Confirmation box to disable a feed
 Router\get_action('confirm-disable-feed', function() {
 
@@ -467,7 +499,7 @@ Router\get_action('add', function() {
 // Add the feed
 Router\post_action('add', function() {
 
-    $result = Model\import_feed(trim($_POST['url']));
+    $result = Model\import_feed(trim($_POST['url']), isset($_POST['download_content']) && $_POST['download_content'] == 1);
 
     if ($result) {
 
@@ -590,11 +622,9 @@ Router\post_action('config', function() {
     if ($valid) {
 
         if (Model\save_config($values)) {
-
             Session\flash(t('Your preferences are updated.'));
         }
         else {
-
             Session\flash_error(t('Unable to update your preferences.'));
         }
 

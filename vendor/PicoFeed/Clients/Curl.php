@@ -64,6 +64,8 @@ class Curl extends \PicoFeed\Client
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // For auto-signed certificates...
         curl_setopt($ch, CURLOPT_WRITEFUNCTION, array($this, 'readBody'));
         curl_setopt($ch, CURLOPT_HEADERFUNCTION, array($this, 'readHeaders'));
+        curl_setopt($ch, CURLOPT_COOKIEJAR, 'php://memory');
+        curl_setopt($ch, CURLOPT_COOKIEFILE, 'php://memory');
         curl_exec($ch);
 
         Logging::log(\get_called_class().' cURL total time: '.curl_getinfo($ch, CURLINFO_TOTAL_TIME));

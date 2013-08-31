@@ -2,7 +2,6 @@
 
 namespace Model;
 
-require_once 'vendor/PicoFeed/Encoding.php';
 require_once 'vendor/PicoFeed/Filter.php';
 require_once 'vendor/PicoFeed/Client.php';
 require_once 'vendor/PicoFeed/Export.php';
@@ -25,8 +24,9 @@ use PicoFeed\Reader;
 use PicoFeed\Export;
 
 
-const DB_VERSION     = 14;
+const DB_VERSION     = 15;
 const HTTP_USERAGENT = 'Miniflux - http://miniflux.net';
+const HTTP_FAKE_USERAGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/29.0.1547.62 Safari/537.36';
 const LIMIT_ALL      = -1;
 
 
@@ -169,7 +169,7 @@ function import_feeds($content)
 }
 
 
-function import_feed($url)
+function import_feed($url, $grabber = false)
 {
     $reader = new Reader;
     $resource = $reader->download($url, '', '', HTTP_TIMEOUT, HTTP_USERAGENT);
@@ -178,6 +178,7 @@ function import_feed($url)
 
     if ($parser !== false) {
 
+        $parser->grabber = $grabber;
         $feed = $parser->execute();
 
         if ($feed === false || ! $feed->title || ! $feed->url) {
@@ -193,13 +194,14 @@ function import_feed($url)
             $rs = $db->table('feeds')->save(array(
                 'title' => $feed->title,
                 'site_url' => $feed->url,
-                'feed_url' => $reader->getUrl()
+                'feed_url' => $reader->getUrl(),
+                'download_content' => $grabber ? 1 : 0
             ));
 
             if ($rs) {
 
                 $feed_id = $db->getConnection()->getLastId();
-                update_items($feed_id, $feed->items);
+                update_items($feed_id, $feed->items, $grabber);
                 write_debug();
 
                 return (int) $feed_id;
@@ -255,12 +257,25 @@ function update_feed($feed_id)
 
     if ($parser !== false) {
 
-        $feed = $parser->execute();
+        if ($feed['download_content']) {
 
-        if ($feed !== false) {
+            // Don't fetch previous items, only new one
+            $parser->grabber_ignore_urls = \PicoTools\singleton('db')
+                                                ->table('items')
+                                                ->eq('feed_id', $feed_id)
+                                                ->findAllByColumn('url');
+
+            $parser->grabber = true;
+            $parser->grabber_timeout = HTTP_TIMEOUT;
+            $parser->grabber_user_agent = HTTP_FAKE_USERAGENT;
+        }
+
+        $result = $parser->execute();
+
+        if ($result !== false) {
 
             update_feed_cache_infos($feed_id, $resource->getLastModified(), $resource->getEtag());
-            update_items($feed_id, $feed->items);
+            update_items($feed_id, $result->items, $parser->grabber);
             write_debug();
 
             return true;
@@ -349,50 +364,80 @@ function update_feed_cache_infos($feed_id, $last_modified, $etag)
 }
 
 
-function download_item($item_id)
+function parse_content_with_readability($content, $url)
 {
     require_once 'vendor/Readability/Readability.php';
-
-    $item = get_item($item_id);
-
-    $client = \PicoFeed\Client::create();
-    $client->url = $item['url'];
-    $client->timeout = HTTP_TIMEOUT;
-    $client->user_agent = HTTP_USERAGENT;
-    $client->execute();
-
-    $content = $client->getContent();
+    require_once 'vendor/PicoFeed/Encoding.php';
 
     if (! empty($content)) {
 
         $content = \PicoFeed\Encoding::toUTF8($content);
-
-        $readability = new \Readability($content, $item['url']);
+        $readability = new \Readability($content, $url);
 
         if ($readability->init()) {
-
-            // Get relevant content
-            $content = $readability->getContent()->innerHTML;
-
-            // Filter content
-            $filter = new \PicoFeed\Filter($content, $item['url']);
-            $content = $filter->execute();
-
-            $nocontent = (bool) get_config_value('nocontent');
-            if ($nocontent === false) {
-
-                // Save content
-                \PicoTools\singleton('db')
-                    ->table('items')
-                    ->eq('id', $item['id'])
-                    ->save(array('content' => $content));
-            }
-
-            return array(
-                'result' => true,
-                'content' => $content
-            );
+            return $readability->getContent()->innerHTML;
         }
+    }
+
+    return '';
+}
+
+
+function download_content($url)
+{
+    require_once 'vendor/PicoFeed/Grabber.php';
+
+    $client = \PicoFeed\Client::create();
+    $client->url = $url;
+    $client->timeout = HTTP_TIMEOUT;
+    $client->user_agent = HTTP_FAKE_USERAGENT;
+    $client->execute();
+
+    $html = $client->getContent();
+
+    if (! empty($html)) {
+
+        // Try first with PicoFeed grabber and with Readability after
+        $grabber = new \PicoFeed\Grabber($url);
+        $grabber->html = $html;
+
+        if ($grabber->parse()) {
+            $content = $grabber->content;
+        }
+
+        if (empty($content)) {
+            $content = parse_content_with_readability($html, $url);
+        }
+
+        // Filter content
+        $filter = new \PicoFeed\Filter($content, $url);
+        return $filter->execute();
+    }
+
+    return '';
+}
+
+
+function download_item($item_id)
+{
+    $item = get_item($item_id);
+    $content = download_content($item['url']);
+
+    if (! empty($content)) {
+
+        if (! get_config_value('nocontent')) {
+
+            // Save content
+            \PicoTools\singleton('db')
+                ->table('items')
+                ->eq('id', $item['id'])
+                ->save(array('content' => $content));
+        }
+
+        return array(
+            'result' => true,
+            'content' => $content
+        );
     }
 
     return array(
@@ -424,6 +469,18 @@ function enable_feed($feed_id)
 function disable_feed($feed_id)
 {
     return \PicoTools\singleton('db')->table('feeds')->eq('id', $feed_id)->save((array('enabled' => 0)));
+}
+
+
+function enable_grabber_feed($feed_id)
+{
+    return \PicoTools\singleton('db')->table('feeds')->eq('id', $feed_id)->save((array('download_content' => 1)));
+}
+
+
+function disable_grabber_feed($feed_id)
+{
+    return \PicoTools\singleton('db')->table('feeds')->eq('id', $feed_id)->save((array('download_content' => 0)));
 }
 
 
@@ -727,7 +784,7 @@ function autoflush()
 }
 
 
-function update_items($feed_id, array $items)
+function update_items($feed_id, array $items, $grabber = false)
 {
     $nocontent = (bool) get_config_value('nocontent');
 
@@ -743,6 +800,10 @@ function update_items($feed_id, array $items)
 
             // Insert only new item
             if ($db->table('items')->eq('id', $item->id)->count() !== 1) {
+
+                if (! $item->content && ! $nocontent && $grabber) {
+                    $item->content = download_content($item->url);
+                }
 
                 $db->table('items')->save(array(
                     'id' => $item->id,

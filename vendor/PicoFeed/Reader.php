@@ -5,6 +5,7 @@ namespace PicoFeed;
 require_once __DIR__.'/Logging.php';
 require_once __DIR__.'/Parser.php';
 require_once __DIR__.'/Client.php';
+require_once __DIR__.'/Filter.php';
 
 class Reader
 {
@@ -59,25 +60,20 @@ class Reader
         $data = preg_replace('/<!--(.{0,5000}?)-->/Uis', '', $data);
 
         /* Strip Doctype:
-         * Doctype needs to be within the first 500 characters. (Ideally the first!)
+         * Doctype needs to be within the first 100 characters. (Ideally the first!)
          * If it's not found by then, we need to stop looking to prevent PREG
          * from reaching max backtrack depth and crashing.
          */
-        $data = preg_replace('/^.{0,500}<!DOCTYPE([^>]*)>/Uis', '', $data);
+        $data = preg_replace('/^.{0,100}<!DOCTYPE([^>]*)>/Uis', '', $data);
 
-        // Find <?xml version....
-        if (strpos($data, '<?xml') !== false) {
+        // Strip <?xml version....
+        $data = Filter::stripXmlTag($data);
 
-            $data = substr($data, strrpos($data, '?>') + 2);
+        // Find the first tag
+        $open_tag = strpos($data, '<');
+        $close_tag = strpos($data, '>');
 
-            // Find the first tag
-            $open_tag = strpos($data, '<');
-            $close_tag = strpos($data, '>');
-
-            return substr($data, $open_tag, $close_tag);
-        }
-
-        return $data;
+        return substr($data, $open_tag, $close_tag);
     }
 
 

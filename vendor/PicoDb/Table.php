@@ -138,6 +138,7 @@ class Table
 
     public function findAllByColumn($column)
     {
+        $this->columns = array($column);
         $rq = $this->db->execute($this->buildSelectQuery(), $this->values);
         if (false === $rq) return false;
 

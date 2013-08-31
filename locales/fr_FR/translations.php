@@ -1,6 +1,13 @@
 <?php
 
 return array(
+    'The content grabber is enabled successfully.' => 'Le téléchargement de contenu est activé avec succès.',
+    'Unable to activate the content grabber for this subscription.' => 'Impossible d\'activer le téléchargement de contenu pour cet abonnement.',
+    'enable full content' => 'télécharger le contenu complet',
+    'disable full content' => 'désactiver le téléchargement du contenu',
+    'Download full content' => 'Télécharger le contenu complet',
+    'Downloading full content is slower because Miniflux grab the content from the original website. You should use that for subscriptions that display only a summary. This feature doesn\'t work with all websites.' =>
+    'Le téléchargement complet du contenu est plus lent car Miniflux va chercher le contenu sur le site original. Vous devriez utiliser cela uniquement pour les abonnements qui affichent seulement un résumé. Cette fonctionnalité ne marche pas avec tous les sites web.',
     'No message' => 'Aucun message',
     'flush messages' => 'supprimer les messages',
     'API endpoint:' => 'URL de l\'API : ',

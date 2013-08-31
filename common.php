@@ -12,7 +12,7 @@ require 'model.php';
 if (file_exists('config.php')) require 'config.php';
 
 defined('APP_VERSION') or define('APP_VERSION', 'master');
-defined('HTTP_TIMEOUT') or define('HTTP_TIMEOUT', 10);
+defined('HTTP_TIMEOUT') or define('HTTP_TIMEOUT', 20);
 defined('DB_FILENAME') or define('DB_FILENAME', 'data/db.sqlite');
 defined('DEBUG') or define('DEBUG', true);
 defined('DEBUG_FILENAME') or define('DEBUG_FILENAME', 'data/debug.log');

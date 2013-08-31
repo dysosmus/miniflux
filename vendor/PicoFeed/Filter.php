@@ -454,4 +454,14 @@ class Filter
     {
         return preg_replace('~<(?:!DOCTYPE|/?(?:html|head|body))[^>]*>\s*~i', '', $data);
     }
+
+
+    public static function stripXmlTag($data)
+    {
+        if (strpos($data, '<?xml') !== false) {
+            $data = substr($data, strrpos($data, '?>') + 2);
+        }
+
+        return $data;
+    }
 }

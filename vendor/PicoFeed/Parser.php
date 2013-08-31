@@ -5,6 +5,7 @@ namespace PicoFeed;
 require_once __DIR__.'/Logging.php';
 require_once __DIR__.'/Filter.php';
 require_once __DIR__.'/Encoding.php';
+require_once __DIR__.'/Grabber.php';
 
 abstract class Parser
 {
@@ -15,6 +16,10 @@ abstract class Parser
     public $title = '';
     public $updated = '';
     public $items = array();
+    public $grabber = false;
+    public $grabber_ignore_urls = array();
+    public $grabber_timeout = 5;
+    public $grabber_user_agent = 'PicoFeed (https://github.com/fguillot/picoFeed)';
 
 
     abstract public function execute();
@@ -23,7 +28,7 @@ abstract class Parser
     public function __construct($content)
     {
         // Strip XML tag to avoid multiple encoding/decoding in next XML processing
-        $this->content = $this->stripXmlTag($content);
+        $this->content = Filter::stripXmlTag($content);
 
         // Encode everything in UTF-8
         $this->content = Encoding::toUTF8($this->content);
@@ -33,13 +38,19 @@ abstract class Parser
     }
 
 
-    public function filterHtml($str, $item_url)
+    public function filterHtml($item_content, $item_url)
     {
         $content = '';
 
-        if ($str) {
+        if ($this->grabber && ! in_array($item_url, $this->grabber_ignore_urls)) {
+            $grabber = new Grabber($item_url);
+            $grabber->download($this->grabber_timeout, $this->grabber_user_agent);
+            $grabber->parse();
+            if ($grabber->content) $item_content = $grabber->content;
+        }
 
-            $filter = new Filter($str, $item_url);
+        if ($item_content) {
+            $filter = new Filter($item_content, $item_url);
             $content = $filter->execute();
         }
 
@@ -69,17 +80,6 @@ abstract class Parser
     public function normalizeData($data)
     {
         return str_replace("\xc3\x20", '', $data);
-    }
-
-
-    public function stripXmlTag($data)
-    {
-        if (strpos($data, '<?xml') !== false) {
-
-            $data = substr($data, strrpos($data, '?>') + 2);
-        }
-
-        return $data;
     }
 
 

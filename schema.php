@@ -3,6 +3,12 @@
 namespace Schema;
 
 
+function version_15($pdo)
+{
+    $pdo->exec('ALTER TABLE feeds ADD COLUMN download_content INTEGER DEFAULT 0');
+}
+
+
 function version_14($pdo)
 {
     $pdo->exec('ALTER TABLE config ADD COLUMN feed_token TEXT DEFAULT "'.\Model\generate_token().'"');
