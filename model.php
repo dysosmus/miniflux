@@ -433,11 +433,15 @@ function download_item($item_id)
                 ->save(array('content' => $content));
         }
 
+        write_debug();
+
         return array(
             'result' => true,
             'content' => $content
         );
     }
+
+    write_debug();
 
     return array(
         'result' => false,

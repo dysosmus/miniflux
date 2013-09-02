@@ -12,16 +12,20 @@ class Grabber
     public $content = '';
     public $html = '';
 
-    // Order is important
+    // Order is important, generic terms at the end
     public $candidatesAttributes = array(
-        'article',
         'articleBody',
         'articlebody',
+        'article-body',
         'articleContent',
         'articlecontent',
+        'article-content',
         'articlePage',
         'post-content',
         'entry-content',
+        'main-content',
+        'comic',
+        'article',
         'content',
         'main',
     );
@@ -81,6 +85,7 @@ class Grabber
             Logging::log(\get_called_class().' No content fetched');
         }
 
+        Logging::log(\get_called_class().' Content length: '.strlen($this->content).' bytes');
         Logging::log(\get_called_class().' Grabber done');
 
         return $this->content !== '';
@@ -165,23 +170,28 @@ class Grabber
         $dom->loadHTML('<?xml version="1.0" encoding="UTF-8">'.$this->html);
         $xpath = new \DOMXPath($dom);
 
-        // Try to fetch <article/>
-        $nodes = $xpath->query('//article');
+        // Try to lookup in each tag
+        foreach ($this->candidatesAttributes as $candidate) {
 
-        if ($nodes !== false && $nodes->length > 0) {
-            $this->content = $dom->saveXML($nodes->item(0));
+            Logging::log(\get_called_class().' Try this candidate: "'.$candidate.'"');
+
+            $nodes = $xpath->query('//*[(contains(@class, "'.$candidate.'") or @id="'.$candidate.'") and not (contains(@class, "nav") or contains(@class, "page"))]');
+
+            if ($nodes !== false && $nodes->length > 0) {
+                $this->content = $dom->saveXML($nodes->item(0));
+                Logging::log(\get_called_class().' Find candidate "'.$candidate.'" ('.strlen($this->content).' bytes)');
+                break;
+            }
         }
 
-        // Try to lookup in each <div/>
+        // Try to fetch <article/>
         if (! $this->content) {
 
-            foreach ($this->candidatesAttributes as $candidate) {
+            $nodes = $xpath->query('//article');
 
-                $nodes = $xpath->query('//div[(contains(@class, "'.$candidate.'") or @id="'.$candidate.'") and not (contains(@class, "nav") or contains(@class, "page"))]');
-
-                if ($nodes !== false && $nodes->length > 0) {
-                    $this->content = $dom->saveXML($nodes->item(0));
-                }
+            if ($nodes !== false && $nodes->length > 0) {
+                $this->content = $dom->saveXML($nodes->item(0));
+                Logging::log(\get_called_class().' Find <article/> tag ('.strlen($this->content).' bytes)');
             }
         }
 
@@ -199,7 +209,7 @@ class Grabber
     {
         \libxml_use_internal_errors(true);
         $dom = new \DOMDocument;
-        $dom->loadXML('<?xml version="1.0" encoding="UTF-8">'.$this->content);
+        $dom->loadXML($this->content);
         $xpath = new \DOMXPath($dom);
 
         foreach ($this->stripTags as $tag) {
@@ -207,6 +217,7 @@ class Grabber
             $nodes = $xpath->query('//'.$tag);
 
             if ($nodes !== false && $nodes->length > 0) {
+                Logging::log(\get_called_class().' Strip tag: "'.$tag.'"');
                 foreach ($nodes as $node) {
                     $node->parentNode->removeChild($node);
                 }
@@ -218,16 +229,13 @@ class Grabber
             $nodes = $xpath->query('//*[contains(@class, "'.$attribute.'") or contains(@id, "'.$attribute.'")]');
 
             if ($nodes !== false && $nodes->length > 0) {
+                Logging::log(\get_called_class().' Strip attribute: "'.$tag.'"');
                 foreach ($nodes as $node) {
                     $node->parentNode->removeChild($node);
                 }
             }
         }
 
-        $this->content = '';
-
-        foreach($dom->childNodes as $node) {
-            $this->content .= $dom->saveXML($node);
-        }
+        $this->content = $dom->saveXML($dom->documentElement);
     }
 }

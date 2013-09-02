@@ -8,5 +8,6 @@ return array(
     'strip' => array(
         '//script',
         '//style',
+        '//*[contains(@class, "module-crunchbase")]'
     )
 );

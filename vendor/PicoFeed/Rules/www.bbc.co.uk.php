@@ -3,6 +3,7 @@ return array(
     'test_url' => 'http://www.bbc.co.uk/news/world-middle-east-23911833',
     'body' => array(
         '//div[@class="story-body"]',
+        '//div[@class="indPost"]'
     ),
     'strip' => array(
         '//script',
