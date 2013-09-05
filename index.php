@@ -496,10 +496,21 @@ Router\get_action('add', function() {
 });
 
 
-// Add the feed
-Router\post_action('add', function() {
+// Add a feed with the form or directly from the url, it can be used by a bookmarklet by example
+Router\action('subscribe', function() {
 
-    $result = Model\import_feed(trim($_POST['url']), isset($_POST['download_content']) && $_POST['download_content'] == 1);
+    if (Request\param('url')) {
+        $values = array();
+        $url = Request\param('url');
+    }
+    else {
+        $values = Request\values();
+        $url = isset($values['url']) ? $values['url'] : '';
+    }
+
+    $values += array('download_content' => 0);
+    $url = trim($url);
+    $result = Model\import_feed($url, $values['download_content']);
 
     if ($result) {
 
@@ -512,7 +523,7 @@ Router\post_action('add', function() {
     }
 
     Response\html(Template\layout('add', array(
-        'values' => array('url' => $_POST['url']),
+        'values' => array('url' => $url),
         'menu' => 'feeds',
         'title' => t('Subscriptions')
     )));

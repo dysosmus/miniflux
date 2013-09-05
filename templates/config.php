@@ -40,7 +40,11 @@
     <div class="alert alert-normal">
         <h3 id="api"><?= t('API') ?></h3>
         <ul>
-            <li><?= t('Bookmarks RSS Feed:') ?>
+            <li>
+                <?= t('Bookmarklet:') ?>
+                <a href="javascript:location.href='<?= Helper\get_current_base_url() ?>?action=subscribe&amp;url='+encodeURIComponent(location.href)"><?= t('Subscribe with Miniflux') ?></a> (<?= t('Drag and drop this link to your bookmarks') ?>)
+            <li>
+                <?= t('Bookmarks RSS Feed:') ?>
                 <a href="<?= Helper\get_current_base_url().'feed.php?token='.urlencode($values['feed_token']) ?>" target="_blank"><?= Helper\get_current_base_url().'feed.php?token='.urlencode($values['feed_token']) ?></a>
             </li>
             <li><?= t('API endpoint:') ?> <strong><?= Helper\get_current_base_url().'jsonrpc.php' ?></strong></li>

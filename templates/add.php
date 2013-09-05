@@ -7,7 +7,7 @@
     </ul>
 </div>
 
-<form method="post" action="?action=add" autocomplete="off">
+<form method="post" action="?action=subscribe" autocomplete="off">
     <?= Helper\form_label(t('Website or Feed URL'), 'url') ?>
     <?= Helper\form_text('url', $values, array(), array('required', 'autofocus', 'placeholder="'.t('http://website/').'"')) ?>
     <?= Helper\form_checkbox('download_content', t('Download full content'), 1, isset($values['download_content']) ? $values['download_content'] : false) ?><br/>
