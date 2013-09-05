@@ -12,9 +12,9 @@
 
         <p class="infos">
             <?php if ($item['bookmark']): ?>
-                <a href="?action=bookmark&amp;value=0&amp;id=<?= $item['id'] ?>&amp;source=show&amp;menu=<?= $menu ?>" title="<?= t('remove bookmark') ?>" class="bookmark-icon">★</a>
+                <a id="bookmark-<?=$item['id'] ?>" href="?action=bookmark&amp;value=0&amp;id=<?= $item['id'] ?>&amp;source=show&amp;menu=<?= $menu ?>" title="<?= t('remove bookmark') ?>" class="bookmark-icon">★</a>
             <?php else: ?>
-                <a href="?action=bookmark&amp;value=1&amp;id=<?= $item['id'] ?>&amp;source=show&amp;menu=<?= $menu ?>" title="<?= t('bookmark') ?>" class="bookmark-icon">☆</a>
+                <a id="bookmark-<?=$item['id'] ?>" href="?action=bookmark&amp;value=1&amp;id=<?= $item['id'] ?>&amp;source=show&amp;menu=<?= $menu ?>" title="<?= t('bookmark') ?>" class="bookmark-icon">☆</a>
             <?php endif ?> |
 
             <a href="?action=feed-items&amp;feed_id=<?= $feed['id'] ?>"><?= Helper\escape($feed['title']) ?></a> |
