@@ -23,8 +23,9 @@ Session\open(dirname($_SERVER['PHP_SELF']));
 // Called before each action
 Router\before(function($action) {
 
-    if ($action !== 'login' && ! isset($_SESSION['user'])) {
+    $ignore_actions = array('login', 'google-auth', 'google-redirect-auth', 'mozilla-auth');
 
+    if (! isset($_SESSION['user']) && ! in_array($action, $ignore_actions)) {
         Response\redirect('?action=login');
     }
 
@@ -33,10 +34,13 @@ Router\before(function($action) {
     if ($language !== 'en_US') PicoTools\Translator\load($language);
 
     // HTTP secure headers
+    $frame_src = \PicoFeed\Filter::$iframe_whitelist;
+    $frame_src[] = 'https://login.persona.org';
+
     Response\csp(array(
         'media-src' => '*',
         'img-src' => '*',
-        'frame-src' => \PicoFeed\Filter::$iframe_whitelist
+        'frame-src' => $frame_src
     ));
 
     Response\xframe();
@@ -56,9 +60,11 @@ Router\get_action('logout', function() {
 // Display form login
 Router\get_action('login', function() {
 
-    if (isset($_SESSION['user'])) Response\redirect('index.php');
+    if (isset($_SESSION['user'])) Response\redirect('?action=unread');
 
     Response\html(Template\load('login', array(
+        'google_auth_enable' => Model\get_config_value('auth_google_token') !== '',
+        'mozilla_auth_enable' => Model\get_config_value('auth_mozilla_token') !== '',
         'errors' => array(),
         'values' => array()
     )));
@@ -74,6 +80,8 @@ Router\post_action('login', function() {
     if ($valid) Response\redirect('?action=unread');
 
     Response\html(Template\load('login', array(
+        'google_auth_enable' => Model\get_config_value('auth_google_token') !== '',
+        'mozilla_auth_enable' => Model\get_config_value('auth_mozilla_token') !== '',
         'errors' => $errors,
         'values' => $values
     )));
@@ -658,6 +666,117 @@ Router\post_action('config', function() {
 });
 
 
+// Link to a Google Account (redirect)
+Router\get_action('google-redirect-link', function() {
+
+    require 'vendor/PicoTools/AuthProvider.php';
+    Response\Redirect(AuthProvider\google_get_url(Helper\get_current_base_url(), '?action=google-link'));
+});
+
+
+// Link to a Google Account (association)
+Router\get_action('google-link', function() {
+
+    require 'vendor/PicoTools/AuthProvider.php';
+
+    list($valid, $token) = AuthProvider\google_validate();
+
+    if ($valid) {
+        Model\save_auth_token('google', $token);
+        Session\flash(t('Your Google Account is linked to Miniflux.'));
+    }
+    else {
+        Session\flash_error(t('Unable to link Miniflux to your Google Account.'));
+    }
+
+    Response\redirect('?action=config');
+});
+
+
+// Authenticate with a Google Account (redirect)
+Router\get_action('google-redirect-auth', function() {
+
+    require 'vendor/PicoTools/AuthProvider.php';
+    Response\Redirect(AuthProvider\google_get_url(Helper\get_current_base_url(), '?action=google-auth'));
+});
+
+
+// Authenticate with a Google Account (callback url)
+Router\get_action('google-auth', function() {
+
+    require 'vendor/PicoTools/AuthProvider.php';
+
+    list($valid, $token) = AuthProvider\google_validate();
+
+    if ($valid && $token === Model\get_config_value('auth_google_token')) {
+
+        $_SESSION['user'] = array(
+            'username' => Model\get_config_value('username'),
+            'language' => Model\get_config_value('language'),
+        );
+
+        Response\redirect('?action=unread');
+    }
+    else {
+
+        Response\html(Template\load('login', array(
+            'google_auth_enable' => Model\get_config_value('auth_google_token') !== '',
+            'mozilla_auth_enable' => Model\get_config_value('auth_mozilla_token') !== '',
+            'errors' => array('login' => t('Unable to authenticate with Google')),
+            'values' => array()
+        )));
+    }
+});
+
+
+// Authenticate with a Mozilla Persona (ajax check)
+Router\post_action('mozilla-auth', function() {
+
+    require 'vendor/PicoTools/AuthProvider.php';
+
+    list($valid, $token) = AuthProvider\mozilla_validate(Request\value('token'));
+
+    if ($valid && $token === Model\get_config_value('auth_mozilla_token')) {
+
+        $_SESSION['user'] = array(
+            'username' => Model\get_config_value('username'),
+            'language' => Model\get_config_value('language'),
+        );
+
+        Response\text('?action=unread');
+    }
+    else {
+        Response\text("?action=login");
+    }
+});
+
+
+// Link Miniflux to a Mozilla Account (ajax check)
+Router\post_action('mozilla-link', function() {
+
+    require 'vendor/PicoTools/AuthProvider.php';
+
+    list($valid, $token) = AuthProvider\mozilla_validate(Request\value('token'));
+
+    if ($valid) {
+        Model\save_auth_token('mozilla', $token);
+        Session\flash(t('Your Mozilla Persona Account is linked to Miniflux.'));
+    }
+    else {
+        Session\flash_error(t('Unable to link Miniflux to your Mozilla Persona Account.'));
+    }
+
+    Response\text("?action=config");
+});
+
+
+// Remove account link
+Router\get_action('unlink-account-provider', function() {
+    Model\remove_auth_token(Request\param('type'));
+    Response\redirect('?action=config');
+});
+
+
 // Display unread items
 Router\notfound(function() {
 
@@ -665,7 +784,7 @@ Router\notfound(function() {
 
     $offset = Request\int_param('offset', 0);
     $items = Model\get_items('unread', $offset, Model\get_config_value('items_per_page'));
-    $nb_items = Model\count_items('unread');;
+    $nb_items = Model\count_items('unread');
 
     if ($nb_items === 0) Response\redirect('?action=feeds&nothing_to_read=1');
 

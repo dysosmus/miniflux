@@ -24,7 +24,7 @@ use PicoFeed\Reader;
 use PicoFeed\Export;
 
 
-const DB_VERSION     = 15;
+const DB_VERSION     = 16;
 const HTTP_USERAGENT = 'Miniflux - http://miniflux.net';
 const HTTP_FAKE_USERAGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/29.0.1547.62 Safari/537.36';
 const LIMIT_ALL      = -1;
@@ -123,6 +123,28 @@ function new_tokens()
     );
 
     return \PicoTools\singleton('db')->table('config')->update($values);
+}
+
+
+function save_auth_token($type, $value)
+{
+    return \PicoTools\singleton('db')
+        ->table('config')
+        ->update(array(
+            'auth_'.$type.'_token' => $value
+        ));
+}
+
+
+function remove_auth_token($type)
+{
+    \PicoTools\singleton('db')
+        ->table('config')
+        ->update(array(
+            'auth_'.$type.'_token' => ''
+        ));
+
+    $_SESSION['config'] = get_config();
 }
 
 
@@ -885,7 +907,18 @@ function get_config()
 {
     return \PicoTools\singleton('db')
         ->table('config')
-        ->columns('username', 'language', 'autoflush', 'nocontent', 'items_per_page', 'theme', 'api_token', 'feed_token')
+        ->columns(
+            'username',
+            'language',
+            'autoflush',
+            'nocontent',
+            'items_per_page',
+            'theme',
+            'api_token',
+            'feed_token',
+            'auth_google_token',
+            'auth_mozilla_token'
+        )
         ->findOne();
 }
 
@@ -976,11 +1009,8 @@ function save_config(array $values)
 {
     // Update the password if needed
     if (! empty($values['password'])) {
-
         $values['password'] = \password_hash($values['password'], PASSWORD_BCRYPT);
-
     } else {
-
         unset($values['password']);
     }
 

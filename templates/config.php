@@ -27,6 +27,23 @@
 
     <?= Helper\form_checkbox('nocontent', t('Do not fetch the content of articles'), 1, isset($values['nocontent']) ? $values['nocontent'] : false) ?><br />
 
+    <ul>
+        <li>
+            <?php if ($values['auth_google_token']): ?>
+                <?= t('Your Google Account is linked to Miniflux') ?>, <a href="?action=unlink-account-provider&amp;type=google"><?= t('remove') ?></a>
+            <?php else: ?>
+                <a href="?action=google-redirect-link"><?= t('Link Miniflux to my Google account') ?></a>
+            <?php endif ?>
+        </li>
+        <li>
+            <?php if ($values['auth_mozilla_token']): ?>
+                <?= t('Your Mozilla Persona Account is linked to Miniflux') ?>, <a href="?action=unlink-account-provider&amp;type=mozilla"><?= t('remove') ?></a>
+            <?php else: ?>
+                <a href="#" data-action="mozilla-link"><?= t('Link Miniflux to my Mozilla Persona account') ?></a>
+            <?php endif ?>
+        </li>
+    </ul>
+
     <div class="form-actions">
         <input type="submit" value="<?= t('Save') ?>" class="btn btn-blue"/>
     </div>
@@ -71,3 +88,5 @@
         </ul>
     </div>
 </section>
+
+<script type="text/javascript" src="assets/js/persona.js" async></script>

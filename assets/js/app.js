@@ -464,6 +464,29 @@
     }
 
 
+    function mozilla_auth(action)
+    {
+        navigator.id.watch({
+            onlogin: function(assertion) {
+
+                var xhr = new XMLHttpRequest();
+                xhr.open("POST", "?action=" + action, true);
+                xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                xhr.setRequestHeader("Connection", "close");
+
+                xhr.onload = function () {
+                    window.location.href = this.responseText;
+                };
+
+                xhr.send("token=" + assertion);
+            },
+            onlogout: function() {}
+        });
+
+        navigator.id.request();
+    }
+
+
     document.onclick = function(e) {
 
         var action = e.target.getAttribute("data-action");
@@ -501,6 +524,14 @@
                 case 'download-item':
                     e.preventDefault();
                     download_item();
+                    break;
+                case 'mozilla-login':
+                    e.preventDefault();
+                    mozilla_auth("mozilla-auth");
+                    break;
+                case 'mozilla-link':
+                    e.preventDefault();
+                    mozilla_auth("mozilla-link");
                     break;
             }
         }

@@ -11,6 +11,10 @@
         <link rel="apple-touch-icon" sizes="144x144" href="./assets/img/touch-icon-ipad-retina.png">
         <title>miniflux</title>
         <link href="<?= Helper\css() ?>" rel="stylesheet" media="screen">
+        <script type="text/javascript" src="assets/js/app.js?version=<?= filemtime('assets/js/app.js') ?>" defer></script>
+        <?php if ($mozilla_auth_enable): ?>
+            <script type="text/javascript" src="assets/js/persona.js" defer></script>
+        <?php endif ?>
     </head>
     <body id="login-page">
         <section class="page">
@@ -20,9 +24,7 @@
             <section>
 
             <?php if (isset($errors['login'])): ?>
-
                 <p class="alert alert-error"><?= Helper\escape($errors['login']) ?></p>
-
             <?php endif ?>
 
             <form method="post" action="?action=login">
@@ -32,6 +34,14 @@
 
                 <?= Helper\form_label(t('Password'), 'password') ?>
                 <?= Helper\form_password('password', $values, $errors, array('required')) ?>
+
+                <?php if ($google_auth_enable): ?>
+                    <p><br/><a href="?action=google-redirect-auth"><?= t('Login with my Google Account') ?></a></p>
+                <?php endif ?>
+
+                <?php if ($mozilla_auth_enable): ?>
+                    <p><br/><a href="#" data-action="mozilla-login"><?= t('Login with my Mozilla Persona Account') ?></a></p>
+                <?php endif ?>
 
                 <div class="form-actions">
                     <input type="submit" value="<?= t('Sign in') ?>" class="btn btn-blue"/>

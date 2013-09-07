@@ -3,6 +3,13 @@
 namespace Schema;
 
 
+function version_16($pdo)
+{
+    $pdo->exec('ALTER TABLE config ADD COLUMN auth_google_token TEXT DEFAULT ""');
+    $pdo->exec('ALTER TABLE config ADD COLUMN auth_mozilla_token TEXT DEFAULT ""');
+}
+
+
 function version_15($pdo)
 {
     $pdo->exec('ALTER TABLE feeds ADD COLUMN download_content INTEGER DEFAULT 0');

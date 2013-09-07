@@ -1,6 +1,17 @@
 <?php
 
 return array(
+    'Your Google Account is linked to Miniflux' => 'Votre compte Google est relié à Miniflux',
+    'Link Miniflux to my Google account' => 'Lier Miniflux à mon compte Google',
+    'Your Mozilla Persona Account is linked to Miniflux' => 'Votre compte Mozilla Persona est relié à Miniflux',
+    'Link Miniflux to my Mozilla Persona account' => 'Lier Miniflux à mon compte Mozilla Persona',
+    'Your Google Account is linked to Miniflux.' => 'Votre compte Google est relié à Miniflux.',
+    'Unable to link Miniflux to your Google Account.' => 'Impossible de lier Miniflux à votre compte Google',
+    'Unable to authenticate with Google' => 'Impossible de s\'authentifier avec Google',
+    'Your Mozilla Persona Account is linked to Miniflux.' => 'Votre compte Mozilla Persona est lié avec Miniflux.',
+    'Unable to link Miniflux to your Mozilla Persona Account.' => 'Impossible de lier Miniflux avec votre compte Mozilla Persona.',
+    'Login with my Google Account' => 'Se connecter avec mon compte Google',
+    'Login with my Mozilla Persona Account' => 'Se connecter avec mon compte Mozilla Persona',
     'Bookmarklet:' => 'Bookmarklet :',
     'Subscribe with Miniflux' => 'S\'abonner avec Miniflux',
     'Drag and drop this link to your bookmarks' => 'Glisser-déposer ce lien dans vos favoris',
