@@ -306,7 +306,7 @@ class Filter
             $content = preg_replace('!\s+!', ' ', $content);
         }
 
-        if (! $this->strip_content && trim($content) !== '') {
+        if (! $this->strip_content) {
             $this->data .= htmlspecialchars($content, ENT_QUOTES, 'UTF-8', false);
         }
     }

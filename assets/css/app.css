@@ -563,6 +563,11 @@ section li {
     list-style-type: square;
 }
 
+video,
+iframe {
+    max-width: 98%;
+}
+
 
 /* mobile design */
 @media only screen and (max-width: 480px) {
@@ -631,10 +636,5 @@ section li {
 
     section li {
         font-size: 0.85em;
-    }
-
-    video,
-    iframe {
-        max-width: 98%;
     }
 }

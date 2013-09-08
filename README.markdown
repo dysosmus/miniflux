@@ -14,13 +14,15 @@ Features
 - Import/Export of OPML feeds
 - Feed updates via a cronjob or with the user interface with one click
 - Protected by a login/password (only one possible user)
-- Use secure headers (only external images and Youtube/Vimeo videos are allowed)
+- Use secure headers (only external images and Youtube/Vimeo/Dailymotion videos are allowed)
 - Open external links inside a new tab with a `rel="noreferrer"` attribute
 - Mobile CSS (responsive design)
 - Keyboard shortcuts (pressing '?' displays a pop-up listing the shortcuts; pressing 'q' closes it)
 - Basic bookmarks
 - Translated in English, French, German, Italian, Czech and Simplified Chinese
-- Themes
+- Themes support
+- Alternative login with a Google Account or Mozilla Persona
+- **Full article download for feeds that display only a summary** (website scraper based on Xpath rules)
 
 Todo and known bugs
 -------------------
@@ -335,12 +337,15 @@ Don't forget to send a pull request or a ticket to share your contribution with 
 - *.slate.com
 - *.wikipedia.org
 - *.wsj.com
+- github.com
+- lifehacker.com
 - rue89.com
 - smallhousebliss.com
 - techcrunch.com
 - www.bbc.co.uk
 - www.cnn.com
 - www.egscomics.com
+- www.forbes.com
 - www.lemonde.fr
 - www.numerama.com
 - www.slate.fr
