@@ -3,6 +3,8 @@
     var feeds = [];
     var queue = [];
     var queue_length = 5;
+    var keyqueue = [];
+
 
 
     function download_item()
@@ -538,41 +540,75 @@
     };
 
     document.onkeypress = function(e) {
-
-        switch (e.keyCode || e.which) {
-            case 100: // d
-                download_item();
-                break;
-            case 112: // p
-            case 107: // k
-                open_previous_item();
-                break;
-            case 110: // n
-            case 106: // j
-                open_next_item();
-                break;
-            case 118: // v
-                open_original_item();
-                break;
-            case 111: // o
-                open_item();
-                break;
-            case 109: // m
-                change_item_status();
-                break;
-            case 102: // f
-                bookmark_item();
-                break;
-            case 104: // h
-                open_previous_page();
-                break
-            case 108: // l
-                open_next_page();
-                break;
-            case 63: // ?
-                open("?action=show-help", "Help", "width=320,height=400,location=no,scrollbars=no,status=no,toolbar=no");
-                break;
-        }
+    	keyqueue.push(e.keyCode);
+    	if (keyqueue[0]==103)
+			{
+				switch (keyqueue[1]) {
+					case undefined:
+						break;
+					case 117: //u
+						window.location.href = "?action=unread";
+						keyqueue = [];
+						break;
+					case 98: //b
+						window.location.href = "?action=bookmarks";
+						keyqueue = [];
+						break;
+					case 104: //h
+						window.location.href = "?action=history";
+						keyqueue = [];
+						break;
+					case 115: //s
+						window.location.href = "?action=feeds";
+						keyqueue = [];
+						break;
+					case 112: //p
+						window.location.href = "?action=config";
+						keyqueue = [];
+						break;
+					default:
+						keyqueue = [];
+						break;
+				}
+			}
+		else
+			{
+				keyqueue = [];
+		        switch (e.keyCode || e.which) {
+		            case 100: // d
+		                download_item();
+		                break;
+		            case 112: // p
+		            case 107: // k
+		                open_previous_item();
+		                break;
+		            case 110: // n
+		            case 106: // j
+		                open_next_item();
+		                break;
+		            case 118: // v
+		                open_original_item();
+		                break;
+		            case 111: // o
+		                open_item();
+		                break;
+		            case 109: // m
+		                change_item_status();
+		                break;
+		            case 102: // f
+		                bookmark_item();
+		                break;
+		            case 104: // h
+		                open_previous_page();
+		                break
+		            case 108: // l
+		                open_next_page();
+		                break;
+		            case 63: // ?
+		                open("?action=show-help", "Help", "width=320,height=450,location=no,scrollbars=no,status=no,toolbar=no");
+		                break;
+		        }
+			}
     };
 
 })();
