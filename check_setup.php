@@ -45,8 +45,3 @@ if (! function_exists('curl_init') && ! ini_get('allow_url_fopen')) {
 if (! is_writable('data')) {
     die('The directory "data" must be writeable by your web server user');
 }
-
-// If timezone is not set
-if (! ini_get('date.timezone')) {
-    die('You must configure a timezone in you php.ini (date.timezone value)');
-}
