@@ -1,6 +1,11 @@
 <?php
 
 return array(
+    'Go to unread' => 'Voir les éléments non lus',
+    'Go to bookmarks' => 'Voir les favoris',
+    'Go to history' => 'Voir l\'historique',
+    'Go to subscriptions' => 'Voir les abonnements',
+    'Go to preferences' => 'Voir les préférences',
     'Your Google Account is linked to Miniflux' => 'Votre compte Google est relié à Miniflux',
     'Link Miniflux to my Google account' => 'Lier Miniflux à mon compte Google',
     'Your Mozilla Persona Account is linked to Miniflux' => 'Votre compte Mozilla Persona est relié à Miniflux',

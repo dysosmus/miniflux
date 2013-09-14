@@ -1,15 +1,20 @@
 (function() {
 
+    // List of subscriptions
     var feeds = [];
+
+    // List of feeds currently updating
     var queue = [];
+
+    // Number of concurrent requests when updating all feeds
     var queue_length = 5;
+
+    // Keyboard shortcuts queue
     var keyqueue = [];
 
-
-
+    // Download full content from the original website
     function download_item()
     {
-        // Change link container
         var container = document.getElementById("download-item");
         if (! container) return;
 
@@ -59,7 +64,7 @@
         request.send();
     }
 
-
+    // Flip item status between unread and read
     function switch_status(item_id, hide)
     {
         var request = new XMLHttpRequest();
@@ -82,7 +87,7 @@
         request.send();
     }
 
-
+    // Set all items of the current page to the status read and redirect to the main page
     function mark_items_as_read()
     {
         var articles = document.getElementsByTagName("article");
@@ -95,7 +100,6 @@
         var request = new XMLHttpRequest();
 
         request.onload = function() {
-
             window.location.href = "?action=unread";
         };
 
@@ -103,14 +107,12 @@
         request.send(JSON.stringify(idlist));
     }
 
-
+    // Mark the current item read and hide this item
     function mark_as_read(item_id)
     {
         var request = new XMLHttpRequest();
 
         request.onload = function() {
-
-            //find_next_item();
             remove_item(item_id);
         };
 
@@ -118,14 +120,12 @@
         request.send();
     }
 
-
+    // Set the current item unread and hide this item
     function mark_as_unread(item_id)
     {
         var request = new XMLHttpRequest();
 
         request.onload = function() {
-
-            //find_next_item();
             remove_item(item_id);
         };
 
@@ -133,7 +133,7 @@
         request.send();
     }
 
-
+    // Bookmark the selected item
     function bookmark_item()
     {
         var item = document.getElementById("current-item");
@@ -147,7 +147,7 @@
         }
     }
 
-
+    // Show the refresh icon when updating a feed
     function show_refresh_icon(feed_id)
     {
         var container = document.getElementById("loading-feed-" + feed_id);
@@ -161,7 +161,7 @@
         }
     }
 
-
+    // Hide the refresh icon after update
     function hide_refresh_icon(feed_id)
     {
         var container = document.getElementById("loading-feed-" + feed_id);
@@ -171,7 +171,7 @@
         if (container) container.innerHTML = container.getAttribute("data-after-update");
     }
 
-
+    // Update one feed in the background and execute a callback after that
     function refresh_feed(feed_id, callback)
     {
         if (! feed_id) return false;
@@ -180,22 +180,16 @@
 
         var request = new XMLHttpRequest();
 
-        request.onreadystatechange = function() {
+        request.onload = function() {
 
-            if (request.readyState === 4) {
+            hide_refresh_icon(feed_id);
 
-                hide_refresh_icon(feed_id);
-
-                try {
-
-                    var response = JSON.parse(this.responseText);
-
-                    if (callback) {
-                        callback(response);
-                    }
+            try {
+                if (callback) {
+                    callback(JSON.parse(this.responseText));
                 }
-                catch (e) {}
             }
+            catch (e) {}
         };
 
         request.open("POST", "?action=refresh-feed&feed_id=" + feed_id, true);
@@ -204,22 +198,18 @@
         return true;
     }
 
-
+    // Get all subscriptions from the feeds page
     function get_feeds()
     {
         var links = document.getElementsByTagName("a");
 
         for (var i = 0, ilen = links.length; i < ilen; i++) {
-
             var feed_id = links[i].getAttribute('data-feed-id');
-
-            if (feed_id) {
-                feeds.push(parseInt(feed_id));
-            }
+            if (feed_id) feeds.push(parseInt(feed_id));
         }
     }
 
-
+    // Refresh all feeds (use a queue to allow 5 concurrent feed updates)
     function refresh_all()
     {
         get_feeds();
@@ -229,20 +219,14 @@
             while (feeds.length > 0 && queue.length < queue_length) {
 
                 var feed_id = feeds.shift();
-
                 queue.push(feed_id);
 
                 refresh_feed(feed_id, function(response) {
 
                     var index = queue.indexOf(response.feed_id);
-
-                    if (index >= 0) {
-
-                        queue.splice(index, 1);
-                    }
+                    if (index >= 0) queue.splice(index, 1);
 
                     if (feeds.length == 0 && queue.length == 0) {
-
                         clearInterval(interval);
                         window.location.href = "?action=unread";
                     }
@@ -252,27 +236,26 @@
         }, 100);
     }
 
-
+    // Go the next page
     function open_next_page()
     {
         var link = document.getElementById("next-page");
         if (link) link.click();
     }
 
-
+    // Go to the previous page
     function open_previous_page()
     {
         var link = document.getElementById("previous-page");
         if (link) link.click();
     }
 
-
+    // Hide one item and update the item counter on the top
     function remove_item(item_id)
     {
         var item = document.getElementById("item-" + item_id);
 
         if (! item) {
-
             item = document.getElementById("current-item");
             if (item.getAttribute("data-item-id") != item_id) item = false;
         }
@@ -280,7 +263,6 @@
         if (item) {
 
             item.parentNode.removeChild(item);
-
             var container = document.getElementById("page-counter");
 
             if (container) {
@@ -301,7 +283,7 @@
         }
     }
 
-
+    // Open the original url inside a new tab
     function open_original_item()
     {
         var link = document.getElementById("original-item");
@@ -317,14 +299,14 @@
         }
     }
 
-
+    // Show item content
     function open_item()
     {
         var link = document.getElementById("open-item");
         if (link) link.click();
     }
 
-
+    // Show the next item
     function open_next_item()
     {
         var link = document.getElementById("next-item");
@@ -339,7 +321,7 @@
         }
     }
 
-
+    // Show the previous item
     function open_previous_item()
     {
         var link = document.getElementById("previous-item");
@@ -354,7 +336,7 @@
         }
     }
 
-
+    // Change item status and select the next item in the list
     function change_item_status()
     {
         if (is_listing() && ! document.getElementById("current-item")) {
@@ -368,7 +350,7 @@
         }
     }
 
-
+    // Scroll automatically the page when using keyboard shortcuts
     function scroll_page_to(item)
     {
         var clientHeight = pageYOffset + document.documentElement.clientHeight;
@@ -379,7 +361,7 @@
         }
     }
 
-
+    // Prepare the DOM for the selected item
     function set_links_item(item_id)
     {
         var link = document.getElementById("current-item");
@@ -398,7 +380,7 @@
         if (link) link.id = "open-item";
     }
 
-
+    // Find the next item in the listing page
     function find_next_item()
     {
         var items = document.getElementsByTagName("article");
@@ -428,7 +410,7 @@
         }
     }
 
-
+    // Find the previous item in the listing page
     function find_previous_item()
     {
         var items = document.getElementsByTagName("article");
@@ -458,14 +440,14 @@
         }
     }
 
-
+    // Check if we are on a listing page
     function is_listing()
     {
         if (document.getElementById("listing")) return true;
         return false;
     }
 
-
+    // Authentication with Mozilla Persona
     function mozilla_auth(action)
     {
         navigator.id.watch({
@@ -488,7 +470,7 @@
         navigator.id.request();
     }
 
-
+    // Click event handler, if there is a "data-action" attribute execute the corresponding callback
     document.onclick = function(e) {
 
         var action = e.target.getAttribute("data-action");
@@ -539,76 +521,80 @@
         }
     };
 
+    // Keyboard handler, handle keyboard shortcuts
     document.onkeypress = function(e) {
-    	keyqueue.push(e.keyCode);
-    	if (keyqueue[0]==103)
-			{
-				switch (keyqueue[1]) {
-					case undefined:
-						break;
-					case 117: //u
-						window.location.href = "?action=unread";
-						keyqueue = [];
-						break;
-					case 98: //b
-						window.location.href = "?action=bookmarks";
-						keyqueue = [];
-						break;
-					case 104: //h
-						window.location.href = "?action=history";
-						keyqueue = [];
-						break;
-					case 115: //s
-						window.location.href = "?action=feeds";
-						keyqueue = [];
-						break;
-					case 112: //p
-						window.location.href = "?action=config";
-						keyqueue = [];
-						break;
-					default:
-						keyqueue = [];
-						break;
-				}
-			}
-		else
-			{
-				keyqueue = [];
-		        switch (e.keyCode || e.which) {
-		            case 100: // d
-		                download_item();
-		                break;
-		            case 112: // p
-		            case 107: // k
-		                open_previous_item();
-		                break;
-		            case 110: // n
-		            case 106: // j
-		                open_next_item();
-		                break;
-		            case 118: // v
-		                open_original_item();
-		                break;
-		            case 111: // o
-		                open_item();
-		                break;
-		            case 109: // m
-		                change_item_status();
-		                break;
-		            case 102: // f
-		                bookmark_item();
-		                break;
-		            case 104: // h
-		                open_previous_page();
-		                break
-		            case 108: // l
-		                open_next_page();
-		                break;
-		            case 63: // ?
-		                open("?action=show-help", "Help", "width=320,height=450,location=no,scrollbars=no,status=no,toolbar=no");
-		                break;
-		        }
-			}
+
+        keyqueue.push(e.keyCode || e.which);
+
+        if (keyqueue[0] == 103) { // g
+
+            switch (keyqueue[1]) {
+                case undefined:
+                    break;
+                case 117: // u
+                    window.location.href = "?action=unread";
+                    keyqueue = [];
+                    break;
+                case 98: // b
+                    window.location.href = "?action=bookmarks";
+                    keyqueue = [];
+                    break;
+                case 104: // h
+                    window.location.href = "?action=history";
+                    keyqueue = [];
+                    break;
+                case 115: // s
+                    window.location.href = "?action=feeds";
+                    keyqueue = [];
+                    break;
+                case 112: // p
+                    window.location.href = "?action=config";
+                    keyqueue = [];
+                    break;
+                default:
+                    keyqueue = [];
+                    break;
+            }
+        }
+        else {
+
+            keyqueue = [];
+
+            switch (e.keyCode || e.which) {
+                case 100: // d
+                    download_item();
+                    break;
+                case 112: // p
+                case 107: // k
+                    open_previous_item();
+                    break;
+                case 110: // n
+                case 106: // j
+                    open_next_item();
+                    break;
+                case 118: // v
+                    open_original_item();
+                    break;
+                case 111: // o
+                    open_item();
+                    break;
+                case 109: // m
+                    change_item_status();
+                    break;
+                case 102: // f
+                    bookmark_item();
+                    break;
+                case 104: // h
+                    open_previous_page();
+                    break
+                case 108: // l
+                    open_next_page();
+                    break;
+                case 63: // ?
+                    open("?action=show-help", "Help", "width=320,height=450,location=no,scrollbars=no,status=no,toolbar=no");
+                    break;
+            }
+        }
     };
 
 })();
