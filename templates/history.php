@@ -26,7 +26,7 @@
                 <?= Helper\escape(Helper\summary(strip_tags($item['content']), 50, 300)) ?>
             </p>
             <p>
-                <a href="?action=feed-items&amp;feed_id=<?= $item['feed_id'] ?>"><?= Helper\escape($item['feed_title']) ?></a> |
+                <a href="?action=feed-items&amp;feed_id=<?= $item['feed_id'] ?>" title="<?= t('Show only this subscription') ?>"><?= Helper\escape($item['feed_title']) ?></a> |
 
                 <span class="hide-mobile"><?= dt('%e %B %Y %k:%M', $item['updated']) ?> |</span>
 

@@ -259,14 +259,19 @@ Router\get_action('feed-items', function() {
     $offset = Request\int_param('offset', 0);
     $nb_items = Model\count_feed_items($feed_id);
     $feed = Model\get_feed($feed_id);
+    $order = Request\param('order', 'updated');
+    $direction = Request\param('direction', 'desc');
+    $items = Model\get_feed_items($feed_id, $offset, Model\get_config_value('items_per_page'), $order, $direction);
 
     Response\html(Template\layout('feed_items', array(
+        'order' => $order,
+        'direction' => $direction,
         'feed' => $feed,
-        'items' => Model\get_feed_items($feed_id, $offset, Model\get_config_value('items_per_page')),
+        'items' => $items,
         'nb_items' => $nb_items,
         'offset' => $offset,
         'items_per_page' => Model\get_config_value('items_per_page'),
-        'menu' => 'feeds',
+        'menu' => 'feed-items',
         'title' => '('.$nb_items.') '.$feed['title']
     )));
 });
@@ -293,6 +298,15 @@ Router\get_action('bookmarks', function() {
 Router\get_action('mark-as-read', function() {
 
     Model\mark_as_read();
+    Response\redirect('?action=unread');
+});
+
+
+// Mark all unread items as read for a specific feed
+Router\get_action('mark-feed-as-read', function() {
+
+    $feed_id = Request\int_param('feed_id');
+    Model\mark_feed_as_read($feed_id);
     Response\redirect('?action=unread');
 });
 
@@ -782,13 +796,17 @@ Router\notfound(function() {
 
     Model\autoflush();
 
+    $order = Request\param('order', 'updated');
+    $direction = Request\param('direction', 'desc');
     $offset = Request\int_param('offset', 0);
-    $items = Model\get_items('unread', $offset, Model\get_config_value('items_per_page'));
+    $items = Model\get_items('unread', $offset, Model\get_config_value('items_per_page'), $order, $direction);
     $nb_items = Model\count_items('unread');
 
     if ($nb_items === 0) Response\redirect('?action=feeds&nothing_to_read=1');
 
     Response\html(Template\layout('unread_items', array(
+        'order' => $order,
+        'direction' => $direction,
         'items' => $items,
         'nb_items' => $nb_items,
         'nb_unread_items' => $nb_items,

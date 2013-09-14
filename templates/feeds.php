@@ -28,7 +28,7 @@
                     <span id="loading-feed-<?= $feed['id'] ?>"></span>
                 <?php endif ?>
 
-                <a href="?action=feed-items&amp;feed_id=<?= $feed['id'] ?>"><?= Helper\escape($feed['title']) ?></a>
+                <a href="?action=feed-items&amp;feed_id=<?= $feed['id'] ?>" title="<?= t('Show only this subscription') ?>"><?= Helper\escape($feed['title']) ?></a>
 
                 <?php if ($feed['enabled']): ?>
                     <?php if ($feed['last_checked']): ?>

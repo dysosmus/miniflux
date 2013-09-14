@@ -509,7 +509,7 @@ function disable_grabber_feed($feed_id)
 }
 
 
-function get_items($status, $offset = null, $limit = null)
+function get_items($status, $offset = null, $limit = null, $order_column = 'updated', $order_direction = 'desc')
 {
     return \PicoTools\singleton('db')
         ->table('items')
@@ -527,7 +527,7 @@ function get_items($status, $offset = null, $limit = null)
         )
         ->join('feeds', 'id', 'feed_id')
         ->eq('status', $status)
-        ->desc('updated')
+        ->orderBy($order_column, $order_direction)
         ->offset($offset)
         ->limit($limit)
         ->findAll();
@@ -583,12 +583,12 @@ function count_feed_items($feed_id)
     return \PicoTools\singleton('db')
         ->table('items')
         ->eq('feed_id', $feed_id)
-        ->in('status', array('read', 'unread'))
+        ->eq('status', 'unread')
         ->count();
 }
 
 
-function get_feed_items($feed_id, $offset = null, $limit = null)
+function get_feed_items($feed_id, $offset = null, $limit = null, $order_column = 'updated', $order_direction = 'desc')
 {
     return \PicoTools\singleton('db')
         ->table('items')
@@ -604,9 +604,9 @@ function get_feed_items($feed_id, $offset = null, $limit = null)
             'feeds.site_url'
         )
         ->join('feeds', 'id', 'feed_id')
-        ->in('status', array('read', 'unread'))
+        ->eq('status', 'unread')
         ->eq('feed_id', $feed_id)
-        ->desc('updated')
+        ->orderBy($order_column, $order_direction)
         ->offset($offset)
         ->limit($limit)
         ->findAll();
@@ -774,6 +774,26 @@ function mark_as_read()
 function mark_items_as_read(array $items_id)
 {
     \PicoTools\singleton('db')->startTransaction();
+
+    foreach ($items_id as $id) {
+        set_item_read($id);
+    }
+
+    \PicoTools\singleton('db')->closeTransaction();
+}
+
+
+// Mark all items of a feed as read
+function mark_feed_as_read($feed_id)
+{
+    \PicoTools\singleton('db')->startTransaction();
+
+    $items_id = \PicoTools\singleton('db')
+        ->table('items')
+        ->columns('items.id')
+        ->eq('status', 'unread')
+        ->eq('feed_id', $feed_id)
+        ->listing('id', 'id');
 
     foreach ($items_id as $id) {
         set_item_read($id);

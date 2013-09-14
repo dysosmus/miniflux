@@ -260,13 +260,10 @@ class Table
     }
 
 
-    public function orderBy($column)
+    public function orderBy($column, $order = 'ASC')
     {
-        if ($column[0] == '-') {
-            $order = 'DESC';
-        } else {
-            $order = 'ASC';
-        }
+        $order = strtoupper($order);
+        $order = $order === 'ASC' || $order === 'DESC' ? $order : 'ASC';
 
         if ($this->sql_order === '') {
             $this->sql_order = ' ORDER BY '.$this->db->escapeIdentifier($column).' '.$order;

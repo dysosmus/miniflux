@@ -8,9 +8,10 @@
         <h2><?= t('<span id="page-counter">%s</span>unread items', isset($nb_items) ? $nb_items.' ' : '') ?></h2>
         <ul>
             <li>
-            <a href="?action=mark-as-read" data-action="mark-all-read">
-                <?= t('mark all as read') ?>
-            </a>
+                <a href="?action=unread&amp;order=updated&amp;direction=<?= $direction == 'asc' ? 'desc' : 'asc' ?>"><?= t('sort by date (%s)', $direction == 'desc' ? t('older') : t('most recent')) ?></a>
+            </li>
+            <li>
+                <a href="?action=mark-as-read" data-action="mark-all-read"><?= t('mark all as read') ?></a>
             </li>
         </ul>
     </div>
@@ -32,7 +33,7 @@
                 <?= Helper\escape(Helper\summary(strip_tags($item['content']), 50, 300)) ?>
             </p>
             <p>
-                <a href="?action=feed-items&amp;feed_id=<?= $item['feed_id'] ?>"><?= Helper\escape($item['feed_title']) ?></a> |
+                <a href="?action=feed-items&amp;feed_id=<?= $item['feed_id'] ?>" title="<?= t('Show only this subscription') ?>"><?= Helper\escape($item['feed_title']) ?></a> |
                 <span class="hide-mobile"><?= dt('%e %B %Y %k:%M', $item['updated']) ?> |</span>
 
                 <span class="hide-mobile">
@@ -67,11 +68,11 @@
 
     <nav id="items-paging">
     <?php if ($offset > 0): ?>
-        <a id="previous-page" href="?action=unread&amp;offset=<?= ($offset - $items_per_page) ?>">⇽ <?= t('Previous page') ?></a>
+        <a id="previous-page" href="?action=unread&amp;offset=<?= ($offset - $items_per_page) ?>&amp;order=<?= $order ?>&amp;direction=<?= $direction ?>">⇽ <?= t('Previous page') ?></a>
     <?php endif ?>
     &nbsp;
     <?php if (($nb_items - $offset) > $items_per_page): ?>
-        <a id="next-page" href="?action=unread&amp;offset=<?= ($offset + $items_per_page) ?>"><?= t('Next page') ?> ⇾</a>
+        <a id="next-page" href="?action=unread&amp;offset=<?= ($offset + $items_per_page) ?>&amp;order=<?= $order ?>&amp;direction=<?= $direction ?>"><?= t('Next page') ?> ⇾</a>
     <?php endif ?>
     </nav>
 

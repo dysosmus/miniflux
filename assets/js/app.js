@@ -88,7 +88,7 @@
     }
 
     // Set all items of the current page to the status read and redirect to the main page
-    function mark_items_as_read()
+    function mark_items_as_read(redirect)
     {
         var articles = document.getElementsByTagName("article");
         var idlist = [];
@@ -100,7 +100,7 @@
         var request = new XMLHttpRequest();
 
         request.onload = function() {
-            window.location.href = "?action=unread";
+            window.location.href = redirect;
         };
 
         request.open("POST", "?action=mark-items-as-read", true);
@@ -499,7 +499,11 @@
                     break;
                 case 'mark-all-read':
                     e.preventDefault();
-                    mark_items_as_read();
+                    mark_items_as_read("?action=unread");
+                    break;
+                case 'mark-feed-read':
+                    e.preventDefault();
+                    mark_items_as_read("?action=feed-items&feed_id=" + e.target.getAttribute("data-feed-id"));
                     break;
                 case 'original-link':
                     var item_id = e.target.getAttribute("data-item-id");

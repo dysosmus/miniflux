@@ -1,6 +1,11 @@
 <?php
 
 return array(
+    'This subscription is empty, <a href="?action=unread">go back to unread items</a>' => 'Cet abonnement est vide, <a href="?action=unread">retourner à la liste des éléments non lus</a>',
+    'sort by date (%s)' => 'trier par date (%s)',
+    'most recent' => 'plus récents',
+    'older' => 'anciens d\'abord',
+    'Show only this subscription' => 'Montrer seulement cet abonnement',
     'Go to unread' => 'Voir les éléments non lus',
     'Go to bookmarks' => 'Voir les favoris',
     'Go to history' => 'Voir l\'historique',
