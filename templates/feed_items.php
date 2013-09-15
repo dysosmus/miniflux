@@ -10,7 +10,7 @@
         <h2><?= Helper\escape($feed['title']) ?> (<?= $nb_items ?>)</h2>
         <ul>
             <li>
-                <a href="?action=feed-items&amp;feed_id=<?= $feed['id'] ?>&amp;order=updated&amp;direction=<?= $direction == 'asc' ? 'desc' : 'asc' ?>"><?= t('sort by date (%s)', $direction == 'desc' ? t('older') : t('most recent')) ?></a>
+                <a href="?action=feed-items&amp;feed_id=<?= $feed['id'] ?>&amp;order=updated&amp;direction=<?= $direction == 'asc' ? 'desc' : 'asc' ?>"><?= t('sort by date<span class="hide-mobile"> (%s)</span>', $direction == 'desc' ? t('older') : t('most recent')) ?></a>
             </li>
             <li>
                 <a href="?action=mark-feed-as-read&amp;feed_id=<?= $feed['id'] ?>" data-action="mark-feed-read" data-feed-id="<?= $feed['id'] ?>"><?= t('mark all as read') ?></a>
@@ -51,15 +51,20 @@
         </article>
     <?php endforeach ?>
 
-    <nav id="items-paging">
+    <div id="bottom-menu">
+        <a href="?action=mark-feed-as-read&amp;feed_id=<?= $feed['id'] ?>" data-action="mark-feed-read" data-feed-id="<?= $feed['id'] ?>"><?= t('mark all as read') ?></a>
+    </div>
+
+    <div id="items-paging">
     <?php if ($offset > 0): ?>
-        <a id="previous-page" href="?action=feed-items&amp;feed_id=<?= $feed['id'] ?>&amp;offset=<?= ($offset - $items_per_page) ?>&amp;order=<?= $order ?>&amp;direction=<?= $direction ?>">⇽ <?= t('Previous page') ?></a>
+        <a id="previous-page" href="?action=feed-items&amp;feed_id=<?= $feed['id'] ?>&amp;offset=<?= ($offset - $items_per_page) ?>&amp;order=<?= $order ?>&amp;direction=<?= $direction ?>">« <?= t('Previous page') ?></a>
+        &nbsp;-&nbsp;
     <?php endif ?>
     &nbsp;
     <?php if (($nb_items - $offset) > $items_per_page): ?>
-        <a id="next-page" href="?action=feed-items&amp;feed_id=<?= $feed['id'] ?>&amp;offset=<?= ($offset + $items_per_page) ?>&amp;order=<?= $order ?>&amp;direction=<?= $direction ?>"><?= t('Next page') ?> ⇾</a>
+        <a id="next-page" href="?action=feed-items&amp;feed_id=<?= $feed['id'] ?>&amp;offset=<?= ($offset + $items_per_page) ?>&amp;order=<?= $order ?>&amp;direction=<?= $direction ?>"><?= t('Next page') ?> »</a>
     <?php endif ?>
-    </nav>
+    </div>
 
     </section>
 

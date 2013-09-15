@@ -379,6 +379,14 @@ nav .active a {
     padding-right: 0;
 }
 
+#bottom-menu {
+    border-top: 1px dashed #ddd;
+    border-bottom: 1px dashed #ddd;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    font-size: 0.9em;
+}
+
 .feed-disabled,
 .feed-disabled a {
     color: #aaa;
@@ -547,8 +555,9 @@ span.downloading img {
 }
 
 #items-paging {
-    margin-top: 50px;
-    font-size: 75%;
+    margin-top: 40px;
+    margin-bottom: 15px;
+    font-size: 80%;
     text-align: center;
 }
 
@@ -632,6 +641,10 @@ iframe {
     .item .infos {
         font-size: 0.9em;
         padding: 0;
+    }
+
+    .items .preview {
+        color: #555;
     }
 
     section li {

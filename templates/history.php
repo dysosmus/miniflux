@@ -63,11 +63,11 @@
 
     <nav id="items-paging">
     <?php if ($offset > 0): ?>
-        <a id="previous-page" href="?action=history&amp;offset=<?= ($offset - $items_per_page) ?>">⇽ <?= t('Previous page') ?></a>
+        <a id="previous-page" href="?action=history&amp;offset=<?= ($offset - $items_per_page) ?>">« <?= t('Previous page') ?></a>
     <?php endif ?>
     &nbsp;
     <?php if (($nb_items - $offset) > $items_per_page): ?>
-        <a id="next-page" href="?action=history&amp;offset=<?= ($offset + $items_per_page) ?>"><?= t('Next page') ?> ⇾</a>
+        <a id="next-page" href="?action=history&amp;offset=<?= ($offset + $items_per_page) ?>"><?= t('Next page') ?> »</a>
     <?php endif ?>
     </nav>
 
