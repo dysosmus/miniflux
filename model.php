@@ -583,7 +583,7 @@ function count_feed_items($feed_id)
     return \PicoTools\singleton('db')
         ->table('items')
         ->eq('feed_id', $feed_id)
-        ->eq('status', 'unread')
+        ->in('status', array('unread', 'read'))
         ->count();
 }
 
@@ -604,7 +604,7 @@ function get_feed_items($feed_id, $offset = null, $limit = null, $order_column =
             'feeds.site_url'
         )
         ->join('feeds', 'id', 'feed_id')
-        ->eq('status', 'unread')
+        ->in('status', array('unread', 'read'))
         ->eq('feed_id', $feed_id)
         ->orderBy($order_column, $order_direction)
         ->offset($offset)
