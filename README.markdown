@@ -58,6 +58,7 @@ People who sent one or many pull-requests:
 - Maxime: https://github.com/EpocDotFr
 - MonsieurPaulLeBoulanger: https://github.com/MonsieurPaulLeBoulanger
 - Necku: https://github.com/Necku
+- Silvus: https://github.com/Silvus
 - Thiriot Christophe: https://github.com/doubleface
 - Ygbillet: https://github.com/ygbillet
 
