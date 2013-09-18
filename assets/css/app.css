@@ -380,11 +380,11 @@ nav .active a {
 }
 
 #bottom-menu {
-    border-top: 1px dashed #ddd;
-    border-bottom: 1px dashed #ddd;
-    padding-top: 3px;
+    border-bottom: 1px dotted #ccc;
     padding-bottom: 3px;
     font-size: 0.9em;
+    text-align: right;
+    padding-top: 30px;
 }
 
 .feed-disabled,
