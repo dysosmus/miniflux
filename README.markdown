@@ -278,6 +278,8 @@ It would be awesome for everybody :)
 - Original theme By Frederic Guillot
 - Midnight By Luca Marra
 - Green by Maxime (aka EpocDotFr)
+- Bootstrap 3 (Light) By Silvus
+- Bootswatch Cyborg By Silvus
 
 ### Coding standards for contributors
 
@@ -336,20 +338,25 @@ Don't forget to send a pull request or a ticket to share your contribution with 
 
 - *.blog.lemonde.fr
 - *.blog.nytimes.com
-- *.nytimes.php
+- *.nytimes.com
 - *.slate.com
+- *.theguardian.com
 - *.wikipedia.org
+- *.wired.com
 - *.wsj.com
 - github.com
 - lifehacker.com
+- plus.google.com
 - rue89.com
 - smallhousebliss.com
 - techcrunch.com
 - www.bbc.co.uk
+- www.businessweek.com
 - www.cnn.com
 - www.egscomics.com
 - www.forbes.com
 - www.lemonde.fr
+- www.lepoint.fr
+- www.npr.org
 - www.numerama.com
 - www.slate.fr
-- www.theguardian.com

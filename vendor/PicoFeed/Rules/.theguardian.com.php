@@ -5,5 +5,6 @@ return array(
         '//div[@id="article-wrapper"]',
     ),
     'strip' => array(
+        '//*[contains(@class, "promo")]',
     ),
 );
