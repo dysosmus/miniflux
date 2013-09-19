@@ -41,7 +41,7 @@ Original author: [Frédéric Guillot](http://fredericguillot.com/)
 
 ### Contributors
 
-People who sent a pull-request, report a bug, make a new theme or share super a cool idea:
+People who sent a pull-request, report a bug, make a new theme or share a super cool idea:
 
 - André Kelpe: https://github.com/fs111
 - Ayodio: https://github.com/ayodio

@@ -487,6 +487,7 @@ nav .active a {
 
 #item-content > a img,
 #item-content > img,
+#item-content figure img,
 .item p img {
     margin-top: 10px;
     margin-bottom: 10px;
