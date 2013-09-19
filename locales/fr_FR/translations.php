@@ -1,10 +1,13 @@
 <?php
 
 return array(
+    'Older items first' => 'Plus anciens en premier',
+    'Most recent first' => 'Plus récents en premier',
+    'Default sorting order for items' => 'Ordre des éléments par défaut',
     'This subscription is empty, <a href="?action=unread">go back to unread items</a>' => 'Cet abonnement est vide, <a href="?action=unread">retourner à la liste des éléments non lus</a>',
     'sort by date<span class="hide-mobile"> (%s)</span>' => 'trier par date<span class="hide-mobile"> (%s)</span>',
-    'most recent' => 'plus récents',
-    'older' => 'anciens d\'abord',
+    'most recent first' => 'plus récents d\'abord',
+    'older first' => 'anciens d\'abord',
     'Show only this subscription' => 'Montrer seulement cet abonnement',
     'Go to unread' => 'Voir les éléments non lus',
     'Go to bookmarks' => 'Voir les favoris',

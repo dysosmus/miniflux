@@ -24,10 +24,19 @@ use PicoFeed\Reader;
 use PicoFeed\Export;
 
 
-const DB_VERSION     = 16;
+const DB_VERSION     = 17;
 const HTTP_USERAGENT = 'Miniflux - http://miniflux.net';
 const HTTP_FAKE_USERAGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/29.0.1547.62 Safari/537.36';
 const LIMIT_ALL      = -1;
+
+
+function get_sorting_directions()
+{
+    return array(
+        'asc' => t('Older items first'),
+        'desc' => t('Most recent first'),
+    );
+}
 
 
 function get_languages()
@@ -571,7 +580,7 @@ function get_bookmarks($offset = null, $limit = null)
         ->join('feeds', 'id', 'feed_id')
         ->in('status', array('read', 'unread'))
         ->eq('bookmark', 1)
-        ->desc('updated')
+        ->orderBy('updated', get_config_value('items_sorting_direction'))
         ->offset($offset)
         ->limit($limit)
         ->findAll();
@@ -628,7 +637,7 @@ function get_nav_item($item, $status = array('unread'), $bookmark = array(1, 0),
         ->table('items')
         ->columns('id', 'status', 'title', 'bookmark')
         ->neq('status', 'removed')
-        ->desc('updated');
+        ->orderBy('updated', get_config_value('items_sorting_direction'));
 
     if ($feed_id) $query->eq('feed_id', $feed_id);
 
@@ -937,7 +946,8 @@ function get_config()
             'api_token',
             'feed_token',
             'auth_google_token',
-            'auth_mozilla_token'
+            'auth_mozilla_token',
+            'items_sorting_direction'
         )
         ->findOne();
 }

@@ -22,6 +22,9 @@
     <?= Helper\form_label(t('Items per page'), 'items_per_page') ?>
     <?= Helper\form_select('items_per_page', $paging_options, $values, $errors) ?><br/>
 
+    <?= Helper\form_label(t('Default sorting order for items'), 'items_sorting_direction') ?>
+    <?= Helper\form_select('items_sorting_direction', $sorting_options, $values, $errors) ?><br/>
+
     <?= Helper\form_label(t('Theme'), 'theme') ?>
     <?= Helper\form_select('theme', $theme_options, $values, $errors) ?><br/>
 

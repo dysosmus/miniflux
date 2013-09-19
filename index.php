@@ -242,7 +242,13 @@ Router\get_action('history', function() {
     $nb_items = Model\count_items('read');
 
     Response\html(Template\layout('history', array(
-        'items' => Model\get_items('read', $offset, Model\get_config_value('items_per_page')),
+        'items' => Model\get_items(
+            'read',
+            $offset,
+            Model\get_config_value('items_per_page'),
+            'updated',
+            Model\get_config_value('items_sorting_direction')
+        ),
         'nb_items' => $nb_items,
         'offset' => $offset,
         'items_per_page' => Model\get_config_value('items_per_page'),
@@ -260,7 +266,7 @@ Router\get_action('feed-items', function() {
     $nb_items = Model\count_feed_items($feed_id);
     $feed = Model\get_feed($feed_id);
     $order = Request\param('order', 'updated');
-    $direction = Request\param('direction', 'desc');
+    $direction = Request\param('direction', Model\get_config_value('items_sorting_direction'));
     $items = Model\get_feed_items($feed_id, $offset, Model\get_config_value('items_per_page'), $order, $direction);
 
     Response\html(Template\layout('feed_items', array(
@@ -642,6 +648,7 @@ Router\get_action('config', function() {
         'autoflush_options' => Model\get_autoflush_options(),
         'paging_options' => Model\get_paging_options(),
         'theme_options' => Model\get_themes(),
+        'sorting_options' => Model\get_sorting_directions(),
         'menu' => 'config',
         'title' => t('Preferences')
     )));
@@ -674,6 +681,7 @@ Router\post_action('config', function() {
         'autoflush_options' => Model\get_autoflush_options(),
         'paging_options' => Model\get_paging_options(),
         'theme_options' => Model\get_themes(),
+        'sorting_options' => Model\get_sorting_directions(),
         'menu' => 'config',
         'title' => t('Preferences')
     )));
@@ -797,7 +805,7 @@ Router\notfound(function() {
     Model\autoflush();
 
     $order = Request\param('order', 'updated');
-    $direction = Request\param('direction', 'desc');
+    $direction = Request\param('direction', Model\get_config_value('items_sorting_direction'));
     $offset = Request\int_param('offset', 0);
     $items = Model\get_items('unread', $offset, Model\get_config_value('items_per_page'), $order, $direction);
     $nb_items = Model\count_items('unread');

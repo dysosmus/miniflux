@@ -41,11 +41,12 @@ Original author: [Frédéric Guillot](http://fredericguillot.com/)
 
 ### Contributors
 
-People who sent one or many pull-requests:
+People who sent a pull-request, report a bug, make a new theme or share super a cool idea:
 
 - André Kelpe: https://github.com/fs111
 - Ayodio: https://github.com/ayodio
 - Bjauy: https://github.com/bjauy
+- Bohwaz: https://github.com/bohwaz
 - Chase Arnold: https://github.com/chase4926
 - Chris Lemonier: https://github.com/chrislemonier
 - Derjus: https://github.com/derjus
@@ -53,6 +54,7 @@ People who sent one or many pull-requests:
 - Félix: https://github.com/dysosmus
 - Horsely: https://github.com/horsley
 - Ing. Jan Kaláb: https://github.com/Pitel
+- Itoine: https://github.com/itoine
 - James Scott-Brown: https://github.com/jamesscottbrown
 - Luca Marra: https://github.com/facciocose
 - Maxime: https://github.com/EpocDotFr

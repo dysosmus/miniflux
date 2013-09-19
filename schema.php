@@ -3,6 +3,12 @@
 namespace Schema;
 
 
+function version_17($pdo)
+{
+    $pdo->exec('ALTER TABLE config ADD COLUMN items_sorting_direction TEXT DEFAULT "desc"');
+}
+
+
 function version_16($pdo)
 {
     $pdo->exec('ALTER TABLE config ADD COLUMN auth_google_token TEXT DEFAULT ""');
