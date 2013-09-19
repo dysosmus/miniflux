@@ -3,6 +3,12 @@
 
 @btn-info-bg: @brand-success;
 
+// Alert
+.alert.alert-normal a {
+	color: @alert-success-text;
+	text-decoration: underline;
+}
+
 // Logo
 .logo {
 	color: @gray-light;
@@ -26,6 +32,11 @@ article.item,
 	background: darken(@body-bg, 10%);
 }
 
+#current-item {
+	border-color: @brand-primary;
+	background-color: @body-bg;
+}
+
 .item nav > span {
 	background: @btn-primary-bg;
     border: 1px solid @btn-primary-border;
@@ -37,11 +48,3 @@ article.item,
 
 // Pagination
 .item nav > span { }
-
-// Preferences
-section .alert {
-	background: @btn-primary-bg;
-}
-section .alert a {
-	color: @gray;
-}

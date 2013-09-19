@@ -117,13 +117,46 @@ body > header > nav > ul a {
 
 // Page footer
 // --------------------------------------
-#bottom-menu a {
-	&:extend(.btn all, .btn-primary all, .pull-right);
-	margin-bottom: 10px;
+#bottom-menu,
+#items-paging {
+	float: right;
 }
+#bottom-menu a,
+#items-paging a {
+	&:extend(.btn all, .btn-primary all);
+	margin: 10px;
+}
+
+// item pagination
+.item nav {
+	&:extend(.pager all);
+	margin-bottom: 0;
+}
+
+.item nav > span {
+    border-radius: 15px;
+    display: inline-block;
+    padding: 5px 14px;
+    border-radius: 4px;
+}
+
+.item nav .nav-left {
+	float: left;
+}
+.item nav .nav-right {
+	float: right;
+}
+
 
 // Articles
 // --------------------------------------
+.item h2 {font-size:18px}
+.item h3 {font-size:16px}
+.item h4 {font-size:15px}
+.item h5 {font-size:14px}
+.item h6 {font-size:12px}
+.item blockquote p {font-size: 15px;}
+
 article img {
 	max-width: 100%;
 }
@@ -168,33 +201,6 @@ article p.infos a,
 	&:extend(.text-muted all);
 }
 
-// Pagination
-.item nav {
-	&:extend(.pager all);
-	margin-bottom: 0;
-}
-
-.item nav > span {
-    border-radius: 15px 15px 15px 15px;
-    display: inline-block;
-    padding: 5px 14px;
-    border-radius: 4px;
-}
-
-.item nav .nav-left {
-	float: left;
-}
-.item nav .nav-right {
-	float: right;
-}
-
-.item h2 {font-size:18px}
-.item h3 {font-size:16px}
-.item h4 {font-size:15px}
-.item h5 {font-size:14px}
-.item h6 {font-size:12px}
-.item blockquote p {font-size: 15px;}
-
 // Subscriptions
 // --------------------------------------
 .feed-last-checked {
@@ -228,6 +234,12 @@ section .alert ul {
 #login-page .btn {
 	margin-top: 15px;
 	&:extend(.btn-block all);
+}
+
+// Help
+// --------------------------------------
+#help-page .page {
+    padding-left: 0;
 }
 
 // Responsive
@@ -309,4 +321,16 @@ section .alert ul {
 		float: none;
 		margin-top: 3px;
 	}
+
+	#items-paging,
+	#bottom-menu {
+		float: none;
+		max-height: 20px;
+	}
+	#bottom-menu a,
+	#items-paging a {
+		display: block;
+		margin: 5px 0;
+	}
+
 }
