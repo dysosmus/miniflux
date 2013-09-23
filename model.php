@@ -3,7 +3,6 @@
 namespace Model;
 
 require_once 'vendor/PicoFeed/Filter.php';
-require_once 'vendor/PicoFeed/Client.php';
 require_once 'vendor/PicoFeed/Export.php';
 require_once 'vendor/PicoFeed/Import.php';
 require_once 'vendor/PicoFeed/Reader.php';

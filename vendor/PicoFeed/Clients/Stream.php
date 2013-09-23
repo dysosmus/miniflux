@@ -28,6 +28,16 @@ class Stream extends \PicoFeed\Client
             )
         );
 
+        if (parent::$proxy_hostname) {
+            $context_options['http']['proxy'] = 'tcp://'.parent::$proxy_hostname.':'.parent::$proxy_port;
+            $context_options['http']['request_fulluri'] = true;
+
+            if (parent::$proxy_username) {
+                $headers[] = 'Proxy-Authorization: Basic '.base64_encode(parent::$proxy_username.':'.parent::$proxy_password);
+                $context_options['http']['header'] = implode("\r\n", $headers);
+            }
+        }
+
         $context = stream_context_create($context_options);
 
         // Make HTTP request

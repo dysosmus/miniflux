@@ -6,6 +6,11 @@ require_once __DIR__.'/Logging.php';
 
 abstract class Client
 {
+    protected static $proxy_hostname = null;
+    protected static $proxy_port = null;
+    protected static $proxy_username = null;
+    protected static $proxy_password = null;
+
     public $etag = '';
     public $last_modified = '';
     public $is_modified = true;
@@ -94,6 +99,15 @@ abstract class Client
         }
 
         return array($status, $headers);
+    }
+
+
+    public static function proxy($hostname, $port = 3128, $username = '', $password = '')
+    {
+        self::$proxy_hostname = $hostname;
+        self::$proxy_port = $port;
+        self::$proxy_username = $username;
+        self::$proxy_password = $password;
     }
 
 

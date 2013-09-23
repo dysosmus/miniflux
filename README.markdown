@@ -184,6 +184,10 @@ Actually, the following constants can be overrided:
 - `DEBUG_FILENAME` => default is `data/debug.log`
 - `THEME_DIRECTORY` => default is themes
 - `SESSION_SAVE_PATH` => default is empty (used to store session files in a custom directory)
+- `PROXY_HOSTNAME` => default is empty (make HTTP requests through a HTTP proxy if set)
+- `PROXY_PORT` => default is 3128 (default port of Squid)
+- `PROXY_USERNAME` => default is empty (set the proxy username is needed)
+- `PROXY_PASSWORD` => default is empty
 
 ### How to change the session save path?
 

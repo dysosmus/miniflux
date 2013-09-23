@@ -66,6 +66,18 @@ class Curl extends \PicoFeed\Client
         curl_setopt($ch, CURLOPT_HEADERFUNCTION, array($this, 'readHeaders'));
         curl_setopt($ch, CURLOPT_COOKIEJAR, 'php://memory');
         curl_setopt($ch, CURLOPT_COOKIEFILE, 'php://memory');
+
+        if (parent::$proxy_hostname) {
+
+            curl_setopt($ch, CURLOPT_PROXYPORT, parent::$proxy_port);
+            curl_setopt($ch, CURLOPT_PROXYTYPE, 'HTTP');
+            curl_setopt($ch, CURLOPT_PROXY, parent::$proxy_hostname);
+
+            if (parent::$proxy_username) {
+                curl_setopt($ch, CURLOPT_PROXYUSERPWD, parent::$proxy_username.':'.parent::$proxy_password);
+            }
+        }
+
         curl_exec($ch);
 
         Logging::log(\get_called_class().' cURL total time: '.curl_getinfo($ch, CURLINFO_TOTAL_TIME));
