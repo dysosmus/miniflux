@@ -79,6 +79,7 @@ return array(
     'Simplified Chinese' => 'Chino simplificado',
     'Czech' => 'Checo',
 	'Spanish' => 'Español',
+    'Portuguese' => 'Portugués',
     'unread' => 'no leídos',
     'bookmark' => 'añadir a marcadores',
     'remove bookmark' => 'borrar marcador',

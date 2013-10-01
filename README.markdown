@@ -19,7 +19,7 @@ Features
 - Mobile CSS (responsive design)
 - Keyboard shortcuts (pressing '?' displays a pop-up listing the shortcuts; pressing 'q' closes it)
 - Basic bookmarks
-- Translated in English, French, German, Italian, Czech, Spanish and Simplified Chinese
+- Translated in English, French, German, Italian, Czech, Spanish, Portuguese and Simplified Chinese
 - Themes support
 - Alternative login with a Google Account or Mozilla Persona
 - **Full article download for feeds that display only a summary** (website scraper based on Xpath rules)
@@ -52,6 +52,7 @@ People who sent a pull-request, report a bug, make a new theme or share a super 
 - Derjus: https://github.com/derjus
 - Eauland: https://github.com/eauland
 - Félix: https://github.com/dysosmus
+- Geriel Castro: https://github.com/GerielCastro
 - Horsely: https://github.com/horsley
 - Ing. Jan Kaláb: https://github.com/Pitel
 - Itoine: https://github.com/itoine
@@ -285,6 +286,24 @@ It would be awesome for everybody :)
 - Green by Maxime (aka EpocDotFr)
 - Bootstrap 3 (Light) By Silvus
 - Bootswatch Cyborg By Silvus
+
+### How to create or update a translation?
+
+- Translations are stored inside the directory `locales`
+- There is sub-directory for each language, by example for french we have `fr_FR`, for italian `it_IT` etc...
+- A translation is a PHP file that return an Array with a key-value pairs
+- The key is the original text in english and the value is the translation for the corresponding language
+
+French translations are always the most recent (because I am french).
+
+Create a new translation:
+
+1. Make a new directory: `locales/xx_XX` by example `locales/fr_CA` for French Canadian
+2. Create a new file for the translation: `locales/xx_XX/translations.php`
+3. Use the content of the french locales to have the most recent keys and replace the values
+4. Inside the file `model.php`, add a new entry for your translation in the function `get_languages()`
+5. Check with your local installation of Miniflux if everything is ok
+6. Send a pull-request with Github
 
 ### Coding standards for contributors
 

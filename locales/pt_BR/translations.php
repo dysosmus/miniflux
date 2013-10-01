@@ -15,6 +15,7 @@ return array(
     'German' => 'Alemão',
     'Italian' => 'Italiano',
     'Simplified Chinese' => 'Chinês Simplificado',
+    'Portuguese' => 'Português',
     'unread' => 'não lido',
     'bookmarks' => 'lesezeichen',
     'bookmark' => 'lesezeichen',
