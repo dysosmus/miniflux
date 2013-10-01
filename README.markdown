@@ -344,6 +344,7 @@ Don't forget to send a pull request or a ticket to share your contribution with 
 - *.blog.lemonde.fr
 - *.blog.nytimes.com
 - *.nytimes.com
+- *.phoronix.com
 - *.slate.com
 - *.theguardian.com
 - *.wikipedia.org
@@ -351,6 +352,9 @@ Don't forget to send a pull request or a ticket to share your contribution with 
 - *.wsj.com
 - github.com
 - lifehacker.com
+- lists.*
+- medium.com
+- pastebin.com
 - plus.google.com
 - rue89.com
 - smallhousebliss.com

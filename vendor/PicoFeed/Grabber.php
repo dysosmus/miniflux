@@ -25,6 +25,8 @@ class Grabber
         'post_content',
         'entry-content',
         'main-content',
+        'story_content',
+        'storycontent',
         'entryBox',
         'entrytext',
         'comic',
@@ -46,7 +48,12 @@ class Grabber
         'nav',
         'header',
         'social',
+        'tag',
+        'metadata',
         'entry-utility',
+        'related-posts',
+        'tweet',
+        'categories',
     );
 
     public $stripTags = array(
@@ -56,6 +63,7 @@ class Grabber
         'header',
         'footer',
         'aside',
+        'form',
     );
 
 
@@ -114,8 +122,14 @@ class Grabber
         $hostname = parse_url($this->url, PHP_URL_HOST);
         $files = array($hostname);
 
-        if (substr($hostname, 0, 4) == 'www.') $files[] = substr($hostname, 4);
-        if (($pos = strpos($hostname, '.')) !== false) $files[] = substr($hostname, $pos);
+        if (substr($hostname, 0, 4) == 'www.') {
+            $files[] = substr($hostname, 4);
+        }
+
+        if (($pos = strpos($hostname, '.')) !== false) {
+            $files[] = substr($hostname, $pos);
+            $files[] = substr($hostname, 0, $pos);
+        }
 
         foreach ($files as $file) {
 
