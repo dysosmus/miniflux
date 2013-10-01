@@ -47,6 +47,7 @@ function get_languages()
         'es_ES' => t('Spanish'),
         'fr_FR' => t('French'),
         'it_IT' => t('Italian'),
+        'pt_BR' => t('Português'),
         'zh_CN' => t('Simplified Chinese'),
     );
 
