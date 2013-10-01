@@ -19,7 +19,7 @@ Features
 - Mobile CSS (responsive design)
 - Keyboard shortcuts (pressing '?' displays a pop-up listing the shortcuts; pressing 'q' closes it)
 - Basic bookmarks
-- Translated in English, French, German, Italian, Czech and Simplified Chinese
+- Translated in English, French, German, Italian, Czech, Spanish and Simplified Chinese
 - Themes support
 - Alternative login with a Google Account or Mozilla Persona
 - **Full article download for feeds that display only a summary** (website scraper based on Xpath rules)
@@ -62,6 +62,7 @@ People who sent a pull-request, report a bug, make a new theme or share a super 
 - Necku: https://github.com/Necku
 - Silvus: https://github.com/Silvus
 - Thiriot Christophe: https://github.com/doubleface
+- Vincent Ozanam
 - Ygbillet: https://github.com/ygbillet
 
 PS: Many people sent a bug report too (see [issues tracker](https://github.com/fguillot/miniflux/issues))

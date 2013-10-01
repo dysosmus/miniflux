@@ -40,14 +40,19 @@ function get_sorting_directions()
 
 function get_languages()
 {
-    return array(
+    $languages = array(
         'cs_CZ' => t('Czech'),
-        'en_US' => t('English'),
-        'fr_FR' => t('French'),
         'de_DE' => t('German'),
+        'en_US' => t('English'),
+        'es_ES' => t('Spanish'),
+        'fr_FR' => t('French'),
         'it_IT' => t('Italian'),
         'zh_CN' => t('Simplified Chinese'),
     );
+
+    asort($languages);
+
+    return $languages;
 }
 
 
