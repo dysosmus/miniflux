@@ -11,6 +11,7 @@ class Grabber
 {
     public $content = '';
     public $html = '';
+    public $encoding = '';
 
     // Order is important, generic terms at the end
     public $candidatesAttributes = array(
@@ -67,9 +68,11 @@ class Grabber
     );
 
 
-    public function __construct($url)
+    public function __construct($url, $html = '', $encoding = 'utf-8')
     {
         $this->url = $url;
+        $this->html = $html;
+        $this->encoding = $encoding;
     }
 
 
@@ -78,8 +81,16 @@ class Grabber
         if ($this->html) {
 
             Logging::log(\get_called_class().' Fix encoding');
+            Logging::log(\get_called_class().': HTTP Encoding "'.$this->encoding.'"');
+
             $this->html = Filter::stripMetaTags($this->html);
-            $this->html = Encoding::toUtf8($this->html);
+
+            if ($this->encoding == 'windows-1251') {
+                $this->html = Encoding::cp1251ToUtf8($this->html);
+            }
+            else {
+                $this->html = Encoding::toUTF8($this->html);
+            }
 
             Logging::log(\get_called_class().' Try to find rules');
             $rules = $this->getRules();

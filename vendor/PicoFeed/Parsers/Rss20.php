@@ -81,7 +81,6 @@ class Rss20 extends \PicoFeed\Parser
             if (empty($item->updated)) $item->updated = strtotime((string) $entry->pubDate) ?: $this->updated;
 
             if (empty($item->content)) {
-
                 $item->content = isset($entry->description) ? (string) $entry->description : '';
             }
 

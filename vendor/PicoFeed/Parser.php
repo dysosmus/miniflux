@@ -25,13 +25,21 @@ abstract class Parser
     abstract public function execute();
 
 
-    public function __construct($content)
+    public function __construct($content, $http_encoding = '')
     {
-        // Strip XML tag to avoid multiple encoding/decoding in next XML processing
+        $xml_encoding = Filter::getEncodingFromXmlTag($content);
+        Logging::log(\get_called_class().': HTTP Encoding "'.$http_encoding.'" ; XML Encoding "'.$xml_encoding.'"');
+
+        // Strip XML tag to avoid multiple encoding/decoding in the next XML processing
         $this->content = Filter::stripXmlTag($content);
 
         // Encode everything in UTF-8
-        $this->content = Encoding::toUTF8($this->content);
+        if ($xml_encoding == 'windows-1251' || $http_encoding == 'windows-1251') {
+            $this->content = Encoding::cp1251ToUtf8($this->content);
+        }
+        else {
+            $this->content = Encoding::toUTF8($this->content);
+        }
 
         // Workarounds
         $this->content = $this->normalizeData($this->content);

@@ -322,4 +322,9 @@ class Encoding {
     if($encodingLabel == 'ISO-8859-1') return Encoding::toLatin1($text);
   }
 
+
+  public static function cp1251ToUtf8($input)
+  {
+    return iconv('CP1251', 'UTF-8//TRANSLIT', $input);
+  }
 }

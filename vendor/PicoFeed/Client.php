@@ -11,6 +11,7 @@ abstract class Client
     protected static $proxy_username = null;
     protected static $proxy_password = null;
 
+    public $encoding = '';
     public $etag = '';
     public $last_modified = '';
     public $is_modified = true;
@@ -70,6 +71,11 @@ abstract class Client
                 $this->etag = isset($response['headers']['ETag']) ? $response['headers']['ETag'] : '';
                 $this->last_modified = isset($response['headers']['Last-Modified']) ? $response['headers']['Last-Modified'] : '';
                 $this->content = $response['body'];
+
+                if (isset($response['headers']['Content-Type'])) {
+                    $result = explode('charset=', strtolower($response['headers']['Content-Type']));
+                    $this->encoding = isset($result[1]) ? $result[1] : '';
+                }
             }
         }
     }
@@ -146,6 +152,12 @@ abstract class Client
     public function getContent()
     {
         return $this->content;
+    }
+
+
+    public function getEncoding()
+    {
+        return $this->encoding;
     }
 
 

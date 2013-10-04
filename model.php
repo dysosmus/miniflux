@@ -432,8 +432,7 @@ function download_content($url)
     if (! empty($html)) {
 
         // Try first with PicoFeed grabber and with Readability after
-        $grabber = new \PicoFeed\Grabber($url);
-        $grabber->html = $html;
+        $grabber = new \PicoFeed\Grabber($url, $html, $client->getEncoding());
         $content = '';
 
         if ($grabber->parse()) {

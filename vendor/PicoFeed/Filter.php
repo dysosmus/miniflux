@@ -164,6 +164,7 @@ class Filter
     );
 
 
+    // All inputs data must be encoded in UTF-8 before
     public function __construct($data, $site_url)
     {
         $this->url = $site_url;
@@ -301,10 +302,11 @@ class Filter
     {
         $content = str_replace("\xc2\xa0", ' ', $content); // Replace &nbsp; with normal space
 
+        // Issue with Cyrillic characters
         // Replace mutliple space by a single one
-        if (! $this->is_code) {
-            $content = preg_replace('!\s+!', ' ', $content);
-        }
+        // if (! $this->is_code) {
+        //     $content = preg_replace('!\s+!', ' ', $content);
+        // }
 
         if (! $this->strip_content) {
             $this->data .= htmlspecialchars($content, ENT_QUOTES, 'UTF-8', false);
@@ -469,5 +471,25 @@ class Filter
     public static function stripMetaTags($data)
     {
         return preg_replace('/<meta\s.*?\/>/is', '', $data);
+    }
+
+
+    public static function getEncodingFromXmlTag($data)
+    {
+        $encoding = '';
+
+        if (strpos($data, '<?xml') !== false) {
+
+            $data = substr($data, 0, strrpos($data, '?>'));
+            $data = str_replace("'", '"', $data);
+
+            $p1 = strpos($data, 'encoding=');
+            $p2 = strpos($data, '"', $p1 + 10);
+
+            $encoding = substr($data, $p1 + 10, $p2 - $p1 - 10);
+            $encoding = strtolower($encoding);
+        }
+
+        return $encoding;
     }
 }

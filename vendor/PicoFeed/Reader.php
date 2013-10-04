@@ -11,11 +11,13 @@ class Reader
 {
     private $url = '';
     private $content = '';
+    private $encoding = '';
 
 
-    public function __construct($content = '')
+    public function __construct($content = '', $encoding = '')
     {
         $this->content = $content;
+        $this->encoding = '';
         return $this;
     }
 
@@ -37,6 +39,7 @@ class Reader
 
         $this->content = $client->getContent();
         $this->url = $client->getUrl();
+        $this->encoding = $client->getEncoding();
 
         return $client;
     }
@@ -86,7 +89,7 @@ class Reader
             Logging::log(\get_called_class().': discover Atom feed');
 
             require_once __DIR__.'/Parsers/Atom.php';
-            return new Parsers\Atom($this->content);
+            return new Parsers\Atom($this->content, $this->encoding);
         }
         else if (strpos($first_tag, '<rss') !== false &&
                 (strpos($first_tag, 'version="2.0"') !== false || strpos($first_tag, 'version=\'2.0\'') !== false)) {
@@ -94,7 +97,7 @@ class Reader
             Logging::log(\get_called_class().': discover RSS 2.0 feed');
 
             require_once __DIR__.'/Parsers/Rss20.php';
-            return new Parsers\Rss20($this->content);
+            return new Parsers\Rss20($this->content, $this->encoding);
         }
         else if (strpos($first_tag, '<rss') !== false &&
                 (strpos($first_tag, 'version="0.92"') !== false || strpos($first_tag, 'version=\'0.92\'') !== false)) {
@@ -102,7 +105,7 @@ class Reader
             Logging::log(\get_called_class().': discover RSS 0.92 feed');
 
             require_once __DIR__.'/Parsers/Rss92.php';
-            return new Parsers\Rss92($this->content);
+            return new Parsers\Rss92($this->content, $this->encoding);
         }
         else if (strpos($first_tag, '<rss') !== false &&
                 (strpos($first_tag, 'version="0.91"') !== false || strpos($first_tag, 'version=\'0.91\'') !== false)) {
@@ -110,14 +113,14 @@ class Reader
             Logging::log(\get_called_class().': discover RSS 0.91 feed');
 
             require_once __DIR__.'/Parsers/Rss91.php';
-            return new Parsers\Rss91($this->content);
+            return new Parsers\Rss91($this->content, $this->encoding);
         }
         else if (strpos($first_tag, '<rdf:') !== false && strpos($first_tag, 'xmlns="http://purl.org/rss/1.0/"') !== false) {
 
             Logging::log(\get_called_class().': discover RSS 1.0 feed');
 
             require_once __DIR__.'/Parsers/Rss10.php';
-            return new Parsers\Rss10($this->content);
+            return new Parsers\Rss10($this->content, $this->encoding);
         }
         else if ($discover === true) {
 
