@@ -45,11 +45,7 @@ function load()
 }
 
 
-function layout($template_name, array $template_args = array())
+function layout($template_name, array $template_args = array(), $layout_name = 'layout')
 {
-    $output = load('app_header', $template_args);
-    $output .= load($template_name, $template_args);
-    $output .= load('app_footer', $template_args);
-
-    return $output;
+    return load($layout_name, $template_args + array('content_for_layout' => load($template_name, $template_args)));
 }
