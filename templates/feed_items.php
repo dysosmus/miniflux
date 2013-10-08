@@ -23,15 +23,13 @@
         <article id="item-<?= $item['id'] ?>" data-item-id="<?= $item['id'] ?>" data-item-page="<?= $menu ?>" data-hide="true">
             <h2>
                 <?= $item['bookmark'] ? '★ ' : '' ?>
+                <?= $item['status'] === 'read' ? '☑ ' : '' ?>
                 <a
                     href="?action=show&amp;menu=feed-items&amp;id=<?= $item['id'] ?>"
                     data-item-id="<?= $item['id'] ?>"
                     id="open-<?= $item['id'] ?>"
                     <?= $item['status'] === 'read' ? 'class="read"' : '' ?>
                 >
-                    <?php if ($item['status'] === 'read'): ?>
-                        ☑
-                    <?php endif ?>
                     <?= Helper\escape($item['title']) ?>
                 </a>
             </h2>
