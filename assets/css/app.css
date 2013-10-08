@@ -449,6 +449,10 @@ nav .active a {
     color: #555;
 }
 
+.items a.read {
+    color: #666;
+}
+
 /* item */
 .item {
     padding-left: 5px;
