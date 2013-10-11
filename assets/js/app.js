@@ -78,7 +78,16 @@
                 if (response.status == "read" || response.status == "unread") {
 
                     find_next_item();
-                    if (hide) remove_item(response.item_id);
+
+                    if (hide) {
+                        remove_item(response.item_id);
+                    }
+                    else if (response.status == "read") {
+                        show_item_as_read(item_id);
+                    }
+                    else if (response.status == "unread") {
+                        show_item_as_unread(item_id);
+                    }
                 }
             }
         }
@@ -145,6 +154,31 @@
 
             if (link) link.click();
         }
+    }
+
+    // Show an item as read (change title color and add icon)
+    function show_item_as_read(item_id)
+    {
+        var link = document.getElementById("open-" + item_id);
+
+        if (link) {
+            link.className = "read";
+
+            var icon = document.createElement("span");
+            icon.id = "read-icon-" + item_id;
+            icon.appendChild(document.createTextNode("☑ "));
+            link.parentNode.insertBefore(icon, link);
+        }
+    }
+
+    // Show an item as unread (change title color and remove read icon)
+    function show_item_as_unread(item_id)
+    {
+        var link = document.getElementById("open-" + item_id);
+        if (link) link.className = "";
+
+        var icon = document.getElementById("read-icon-" + item_id);
+        if (icon) icon.parentNode.removeChild(icon);
     }
 
     // Show the refresh icon when updating a feed
@@ -260,7 +294,7 @@
             if (item.getAttribute("data-item-id") != item_id) item = false;
         }
 
-        if (item) {
+        if (item && item.getAttribute("data-hide")) {
 
             item.parentNode.removeChild(item);
             var container = document.getElementById("page-counter");

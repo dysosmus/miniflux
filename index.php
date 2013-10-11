@@ -138,10 +138,11 @@ Router\get_action('mark-item-read', function() {
     $id = Request\param('id');
     $redirect = Request\param('redirect', 'unread');
     $offset = Request\int_param('offset', 0);
+    $feed_id = Request\int_param('feed_id', 0);
 
     Model\set_item_read($id);
 
-    Response\Redirect('?action='.$redirect.'&offset='.$offset);
+    Response\Redirect('?action='.$redirect.'&offset='.$offset.'&feed_id='.$feed_id.'#item-'.$id);
 });
 
 
@@ -151,10 +152,11 @@ Router\get_action('mark-item-unread', function() {
     $id = Request\param('id');
     $redirect = Request\param('redirect', 'history');
     $offset = Request\int_param('offset', 0);
+    $feed_id = Request\int_param('feed_id', 0);
 
     Model\set_item_unread($id);
 
-    Response\Redirect('?action='.$redirect.'&offset='.$offset);
+    Response\Redirect('?action='.$redirect.'&offset='.$offset.'&feed_id='.$feed_id.'#item-'.$id);
 });
 
 
@@ -164,10 +166,11 @@ Router\get_action('mark-item-removed', function() {
     $id = Request\param('id');
     $redirect = Request\param('redirect', 'history');
     $offset = Request\int_param('offset', 0);
+    $feed_id = Request\int_param('feed_id', 0);
 
     Model\set_item_removed($id);
 
-    Response\Redirect('?action='.$redirect.'&offset='.$offset);
+    Response\Redirect('?action='.$redirect.'&offset='.$offset.'&feed_id='.$feed_id);
 });
 
 
@@ -224,6 +227,7 @@ Router\get_action('bookmark', function() {
     $menu = Request\param('menu', 'unread');
     $source = Request\param('source', 'unread');
     $offset = Request\int_param('offset', 0);
+    $feed_id = Request\int_param('feed_id', 0);
 
     Model\set_bookmark_value($id, Request\int_param('value'));
 
@@ -231,7 +235,7 @@ Router\get_action('bookmark', function() {
         Response\Redirect('?action=show&menu='.$menu.'&id='.$id);
     }
 
-    Response\Redirect('?action='.$menu.'&offset='.$offset);
+    Response\Redirect('?action='.$menu.'&offset='.$offset.'&feed_id='.$feed_id.'#item-'.$id);
 });
 
 

@@ -48,6 +48,7 @@
                     href="?action=mark-item-read&amp;id=<?= $item['id'] ?>&amp;offset=<?= $offset ?>"
                     data-action="mark-read"
                     data-item-id="<?= $item['id'] ?>"
+                    data-hide="true"
                 >
                     <?= t('mark as read') ?>
                 </a> |

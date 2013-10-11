@@ -20,10 +20,10 @@
 
     <section class="items" id="listing">
     <?php foreach ($items as $item): ?>
-        <article id="item-<?= $item['id'] ?>" data-item-id="<?= $item['id'] ?>" data-item-page="<?= $menu ?>" data-hide="true">
+        <article id="item-<?= $item['id'] ?>" data-item-id="<?= $item['id'] ?>" data-item-page="<?= $menu ?>">
             <h2>
-                <?= $item['bookmark'] ? '★ ' : '' ?>
-                <?= $item['status'] === 'read' ? '☑ ' : '' ?>
+                <?= $item['bookmark'] ? '<span id="bookmark-icon-'.$item['id'].'">★ </span>' : '' ?>
+                <?= $item['status'] === 'read' ? '<span id="read-icon-'.$item['id'].'">☑ </span>' : '' ?>
                 <a
                     href="?action=show&amp;menu=feed-items&amp;id=<?= $item['id'] ?>"
                     data-item-id="<?= $item['id'] ?>"
@@ -38,7 +38,33 @@
             </p>
             <p>
                 <?= Helper\get_host_from_url($item['url']) ?> |
-                <?= dt('%e %B %Y %k:%M', $item['updated']) ?> |
+                <span class="hide-mobile"><?= dt('%e %B %Y %k:%M', $item['updated']) ?> |</span>
+
+                <span class="hide-mobile">
+                <?php if ($item['bookmark']): ?>
+                    <a id="bookmark-<?= $item['id'] ?>" href="?action=bookmark&amp;value=0&amp;id=<?= $item['id'] ?>&amp;menu=feed-items&amp;offset=<?= $offset ?>&amp;feed_id=<?= $item['feed_id'] ?>"><?= t('remove bookmark') ?></a> |
+                <?php else: ?>
+                    <a id="bookmark-<?= $item['id'] ?>" href="?action=bookmark&amp;value=1&amp;id=<?= $item['id'] ?>&amp;menu=feed-items&amp;offset=<?= $offset ?>&amp;feed_id=<?= $item['feed_id'] ?>"><?= t('bookmark') ?></a> |
+                <?php endif ?>
+                </span>
+
+                <?php if ($item['status'] == 'unread'): ?>
+                    <a
+                        href="?action=mark-item-read&amp;id=<?= $item['id'] ?>&amp;offset=<?= $offset ?>&amp;redirect=feed-items&amp;feed_id=<?= $item['feed_id'] ?>"
+                    >
+                        <?= t('mark as read') ?>
+                    </a> |
+                <?php else: ?>
+                    <a
+                        href="?action=mark-item-unread&amp;id=<?= $item['id'] ?>&amp;offset=<?= $offset ?>&amp;redirect=feed-items&amp;feed_id=<?= $item['feed_id'] ?>"
+                    >
+                        <?= t('mark as unread') ?>
+                    </a> |
+                <?php endif ?>
+
+                <span class="hide-mobile">
+                <a href="?action=mark-item-removed&amp;id=<?= $item['id'] ?>&amp;offset=<?= $offset ?>&amp;redirect=feed-items&amp;feed_id=<?= $item['feed_id'] ?>"><?= t('remove') ?></a> |
+                </span>
 
                 <a
                     href="<?= $item['url'] ?>"
