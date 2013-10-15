@@ -9,10 +9,10 @@
         <link rel="apple-touch-icon" sizes="72x72" href="./assets/img/touch-icon-ipad.png">
         <link rel="apple-touch-icon" sizes="114x114" href="./assets/img/touch-icon-iphone-retina.png">
         <link rel="apple-touch-icon" sizes="144x144" href="./assets/img/touch-icon-ipad-retina.png">
-        <title>miniflux</title>
+        <title>Miniflux</title>
         <link href="<?= Helper\css() ?>" rel="stylesheet" media="screen">
-        <script type="text/javascript" src="assets/js/app.js?version=<?= filemtime('assets/js/app.js') ?>" defer></script>
         <?php if ($mozilla_auth_enable): ?>
+            <script type="text/javascript" src="?action=js" defer></script>
             <script type="text/javascript" src="assets/js/persona.js" defer></script>
         <?php endif ?>
     </head>

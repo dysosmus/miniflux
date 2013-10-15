@@ -504,7 +504,7 @@ nav .active a {
     text-decoration: none;
 }
 
-.item a:visited {
+#item-content a:visited {
     color: purple;
 }
 

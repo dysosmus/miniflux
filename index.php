@@ -23,7 +23,7 @@ Session\open(dirname($_SERVER['PHP_SELF']));
 // Called before each action
 Router\before(function($action) {
 
-    $ignore_actions = array('login', 'google-auth', 'google-redirect-auth', 'mozilla-auth');
+    $ignore_actions = array('js', 'login', 'google-auth', 'google-redirect-auth', 'mozilla-auth');
 
     if (! isset($_SESSION['user']) && ! in_array($action, $ignore_actions)) {
         Response\redirect('?action=login');
@@ -46,6 +46,20 @@ Router\before(function($action) {
     Response\xframe();
     Response\xss();
     Response\nosniff();
+});
+
+
+// Javascript assets
+Router\get_action('js', function() {
+
+    $data = file_get_contents('assets/js/app.js');
+    $data .= file_get_contents('assets/js/feed.js');
+    $data .= file_get_contents('assets/js/item.js');
+    $data .= file_get_contents('assets/js/event.js');
+    $data .= file_get_contents('assets/js/nav.js');
+    $data .= 'Miniflux.App.Run();';
+
+    Response\js($data);
 });
 
 
@@ -199,15 +213,6 @@ Router\post_action('mark-item-unread', function() {
 });
 
 
-// Ajax call to bookmark an item
-Router\post_action('bookmark-item', function() {
-
-    $id = Request\param('id');
-    Model\bookmark_item($id);
-    Response\json(array('Ok'));
-});
-
-
 // Ajax call change item status
 Router\post_action('change-item-status', function() {
 
@@ -217,6 +222,18 @@ Router\post_action('change-item-status', function() {
         'item_id' => $id,
         'status' => Model\switch_item_status($id)
     ));
+});
+
+
+// Ajax call to add or remove a bookmark
+Router\post_action('bookmark', function() {
+
+    $id = Request\param('id');
+    $value = Request\int_param('value');
+
+    Model\set_bookmark_value($id, $value);
+
+    Response\json(array('id' => $id, 'value' => $value));
 });
 
 
@@ -253,6 +270,8 @@ Router\get_action('history', function() {
             'updated',
             Model\get_config_value('items_sorting_direction')
         ),
+        'order' => '',
+        'direction' => '',
         'nb_items' => $nb_items,
         'offset' => $offset,
         'items_per_page' => Model\get_config_value('items_per_page'),
@@ -294,6 +313,8 @@ Router\get_action('bookmarks', function() {
     $nb_items = Model\count_bookmarks();
 
     Response\html(Template\layout('bookmarks', array(
+        'order' => '',
+        'direction' => '',
         'items' => Model\get_bookmarks($offset, Model\get_config_value('items_per_page')),
         'nb_items' => $nb_items,
         'offset' => $offset,

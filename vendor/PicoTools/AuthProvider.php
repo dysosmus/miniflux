@@ -77,8 +77,15 @@ function mozilla_validate($token)
         'content' => http_build_query($params, '', '&')
     )));
 
-    $body = file_get_contents('https://verifier.login.persona.org/verify', false, $context);
+    $body = @file_get_contents('https://verifier.login.persona.org/verify', false, $context);
     $response = json_decode($body, true);
+
+    if (! $response) {
+        return array(
+            false,
+            ''
+        );
+    }
 
     return array(
         $response['status'] === 'okay',

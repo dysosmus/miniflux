@@ -3,23 +3,44 @@
     <p class="alert alert-info"><?= t('Item not found') ?></p>
 
 <?php else: ?>
-    <article class="item" id="current-item" data-item-id="<?= $item['id'] ?>" data-item-page="<?= $menu ?>">
+    <article
+        class="item"
+        id="current-item"
+        data-item-id="<?= $item['id'] ?>"
+        data-item-status="<?= $item['status'] ?>"
+        data-item-bookmark="<?= $item['bookmark'] ?>"
+        data-item-page="<?= $menu ?>"
+    >
         <h1>
-            <a href="<?= $item['url'] ?>" rel="noreferrer" target="_blank" id="original-item">
+            <a href="<?= $item['url'] ?>" rel="noreferrer" target="_blank" id="original-<?= $item['id'] ?>">
                 <?= Helper\escape($item['title']) ?>
             </a>
         </h1>
 
         <p class="infos">
             <?php if ($item['bookmark']): ?>
-                <a id="bookmark-<?=$item['id'] ?>" href="?action=bookmark&amp;value=0&amp;id=<?= $item['id'] ?>&amp;source=show&amp;menu=<?= $menu ?>" title="<?= t('remove bookmark') ?>" class="bookmark-icon">★</a>
+                <a
+                    id="bookmark-<?=$item['id'] ?>"
+                    href="?action=bookmark&amp;value=0&amp;id=<?= $item['id'] ?>&amp;source=show&amp;menu=<?= $menu ?>"
+                    title="<?= t('remove bookmark') ?>"
+                    class="bookmark-icon"
+                    data-action="bookmark"
+                    data-item-id="<?= $item['id'] ?>"
+                >★</a>
             <?php else: ?>
-                <a id="bookmark-<?=$item['id'] ?>" href="?action=bookmark&amp;value=1&amp;id=<?= $item['id'] ?>&amp;source=show&amp;menu=<?= $menu ?>" title="<?= t('bookmark') ?>" class="bookmark-icon">☆</a>
+                <a
+                    id="bookmark-<?=$item['id'] ?>"
+                    href="?action=bookmark&amp;value=1&amp;id=<?= $item['id'] ?>&amp;source=show&amp;menu=<?= $menu ?>"
+                    title="<?= t('bookmark') ?>"
+                    class="bookmark-icon"
+                    data-action="bookmark"
+                    data-item-id="<?= $item['id'] ?>"
+                >☆</a>
             <?php endif ?> |
 
             <a href="?action=feed-items&amp;feed_id=<?= $feed['id'] ?>"><?= Helper\escape($feed['title']) ?></a> |
 
-            <span class="hide-mobile"><?= dt('%e %B %Y - %k:%M', $item['updated']) ?> |</span>
+            <span class="hide-mobile"><?= dt('%e %B %Y %k:%M', $item['updated']) ?> |</span>
 
             <span id="download-item"
                   data-item-id="<?= $item['id'] ?>"

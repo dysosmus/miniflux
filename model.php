@@ -575,6 +575,7 @@ function get_bookmarks($offset = null, $limit = null)
             'items.title',
             'items.updated',
             'items.url',
+            'items.bookmark',
             'items.status',
             'items.content',
             'items.feed_id',
