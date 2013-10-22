@@ -152,15 +152,12 @@ class Filter
 
     // Iframe source whitelist, everything else is ignored
     public static $iframe_whitelist = array(
-        '//www.youtube.com',
         'http://www.youtube.com/',
         'https://www.youtube.com/',
         'http://player.vimeo.com/',
         'https://player.vimeo.com/',
-        '//player.vimeo.com/',
         'http://www.dailymotion.com',
         'https://www.dailymotion.com',
-        '//www.dailymotion.com',
     );
 
 
@@ -239,6 +236,9 @@ class Filter
 
                                 $value = $attributes['data-src'];
                             }
+
+                            // Replace protocol-relative url // by http://
+                            if (substr($value, 0, 2) === '//') $value = 'http:'.$value;
 
                             $attr_data .= ' '.$attribute.'="'.$value.'"';
                             $used_attributes[] = $attribute;
