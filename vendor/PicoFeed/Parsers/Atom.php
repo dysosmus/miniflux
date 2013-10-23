@@ -20,7 +20,7 @@ class Atom extends \PicoFeed\Parser
         $this->url = $this->getUrl($xml);
         $this->title = $this->stripWhiteSpace((string) $xml->title);
         $this->id = (string) $xml->id;
-        $this->updated = strtotime((string) $xml->updated);
+        $this->updated = $this->parseDate((string) $xml->updated);
         $author = (string) $xml->author->name;
 
         foreach ($xml->entry as $entry) {
@@ -36,7 +36,7 @@ class Atom extends \PicoFeed\Parser
             $item->url = $this->getUrl($entry);
             $item->id = $this->generateId($id !== $item->url ? $id : $item->url, $this->url);
             $item->title = $this->stripWhiteSpace((string) $entry->title);
-            $item->updated = strtotime((string) $entry->updated);
+            $item->updated = $this->parseDate((string) $entry->updated);
             $item->author = $author;
             $item->content = $this->filterHtml($this->getContent($entry), $item->url);
 

@@ -105,4 +105,58 @@ abstract class Parser
         // crc32b seems to be faster and shorter than other hash algorithms
         return hash('crc32b', implode(func_get_args()));
     }
+
+
+    public function parseDate($value)
+    {
+        // Format => truncate to this length if not null
+        $formats = array(
+            DATE_ATOM => null,
+            DATE_RSS => null,
+            DATE_COOKIE => null,
+            DATE_ISO8601 => null,
+            DATE_RFC822 => null,
+            DATE_RFC850 => null,
+            DATE_RFC1036 => null,
+            DATE_RFC1123 => null,
+            DATE_RFC2822 => null,
+            DATE_RFC3339 => null,
+            'D, d M Y H:i:s' => 25,
+            'D, d M Y h:i:s' => 25,
+            'D M d Y H:i:s' => 24,
+            'Y-m-d H:i:s' => 19,
+            'Y-m-d\TH:i:s' => 19,
+            'd/m/Y H:i:s' => 19,
+            'D, d M Y' => 16,
+            'Y-m-d' => 10,
+            'd-m-Y' => 10,
+            'm-d-Y' => 10,
+            'd.m.Y' => 10,
+            'm.d.Y' => 10,
+            'd/m/Y' => 10,
+            'm/d/Y' => 10,
+        );
+
+        $value = trim($value);
+
+        foreach ($formats as $format => $length) {
+            $timestamp = $this->getValidDate($format, substr($value, 0, $length));
+            if ($timestamp > 0) return $timestamp;
+        }
+
+        return time();
+    }
+
+
+    public function getValidDate($format, $value)
+    {
+        $date = \DateTime::createFromFormat($format, $value);
+
+        if ($date !== false) {
+            $errors = \DateTime::getLastErrors();
+            if ($errors['error_count'] === 0 && $errors['warning_count'] === 0) return $date->getTimestamp();
+        }
+
+        return 0;
+    }
 }
