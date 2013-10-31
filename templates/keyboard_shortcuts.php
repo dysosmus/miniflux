@@ -6,6 +6,7 @@
         <li><?= t('Go to history') ?> = <strong>gh</strong></li>
         <li><?= t('Go to subscriptions') ?> = <strong>gs</strong></li>
         <li><?= t('Go to preferences') ?> = <strong>gp</strong></li>
+        <li><?= t('Update all subscriptions') ?> = <strong>r</strong></li>
         <li><?= t('Download content') ?> = <strong>d</strong></li>
         <li><?= t('Previous item') ?> = <strong>p</strong> <?= t('or') ?> <strong>j</strong></li>
         <li><?= t('Next item') ?> = <strong>n</strong> <?= t('or') ?> <strong>k</strong></li>
