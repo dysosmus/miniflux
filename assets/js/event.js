@@ -129,6 +129,9 @@ Miniflux.Event = (function() {
                         case 108: // l
                             Miniflux.Nav.OpenNextPage();
                             break;
+                        case 114: // r
+                        	Miniflux.Feed.UpdateAll();
+                        	break;
                         case 63: // ?
                             Miniflux.Nav.ShowHelp();
                             break;
