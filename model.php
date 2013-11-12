@@ -217,6 +217,10 @@ function import_feed($url, $grabber = false)
         $parser->grabber = $grabber;
         $feed = $parser->execute();
 
+        if (! $feed->url) {
+            $feed->url = $reader->getUrl();
+        }
+
         if ($feed === false || ! $feed->title || ! $feed->url) {
             write_debug();
             return false;
