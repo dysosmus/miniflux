@@ -57,10 +57,31 @@ class Stream extends \PicoFeed\Client
 
         fclose($stream);
 
+        if (isset($headers['Transfer-Encoding']) && $headers['Transfer-Encoding'] === 'chunked') {
+            $body = $this->decodeChunked($body);
+        }
+
         return array(
             'status' => $status,
             'body' => $body,
             'headers' => $headers
         );
+    }
+
+
+    public function decodeChunked($str)
+    {
+        for ($result = ''; ! empty($str); $str = trim($str)) {
+
+            // Get the chunk length
+            $pos = strpos($str, "\r\n");
+            $len = hexdec(substr($str, 0, $pos));
+
+            // Append the chunk to the result
+            $result .= substr($str, $pos + 2, $len);
+            $str = substr($str, $pos + 2 + $len);
+        }
+
+        return $result;
     }
 }
