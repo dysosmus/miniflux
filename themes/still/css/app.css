@@ -109,6 +109,7 @@ pre, code {
 
 blockquote {
     color: #999;
+    font-family: roboto;
 }
 
 blockquote + p {
