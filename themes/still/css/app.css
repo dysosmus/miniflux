@@ -24,6 +24,14 @@ a:hover {
     color: #eee;
 }
 
+.items a:focus {
+    text-decoration: none;
+}
+
+.items #current-item { 
+    border: 1px solid #be0000;
+}
+
 pre, code {
     color: #fff;
     background: #555;
@@ -69,10 +77,6 @@ pre, code {
 
 .items a:hover {
     text-decoration: none;
-}
-
-.items #current-item {
-    border: 3px solid #999;
 }
 
 .item h1 a {
