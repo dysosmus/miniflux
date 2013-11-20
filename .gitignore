@@ -26,6 +26,7 @@
 *.log
 *.sql
 *.sqlite
+*.sqlite-journal
 
 # OS generated files #
 ######################
@@ -42,3 +43,4 @@ Thumbs.db
 # App specific #
 ################
 config.php
+data/
