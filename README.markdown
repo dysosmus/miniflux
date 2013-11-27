@@ -372,6 +372,7 @@ Don't forget to send a pull request or a ticket to share your contribution with 
 - *.wired.com
 - *.wsj.com
 - github.com
+- golem.de
 - lifehacker.com
 - lists.*
 - medium.com
@@ -379,6 +380,7 @@ Don't forget to send a pull request or a ticket to share your contribution with 
 - plus.google.com
 - rue89.com
 - smallhousebliss.com
+- spiegel.de
 - techcrunch.com
 - www.bbc.co.uk
 - www.businessweek.com
