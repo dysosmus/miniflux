@@ -373,6 +373,8 @@ Don't forget to send a pull request or a ticket to share your contribution with 
 - *.wsj.com
 - github.com
 - golem.de
+- ing.dk
+- karriere.jobfinder.dk
 - lifehacker.com
 - lists.*
 - medium.com
@@ -382,6 +384,7 @@ Don't forget to send a pull request or a ticket to share your contribution with 
 - smallhousebliss.com
 - spiegel.de
 - techcrunch.com
+- version2.dk
 - www.bbc.co.uk
 - www.businessweek.com
 - www.cnn.com
