@@ -864,6 +864,10 @@ Router\get_action('unlink-account-provider', function() {
     Response\redirect('?action=config');
 });
 
+Router\get_action('update-miniflux', function() {
+    Model\do_miniflux_update();
+});
+
 
 // Display unread items
 Router\notfound(function() {

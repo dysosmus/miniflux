@@ -30,6 +30,12 @@
 
     <?= Helper\form_checkbox('nocontent', t('Do not fetch the content of articles'), 1, isset($values['nocontent']) ? $values['nocontent'] : false) ?><br />
 
+    <?= Helper\form_label(t('Update url'), 'update_url') ?>
+    <?= Helper\form_text('update_url', $values, $errors) ?><br/>
+
+    <?= Helper\form_label(t('Target directory in zip file'), 'target_directory_in_zip_update') ?>
+    <?= Helper\form_text('target_directory_in_zip_update', $values, $errors) ?><br/>
+
     <ul>
         <li>
             <?php if ($values['auth_google_token']): ?>
@@ -47,9 +53,13 @@
         </li>
     </ul>
 
+
+
     <div class="form-actions">
         <input type="submit" value="<?= t('Save') ?>" class="btn btn-blue"/>
     </div>
+
+
 </form>
 </section>
 
@@ -85,7 +95,7 @@
     <div class="alert alert-normal">
         <h3><?= t('About') ?></h3>
         <ul>
-            <li><?= t('Miniflux version:') ?> <strong><?= APP_VERSION ?></strong></li>
+            <li><?= t('Miniflux version:') ?> <strong><?= APP_VERSION ?></strong> <a href="<?= Helper\get_current_base_url() ?>?action=update-miniflux" class="btn btn-blue">Update</a></li>
             <li><?= t('Official website:') ?> <a href="http://miniflux.net" target="_blank">http://miniflux.net</a></li>
             <li><a href="?action=console"><?= t('Console') ?></a></li>
         </ul>

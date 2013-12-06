@@ -2,9 +2,10 @@
 
 namespace Schema;
 
-function version_6($pdo) 
+function version_18($pdo)
 {
-    $pdo->exec('ALTER TABLE config ADD COLUMN lazy_loading INTEGER DEFAULT 0');
+    $pdo->exec('ALTER TABLE config ADD COLUMN update_url TEXT DEFAULT "https://github.com/fguillot/miniflux/archive/master.zip"');
+    $pdo->exec('ALTER TABLE config ADD COLUMN target_directory_in_zip_update TEXT DEFAULT "miniflux-master"');
 }
 
 function version_17($pdo)
