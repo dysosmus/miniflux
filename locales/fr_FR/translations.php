@@ -1,6 +1,20 @@
 <?php
 
 return array(
+    'The feed id is required' => 'L\'identifiant du flux est obligatoire',
+    'The title is required' => 'Le titre est obligatoire',
+    'The site url is required' => 'L\'URL du site web est obligatoire',
+    'The feed url is required' => 'L\'URL du flux est obligatoire',
+    'or' => 'ou',
+    'edit' => 'modifier',
+    'cancel' => 'annuler',
+    'Edit' => 'Modifier',
+    'Feed URL' => 'URL du flux',
+    'Website URL' => 'URL du site web',
+    'Title' => 'Titre',
+    'Edit subscription' => 'Modifier l\'abonnement',
+    'Unable to edit your subscription.' => 'Impossible de modifier votre abonnement.',
+    'Your subscription has been updated.' => 'Votre abonnement a été mis à jour.',
     'Older items first' => 'Plus anciens en premier',
     'Most recent first' => 'Plus récents en premier',
     'Default sorting order for items' => 'Ordre des éléments par défaut',

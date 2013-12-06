@@ -169,6 +169,19 @@ function export_feeds()
 }
 
 
+function save_feed(array $values)
+{
+    return \PicoTools\singleton('db')
+            ->table('feeds')
+            ->eq('id', $values['id'])
+            ->save(array(
+                'title' => $values['title'],
+                'site_url' => $values['site_url'],
+                'feed_url' => $values['feed_url']
+            ));
+}
+
+
 function import_feeds($content)
 {
     $import = new Import($content);
@@ -526,6 +539,25 @@ function enable_grabber_feed($feed_id)
 function disable_grabber_feed($feed_id)
 {
     return \PicoTools\singleton('db')->table('feeds')->eq('id', $feed_id)->save((array('download_content' => 0)));
+}
+
+
+function validate_feed_modification(array $values)
+{
+    $v = new Validator($values, array(
+        new Validators\Required('id', t('The feed id is required')),
+        new Validators\Required('title', t('The title is required')),
+        new Validators\Required('site_url', t('The site url is required')),
+        new Validators\Required('feed_url', t('The feed url is required')),
+    ));
+
+    $result = $v->execute();
+    $errors = $v->getErrors();
+
+    return array(
+        $result,
+        $errors
+    );
 }
 
 

@@ -51,7 +51,7 @@ function format_bytes($size, $precision = 2)
 
 function get_host_from_url($url)
 {
-    return escape(parse_url($url, PHP_URL_HOST));
+    return escape(parse_url($url, PHP_URL_HOST)) ?: $url;
 }
 
 function summary($value, $min_length = 5, $max_length = 120, $end = '[...]')

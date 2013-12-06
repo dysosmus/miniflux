@@ -377,6 +377,47 @@ Router\get_action('refresh-all', function() {
 });
 
 
+// Edit feed form
+Router\get_action('edit-feed', function() {
+
+    $id = Request\int_param('feed_id');
+
+    Response\html(Template\layout('edit_feed', array(
+        'values' => Model\get_feed($id),
+        'errors' => array(),
+        'menu' => 'feeds',
+        'title' => t('Edit subscription')
+    )));
+});
+
+
+// Submit edit feed form
+Router\post_action('edit-feed', function() {
+
+    $values = Request\values();
+    list($valid, $errors) = Model\validate_feed_modification($values);
+
+    if ($valid) {
+
+        if (Model\save_feed($values)) {
+            Session\flash(t('Your subscription has been updated.'));
+        }
+        else {
+            Session\flash_error(t('Unable to edit your subscription.'));
+        }
+
+        Response\redirect('?action=feeds');
+    }
+
+    Response\html(Template\layout('edit_feed', array(
+        'values' => $values,
+        'errors' => $errors,
+        'menu' => 'feeds',
+        'title' => t('Edit subscription')
+    )));
+});
+
+
 // Disable content grabber for a feed
 Router\get_action('disable-grabber-feed', function() {
 

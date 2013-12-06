@@ -55,10 +55,12 @@
 
                 <?php if ($feed['enabled']): ?>
                     <span class="hide-mobile"><a href="?action=confirm-disable-feed&amp;feed_id=<?= $feed['id'] ?>"><?= t('disable') ?></a> |</span>
-                    <a href="?action=refresh-feed&amp;feed_id=<?= $feed['id'] ?>" data-feed-id="<?= $feed['id'] ?>" data-action="refresh-feed"><?= t('refresh') ?></a>
+                    <a href="?action=refresh-feed&amp;feed_id=<?= $feed['id'] ?>" data-feed-id="<?= $feed['id'] ?>" data-action="refresh-feed"><?= t('refresh') ?></a> |
                 <?php else: ?>
-                    <span class="hide-mobile"><a href="?action=enable-feed&amp;feed_id=<?= $feed['id'] ?>"><?= t('enable') ?></a></span>
+                    <span class="hide-mobile"><a href="?action=enable-feed&amp;feed_id=<?= $feed['id'] ?>"><?= t('enable') ?></a> |</span>
                 <?php endif ?>
+
+                <span class="hide-mobile"><a href="?action=edit-feed&amp;feed_id=<?= $feed['id'] ?>"><?= t('edit') ?></a></span>
             </p>
         </article>
     <?php endforeach ?>
