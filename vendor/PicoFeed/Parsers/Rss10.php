@@ -1,32 +1,32 @@
 <?php
 
-namespace PicoFeed;
+namespace PicoFeed\Parsers;
 
-class Rss10 extends Parser
+class Rss10 extends \PicoFeed\Parser
 {
     public function execute()
     {
-        $this->content = $this->normalizeData($this->content);
+        \PicoFeed\Logging::log(\get_called_class().': begin parsing');
 
         \libxml_use_internal_errors(true);
         $xml = \simplexml_load_string($this->content);
 
         if ($xml === false) {
-
-            if ($this->debug) $this->displayXmlErrors();
+            \PicoFeed\Logging::log(\get_called_class().': XML parsing error');
+            \PicoFeed\Logging::log($this->getXmlErrors());
             return false;
         }
 
         $namespaces = $xml->getNamespaces(true);
 
-        $this->title = (string) $xml->channel->title;
+        $this->title = $this->stripWhiteSpace((string) $xml->channel->title);
         $this->url = (string) $xml->channel->link;
         $this->id = $this->url;
 
         if (isset($namespaces['dc'])) {
 
             $ns_dc = $xml->channel->children($namespaces['dc']);
-            $this->updated = isset($ns_dc->date) ? strtotime($ns_dc->date) : time();
+            $this->updated = isset($ns_dc->date) ? $this->parseDate($ns_dc->date) : time();
         }
         else {
 
@@ -36,7 +36,7 @@ class Rss10 extends Parser
         foreach ($xml->item as $entry) {
 
             $item = new \StdClass;
-            $item->title = (string) $entry->title;
+            $item->title = $this->stripWhiteSpace((string) $entry->title);
             $item->url = '';
             $item->author= '';
             $item->updated = '';
@@ -48,8 +48,8 @@ class Rss10 extends Parser
 
                 if (! $item->url && ! empty($namespace->origLink)) $item->url = (string) $namespace->origLink;
                 if (! $item->author && ! empty($namespace->creator)) $item->author = (string) $namespace->creator;
-                if (! $item->updated && ! empty($namespace->date)) $item->updated = strtotime((string) $namespace->date);
-                if (! $item->updated && ! empty($namespace->updated)) $item->updated = strtotime((string) $namespace->updated);
+                if (! $item->updated && ! empty($namespace->date)) $item->updated = $this->parseDate((string) $namespace->date);
+                if (! $item->updated && ! empty($namespace->updated)) $item->updated = $this->parseDate((string) $namespace->updated);
                 if (! $item->content && ! empty($namespace->encoded)) $item->content = (string) $namespace->encoded;
             }
 
@@ -57,28 +57,27 @@ class Rss10 extends Parser
             if (empty($item->updated)) $item->updated = $this->updated;
 
             if (empty($item->content)) {
-
                 $item->content = isset($entry->description) ? (string) $entry->description : '';
             }
 
             if (empty($item->author)) {
 
                 if (isset($entry->author)) {
-
                     $item->author = (string) $entry->author;
                 }
                 else if (isset($xml->channel->webMaster)) {
-
                     $item->author = (string) $xml->channel->webMaster;
                 }
             }
 
             if (empty($item->title)) $item->title = $item->url;
 
-            $item->id = $item->url;
+            $item->id = $this->generateId($item->url, $this->url);
             $item->content = $this->filterHtml($item->content, $item->url);
             $this->items[] = $item;
         }
+
+        \PicoFeed\Logging::log(\get_called_class().': parsing finished ('.count($this->items).' items)');
 
         return $this;
     }

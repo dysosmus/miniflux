@@ -63,7 +63,7 @@ namespace PicoTools\Translator {
 
     function datetime($format, $timestamp)
     {
-        return strftime($format, $timestamp);
+        return strftime($format, (int) $timestamp);
     }
 
 
@@ -125,6 +125,18 @@ namespace {
     function t() {
 
         return call_user_func_array('\PicoTools\Translator\translate', func_get_args());
+    }
+
+
+    function c() {
+
+        return call_user_func_array('\PicoTools\Translator\currency', func_get_args());
+    }
+
+
+    function n() {
+
+        return call_user_func_array('\PicoTools\Translator\number', func_get_args());
     }
 
 

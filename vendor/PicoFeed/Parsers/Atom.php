@@ -1,40 +1,42 @@
 <?php
 
-namespace PicoFeed;
+namespace PicoFeed\Parsers;
 
-class Atom extends Parser
+class Atom extends \PicoFeed\Parser
 {
     public function execute()
     {
-        $this->content = $this->normalizeData($this->content);
+        \PicoFeed\Logging::log(\get_called_class().': begin parsing');
 
         \libxml_use_internal_errors(true);
         $xml = \simplexml_load_string($this->content);
 
         if ($xml === false) {
-
-            if ($this->debug) $this->displayXmlErrors();
+            \PicoFeed\Logging::log(\get_called_class().': XML parsing error');
+            \PicoFeed\Logging::log($this->getXmlErrors());
             return false;
         }
 
         $this->url = $this->getUrl($xml);
-        $this->title = (string) $xml->title;
+        $this->title = $this->stripWhiteSpace((string) $xml->title);
         $this->id = (string) $xml->id;
-        $this->updated = strtotime((string) $xml->updated);
+        $this->updated = $this->parseDate((string) $xml->updated);
         $author = (string) $xml->author->name;
 
         foreach ($xml->entry as $entry) {
 
             if (isset($entry->author->name)) {
 
-                $author = $entry->author->name;
+                $author = (string) $entry->author->name;
             }
 
+            $id = (string) $entry->id;
+
             $item = new \StdClass;
-            $item->id = (string) $entry->id;
-            $item->title = (string) $entry->title;
             $item->url = $this->getUrl($entry);
-            $item->updated = strtotime((string) $entry->updated);
+            $item->id = $this->generateId($id !== $item->url ? $id : $item->url, $this->url);
+            $item->title = $this->stripWhiteSpace((string) $entry->title);
+            $item->updated = $this->parseDate((string) $entry->updated);
             $item->author = $author;
             $item->content = $this->filterHtml($this->getContent($entry), $item->url);
 
@@ -42,6 +44,8 @@ class Atom extends Parser
 
             $this->items[] = $item;
         }
+
+        \PicoFeed\Logging::log(\get_called_class().': parsing finished ('.count($this->items).' items)');
 
         return $this;
     }

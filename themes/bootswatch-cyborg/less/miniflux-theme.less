@@ -1,0 +1,50 @@
+// Colors and specificities for the theme
+// ---------------------------------------------
+
+@btn-info-bg: @brand-success;
+
+// Alert
+.alert.alert-normal a {
+	color: @alert-success-text;
+	text-decoration: underline;
+}
+
+// Logo
+.logo {
+	color: @gray-light;
+}
+
+.logo:hover, .logo:focus {
+	color: @brand-primary;
+}
+
+.logo span {
+	color: @brand-primary;
+}
+
+.logo:hover span {
+	color: @gray-light;
+}
+
+// Article
+article.item,
+.items article {
+	background: darken(@body-bg, 10%);
+}
+
+#current-item {
+	border-color: @brand-primary;
+	background-color: @body-bg;
+}
+
+.item nav > span {
+	background: @btn-primary-bg;
+    border: 1px solid @btn-primary-border;
+}
+
+.item nav > span a {
+	color: @btn-success-color;
+}
+
+// Pagination
+.item nav > span { }

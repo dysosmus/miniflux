@@ -3,15 +3,22 @@
 namespace PicoFarad\Request;
 
 
-function param($name)
+function param($name, $default_value = null)
 {
-    return isset($_GET[$name]) ? $_GET[$name] : null;
+    return isset($_GET[$name]) ? $_GET[$name] : $default_value;
 }
 
 
-function int_param($name)
+function int_param($name, $default_value = 0)
 {
-    return isset($_GET[$name]) && ctype_digit($_GET[$name]) ? (int) $_GET[$name] : null;
+    return isset($_GET[$name]) && ctype_digit($_GET[$name]) ? (int) $_GET[$name] : $default_value;
+}
+
+
+function value($name)
+{
+    $values = values();
+    return isset($values[$name]) ? $values[$name] : null;
 }
 
 

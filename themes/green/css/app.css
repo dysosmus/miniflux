@@ -1,0 +1,230 @@
+@import url("../../../assets/css/app.css");
+
+body {
+    background-color: #f5fec9;
+    color: #4c4c4c;
+    font-family: 'Verdana', Arial, sans-serif;
+    max-width: 800px;
+    padding-bottom: 20px;
+}
+
+a {
+    color: #336600;
+    text-decoration: underline;
+}
+
+a:hover {
+    color: #336600;
+    text-decoration: none;
+}
+
+h1, h2, h3 {
+    color: #4c4c4c;
+    margin: 0;
+}
+
+h3 {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+header {
+    margin: 0;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-left: 1px solid #CACACA;
+    border-right: 1px solid #CACACA;
+    border-bottom: 1px solid #CACACA;
+    background: #fefefe;
+    background: -moz-linear-gradient(top,  #fefefe 0%, #e5e5e5 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#fefefe), color-stop(100%,#e5e5e5));
+    background: -webkit-linear-gradient(top,  #fefefe 0%,#e5e5e5 100%);
+    background: -o-linear-gradient(top,  #fefefe 0%,#e5e5e5 100%);
+    background: -ms-linear-gradient(top,  #fefefe 0%,#e5e5e5 100%);
+    background: linear-gradient(to bottom,  #fefefe 0%,#e5e5e5 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fefefe', endColorstr='#e5e5e5',GradientType=0 );
+}
+
+a.logo {
+    margin-left: 8px;
+}
+
+a.logo:hover {
+    color: #000;
+}
+
+header li a {
+    color: #434343;
+    text-decoration: none;
+    padding-top: 3px;
+    padding-left: 9px;
+    padding-right: 9px;
+    padding-bottom: 3px;
+}
+
+header li a:hover {
+    color: #336600;
+    text-decoration: underline;
+}
+
+header li {
+    padding-left: 0;
+}
+
+nav .active a {
+    border: 1px solid #C6DA95;
+    -moz-border-radius: 8px;
+    border-radius: 8px;
+    background-color: #FBFDF0;
+    margin-left: 6px;
+    margin-right: 6px;
+    font-weight: normal;
+}
+
+section.page {
+    background-color: #fff;
+    border-left: 1px solid #CACACA;
+    border-right: 1px solid #CACACA;
+    border-bottom: 1px solid #CACACA;
+    border-radius: 0px 0px 8px 8px;
+    padding-bottom: 5px;
+    padding-top: 15px;
+}
+
+.page-header {
+    margin-bottom: 15px;
+}
+
+.page-header ul {
+    margin-right: 5px;
+}
+
+.page-header li {
+    margin: 0;
+    padding: 0;
+    padding-right: 5px;
+}
+
+.page-header h2, .page-section h2 {
+    border-bottom: 1px dotted  #CACACA;
+    font-family: Georgia, serif;
+    font-size: 20px;
+    font-weight: normal;
+    margin: 0;
+    padding: 6px 10px;
+}
+
+.items article {
+    border: none;
+    border-bottom: 1px dotted  #CACACA;
+    background-color: inherit;
+    margin-bottom: 0;
+    padding-bottom: 10px;
+}
+
+.items article:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.items a:hover {
+    color: #336600;
+}
+
+#items-paging {
+    margin-top: 10px;
+    font-size: 100%;
+}
+
+form {
+    border: none;
+    padding-left: 10px;
+}
+
+.form-actions {
+    margin-top: 20px;
+}
+
+section > .form-actions {
+    margin-left: 10px;
+    margin-bottom: 10px;
+}
+
+input[type="email"],
+input[type="tel"],
+input[type="password"],
+input[type="text"],
+textarea,
+select {
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+    border: 1px solid #CCC;
+    margin-top: 3px;
+    padding: 5px;
+    font-family: 'Verdana', Arial, sans-serif;
+    font-size: 15px;
+}
+
+input[type="email"]:focus,
+input[type="tel"]:focus,
+input[type="password"]:focus,
+input[type="text"]:focus,
+textarea:focus {
+    border: 1px solid #336600;
+    box-shadow: none;
+}
+
+.alert {
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+}
+
+.btn-red,
+.btn-blue {
+    background-color: #708F51;
+    border-color: #065806;
+}
+
+a.btn-red:hover,
+a.btn-red:focus,
+.btn-red:hover,
+.btn-red:focus,
+a.btn-blue:hover,
+a.btn-blue:focus,
+.btn-blue:hover,
+.btn-blue:focus {
+    background-color: #609C22;
+    border-color: #0A7C0A;
+}
+
+@media only screen and (max-width: 480px) {
+
+    body {
+        border-left: 1px solid #CACACA;
+        border-right: 1px solid #CACACA;
+        padding-bottom: 0;
+    }
+
+    #login-page {
+        border: none;
+    }
+
+    header {
+        padding: 0;
+        border: none;
+    }
+
+    header li {
+        background-color: #fff;
+    }
+
+    section.page {
+        border: none;
+        border-radius: 0;
+    }
+
+    .item {
+        padding-bottom: 0;
+    }
+}

@@ -2,19 +2,22 @@
 
 namespace PicoFeed;
 
+require_once __DIR__.'/Logging.php';
 require_once __DIR__.'/Parser.php';
-require_once __DIR__.'/RemoteResource.php';
+require_once __DIR__.'/Client.php';
+require_once __DIR__.'/Filter.php';
 
 class Reader
 {
     private $url = '';
     private $content = '';
+    private $encoding = '';
 
 
-    public function __construct($content = '')
+    public function __construct($content = '', $encoding = '')
     {
         $this->content = $content;
-
+        $this->encoding = '';
         return $this;
     }
 
@@ -26,15 +29,19 @@ class Reader
             $url = 'http://'.$url;
         }
 
-        $resource = new RemoteResource($url, $timeout, $user_agent);
-        $resource->setLastModified($last_modified);
-        $resource->setEtag($etag);
-        $resource->execute();
+        $client = Client::create();
+        $client->url = $url;
+        $client->timeout = $timeout;
+        $client->user_agent = $user_agent;
+        $client->last_modified = $last_modified;
+        $client->etag = $etag;
+        $client->execute();
 
-        $this->content = $resource->getContent();
-        $this->url = $resource->getUrl();
+        $this->content = $client->getContent();
+        $this->url = $client->getUrl();
+        $this->encoding = $client->getEncoding();
 
-        return $resource;
+        return $client;
     }
 
 
@@ -52,22 +59,24 @@ class Reader
 
     public function getFirstTag($data)
     {
-        // Strip HTML comments
-        $data = preg_replace('/<!--(.*)-->/Uis', '', $data);
+        // Strip HTML comments (max of 5,000 characters long to prevent crashing)
+        $data = preg_replace('/<!--(.{0,5000}?)-->/Uis', '', $data);
 
-        // Find <?xml version....
-        if (strpos($data, '<?xml') !== false) {
+        /* Strip Doctype:
+         * Doctype needs to be within the first 100 characters. (Ideally the first!)
+         * If it's not found by then, we need to stop looking to prevent PREG
+         * from reaching max backtrack depth and crashing.
+         */
+        $data = preg_replace('/^.{0,100}<!DOCTYPE([^>]*)>/Uis', '', $data);
 
-            $data = substr($data, strrpos($data, '?>') + 2);
+        // Strip <?xml version....
+        $data = Filter::stripXmlTag($data);
 
-            // Find the first tag
-            $open_tag = strpos($data, '<');
-            $close_tag = strpos($data, '>');
+        // Find the first tag
+        $open_tag = strpos($data, '<');
+        $close_tag = strpos($data, '>');
 
-            return substr($data, $open_tag, $close_tag);
-        }
-
-        return $data;
+        return substr($data, $open_tag, $close_tag);
     }
 
 
@@ -77,33 +86,46 @@ class Reader
 
         if (strpos($first_tag, '<feed') !== false) {
 
+            Logging::log(\get_called_class().': discover Atom feed');
+
             require_once __DIR__.'/Parsers/Atom.php';
-            return new Atom($this->content);
+            return new Parsers\Atom($this->content, $this->encoding);
         }
         else if (strpos($first_tag, '<rss') !== false &&
                 (strpos($first_tag, 'version="2.0"') !== false || strpos($first_tag, 'version=\'2.0\'') !== false)) {
 
+            Logging::log(\get_called_class().': discover RSS 2.0 feed');
+
             require_once __DIR__.'/Parsers/Rss20.php';
-            return new Rss20($this->content);
+            return new Parsers\Rss20($this->content, $this->encoding);
         }
         else if (strpos($first_tag, '<rss') !== false &&
                 (strpos($first_tag, 'version="0.92"') !== false || strpos($first_tag, 'version=\'0.92\'') !== false)) {
 
+            Logging::log(\get_called_class().': discover RSS 0.92 feed');
+
             require_once __DIR__.'/Parsers/Rss92.php';
-            return new Rss92($this->content);
+            return new Parsers\Rss92($this->content, $this->encoding);
         }
         else if (strpos($first_tag, '<rss') !== false &&
                 (strpos($first_tag, 'version="0.91"') !== false || strpos($first_tag, 'version=\'0.91\'') !== false)) {
 
+            Logging::log(\get_called_class().': discover RSS 0.91 feed');
+
             require_once __DIR__.'/Parsers/Rss91.php';
-            return new Rss91($this->content);
+            return new Parsers\Rss91($this->content, $this->encoding);
         }
         else if (strpos($first_tag, '<rdf:') !== false && strpos($first_tag, 'xmlns="http://purl.org/rss/1.0/"') !== false) {
 
+            Logging::log(\get_called_class().': discover RSS 1.0 feed');
+
             require_once __DIR__.'/Parsers/Rss10.php';
-            return new Rss10($this->content);
+            return new Parsers\Rss10($this->content, $this->encoding);
         }
         else if ($discover === true) {
+
+            Logging::log(\get_called_class().': Format not supported or malformed');
+            Logging::log(\get_called_class().':'.PHP_EOL.$this->content);
 
             return false;
         }
@@ -111,6 +133,9 @@ class Reader
 
             return $this->getParser(true);
         }
+
+        Logging::log(\get_called_class().': Subscription not found');
+        Logging::log(\get_called_class().': Content => '.PHP_EOL.$this->content);
 
         return false;
     }
@@ -122,6 +147,8 @@ class Reader
 
             return false;
         }
+
+        Logging::log(\get_called_class().': Try to discover a subscription');
 
         \libxml_use_internal_errors(true);
 
@@ -143,18 +170,22 @@ class Reader
 
                 $link = $nodes->item(0)->getAttribute('href');
 
-                // Relative links
-                if (strpos($link, 'http') !== 0) {
+                if (! empty($link)) {
 
-                    if ($link{0} === '/') $link = substr($link, 1);
-                    if ($this->url{strlen($this->url) - 1} !== '/') $this->url .= '/';
+                    // Relative links
+                    if (strpos($link, 'http') !== 0) {
 
-                    $link = $this->url.$link;
+                        if ($link{0} === '/') $link = substr($link, 1);
+                        if ($this->url{strlen($this->url) - 1} !== '/') $this->url .= '/';
+
+                        $link = $this->url.$link;
+                    }
+
+                    Logging::log(\get_called_class().': Find subscription link: '.$link);
+                    $this->download($link);
+
+                    return true;
                 }
-
-                $this->download($link);
-
-                return true;
             }
         }
 

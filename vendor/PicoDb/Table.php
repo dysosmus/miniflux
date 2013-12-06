@@ -14,6 +14,8 @@ class Table
     private $is_or_condition = false;
     private $columns = array();
     private $values = array();
+    private $distinct = false;
+    private $group_by = array();
 
     private $db;
 
@@ -127,25 +129,20 @@ class Table
 
     public function findAll()
     {
-        $sql = sprintf(
-            'SELECT %s FROM %s %s %s %s %s %s',
-            empty($this->columns) ? '*' : implode(', ', $this->columns),
-            $this->db->escapeIdentifier($this->table_name),
-            implode(' ', $this->joins),
-            $this->conditions(),
-            $this->sql_order,
-            $this->sql_limit,
-            $this->sql_offset
-        );
-
-        $rq = $this->db->execute($sql, $this->values);
-
-        if (false === $rq) {
-
-            return false;
-        }
+        $rq = $this->db->execute($this->buildSelectQuery(), $this->values);
+        if (false === $rq) return false;
 
         return $rq->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+
+    public function findAllByColumn($column)
+    {
+        $this->columns = array($column);
+        $rq = $this->db->execute($this->buildSelectQuery(), $this->values);
+        if (false === $rq) return false;
+
+        return $rq->fetchAll(\PDO::FETCH_COLUMN, 0);
     }
 
 
@@ -158,23 +155,47 @@ class Table
     }
 
 
+    public function findOneColumn($column)
+    {
+        $this->limit(1);
+        $this->columns = array($column);
+
+        $rq = $this->db->execute($this->buildSelectQuery(), $this->values);
+        if (false === $rq) return false;
+
+        return $rq->fetchColumn();
+    }
+
+
+    public function buildSelectQuery()
+    {
+        return sprintf(
+            'SELECT %s %s FROM %s %s %s %s %s %s %s',
+            $this->distinct ? 'DISTINCT' : '',
+            empty($this->columns) ? '*' : implode(', ', $this->columns),
+            $this->db->escapeIdentifier($this->table_name),
+            implode(' ', $this->joins),
+            $this->conditions(),
+            empty($this->group_by) ? '' : 'GROUP BY '.implode(', ', $this->group_by),
+            $this->sql_order,
+            $this->sql_limit,
+            $this->sql_offset
+        );
+    }
+
+
     public function count()
     {
         $sql = sprintf(
-            'SELECT COUNT(*) AS count FROM %s'.$this->conditions().$this->sql_order.$this->sql_limit.$this->sql_offset,
+            'SELECT COUNT(*) FROM %s'.$this->conditions().$this->sql_order.$this->sql_limit.$this->sql_offset,
             $this->db->escapeIdentifier($this->table_name)
         );
 
         $rq = $this->db->execute($sql, $this->values);
+        if (false === $rq) return false;
 
-        if (false === $rq) {
-
-            return false;
-        }
-
-        $result = $rq->fetch(\PDO::FETCH_ASSOC);
-
-        return isset($result['count']) ? (int) $result['count'] : 0;
+        $result = $rq->fetchColumn();
+        return $result ? (int) $result : 0;
     }
 
 
@@ -239,30 +260,65 @@ class Table
     }
 
 
+    public function orderBy($column, $order = 'ASC')
+    {
+        $order = strtoupper($order);
+        $order = $order === 'ASC' || $order === 'DESC' ? $order : 'ASC';
+
+        if ($this->sql_order === '') {
+            $this->sql_order = ' ORDER BY '.$this->db->escapeIdentifier($column).' '.$order;
+        }
+        else {
+            $this->sql_order .= ', '.$this->db->escapeIdentifier($column).' '.$order;
+        }
+
+        return $this;
+    }
+
+
     public function asc($column)
     {
-        $this->sql_order = ' ORDER BY '.$this->db->escapeIdentifier($column).' ASC';
+        if ($this->sql_order === '') {
+            $this->sql_order = ' ORDER BY '.$this->db->escapeIdentifier($column).' ASC';
+        }
+        else {
+            $this->sql_order .= ', '.$this->db->escapeIdentifier($column).' ASC';
+        }
+
         return $this;
     }
 
 
     public function desc($column)
     {
-        $this->sql_order = ' ORDER BY '.$this->db->escapeIdentifier($column).' DESC';
+        if ($this->sql_order === '') {
+            $this->sql_order = ' ORDER BY '.$this->db->escapeIdentifier($column).' DESC';
+        }
+        else {
+            $this->sql_order .= ', '.$this->db->escapeIdentifier($column).' DESC';
+        }
+
         return $this;
     }
 
 
     public function limit($value)
     {
-        $this->sql_limit = ' LIMIT '.(int) $value;
+        if (! is_null($value)) $this->sql_limit = ' LIMIT '.(int) $value;
         return $this;
     }
 
 
     public function offset($value)
     {
-        $this->sql_offset = ' OFFSET '.(int) $value;
+        if (! is_null($value)) $this->sql_offset = ' OFFSET '.(int) $value;
+        return $this;
+    }
+
+
+    public function groupBy()
+    {
+        $this->group_by = \func_get_args();
         return $this;
     }
 
@@ -274,20 +330,23 @@ class Table
     }
 
 
+    public function distinct()
+    {
+        $this->columns = \func_get_args();
+        $this->distinct = true;
+        return $this;
+    }
+
+
     public function __call($name, array $arguments)
     {
-        if (2 !== count($arguments)) {
-
-            throw new \LogicException('You must define a column and a value.');
-        }
-
         $column = $arguments[0];
         $sql = '';
 
-        switch ($name) {
+        switch (strtolower($name)) {
 
             case 'in':
-                if (is_array($arguments[1])) {
+                if (isset($arguments[1]) && is_array($arguments[1])) {
 
                     $sql = sprintf(
                         '%s IN (%s)',
@@ -298,7 +357,7 @@ class Table
                 break;
 
             case 'notin':
-                if (is_array($arguments[1])) {
+                if (isset($arguments[1]) && is_array($arguments[1])) {
 
                     $sql = sprintf(
                         '%s NOT IN (%s)',
@@ -319,40 +378,50 @@ class Table
                 break;
 
             case 'gt':
-            case 'greaterThan':
+            case 'greaterthan':
                 $sql = sprintf('%s > ?', $this->db->escapeIdentifier($column));
                 break;
 
             case 'lt':
-            case 'lowerThan':
+            case 'lowerthan':
                 $sql = sprintf('%s < ?', $this->db->escapeIdentifier($column));
                 break;
 
             case 'gte':
-            case 'greaterThanOrEquals':
+            case 'greaterthanorequals':
                 $sql = sprintf('%s >= ?', $this->db->escapeIdentifier($column));
                 break;
 
             case 'lte':
-            case 'lowerThanOrEquals':
+            case 'lowerthanorequals':
                 $sql = sprintf('%s <= ?', $this->db->escapeIdentifier($column));
+                break;
+
+            case 'isnull':
+                $sql = sprintf('%s IS NULL', $this->db->escapeIdentifier($column));
+                break;
+
+            case 'notnull':
+                $sql = sprintf('%s IS NOT NULL', $this->db->escapeIdentifier($column));
                 break;
         }
 
-        if ('' !== $sql) {
+        if ($sql !== '') {
 
             $this->addCondition($sql);
 
-            if (is_array($arguments[1])) {
+            if (isset($arguments[1])) {
 
-                foreach ($arguments[1] as $value) {
+                if (is_array($arguments[1])) {
 
-                    $this->values[] = $value;
+                    foreach ($arguments[1] as $value) {
+                        $this->values[] = $value;
+                    }
                 }
-            }
-            else {
+                else {
 
-                $this->values[] = $arguments[1];
+                    $this->values[] = $arguments[1];
+                }
             }
         }
 
