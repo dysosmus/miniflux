@@ -1146,9 +1146,8 @@ function uncompress_miniflux_update($archive_path, $zip_payload_location)
 
 function cleanup_miniflux_update() {
     $glob_pattern = implode(DIRECTORY_SEPARATOR, array(TMP_DIRECTORY, 'update-*'));
-    var_dump($glob_pattern);
     $paths        = glob($glob_pattern);
-    var_dump($paths);
+
     foreach($paths as $path) {
         if(is_dir($path)) {
             $files_to_rm = new \RecursiveIteratorIterator(
