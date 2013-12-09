@@ -1114,21 +1114,18 @@ function fetch_miniflux_update() {
     }
 }
 
-function do_miniflux_update() {
-
-    $target_directory_in_zip  = get_config_value('target_directory_in_zip_update');
-
+function uncompress_miniflux_update($archive_path, $zip_payload_location)
+{
     $uncompress_path          = implode(DIRECTORY_SEPARATOR, array(TMP_DIRECTORY, uniqid('update-')));
-    $uncompress_miniflux_path = implode(DIRECTORY_SEPARATOR, array($uncompress_path, $target_directory_in_zip));
+    $uncompress_miniflux_path = implode(DIRECTORY_SEPARATOR, array($uncompress_path, $zip_payload_location));
     $len_uc_miniflux_path     = strlen($uncompress_miniflux_path);
-    $zip_miniflux_path        = fetch_miniflux_update();
 
-    Zip\uncompress($zip_miniflux_path, $uncompress_path);
+    Zip\uncompress($archive_path, $uncompress_path);
 
     $files = new \RecursiveIteratorIterator(
-                new \RecursiveDirectoryIterator($uncompress_path,
-                                                \RecursiveDirectoryIterator::SKIP_DOTS),
-                \RecursiveIteratorIterator::SELF_FIRST
+        new \RecursiveDirectoryIterator($uncompress_path,
+            \RecursiveDirectoryIterator::SKIP_DOTS),
+        \RecursiveIteratorIterator::SELF_FIRST // ensure that directories comes first
     );
 
     // Move the new files and create the new directories
@@ -1144,22 +1141,52 @@ function do_miniflux_update() {
             rename($file->getPathname(), $dest_name);
         }
     }
+}
 
-    $files_to_rm = new \RecursiveIteratorIterator(
-        new \RecursiveDirectoryIterator($uncompress_path,
-            \RecursiveDirectoryIterator::SKIP_DOTS),
-        \RecursiveIteratorIterator::CHILD_FIRST
-    );
 
-    foreach ($files_to_rm as $file) {
-        if ($file->isDir()) {
-            rmdir($file->getPathname());
+function cleanup_miniflux_update() {
+    $glob_pattern = implode(DIRECTORY_SEPARATOR, array(TMP_DIRECTORY, 'update-*'));
+    var_dump($glob_pattern);
+    $paths        = glob($glob_pattern);
+    var_dump($paths);
+    foreach($paths as $path) {
+        if(is_dir($path)) {
+            $files_to_rm = new \RecursiveIteratorIterator(
+                new \RecursiveDirectoryIterator($path,
+                    \RecursiveDirectoryIterator::SKIP_DOTS),
+                \RecursiveIteratorIterator::CHILD_FIRST // ensure that directories comes last
+            );
+
+            foreach ($files_to_rm as $file) {
+                if ($file->isDir()) {
+                    rmdir($file->getPathname());
+                } else {
+                    unlink($file->getPathname());
+                }
+            }
+            rmdir($path);
         } else {
-            // should never run
-            unlink($file->getPathname());
+            unlink($path);
         }
     }
-
-    rmdir($uncompress_path);
-    unlink($zip_miniflux_path);
 }
+
+
+function do_miniflux_update() {
+    /**
+     * 1 - Download the last version from 'update_url' in TMP_DIRECTORY (with a unique file mame)
+     * 2 - Uncompress downloaded archive in TMP_DIRECTORY (with a unique directory mame)
+     * 3 - Iterate through to the uncompressed archive to create and move files to the proper locations
+     * 4 - Clean up temporaries files
+     */
+    $zip_payload_path  = get_config_value('target_directory_in_zip_update');
+    $zip_miniflux_path = fetch_miniflux_update();
+    uncompress_miniflux_update($zip_miniflux_path, $zip_payload_path);
+    cleanup_miniflux_update();
+}
+
+
+
+
+
+
