@@ -2,7 +2,7 @@
 return array(
     'test_url' => 'http://smallhousebliss.com/2013/08/29/house-g-by-lode-architecture/',
     'body' => array(
-        '//div[@class="single-entry-content"]',
+        '//div[@class="post-content"]',
     ),
     'strip' => array(
         '//style',
@@ -10,6 +10,8 @@ return array(
         '//*[contains(@class, "gallery")]',
         '//*[contains(@class, "share")]',
         '//*[contains(@class, "wpcnt")]',
-        '//*[contains(@class, "entry-meta")]',
+        '//*[contains(@class, "meta")]',
+        '//*[contains(@class, "postitle")]',
+        '//*[@id="nav-below"]',
     )
 );
