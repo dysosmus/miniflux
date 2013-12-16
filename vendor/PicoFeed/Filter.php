@@ -460,9 +460,19 @@ class Filter
 
     public static function stripXmlTag($data)
     {
-        if (strpos($data, '<?xml') !== false) {
-            $data = substr($data, strrpos($data, '?>') + 2);
+        if (strpos($data, '<?xml ') !== false) {
+            $data = ltrim(substr($data, strpos($data, '?>') + 2));
         }
+
+        do {
+
+            $pos = strpos($data, '<?xml-stylesheet ');
+
+            if ($pos !== false) {
+                $data = ltrim(substr($data, strpos($data, '?>') + 2));
+            }
+
+        } while ($pos !== false && $pos < 200);
 
         return $data;
     }
