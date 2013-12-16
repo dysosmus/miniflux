@@ -29,8 +29,10 @@
                 <?php endif ?>
 
                 <a href="?action=feed-items&amp;feed_id=<?= $feed['id'] ?>" title="<?= t('Show only this subscription') ?>"><?= Helper\escape($feed['title']) ?></a>
-
                 <?php if ($feed['enabled']): ?>
+
+                    <br/>
+
                     <?php if ($feed['last_checked']): ?>
                         <time class="feed-last-checked" id="last-checked-feed-<?= $feed['id'] ?>" data-after-update="<?= t('updated just now') ?>">
                             <?= t('checked at').' '.dt('%e %B %Y %k:%M', $feed['last_checked']) ?>
@@ -40,6 +42,11 @@
                             <?= t('never updated after creation') ?>
                         </span>
                     <?php endif ?>
+
+                    <?php if ($feed['parsing_error']): ?>
+                        <span class="feed-parsing-error"><?= t('(error occurred during the last check)') ?></span>
+                    <?php endif ?>
+
                 <?php endif ?>
             </h2>
             <p>

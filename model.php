@@ -23,7 +23,7 @@ use PicoFeed\Reader;
 use PicoFeed\Export;
 
 
-const DB_VERSION     = 17;
+const DB_VERSION     = 18;
 const HTTP_USERAGENT = 'Miniflux - http://miniflux.net';
 const HTTP_FAKE_USERAGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/29.0.1547.62 Safari/537.36';
 const LIMIT_ALL      = -1;
@@ -337,6 +337,8 @@ function update_feed($feed_id)
             return true;
         }
     }
+
+    \PicoTools\singleton('db')->table('feeds')->eq('id', $feed_id)->save(array('parsing_error' => 1));
 
     write_debug();
 

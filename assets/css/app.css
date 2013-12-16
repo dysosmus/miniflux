@@ -398,6 +398,12 @@ nav .active a {
     font-weight: normal;
 }
 
+.feed-parsing-error {
+    color: #000;
+    font-size: 0.7em;
+    font-weight: normal;
+}
+
 /* items listing */
 .items article {
     border: 1px dotted #ddd;

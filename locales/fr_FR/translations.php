@@ -1,6 +1,7 @@
 <?php
 
 return array(
+    '(error occurred during the last check)' => '(problème rencontré pendant la dernière vérification)',
     'The feed id is required' => 'L\'identifiant du flux est obligatoire',
     'The title is required' => 'Le titre est obligatoire',
     'The site url is required' => 'L\'URL du site web est obligatoire',
