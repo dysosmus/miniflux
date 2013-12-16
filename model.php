@@ -330,6 +330,7 @@ function update_feed($feed_id)
 
         if ($result !== false) {
 
+            update_feed_parsing_error($feed_id, 0);
             update_feed_cache_infos($feed_id, $resource->getLastModified(), $resource->getEtag());
             update_items($feed_id, $result->items, $parser->grabber);
             write_debug();
@@ -338,8 +339,7 @@ function update_feed($feed_id)
         }
     }
 
-    \PicoTools\singleton('db')->table('feeds')->eq('id', $feed_id)->save(array('parsing_error' => 1));
-
+    update_feed_parsing_error($feed_id, 1);
     write_debug();
 
     return false;
@@ -396,6 +396,12 @@ function get_empty_feeds()
     }
 
     return $feeds;
+}
+
+
+function update_feed_parsing_error($feed_id, $value)
+{
+    \PicoTools\singleton('db')->table('feeds')->eq('id', $feed_id)->save(array('parsing_error' => $value));
 }
 
 
