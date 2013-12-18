@@ -159,4 +159,17 @@ abstract class Parser
 
         return 0;
     }
+
+
+    // Hardcoded list of hostname/token to exclude from id generation
+    public function isExcludedFromId($url)
+    {
+        $exclude_list = array('ap.org');
+
+        foreach ($exclude_list as $token) {
+            if (strpos($url, $token) !== false) return true;
+        }
+
+        return false;
+    }
 }

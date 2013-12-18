@@ -72,7 +72,7 @@ class Rss10 extends \PicoFeed\Parser
 
             if (empty($item->title)) $item->title = $item->url;
 
-            $item->id = $this->generateId($item->url, $this->url);
+            $item->id = $this->generateId($item->url, $this->isExcludedFromId($this->url) ? '' : $this->url);
             $item->content = $this->filterHtml($item->content, $item->url);
             $this->items[] = $item;
         }
