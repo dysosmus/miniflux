@@ -140,8 +140,16 @@ abstract class Parser
         $value = trim($value);
 
         foreach ($formats as $format => $length) {
-            $timestamp = $this->getValidDate($format, substr($value, 0, $length));
-            if ($timestamp > 0) return $timestamp;
+
+            $truncated_value = $value;
+            if ($length !== null) {
+                $truncated_value = substr($truncated_value, 0, $length);
+            }
+
+            $timestamp = $this->getValidDate($format, $truncated_value);
+            if ($timestamp > 0) {
+                return $timestamp;
+            }
         }
 
         return time();
