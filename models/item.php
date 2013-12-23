@@ -303,15 +303,25 @@ function mark_feed_as_read($feed_id)
 // Mark all read items to removed after X days
 function autoflush()
 {
-    $autoflush = \Model\Config\get('autoflush');
+    $autoflush = (int) \Model\Config\get('autoflush');
 
-    if ($autoflush) {
+    if ($autoflush > 0) {
 
+        // Mark read items removed after X days
         \PicoTools\singleton('db')
             ->table('items')
             ->eq('bookmark', 0)
             ->eq('status', 'read')
             ->lt('updated', strtotime('-'.$autoflush.'day'))
+            ->save(array('status' => 'removed', 'content' => ''));
+    }
+    else if ($autoflush === -1) {
+
+        // Mark read items removed immediately
+        \PicoTools\singleton('db')
+            ->table('items')
+            ->eq('bookmark', 0)
+            ->eq('status', 'read')
             ->save(array('status' => 'removed', 'content' => ''));
     }
 }
