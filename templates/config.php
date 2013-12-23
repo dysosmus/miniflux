@@ -25,6 +25,9 @@
     <?= Helper\form_label(t('Default sorting order for items'), 'items_sorting_direction') ?>
     <?= Helper\form_select('items_sorting_direction', $sorting_options, $values, $errors) ?><br/>
 
+    <?= Helper\form_label(t('When there is nothing to read, redirect me to this page'), 'redirect_nothing_to_read') ?>
+    <?= Helper\form_select('redirect_nothing_to_read', $redirect_nothing_to_read_options, $values, $errors) ?><br/>
+
     <?= Helper\form_label(t('Theme'), 'theme') ?>
     <?= Helper\form_select('theme', $theme_options, $values, $errors) ?><br/>
 

@@ -143,7 +143,7 @@ Miniflux.Item = (function() {
             counter = parseInt(container.textContent.trim(), 10) - 1;
 
             if (counter == 0) {
-                window.location = "?action=feeds&nothing_to_read=1";
+                window.location = "?action=unread";
             }
             else {
                 container.textContent = counter + " ";

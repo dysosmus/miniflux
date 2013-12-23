@@ -25,6 +25,7 @@ Router\get_action('history', function() {
         'nb_items' => $nb_items,
         'offset' => $offset,
         'items_per_page' => Model\Config\get('items_per_page'),
+        'nothing_to_read' => Request\int_param('nothing_to_read'),
         'menu' => 'history',
         'title' => t('History').' ('.$nb_items.')'
     )));

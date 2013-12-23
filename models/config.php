@@ -15,7 +15,7 @@ require_once 'vendor/SimpleValidator/Validators/Integer.php';
 use SimpleValidator\Validator;
 use SimpleValidator\Validators;
 
-const DB_VERSION          = 19;
+const DB_VERSION          = 20;
 const HTTP_USERAGENT      = 'Miniflux - http://miniflux.net';
 const HTTP_FAKE_USERAGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/29.0.1547.62 Safari/537.36';
 
@@ -109,6 +109,16 @@ function get_paging_options()
     );
 }
 
+// Get redirect options when there is nothing to read
+function get_nothing_to_read_redirections()
+{
+    return array(
+        'feeds' => t('Subscription page'),
+        'history' => t('History page'),
+        'bookmarks' => t('Bookmark page'),
+    );
+}
+
 // Generate a token from /dev/urandom or with uniqid() if open_basedir is enabled
 function generate_token()
 {
@@ -189,7 +199,8 @@ function get_all()
             'feed_token',
             'auth_google_token',
             'auth_mozilla_token',
-            'items_sorting_direction'
+            'items_sorting_direction',
+            'redirect_nothing_to_read'
         )
         ->findOne();
 }

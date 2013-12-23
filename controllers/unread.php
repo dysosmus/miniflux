@@ -17,7 +17,11 @@ Router\notfound(function() {
     $items = Model\Item\get_all('unread', $offset, Model\Config\get('items_per_page'), $order, $direction);
     $nb_items = Model\Item\count_by_status('unread');
 
-    if ($nb_items === 0) Response\redirect('?action=feeds&nothing_to_read=1');
+    if ($nb_items === 0) {
+
+        $action = Model\Config\get('redirect_nothing_to_read');
+        Response\redirect('?action='.$action.'&nothing_to_read=1');
+    }
 
     Response\html(Template\layout('unread_items', array(
         'order' => $order,

@@ -3,6 +3,12 @@
 namespace Schema;
 
 
+function version_20($pdo)
+{
+    $pdo->exec('ALTER TABLE config ADD COLUMN redirect_nothing_to_read TEXT DEFAULT "feeds"');
+}
+
+
 function version_19($pdo)
 {
     $rq = $pdo->prepare('SELECT autoflush FROM config');

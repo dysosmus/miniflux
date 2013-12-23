@@ -1,6 +1,12 @@
 <?php
 
 return array(
+    'When there is nothing to read, redirect me to this page' => 'Quand il n\'y a rien à lire, redirigez moi vers cette page',
+    'Subscription page' => 'Page des abonnements',
+    'History page' => 'Historique de lecture',
+    'Bookmark page' => 'Page des favoris',
+    'There is nothing new to read, enjoy your favorites articles!' => 'Il n\'y a rien de nouveau à lire, relisez vos articles favoris !',
+    'There is nothing new to read, enjoy your previous readings!' => 'Il n\'y a rien de nouveau à lire, profitez de vos lectures précédentes !',
     'Immediately' => 'Immédiatement',
     '(error occurred during the last check)' => '(problème rencontré pendant la dernière vérification)',
     'The feed id is required' => 'L\'identifiant du flux est obligatoire',
@@ -36,6 +42,7 @@ return array(
     'Your Google Account is linked to Miniflux.' => 'Votre compte Google est relié à Miniflux.',
     'Unable to link Miniflux to your Google Account.' => 'Impossible de lier Miniflux à votre compte Google',
     'Unable to authenticate with Google' => 'Impossible de s\'authentifier avec Google',
+    'Your Mozilla Persona Account is linked to Miniflux' => 'Votre compte Mozilla Persona est lié avec Miniflux',
     'Your Mozilla Persona Account is linked to Miniflux.' => 'Votre compte Mozilla Persona est lié avec Miniflux.',
     'Unable to link Miniflux to your Mozilla Persona Account.' => 'Impossible de lier Miniflux avec votre compte Mozilla Persona.',
     'Login with my Google Account' => 'Se connecter avec mon compte Google',
