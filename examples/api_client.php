@@ -4,8 +4,8 @@ require '../vendor/JsonRPC/Client.php';
 
 use JsonRPC\Client;
 
-$client = new Client('http://webapps/miniflux/jsonrpc.php');
-$client->authentication('admin', 'd4i/Tanb55426mi');
+$client = new Client('http://127.0.0.1:8000/jsonrpc.php');
+$client->authentication('admin', 'EF8goVO/8YUxcyt');
 
 $result = $client->execute('feed.create', array('url' => 'http://bbc.co.uk/news'));
 var_dump($result);

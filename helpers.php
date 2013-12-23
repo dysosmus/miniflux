@@ -2,10 +2,9 @@
 
 namespace Helper;
 
-
 function css()
 {
-    $theme = \Model\get_config_value('theme');
+    $theme = \Model\Config\get('theme');
 
     if ($theme !== 'original') {
 

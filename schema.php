@@ -30,7 +30,7 @@ function version_15($pdo)
 
 function version_14($pdo)
 {
-    $pdo->exec('ALTER TABLE config ADD COLUMN feed_token TEXT DEFAULT "'.\Model\generate_token().'"');
+    $pdo->exec('ALTER TABLE config ADD COLUMN feed_token TEXT DEFAULT "'.\Model\Config\generate_token().'"');
 }
 
 
@@ -42,7 +42,7 @@ function version_13($pdo)
 
 function version_12($pdo)
 {
-    $pdo->exec('ALTER TABLE config ADD COLUMN api_token TEXT DEFAULT "'.\Model\generate_token().'"');
+    $pdo->exec('ALTER TABLE config ADD COLUMN api_token TEXT DEFAULT "'.\Model\Config\generate_token().'"');
 }
 
 

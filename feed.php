@@ -11,7 +11,7 @@ use PicoFarad\Request;
 use PicoFeed\Writers\Atom;
 
 // Check token
-$feed_token = Model\get_config_value('feed_token');
+$feed_token = Model\Config\get('feed_token');
 $request_token = Request\param('token');
 
 if ($feed_token !== $request_token) {
@@ -19,7 +19,7 @@ if ($feed_token !== $request_token) {
 }
 
 // Load translations
-$language = Model\get_config_value('language') ?: 'en_US';
+$language = Model\Config\get('language') ?: 'en_US';
 if ($language !== 'en_US') PicoTools\Translator\load($language);
 
 // Build Feed
@@ -28,11 +28,11 @@ $writer->title = t('Bookmarks').' - Miniflux';
 $writer->site_url = Helper\get_current_base_url();
 $writer->feed_url = $writer->site_url.'feed.php?token='.urlencode($feed_token);
 
-$bookmarks = Model\get_bookmarks();
+$bookmarks = Model\Item\get_bookmarks();
 
 foreach ($bookmarks as $bookmark) {
 
-    $article = Model\get_item($bookmark['id']);
+    $article = Model\Item\get($bookmark['id']);
 
     $writer->items[] = array(
         'id' => $article['id'],

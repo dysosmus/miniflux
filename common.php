@@ -1,14 +1,16 @@
 <?php
 
-require 'check_setup.php';
 require 'vendor/password.php';
 require 'vendor/PicoTools/Dependency_Injection.php';
 require 'vendor/PicoTools/Translator.php';
 require 'vendor/PicoDb/Database.php';
 require 'vendor/PicoDb/Table.php';
 require 'vendor/PicoFeed/Client.php';
+require 'models/config.php';
+require 'models/user.php';
+require 'models/feed.php';
+require 'models/item.php';
 require 'schema.php';
-require 'model.php';
 
 if (file_exists('config.php')) require 'config.php';
 
@@ -33,7 +35,7 @@ PicoTools\container('db', function() {
         'filename' => DB_FILENAME
     ));
 
-    if ($db->schema()->check(Model\DB_VERSION)) {
+    if ($db->schema()->check(Model\Config\DB_VERSION)) {
         return $db;
     }
     else {

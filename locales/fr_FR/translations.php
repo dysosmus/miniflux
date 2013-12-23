@@ -42,6 +42,7 @@ return array(
     'Bookmarklet:' => 'Bookmarklet :',
     'Subscribe with Miniflux' => 'S\'abonner avec Miniflux',
     'Drag and drop this link to your bookmarks' => 'Glisser-déposer ce lien dans vos favoris',
+    'The content grabber is disabled successfully.' => 'Le téléchargement de contenu a été désactivé avec succès.',
     'The content grabber is enabled successfully.' => 'Le téléchargement de contenu est activé avec succès.',
     'Unable to activate the content grabber for this subscription.' => 'Impossible d\'activer le téléchargement de contenu pour cet abonnement.',
     'enable full content' => 'télécharger le contenu complet',
