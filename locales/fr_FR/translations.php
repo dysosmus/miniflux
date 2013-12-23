@@ -1,6 +1,7 @@
 <?php
 
 return array(
+    'Immediately' => 'Immédiatement',
     '(error occurred during the last check)' => '(problème rencontré pendant la dernière vérification)',
     'The feed id is required' => 'L\'identifiant du flux est obligatoire',
     'The title is required' => 'Le titre est obligatoire',
