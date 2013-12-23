@@ -3,6 +3,20 @@
 namespace Schema;
 
 
+function version_19($pdo)
+{
+    $rq = $pdo->prepare('SELECT autoflush FROM config');
+    $rq->execute();
+    $value = (int) $rq->fetchColumn();
+
+    // Change default value of autoflush to 15 days to avoid very large database
+    if ($value <= 0) {
+        $rq = $pdo->prepare('UPDATE config SET autoflush=?');
+        $rq->execute(array(15));
+    }
+}
+
+
 function version_18($pdo)
 {
     $pdo->exec('ALTER TABLE feeds ADD COLUMN parsing_error INTEGER DEFAULT 0');
