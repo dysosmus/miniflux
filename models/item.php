@@ -345,7 +345,7 @@ function update_all($feed_id, array $items, $grabber = false)
             if ($db->table('items')->eq('id', $item->id)->count() !== 1) {
 
                 if (! $item->content && ! $nocontent && $grabber) {
-                    $item->content = download_content($item->url);
+                    $item->content = download_content_url($item->url);
                 }
 
                 $db->table('items')->save(array(
