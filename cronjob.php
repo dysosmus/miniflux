@@ -26,4 +26,5 @@ if ($update_interval !== null && $call_interval !== null && $limit === Model\Fee
 }
 
 Model\Feed\refresh_all($limit);
+Model\Item\autoflush();
 Model\Config\write_debug();
