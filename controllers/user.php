@@ -106,7 +106,7 @@ Router\post_action('mozilla-auth', function() {
 
     require 'vendor/PicoTools/AuthProvider.php';
 
-    list($valid, $token) = AuthProvider\mozilla_validate(Request\value('token'));
+    list($valid, $token) = AuthProvider\mozilla_validate(Request\param('token'));
 
     if ($valid && $token === Model\Config\get('auth_mozilla_token')) {
 
@@ -127,7 +127,7 @@ Router\post_action('mozilla-link', function() {
 
     require 'vendor/PicoTools/AuthProvider.php';
 
-    list($valid, $token) = AuthProvider\mozilla_validate(Request\value('token'));
+    list($valid, $token) = AuthProvider\mozilla_validate(Request\param('token'));
 
     if ($valid) {
         Model\Config\save_auth_token('mozilla', $token);

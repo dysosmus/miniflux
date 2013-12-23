@@ -12,8 +12,7 @@ Miniflux.App = (function() {
                 onlogin: function(assertion) {
 
                     var xhr = new XMLHttpRequest();
-                    xhr.open("POST", "?action=" + action, true);
-                    xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                    xhr.open("POST", "?action=" + action + "&token=" + assertion, true);
                     xhr.setRequestHeader("Connection", "close");
 
                     xhr.onload = function () {
