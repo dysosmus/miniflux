@@ -117,7 +117,7 @@ From the archive:
 From the repository:
 
 1. `git clone https://github.com/fguillot/miniflux.git`
-2. Go to third step just above
+2. Go to the third step just above
 
 Update
 ------
