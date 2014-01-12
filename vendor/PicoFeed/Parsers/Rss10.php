@@ -19,17 +19,18 @@ class Rss10 extends \PicoFeed\Parser
 
         $namespaces = $xml->getNamespaces(true);
 
-        $this->title = $this->stripWhiteSpace((string) $xml->channel->title);
+        $this->title = $this->stripWhiteSpace((string) $xml->channel->title) ?: $this->url;
         $this->url = (string) $xml->channel->link;
         $this->id = $this->url;
 
-        if (isset($namespaces['dc'])) {
+        \PicoFeed\Logging::log(\get_called_class().': Title => '.$this->title);
+        \PicoFeed\Logging::log(\get_called_class().': Url => '.$this->url);
 
+        if (isset($namespaces['dc'])) {
             $ns_dc = $xml->channel->children($namespaces['dc']);
             $this->updated = isset($ns_dc->date) ? $this->parseDate($ns_dc->date) : time();
         }
         else {
-
             $this->updated = time();
         }
 

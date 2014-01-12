@@ -37,9 +37,12 @@ class Rss20 extends \PicoFeed\Parser
             $this->url = (string) $xml->channel->link;
         }
 
-        $this->title = $this->stripWhiteSpace((string) $xml->channel->title);
+        $this->title = $this->stripWhiteSpace((string) $xml->channel->title) ?: $this->url;
         $this->id = $this->url;
         $this->updated = $this->parseDate(isset($xml->channel->pubDate) ? (string) $xml->channel->pubDate : (string) $xml->channel->lastBuildDate);
+
+        \PicoFeed\Logging::log(\get_called_class().': Title => '.$this->title);
+        \PicoFeed\Logging::log(\get_called_class().': Url => '.$this->url);
 
         // RSS feed might be empty
         if (! $xml->channel->item) {

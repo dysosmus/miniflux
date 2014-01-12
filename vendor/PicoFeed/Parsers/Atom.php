@@ -18,10 +18,13 @@ class Atom extends \PicoFeed\Parser
         }
 
         $this->url = $this->getUrl($xml);
-        $this->title = $this->stripWhiteSpace((string) $xml->title);
+        $this->title = $this->stripWhiteSpace((string) $xml->title) ?: $this->url;
         $this->id = (string) $xml->id;
         $this->updated = $this->parseDate((string) $xml->updated);
         $author = (string) $xml->author->name;
+
+        \PicoFeed\Logging::log(\get_called_class().': Title => '.$this->title);
+        \PicoFeed\Logging::log(\get_called_class().': Url => '.$this->url);
 
         foreach ($xml->entry as $entry) {
 
