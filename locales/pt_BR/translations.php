@@ -35,7 +35,7 @@ return array(
     'Confirmation' => 'Repetir Senha',
     'Language' => 'Linguagem',
     'Save' => 'Salvar',
-    'More informations' => 'Mais informações',
+    'More information' => 'Mais informações',
     'Database' => 'Banco de dados',
     'Database size:' => 'Tamanho do Banco de dados :',
     'Optimize the database' => 'Otimizar o banco de dados',

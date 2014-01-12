@@ -57,7 +57,7 @@
 </section>
 
 <div class="page-section">
-    <h2><?= t('More informations') ?></h2>
+    <h2><?= t('More information') ?></h2>
 </div>
 <section>
     <div class="alert alert-normal">

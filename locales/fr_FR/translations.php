@@ -122,7 +122,7 @@ return array(
     'Confirmation' => 'Confirmation',
     'Language' => 'Langue',
     'Save' => 'Sauvegarder',
-    'More informations' => 'Plus d\'informations',
+    'More information' => 'Plus d\'informations',
     'Database' => 'Base de données',
     'Database size:' => 'Taille de la base de données :',
     'Optimize the database' => 'Optimiser la base de données',

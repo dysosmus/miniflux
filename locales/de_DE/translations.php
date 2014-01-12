@@ -34,7 +34,7 @@ return array(
     'Confirmation' => 'Bestätigung',
     'Language' => 'Sprache',
     'Save' => 'Speichern',
-    'More informations' => 'Mehr Informationen',
+    'More information' => 'Mehr Informationen',
     'Database' => 'Datenbank',
     'Database size:' => 'Datenbankgröße :',
     'Optimize the database' => 'Datenbank optimieren',

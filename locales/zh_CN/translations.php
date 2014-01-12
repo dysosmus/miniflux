@@ -34,7 +34,7 @@ return array(
     'Confirmation'                              => '确认密码',
     'Language'                                  => '语言',
     'Save'                                      => '保存',
-    'More informations'                         => '更多信息',
+    'More information'                          => '更多信息',
     'Database'                                  => '数据库',
     'Database size:'                            => '数据库大小:',
     'Optimize the database'                     => '数据库优化',
