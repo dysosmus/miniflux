@@ -339,7 +339,7 @@ function update_all($feed_id, array $items, $grabber = false)
     foreach ($items as $item) {
 
         // Item parsed correctly?
-        if ($item->id) {
+        if ($item->id && $item->url) {
 
             // Insert only new item
             if ($db->table('items')->eq('id', $item->id)->count() !== 1) {
