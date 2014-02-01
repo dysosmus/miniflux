@@ -86,7 +86,20 @@ abstract class Parser
     // Dirty quickfix before XML parsing
     public function normalizeData($data)
     {
-        return str_replace("\xc3\x20", '', $data);
+        $data = str_replace("\xc3\x20", '', $data);
+        $data = $this->replaceEntityAttribute($data);
+        return $data;
+    }
+
+    // For each href attribute, replace & by &amp;
+    // Useful for broken XML feeds
+    public function replaceEntityAttribute($content)
+    {
+        $content = preg_replace_callback('/href="[^"]+"/', function(array $matches) {
+            return htmlspecialchars($matches[0], ENT_NOQUOTES, 'UTF-8', false);
+        }, $content);
+
+        return $content;
     }
 
 
@@ -172,7 +185,7 @@ abstract class Parser
     // Hardcoded list of hostname/token to exclude from id generation
     public function isExcludedFromId($url)
     {
-        $exclude_list = array('ap.org');
+        $exclude_list = array('ap.org', 'jacksonville.com');
 
         foreach ($exclude_list as $token) {
             if (strpos($url, $token) !== false) return true;
