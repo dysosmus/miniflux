@@ -322,7 +322,7 @@ header ul {
 
 header li {
     display: inline;
-    padding-left: 30px;
+    padding-left: 3%;
 }
 
 header a {
@@ -470,11 +470,6 @@ nav .active a {
     font-size: 1.1em;
 }
 
-.item li pre,
-.item p code {
-
-}
-
 .item h2,
 .item h3 {
     font-weight: bold;
@@ -517,14 +512,18 @@ nav .active a {
 .item nav span,
 .item nav a,
 .item nav a:visited {
-    color: #3366CC;
+    color: #333;
+    font-family: sans-serif;
 }
 
 .item nav {
+    width: 100%;
+}
+
+.item nav.bottom {
     border-top: 1px dotted #ddd;
     padding-top: 8px;
     margin-top: 50px;
-    width: 100%;
 }
 
 .nav-left {
@@ -589,6 +588,14 @@ iframe {
 }
 
 
+/* desktop design */
+@media only screen and (min-width: 480px) {
+
+    .hide-desktop {
+        display: none;
+    }
+}
+
 /* mobile design */
 @media only screen and (max-width: 480px) {
 
@@ -602,34 +609,12 @@ iframe {
         max-width: 480px;
     }
 
+    header {
+        margin-bottom: 0;
+    }
+
     nav .active a {
         font-weight: normal;
-    }
-
-    .logo {
-        display: block;
-        float: none;
-    }
-
-    header {
-        margin: 0;
-        width: 100%;
-    }
-
-    header ul {
-        text-align: left;
-    }
-
-    header li {
-        padding: 0;
-        width: 50%;
-        float: right;
-        display: block;
-        line-height: 30px;
-    }
-
-    nav ul {
-        padding-top: 5px;
     }
 
     .page {
@@ -646,12 +631,17 @@ iframe {
     }
 
     .item h1 {
-        font-size: 0.9em;
+        font-size: 0.75em;
     }
 
     .item .infos {
         font-size: 0.9em;
         padding: 0;
+    }
+
+    .item nav a {
+        font-weight: bold;
+        text-decoration: none;
     }
 
     .items .preview {
@@ -660,5 +650,18 @@ iframe {
 
     section li {
         font-size: 0.85em;
+    }
+
+    .menu-more li {
+        font-size: 1.1em;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        border-bottom: 1px dotted #ccc;
+        list-style-type: none;
+    }
+
+    .menu-more a {
+        text-decoration: none;
+        color: #333;
     }
 }

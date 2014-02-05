@@ -66,3 +66,9 @@ Router\get_action('show-help', function() {
 
     Response\html(Template\load('show_help'));
 });
+
+// Show menu "more" with the mobile view
+Router\get_action('more', function() {
+
+    Response\html(Template\layout('show_more', array('menu' => 'more')));
+});

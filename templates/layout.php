@@ -21,20 +21,23 @@
                     <li <?= isset($menu) && $menu === 'unread' ? 'class="active"' : '' ?>>
                         <a href="?action=unread"><?= t('unread') ?> <span id="nav-counter"><?= isset($nb_unread_items) ? '('.$nb_unread_items.')' : '' ?></span></a>
                     </li>
-                    <li <?= isset($menu) && $menu === 'bookmarks' ? 'class="active"' : '' ?>>
+                    <li class="<?= isset($menu) && $menu === 'bookmarks' ? 'active hide-mobile' : 'hide-mobile' ?>">
                         <a href="?action=bookmarks"><?= t('bookmarks') ?></a>
                     </li>
-                    <li <?= isset($menu) && $menu === 'history' ? 'class="active"' : '' ?>>
+                    <li class="<?= isset($menu) && $menu === 'history' ? 'active hide-mobile' : 'hide-mobile' ?>">
                         <a href="?action=history"><?= t('history') ?></a>
                     </li>
-                    <li <?= isset($menu) && $menu === 'feeds' ? 'class="active"' : '' ?>>
+                    <li class="<?= isset($menu) && $menu === 'feeds' ? 'active hide-mobile' : 'hide-mobile' ?>">
                         <a href="?action=feeds"><?= t('subscriptions') ?></a>
                     </li>
-                    <li <?= isset($menu) && $menu === 'config' ? 'class="active"' : '' ?>>
+                    <li class="<?= isset($menu) && $menu === 'config' ? 'active hide-mobile' : 'hide-mobile' ?>">
                         <a href="?action=config"><?= t('preferences') ?></a>
                     </li>
-                    <li>
+                    <li class="hide-mobile">
                         <a href="?action=logout"><?= t('logout') ?></a>
+                    </li>
+                    <li class="<?= isset($menu) && $menu === 'more' ? 'active hide-desktop' : 'hide-desktop' ?>">
+                        <a href="?action=more"><?= t('▾ menu') ?></a>
                     </li>
                 </ul>
             </nav>

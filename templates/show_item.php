@@ -1,7 +1,5 @@
 <?php if (empty($item)): ?>
-
     <p class="alert alert-info"><?= t('Item not found') ?></p>
-
 <?php else: ?>
     <article
         class="item"
@@ -11,6 +9,23 @@
         data-item-bookmark="<?= $item['bookmark'] ?>"
         data-item-page="<?= $menu ?>"
     >
+
+        <?php if (isset($item_nav)): ?>
+        <nav class="top hide-desktop">
+            <span class="nav-left">
+                <?php if ($item_nav['previous']): ?>
+                    <a href="?action=show&amp;menu=<?= $menu ?>&amp;id=<?= $item_nav['previous']['id'] ?>" id="previous-item" title="<?= t($item_nav['previous']['title']) ?>">« <?= t('Previous') ?></a>
+                <?php endif ?>
+            </span>
+
+            <span class="nav-right">
+                <?php if ($item_nav['next']): ?>
+                    <a href="?action=show&amp;menu=<?= $menu ?>&amp;id=<?= $item_nav['next']['id'] ?>" id="next-item" title="<?= t($item_nav['next']['title']) ?>"><?= t('Next') ?> »</a>
+                <?php endif ?>
+            </span>
+        </nav>
+        <?php endif ?>
+
         <h1>
             <a href="<?= $item['url'] ?>" rel="noreferrer" target="_blank" id="original-<?= $item['id'] ?>">
                 <?= Helper\escape($item['title']) ?>
@@ -58,32 +73,16 @@
         </div>
 
         <?php if (isset($item_nav)): ?>
-        <nav>
+        <nav class="bottom">
             <span class="nav-left">
                 <?php if ($item_nav['previous']): ?>
                     <a href="?action=show&amp;menu=<?= $menu ?>&amp;id=<?= $item_nav['previous']['id'] ?>" id="previous-item" title="<?= t($item_nav['previous']['title']) ?>">« <?= t('Previous') ?></a>
-                <?php else: ?>
-                    « <?= t('Previous') ?>
-                <?php endif ?>
-            </span>
-
-            <span class="nav-middle">
-                <?php if ($item_nav['previous'] && $item_nav['next']): ?>
-                    <a href="?action=<?= $menu ?>&amp;feed_id=<?= $feed['id'] ?>#item-<?= $item_nav['next']['id'] ?>"><?= t('Listing') ?></a>
-                <?php elseif ($item_nav['previous'] && ! $item_nav['next']): ?>
-                    <a href="?action=<?= $menu ?>&amp;feed_id=<?= $feed['id'] ?>#item-<?= $item_nav['previous']['id'] ?>"><?= t('Listing') ?></a>
-                <?php elseif (! $item_nav['previous'] && $item_nav['next']): ?>
-                    <a href="?action=<?= $menu ?>&amp;feed_id=<?= $feed['id'] ?>#item-<?= $item_nav['next']['id'] ?>"><?= t('Listing') ?></a>
-                <?php elseif (! $item_nav['previous'] && ! $item_nav['next']): ?>
-                    <a href="?action=<?= $menu ?>&amp;feed_id=<?= $feed['id'] ?>"><?= t('Listing') ?></a>
                 <?php endif ?>
             </span>
 
             <span class="nav-right">
                 <?php if ($item_nav['next']): ?>
                     <a href="?action=show&amp;menu=<?= $menu ?>&amp;id=<?= $item_nav['next']['id'] ?>" id="next-item" title="<?= t($item_nav['next']['title']) ?>"><?= t('Next') ?> »</a>
-                <?php else: ?>
-                    <?= t('Next') ?> »
                 <?php endif ?>
             </span>
         </nav>

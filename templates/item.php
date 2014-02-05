@@ -31,18 +31,19 @@
         <span class="hide-mobile">
             <?= dt('%e %B %Y %k:%M', $item['updated']) ?> |
             <?= \PicoTools\Template\load('bookmark_links', array('item' => $item, 'menu' => $menu, 'offset' => $offset, 'source' => '')) ?>
+
+            <a
+                href="<?= $item['url'] ?>"
+                id="original-<?= $item['id'] ?>"
+                rel="noreferrer"
+                target="_blank"
+                data-item-id="<?= $item['id'] ?>"
+            >
+                <?= t('original link') ?>
+            </a> |
         </span>
 
         <?= \PicoTools\Template\load('status_links', array('item' => $item, 'redirect' => $menu, 'offset' => $offset)) ?>
 
-        <a
-            href="<?= $item['url'] ?>"
-            id="original-<?= $item['id'] ?>"
-            rel="noreferrer"
-            target="_blank"
-            data-item-id="<?= $item['id'] ?>"
-        >
-            <?= t('original link') ?>
-        </a>
     </p>
 </article>
