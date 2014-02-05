@@ -410,6 +410,7 @@ Don't forget to send a pull request or a ticket to share your contribution with 
 - golem.de
 - ing.dk
 - karriere.jobfinder.dk
+- lesjoiesducode.fr
 - lifehacker.com
 - lists.*
 - medium.com
