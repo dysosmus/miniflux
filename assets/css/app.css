@@ -527,21 +527,15 @@ nav .active a {
 }
 
 .nav-left {
-    width: 30%;
+    width: 50%;
     display: block;
     float: left;
 }
 
-.nav-middle {
-    text-align: center;
-    float: left;
-    width: 40%;
-}
-
 .nav-right {
     text-align: right;
-    margin-left: 70%;
-    width: 30%;
+    margin-left: 50%;
+    width: 50%;
     display: block;
 }
 
