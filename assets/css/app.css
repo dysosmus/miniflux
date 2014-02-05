@@ -587,6 +587,18 @@ iframe {
     max-width: 98%;
 }
 
+.menu-more li {
+    font-size: 1.1em;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px dotted #ccc;
+    list-style-type: none;
+}
+
+.menu-more a {
+    text-decoration: none;
+    color: #333;
+}
 
 /* desktop design */
 @media only screen and (min-width: 480px) {
@@ -650,18 +662,5 @@ iframe {
 
     section li {
         font-size: 0.85em;
-    }
-
-    .menu-more li {
-        font-size: 1.1em;
-        padding-top: 10px;
-        padding-bottom: 10px;
-        border-bottom: 1px dotted #ccc;
-        list-style-type: none;
-    }
-
-    .menu-more a {
-        text-decoration: none;
-        color: #333;
     }
 }
