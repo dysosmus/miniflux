@@ -37,7 +37,7 @@ return array(
     'Save' => 'Salva',
     'More information' => 'Altre informazioni',
     'Database' => 'Database',
-    'Database size:' => 'Dimensione database :',
+    'Database size:' => 'Dimensione database:',
     'Optimize the database' => 'Ottimizza il database',
     '(VACUUM command)' => '(comando VACUUM)',
     'Download the entire database' => 'Scarica l\'intero database',
@@ -50,7 +50,7 @@ return array(
     'Open item' => 'Apri articolo',
     'About' => 'Informazioni sul software',
     'Miniflux version:' => 'Versione Miniflux:',
-    'Nothing to read' => 'Nichts zu lesen',
+    'Nothing to read' => 'Niente da leggere',
     '<span id="page-counter">%s</span>unread items' => '<span id="page-counter">%s</span>articoli non letti',
     'mark all as read' => 'segna tutti come già letti',
     'original link' => 'link originale',
@@ -64,7 +64,7 @@ return array(
     'Next' => 'Successivo',
     'Previous' => 'Precedente',
     'Sign in' => 'Accedi',
-    'feeds' => 'feeds',
+    'feeds' => 'feed',
     'add' => 'aggiungi',
     'import' => 'importa',
     'export' => 'esporta',
@@ -104,6 +104,6 @@ return array(
     'Do you really want to remove this subscription: "%s"?' => 'Vuoi veramente cancellare la sottoscrizione a: "%s" ?',
     'Nothing to read, do you want to <a href="?action=refresh-all" data-action="refresh-all">update your subscriptions?</a>' =>
     'Niente da leggere, vuoi <a href="?action=refresh-all" data-action="refresh-all">aggiornare tutte le sottoscrizioni?</a>',
-    'Show help' => 'Mostra help',
-    'Close help' => 'Chiudere aiuto'
+    'Show help' => 'Mostra guida',
+    'Close help' => 'Chiudi guida'
 );
