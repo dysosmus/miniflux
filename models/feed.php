@@ -2,23 +2,24 @@
 
 namespace Model\Feed;
 
-require_once 'vendor/PicoFeed/Filter.php';
-require_once 'vendor/PicoFeed/Export.php';
-require_once 'vendor/PicoFeed/Import.php';
-require_once 'vendor/PicoFeed/Reader.php';
-require_once 'vendor/SimpleValidator/Validator.php';
-require_once 'vendor/SimpleValidator/Base.php';
-require_once 'vendor/SimpleValidator/Validators/Required.php';
+require_once __DIR__.'/../vendor/PicoFeed/Filter.php';
+require_once __DIR__.'/../vendor/PicoFeed/Export.php';
+require_once __DIR__.'/../vendor/PicoFeed/Import.php';
+require_once __DIR__.'/../vendor/PicoFeed/Reader.php';
+require_once __DIR__.'/../vendor/SimpleValidator/Validator.php';
+require_once __DIR__.'/../vendor/SimpleValidator/Base.php';
+require_once __DIR__.'/../vendor/SimpleValidator/Validators/Required.php';
 
 use SimpleValidator\Validator;
 use SimpleValidator\Validators;
+use PicoDb\Database;
 
 const LIMIT_ALL = -1;
 
 // Update feed information
 function update(array $values)
 {
-    return \PicoTools\singleton('db')
+    return Database::get('db')
             ->table('feeds')
             ->eq('id', $values['id'])
             ->save(array(
@@ -43,7 +44,7 @@ function import_opml($content)
 
     if ($feeds) {
 
-        $db = \PicoTools\singleton('db');
+        $db = Database::get('db');
         $db->startTransaction();
 
         foreach ($feeds as $feed) {
@@ -95,7 +96,7 @@ function create($url, $grabber = false)
             return false;
         }
 
-        $db = \PicoTools\singleton('db');
+        $db = Database::get('db');
 
         if (! $db->table('feeds')->eq('feed_url', $reader->getUrl())->count()) {
 
@@ -133,7 +134,7 @@ function refresh_all($limit = LIMIT_ALL)
     }
 
     // Auto-vacuum for people using the cronjob
-    \PicoTools\singleton('db')->getConnection()->exec('VACUUM');
+    Database::get('db')->getConnection()->exec('VACUUM');
 
     return true;
 }
@@ -170,7 +171,7 @@ function refresh($feed_id)
         if ($feed['download_content']) {
 
             // Don't fetch previous items, only new one
-            $parser->grabber_ignore_urls = \PicoTools\singleton('db')
+            $parser->grabber_ignore_urls = Database::get('db')
                                                 ->table('items')
                                                 ->eq('feed_id', $feed_id)
                                                 ->findAllByColumn('url');
@@ -202,7 +203,7 @@ function refresh($feed_id)
 // Get the list of feeds ID to refresh
 function get_ids($limit = LIMIT_ALL)
 {
-    $table_feeds = \PicoTools\singleton('db')->table('feeds')
+    $table_feeds = Database::get('db')->table('feeds')
                                              ->eq('enabled', 1)
                                              ->asc('last_checked');
 
@@ -216,7 +217,7 @@ function get_ids($limit = LIMIT_ALL)
 // Get feeds with no item
 function get_all_empty()
 {
-    $feeds = \PicoTools\singleton('db')
+    $feeds = Database::get('db')
         ->table('feeds')
         ->columns('feeds.id', 'feeds.title', 'COUNT(items.id) AS nb_items')
         ->join('items', 'feed_id', 'id')
@@ -237,7 +238,7 @@ function get_all_empty()
 // Get all feeds
 function get_all()
 {
-    return \PicoTools\singleton('db')
+    return Database::get('db')
         ->table('feeds')
         ->asc('title')
         ->findAll();
@@ -246,7 +247,7 @@ function get_all()
 // Get one feed
 function get($feed_id)
 {
-    return \PicoTools\singleton('db')
+    return Database::get('db')
         ->table('feeds')
         ->eq('id', $feed_id)
         ->findOne();
@@ -255,13 +256,13 @@ function get($feed_id)
 // Update parsing error column
 function update_parsing_error($feed_id, $value)
 {
-    \PicoTools\singleton('db')->table('feeds')->eq('id', $feed_id)->save(array('parsing_error' => $value));
+    Database::get('db')->table('feeds')->eq('id', $feed_id)->save(array('parsing_error' => $value));
 }
 
 // Update last check date
 function update_last_checked($feed_id)
 {
-    \PicoTools\singleton('db')
+    Database::get('db')
         ->table('feeds')
         ->eq('id', $feed_id)
         ->save(array(
@@ -272,7 +273,7 @@ function update_last_checked($feed_id)
 // Update Etag and last Modified columns
 function update_cache($feed_id, $last_modified, $etag)
 {
-    \PicoTools\singleton('db')
+    Database::get('db')
         ->table('feeds')
         ->eq('id', $feed_id)
         ->save(array(
@@ -285,37 +286,37 @@ function update_cache($feed_id, $last_modified, $etag)
 function remove($feed_id)
 {
     // Items are removed by a sql constraint
-    return \PicoTools\singleton('db')->table('feeds')->eq('id', $feed_id)->remove();
+    return Database::get('db')->table('feeds')->eq('id', $feed_id)->remove();
 }
 
 // Remove all feeds
 function remove_all()
 {
-    return \PicoTools\singleton('db')->table('feeds')->remove();
+    return Database::get('db')->table('feeds')->remove();
 }
 
 // Enable a feed (activate refresh)
 function enable($feed_id)
 {
-    return \PicoTools\singleton('db')->table('feeds')->eq('id', $feed_id)->save((array('enabled' => 1)));
+    return Database::get('db')->table('feeds')->eq('id', $feed_id)->save((array('enabled' => 1)));
 }
 
 // Disable feed
 function disable($feed_id)
 {
-    return \PicoTools\singleton('db')->table('feeds')->eq('id', $feed_id)->save((array('enabled' => 0)));
+    return Database::get('db')->table('feeds')->eq('id', $feed_id)->save((array('enabled' => 0)));
 }
 
 // Enable content download
 function enable_grabber($feed_id)
 {
-    return \PicoTools\singleton('db')->table('feeds')->eq('id', $feed_id)->save((array('download_content' => 1)));
+    return Database::get('db')->table('feeds')->eq('id', $feed_id)->save((array('download_content' => 1)));
 }
 
 // Disable content download
 function disable_grabber($feed_id)
 {
-    return \PicoTools\singleton('db')->table('feeds')->eq('id', $feed_id)->save((array('download_content' => 0)));
+    return Database::get('db')->table('feeds')->eq('id', $feed_id)->save((array('download_content' => 0)));
 }
 
 // Validation for edit

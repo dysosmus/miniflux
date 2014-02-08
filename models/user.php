@@ -2,18 +2,19 @@
 
 namespace Model\User;
 
-require_once 'vendor/SimpleValidator/Validator.php';
-require_once 'vendor/SimpleValidator/Base.php';
-require_once 'vendor/SimpleValidator/Validators/Required.php';
-require_once 'vendor/SimpleValidator/Validators/MaxLength.php';
+require_once __DIR__.'/../vendor/SimpleValidator/Validator.php';
+require_once __DIR__.'/../vendor/SimpleValidator/Base.php';
+require_once __DIR__.'/../vendor/SimpleValidator/Validators/Required.php';
+require_once __DIR__.'/../vendor/SimpleValidator/Validators/MaxLength.php';
 
 use SimpleValidator\Validator;
 use SimpleValidator\Validators;
+use PicoDb\Database;
 
 // Get a user by username
 function get($username)
 {
-    return \PicoTools\singleton('db')
+    return Database::get('db')
         ->table('config')
         ->columns('username', 'password', 'language')
         ->eq('username', $username)

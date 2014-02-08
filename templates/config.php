@@ -68,7 +68,7 @@
                 <a href="javascript:location.href='<?= Helper\get_current_base_url() ?>?action=subscribe&amp;url='+encodeURIComponent(location.href)"><?= t('Subscribe with Miniflux') ?></a> (<?= t('Drag and drop this link to your bookmarks') ?>)
             <li>
                 <?= t('Bookmarks RSS Feed:') ?>
-                <a href="<?= Helper\get_current_base_url().'feed.php?token='.urlencode($values['feed_token']) ?>" target="_blank"><?= Helper\get_current_base_url().'feed.php?token='.urlencode($values['feed_token']) ?></a>
+                <a href="<?= Helper\get_current_base_url().'?action=bookmark-feed&amp;token='.urlencode($values['feed_token']) ?>" target="_blank"><?= Helper\get_current_base_url().'?action=bookmark-feed&amp;token='.urlencode($values['feed_token']) ?></a>
             </li>
             <li><?= t('API endpoint:') ?> <strong><?= Helper\get_current_base_url().'jsonrpc.php' ?></strong></li>
             <li><?= t('API username:') ?> <strong><?= Helper\escape($values['username']) ?></strong></li>
@@ -89,7 +89,7 @@
         <h3><?= t('About') ?></h3>
         <ul>
             <li><?= t('Miniflux version:') ?> <strong><?= APP_VERSION ?></strong></li>
-            <li><?= t('Official website:') ?> <a href="http://miniflux.net" target="_blank">http://miniflux.net</a></li>
+            <li><?= t('Official website:') ?> <a href="http://miniflux.net" rel="noreferer" target="_blank">http://miniflux.net</a></li>
             <li><a href="?action=console"><?= t('Console') ?></a></li>
         </ul>
     </div>

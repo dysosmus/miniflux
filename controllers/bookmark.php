@@ -1,5 +1,7 @@
 <?php
 
+require __DIR__.'/../vendor/PicoFeed/Writers/Atom.php';
+
 use PicoFarad\Router;
 use PicoFarad\Response;
 use PicoFarad\Request;
@@ -52,4 +54,39 @@ Router\get_action('bookmarks', function() {
         'menu' => 'bookmarks',
         'title' => t('Bookmarks').' ('.$nb_items.')'
     )));
+});
+
+// Display bookmark feeds
+Router\get_action('bookmark-feed', function() {
+
+    // Check token
+    $feed_token = Model\Config\get('feed_token');
+    $request_token = Request\param('token');
+
+    if ($feed_token !== $request_token) {
+        Response\text('Access Forbidden', 403);
+    }
+
+    // Build Feed
+    $writer = new PicoFeed\Writers\Atom;
+    $writer->title = t('Bookmarks').' - Miniflux';
+    $writer->site_url = Helper\get_current_base_url();
+    $writer->feed_url = $writer->site_url.'?action=bookmark-feed&token='.urlencode($feed_token);
+
+    $bookmarks = Model\Item\get_bookmarks();
+
+    foreach ($bookmarks as $bookmark) {
+
+        $article = Model\Item\get($bookmark['id']);
+
+        $writer->items[] = array(
+            'id' => $article['id'],
+            'title' => $article['title'],
+            'updated' => $article['updated'],
+            'url' => $article['url'],
+            'content' => $article['content'],
+        );
+    }
+
+    Response\xml($writer->execute());
 });

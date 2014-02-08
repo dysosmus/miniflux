@@ -25,7 +25,12 @@ class Client
         $this->headers = array_merge($this->headers, $headers);
     }
 
+    public function __call($method, $params)
+    {
 
+        return $this->execute($method, $params);
+    }
+    
     public function authentication($username, $password)
     {
         $this->username = $username;

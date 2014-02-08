@@ -5,6 +5,7 @@ use PicoFarad\Response;
 use PicoFarad\Request;
 use PicoFarad\Session;
 use PicoTools\Template;
+use PicoDb\Database;
 
 // Re-generate tokens
 Router\get_action('generate-tokens', function() {
@@ -16,7 +17,7 @@ Router\get_action('generate-tokens', function() {
 // Optimize the database manually
 Router\get_action('optimize-db', function() {
 
-    \PicoTools\singleton('db')->getConnection()->exec('VACUUM');
+    Database::get('db')->getConnection()->exec('VACUUM');
     Response\redirect('?action=config');
 });
 
@@ -65,14 +66,14 @@ Router\post_action('config', function() {
 
     Response\html(Template\layout('config', array(
         'errors' => $errors,
-        'values' => $values,
+        'values' => Model\Config\get_all(),
         'db_size' => filesize(DB_FILENAME),
         'languages' => Model\Config\get_languages(),
         'autoflush_options' => Model\Config\get_autoflush_options(),
         'paging_options' => Model\Config\get_paging_options(),
         'theme_options' => Model\Config\get_themes(),
         'sorting_options' => Model\Config\get_sorting_directions(),
-        'redirect_nothing_to_read' => Model\Config\get_nothing_to_read_redirections(),
+        'redirect_nothing_to_read_options' => Model\Config\get_nothing_to_read_redirections(),
         'menu' => 'config',
         'title' => t('Preferences')
     )));

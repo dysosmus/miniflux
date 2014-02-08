@@ -9,14 +9,18 @@ function force_download($filename)
 }
 
 
+function content_type($mimetype)
+{
+    header('Content-Type: '.$mimetype);
+}
+
+
 function status($status_code)
 {
     if (strpos(php_sapi_name(), 'apache') !== false) {
-
         header('HTTP/1.0 '.$status_code);
     }
     else {
-
         header('Status: '.$status_code);
     }
 }

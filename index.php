@@ -1,12 +1,20 @@
 <?php
 
-require 'check_setup.php';
-require 'controllers/common.php';
-require 'controllers/console.php';
-require 'controllers/user.php';
-require 'controllers/config.php';
-require 'controllers/item.php';
-require 'controllers/history.php';
-require 'controllers/bookmark.php';
-require 'controllers/feed.php';
-require 'controllers/unread.php';
+require __DIR__.'/common.php';
+require __DIR__.'/vendor/PicoTools/Template.php';
+require __DIR__.'/vendor/PicoTools/Helper.php';
+require __DIR__.'/vendor/PicoFarad/Response.php';
+require __DIR__.'/vendor/PicoFarad/Request.php';
+require __DIR__.'/vendor/PicoFarad/Session.php';
+require __DIR__.'/vendor/PicoFarad/Router.php';
+require __DIR__.'/helpers.php';
+
+use PicoFarad\Router;
+use PicoFarad\Response;
+
+Router\bootstrap(__DIR__.'/controllers', 'common', 'console', 'user', 'config', 'item', 'history', 'bookmark', 'feed');
+
+// Page not found
+Router\notfound(function() {
+    Response\redirect('?action=unread');
+});

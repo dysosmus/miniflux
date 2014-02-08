@@ -2,14 +2,16 @@
 
 namespace Model\Item;
 
-require_once 'vendor/Readability/Readability.php';
-require_once 'vendor/PicoFeed/Grabber.php';
-require_once 'vendor/PicoFeed/Filter.php';
+require_once __DIR__.'/../vendor/Readability/Readability.php';
+require_once __DIR__.'/../vendor/PicoFeed/Grabber.php';
+require_once __DIR__.'/../vendor/PicoFeed/Filter.php';
+
+use PicoDb\Database;
 
 // Get all items
 function get_all($status, $offset = null, $limit = null, $order_column = 'updated', $order_direction = 'desc')
 {
-    return \PicoTools\singleton('db')
+    return Database::get('db')
         ->table('items')
         ->columns(
             'items.id',
@@ -34,7 +36,7 @@ function get_all($status, $offset = null, $limit = null, $order_column = 'update
 // Get the number of items per status
 function count_by_status($status)
 {
-    return \PicoTools\singleton('db')
+    return Database::get('db')
         ->table('items')
         ->eq('status', $status)
         ->count();
@@ -43,7 +45,7 @@ function count_by_status($status)
 // Get the number of bookmarks
 function count_bookmarks()
 {
-    return \PicoTools\singleton('db')
+    return Database::get('db')
         ->table('items')
         ->eq('bookmark', 1)
         ->in('status', array('read', 'unread'))
@@ -53,7 +55,7 @@ function count_bookmarks()
 // Get all bookmarks
 function get_bookmarks($offset = null, $limit = null)
 {
-    return \PicoTools\singleton('db')
+    return Database::get('db')
         ->table('items')
         ->columns(
             'items.id',
@@ -79,7 +81,7 @@ function get_bookmarks($offset = null, $limit = null)
 // Get the number of items per feed
 function count_by_feed($feed_id)
 {
-    return \PicoTools\singleton('db')
+    return Database::get('db')
         ->table('items')
         ->eq('feed_id', $feed_id)
         ->in('status', array('unread', 'read'))
@@ -89,7 +91,7 @@ function count_by_feed($feed_id)
 // Get all items per feed
 function get_all_by_feed($feed_id, $offset = null, $limit = null, $order_column = 'updated', $order_direction = 'desc')
 {
-    return \PicoTools\singleton('db')
+    return Database::get('db')
         ->table('items')
         ->columns(
             'items.id',
@@ -114,7 +116,7 @@ function get_all_by_feed($feed_id, $offset = null, $limit = null, $order_column 
 // Get one item by id
 function get($id)
 {
-    return \PicoTools\singleton('db')
+    return Database::get('db')
         ->table('items')
         ->eq('id', $id)
         ->findOne();
@@ -123,7 +125,7 @@ function get($id)
 // Get item naviguation (next/prev items)
 function get_nav($item, $status = array('unread'), $bookmark = array(1, 0), $feed_id = null)
 {
-    $query = \PicoTools\singleton('db')
+    $query = Database::get('db')
         ->table('items')
         ->columns('id', 'status', 'title', 'bookmark')
         ->neq('status', 'removed')
@@ -183,7 +185,7 @@ function get_nav($item, $status = array('unread'), $bookmark = array(1, 0), $fee
 // Change item status to removed and clear content
 function set_removed($id)
 {
-    return \PicoTools\singleton('db')
+    return Database::get('db')
         ->table('items')
         ->eq('id', $id)
         ->save(array('status' => 'removed', 'content' => ''));
@@ -192,7 +194,7 @@ function set_removed($id)
 // Change item status to read
 function set_read($id)
 {
-    return \PicoTools\singleton('db')
+    return Database::get('db')
         ->table('items')
         ->eq('id', $id)
         ->save(array('status' => 'read'));
@@ -201,7 +203,7 @@ function set_read($id)
 // Change item status to unread
 function set_unread($id)
 {
-    return \PicoTools\singleton('db')
+    return Database::get('db')
         ->table('items')
         ->eq('id', $id)
         ->save(array('status' => 'unread'));
@@ -212,7 +214,7 @@ function set_status($status, array $items)
 {
     if (! in_array($status, array('read', 'unread', 'removed'))) return false;
 
-    return \PicoTools\singleton('db')
+    return Database::get('db')
         ->table('items')
         ->in('id', $items)
         ->save(array('status' => $status));
@@ -221,7 +223,7 @@ function set_status($status, array $items)
 // Enable/disable bookmark flag
 function set_bookmark_value($id, $value)
 {
-    return \PicoTools\singleton('db')
+    return Database::get('db')
         ->table('items')
         ->eq('id', $id)
         ->save(array('bookmark' => $value));
@@ -230,7 +232,7 @@ function set_bookmark_value($id, $value)
 // Swap item status read <-> unread
 function switch_status($id)
 {
-    $item = \PicoTools\singleton('db')
+    $item = Database::get('db')
         ->table('items')
         ->columns('status')
         ->eq('id', $id)
@@ -238,7 +240,7 @@ function switch_status($id)
 
     if ($item['status'] == 'unread') {
 
-        \PicoTools\singleton('db')
+        Database::get('db')
             ->table('items')
             ->eq('id', $id)
             ->save(array('status' => 'read'));
@@ -247,7 +249,7 @@ function switch_status($id)
     }
     else {
 
-        \PicoTools\singleton('db')
+        Database::get('db')
             ->table('items')
             ->eq('id', $id)
             ->save(array('status' => 'unread'));
@@ -261,7 +263,7 @@ function switch_status($id)
 // Mark all unread items as read
 function mark_all_as_read()
 {
-    return \PicoTools\singleton('db')
+    return Database::get('db')
         ->table('items')
         ->eq('status', 'unread')
         ->save(array('status' => 'read'));
@@ -270,7 +272,7 @@ function mark_all_as_read()
 // Mark all read items to removed
 function mark_all_as_removed()
 {
-    return \PicoTools\singleton('db')
+    return Database::get('db')
         ->table('items')
         ->eq('status', 'read')
         ->eq('bookmark', 0)
@@ -280,21 +282,20 @@ function mark_all_as_removed()
 // Mark only specified items as read
 function mark_items_as_read(array $items_id)
 {
-    \PicoTools\singleton('db')->startTransaction();
+    Database::get('db')->startTransaction();
 
     foreach ($items_id as $id) {
         set_read($id);
     }
 
-    \PicoTools\singleton('db')->closeTransaction();
+    Database::get('db')->closeTransaction();
 }
 
 // Mark all items of a feed as read
 function mark_feed_as_read($feed_id)
 {
-    return \PicoTools\singleton('db')
+    return Database::get('db')
         ->table('items')
-        ->columns('items.id')
         ->eq('status', 'unread')
         ->eq('feed_id', $feed_id)
         ->update(array('status' => 'read'));
@@ -308,7 +309,7 @@ function autoflush()
     if ($autoflush > 0) {
 
         // Mark read items removed after X days
-        \PicoTools\singleton('db')
+        Database::get('db')
             ->table('items')
             ->eq('bookmark', 0)
             ->eq('status', 'read')
@@ -318,7 +319,7 @@ function autoflush()
     else if ($autoflush === -1) {
 
         // Mark read items removed immediately
-        \PicoTools\singleton('db')
+        Database::get('db')
             ->table('items')
             ->eq('bookmark', 0)
             ->eq('status', 'read')
@@ -332,7 +333,7 @@ function update_all($feed_id, array $items, $grabber = false)
     $nocontent = (bool) \Model\Config\get('nocontent');
 
     $items_in_feed = array();
-    $db = \PicoTools\singleton('db');
+    $db = Database::get('db');
 
     $db->startTransaction();
 
@@ -369,7 +370,7 @@ function update_all($feed_id, array $items, $grabber = false)
     // and not present inside the feed
     if (! empty($items_in_feed)) {
 
-        $removed_items = \PicoTools\singleton('db')
+        $removed_items = Database::get('db')
             ->table('items')
             ->columns('id')
             ->notin('id', $items_in_feed)
@@ -386,7 +387,7 @@ function update_all($feed_id, array $items, $grabber = false)
 
             if (! empty($items_to_remove)) {
 
-                \PicoTools\singleton('db')
+                Database::get('db')
                     ->table('items')
                     ->in('id', $items_to_remove)
                     ->eq('status', 'removed')
@@ -443,7 +444,7 @@ function download_content_id($item_id)
         if (! \Model\Config\get('nocontent')) {
 
             // Save content
-            \PicoTools\singleton('db')
+            Database::get('db')
                 ->table('items')
                 ->eq('id', $item['id'])
                 ->save(array('content' => $content));

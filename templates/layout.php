@@ -11,7 +11,7 @@
         <link rel="apple-touch-icon" sizes="144x144" href="assets/img/touch-icon-ipad-retina.png">
         <title><?= isset($title) ? Helper\escape($title) : 'Miniflux' ?></title>
         <link href="<?= Helper\css() ?>" rel="stylesheet" media="screen">
-        <script type="text/javascript" src="?action=js" defer></script>
+        <script type="text/javascript" src="assets/js/all.min.js?<?= filemtime('assets/js/all.min.js') ?>" defer></script>
     </head>
     <body>
         <header>

@@ -4,6 +4,7 @@ namespace PicoDb;
 
 class Database
 {
+    private static $instances = array();
     private $logs = array();
     private $pdo;
 
@@ -11,7 +12,6 @@ class Database
     public function __construct(array $settings)
     {
         if (! isset($settings['driver'])) {
-
             throw new \LogicException('You must define a database driver.');
         }
 
@@ -27,6 +27,26 @@ class Database
         }
 
         $this->pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+    }
+
+
+    public static function bootstrap($name, callable $callback)
+    {
+        self::$instances[$name] = $callback;
+    }
+
+
+    public static function get($name)
+    {
+        if (! isset(self::$instances[$name])) {
+            throw new \LogicException('No database instance created with that name.');
+        }
+
+        if (is_callable(self::$instances[$name])) {
+            self::$instances[$name] = call_user_func(self::$instances[$name]);
+        }
+
+        return self::$instances[$name];
     }
 
 
@@ -68,6 +88,7 @@ class Database
         }
         catch (\PDOException $e) {
 
+            if ($this->pdo->inTransaction()) $this->pdo->rollback();
             $this->setLogMessage($e->getMessage());
             return false;
         }
@@ -94,6 +115,7 @@ class Database
 
     public function table($table_name)
     {
+        require_once __DIR__.'/Table.php';
         return new Table($this, $table_name);
     }
 

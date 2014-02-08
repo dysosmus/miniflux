@@ -2,18 +2,19 @@
 
 namespace Model\Config;
 
-require_once 'vendor/SimpleValidator/Validator.php';
-require_once 'vendor/SimpleValidator/Base.php';
-require_once 'vendor/SimpleValidator/Validators/Required.php';
-require_once 'vendor/SimpleValidator/Validators/Unique.php';
-require_once 'vendor/SimpleValidator/Validators/MaxLength.php';
-require_once 'vendor/SimpleValidator/Validators/MinLength.php';
-require_once 'vendor/SimpleValidator/Validators/Integer.php';
-require_once 'vendor/SimpleValidator/Validators/Equals.php';
-require_once 'vendor/SimpleValidator/Validators/Integer.php';
+require_once __DIR__.'/../vendor/SimpleValidator/Validator.php';
+require_once __DIR__.'/../vendor/SimpleValidator/Base.php';
+require_once __DIR__.'/../vendor/SimpleValidator/Validators/Required.php';
+require_once __DIR__.'/../vendor/SimpleValidator/Validators/Unique.php';
+require_once __DIR__.'/../vendor/SimpleValidator/Validators/MaxLength.php';
+require_once __DIR__.'/../vendor/SimpleValidator/Validators/MinLength.php';
+require_once __DIR__.'/../vendor/SimpleValidator/Validators/Integer.php';
+require_once __DIR__.'/../vendor/SimpleValidator/Validators/Equals.php';
+require_once __DIR__.'/../vendor/SimpleValidator/Validators/Integer.php';
 
 use SimpleValidator\Validator;
 use SimpleValidator\Validators;
+use PicoDb\Database;
 
 const DB_VERSION          = 20;
 const HTTP_USERAGENT      = 'Miniflux - http://miniflux.net';
@@ -138,13 +139,13 @@ function new_tokens()
         'feed_token' => generate_token(),
     );
 
-    return \PicoTools\singleton('db')->table('config')->update($values);
+    return Database::get('db')->table('config')->update($values);
 }
 
 // Save tokens for external authentication
 function save_auth_token($type, $value)
 {
-    return \PicoTools\singleton('db')
+    return Database::get('db')
         ->table('config')
         ->update(array(
             'auth_'.$type.'_token' => $value
@@ -154,7 +155,7 @@ function save_auth_token($type, $value)
 // Clear authentication tokens
 function remove_auth_token($type)
 {
-    \PicoTools\singleton('db')
+    Database::get('db')
         ->table('config')
         ->update(array(
             'auth_'.$type.'_token' => ''
@@ -167,7 +168,7 @@ function remove_auth_token($type)
 function get($name)
 {
     if (! isset($_SESSION)) {
-        return \PicoTools\singleton('db')->table('config')->findOneColumn($name);
+        return Database::get('db')->table('config')->findOneColumn($name);
     }
     else {
 
@@ -186,7 +187,7 @@ function get($name)
 // Get all config parameters
 function get_all()
 {
-    return \PicoTools\singleton('db')
+    return Database::get('db')
         ->table('config')
         ->columns(
             'username',
@@ -261,8 +262,8 @@ function save(array $values)
 
     // If the user does not want content of feeds, remove it in previous ones
     if (isset($values['nocontent']) && (bool) $values['nocontent']) {
-        \PicoTools\singleton('db')->table('items')->update(array('content' => ''));
+        Database::get('db')->table('items')->update(array('content' => ''));
     }
 
-    return \PicoTools\singleton('db')->table('config')->update($values);
+    return Database::get('db')->table('config')->update($values);
 }

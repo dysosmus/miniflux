@@ -1,16 +1,14 @@
 <?php
 
-require 'vendor/password.php';
-require 'vendor/PicoTools/Dependency_Injection.php';
-require 'vendor/PicoTools/Translator.php';
-require 'vendor/PicoDb/Database.php';
-require 'vendor/PicoDb/Table.php';
-require 'vendor/PicoFeed/Client.php';
-require 'models/config.php';
-require 'models/user.php';
-require 'models/feed.php';
-require 'models/item.php';
-require 'schema.php';
+require __DIR__.'/check_setup.php';
+require __DIR__.'/vendor/PicoTools/Translator.php';
+require __DIR__.'/vendor/PicoDb/Database.php';
+require __DIR__.'/vendor/PicoFeed/Client.php';
+require __DIR__.'/models/config.php';
+require __DIR__.'/models/user.php';
+require __DIR__.'/models/feed.php';
+require __DIR__.'/models/item.php';
+require __DIR__.'/models/schema.php';
 
 if (file_exists('config.php')) require 'config.php';
 
@@ -28,7 +26,7 @@ defined('PROXY_PASSWORD') or define('PROXY_PASSWORD', '');
 
 PicoFeed\Client::proxy(PROXY_HOSTNAME, PROXY_PORT, PROXY_USERNAME, PROXY_PASSWORD);
 
-PicoTools\container('db', function() {
+PicoDb\Database::bootstrap('db', function() {
 
     $db = new PicoDb\Database(array(
         'driver' => 'sqlite',

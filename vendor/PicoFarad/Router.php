@@ -2,84 +2,105 @@
 
 namespace PicoFarad\Router;
 
+// Load controllers: bootstrap('controllers', 'controller1', 'controller2')
+function bootstrap()
+{
+    $files = \func_get_args();
+    $base_path = array_shift($files);
 
+    foreach ($files as $file) {
+        require $base_path.'/'.$file.'.php';
+    }
+}
+
+// Execute a callback before each action
 function before($value = null)
 {
     static $before_callback = null;
 
     if (is_callable($value)) {
-
         $before_callback = $value;
     }
     else if (is_callable($before_callback)) {
-
         $before_callback($value);
     }
 }
 
+// Execute a callback before a specific action
+function before_action($name, $value = null)
+{
+    static $callbacks = array();
 
-function action($name, \Closure $callback)
+    if (is_callable($value)) {
+        $callbacks[$name] = $value;
+    }
+    else if (isset($callbacks[$name]) && is_callable($callbacks[$name])) {
+        $callbacks[$name]($value);
+    }
+}
+
+// Execute an action
+function action($name, callable $callback)
 {
     $handler = isset($_GET['action']) ? $_GET['action'] : 'default';
 
     if ($handler === $name) {
-
-        before($handler);
+        before($name);
+        before_action($name);
         $callback();
     }
 }
 
-
-function post_action($name, \Closure $callback)
+// Execute an action only for POST requests
+function post_action($name, callable $callback)
 {
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-
         action($name, $callback);
     }
 }
 
-
-function get_action($name, \Closure $callback)
+// Execute an action only for GET requests
+function get_action($name, callable $callback)
 {
     if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-
         action($name, $callback);
     }
 }
 
-
-function notfound(\Closure $callback)
+// Run when no action have been executed before
+function notfound(callable $callback)
 {
-    before();
+    before('notfound');
+    before_action('notfound');
     $callback();
 }
 
-
-function get($url, \Closure $callback)
+// Match a request like this one: GET /myhandler
+function get($url, callable $callback)
 {
     find_route('GET', $url, $callback);
 }
 
-
-function post($url, \Closure $callback)
+// Match a request like this one: POST /myhandler
+function post($url, callable $callback)
 {
     find_route('POST', $url, $callback);
 }
 
-
-function put($url, \Closure $callback)
+// Match a request like this one: PUT /myhandler
+function put($url, callable $callback)
 {
     find_route('PUT', $url, $callback);
 }
 
-
-function delete($url, \Closure $callback)
+// Match a request like this one: DELETE /myhandler
+function delete($url, callable $callback)
 {
     find_route('DELETE', $url, $callback);
 }
 
-
-function find_route($method, $route, \Closure $callback)
+// Define which callback to execute according to the URL and the HTTP verb
+function find_route($method, $route, callable $callback)
 {
     if ($_SERVER['REQUEST_METHOD'] === $method) {
 
@@ -103,7 +124,7 @@ function find_route($method, $route, \Closure $callback)
     }
 }
 
-
+// Parse url and find matches
 function url_match($route_uri, $request_uri, array &$params)
 {
     if ($request_uri === $route_uri) return true;

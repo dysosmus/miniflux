@@ -1,8 +1,8 @@
 <?php
 
-// PHP 5.3 minimum
-if (version_compare(PHP_VERSION, '5.3.0', '<')) {
-    die('This software require PHP 5.3.0 minimum');
+// PHP 5.3.7 minimum
+if (version_compare(PHP_VERSION, '5.3.7', '<')) {
+    die('This software require PHP 5.3.7 minimum');
 }
 
 // Short tags must be enabled for PHP < 5.4
@@ -44,4 +44,9 @@ if (! function_exists('curl_init') && ! ini_get('allow_url_fopen')) {
 // Check if /data is writeable
 if (! is_writable('data')) {
     die('The directory "data" must be writeable by your web server user');
+}
+
+// Include password_compat for PHP < 5.5
+if (version_compare(PHP_VERSION, '5.5.0', '<')) {
+    require __DIR__.'/vendor/password.php';
 }

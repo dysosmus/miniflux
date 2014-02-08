@@ -1,6 +1,6 @@
 <?php
 
-require 'common.php';
+require __DIR__.'/common.php';
 
 if (php_sapi_name() === 'cli') {
 
@@ -21,7 +21,7 @@ $call_interval = ! empty($options['call-interval']) && ctype_digit($options['cal
 
 if ($update_interval !== null && $call_interval !== null && $limit === Model\Feed\LIMIT_ALL && $update_interval >= $call_interval) {
 
-    $feeds_count = \PicoTools\singleton('db')->table('feeds')->count();
+    $feeds_count = PicoDb\Database::get('db')->table('feeds')->count();
     $limit = ceil($feeds_count / ($update_interval / $call_interval));
 }
 

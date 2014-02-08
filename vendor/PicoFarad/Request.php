@@ -32,7 +32,6 @@ function values()
     $result = json_decode(body(), true);
 
     if ($result) {
-
         return $result;
     }
 
@@ -46,12 +45,34 @@ function body()
 }
 
 
-function file_content($name)
+function file_content($field)
 {
-    if (isset($_FILES[$name])) {
-
-        return file_get_contents($_FILES[$name]['tmp_name']);
+    if (isset($_FILES[$field])) {
+        return file_get_contents($_FILES[$field]['tmp_name']);
     }
 
     return '';
+}
+
+
+function file_info($field)
+{
+    if (isset($_FILES[$field])) {
+        return array(
+            'name' => $_FILES[$field]['name'],
+            'mimetype' => $_FILES[$field]['type'],
+            'size' => $_FILES[$field]['size'],
+        );
+    }
+
+    return false;
+}
+
+
+function file_move($field, $destination)
+{
+    if (isset($_FILES[$field]) && ! file_exists($destination)) {
+        @mkdir(dirname($destination), 0777, true);
+        move_uploaded_file($_FILES[$field]['tmp_name'], $destination);
+    }
 }
