@@ -1,6 +1,9 @@
 <div class="menu-more">
 <ul>
     <li>
+        <a href="?action=unread"><?= t('unread') ?></a>
+    </li>
+    <li>
         <a href="?action=bookmarks"><?= t('bookmarks') ?></a>
     </li>
     <li>

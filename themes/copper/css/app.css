@@ -1,10 +1,10 @@
 @import url('../../../assets/css/app.css');
 
 @font-face {
-  font-family: 'Muli';
-  font-style: normal;
-  font-weight: 400;
-  src: local('Muli'), url(../fonts/Muli.woff) format('woff');
+    font-family: 'Muli';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Muli'), url(../fonts/Muli.woff) format('woff');
 }
 
 body {
@@ -156,11 +156,11 @@ section.page {
 }
 
 .items .preview {
-    font-family: 'Muli', sans-serif;    
+    font-family: 'Muli', sans-serif;
 }
 
 .items li {
-    font-family: 'Muli', sans-serif;    
+    font-family: 'Muli', sans-serif;
 }
 
 form {

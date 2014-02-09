@@ -28,7 +28,7 @@ a:hover {
     text-decoration: none;
 }
 
-.items #current-item { 
+.items #current-item {
     border: 1px solid #be0000;
 }
 
@@ -58,7 +58,7 @@ pre, code {
 
 .items article:hover .preview,
 .items #current-item .preview {
-    color: #666; 
+    color: #666;
 }
 
 #item-content {
@@ -178,4 +178,9 @@ textarea:focus {
 .btn-blue:focus {
     border-color: #888;
     background: #555;
+}
+
+.menu-more a {
+    text-decoration: none;
+    color: #fff;
 }

@@ -143,3 +143,8 @@ textarea:focus {
     border-color: #888;
     background: #555;
 }
+
+.menu-more a {
+    text-decoration: none;
+    color: #fff;
+}
