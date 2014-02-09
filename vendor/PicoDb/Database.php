@@ -30,7 +30,7 @@ class Database
     }
 
 
-    public static function bootstrap($name, callable $callback)
+    public static function bootstrap($name, \Closure $callback)
     {
         self::$instances[$name] = $callback;
     }

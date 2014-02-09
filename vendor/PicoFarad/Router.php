@@ -40,7 +40,7 @@ function before_action($name, $value = null)
 }
 
 // Execute an action
-function action($name, callable $callback)
+function action($name, \Closure $callback)
 {
     $handler = isset($_GET['action']) ? $_GET['action'] : 'default';
 
@@ -52,7 +52,7 @@ function action($name, callable $callback)
 }
 
 // Execute an action only for POST requests
-function post_action($name, callable $callback)
+function post_action($name, \Closure $callback)
 {
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         action($name, $callback);
@@ -60,7 +60,7 @@ function post_action($name, callable $callback)
 }
 
 // Execute an action only for GET requests
-function get_action($name, callable $callback)
+function get_action($name, \Closure $callback)
 {
     if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         action($name, $callback);
@@ -68,7 +68,7 @@ function get_action($name, callable $callback)
 }
 
 // Run when no action have been executed before
-function notfound(callable $callback)
+function notfound(\Closure $callback)
 {
     before('notfound');
     before_action('notfound');
@@ -76,31 +76,31 @@ function notfound(callable $callback)
 }
 
 // Match a request like this one: GET /myhandler
-function get($url, callable $callback)
+function get($url, \Closure $callback)
 {
     find_route('GET', $url, $callback);
 }
 
 // Match a request like this one: POST /myhandler
-function post($url, callable $callback)
+function post($url, \Closure $callback)
 {
     find_route('POST', $url, $callback);
 }
 
 // Match a request like this one: PUT /myhandler
-function put($url, callable $callback)
+function put($url, \Closure $callback)
 {
     find_route('PUT', $url, $callback);
 }
 
 // Match a request like this one: DELETE /myhandler
-function delete($url, callable $callback)
+function delete($url, \Closure $callback)
 {
     find_route('DELETE', $url, $callback);
 }
 
 // Define which callback to execute according to the URL and the HTTP verb
-function find_route($method, $route, callable $callback)
+function find_route($method, $route, \Closure $callback)
 {
     if ($_SERVER['REQUEST_METHOD'] === $method) {
 
