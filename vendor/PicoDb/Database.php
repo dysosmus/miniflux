@@ -97,19 +97,25 @@ class Database
 
     public function startTransaction()
     {
-        $this->pdo->beginTransaction();
+        if (! $this->pdo->inTransaction()) {
+            $this->pdo->beginTransaction();
+        }
     }
 
 
     public function closeTransaction()
     {
-        $this->pdo->commit();
+        if ($this->pdo->inTransaction()) {
+            $this->pdo->commit();
+        }
     }
 
 
     public function cancelTransaction()
     {
-        $this->pdo->rollback();
+        if ($this->pdo->inTransaction()) {
+            $this->pdo->rollback();
+        }
     }
 
 
