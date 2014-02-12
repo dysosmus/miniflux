@@ -333,17 +333,23 @@ function update_all($feed_id, array $items, $grabber = false)
     $nocontent = (bool) \Model\Config\get('nocontent');
 
     $items_in_feed = array();
-    $db = Database::get('db');
 
+    $db = Database::get('db');
     $db->startTransaction();
 
     foreach ($items as $item) {
 
+        \PicoFeed\Logging::log('Item => '.$item->id.' '.$item->url);
+
         // Item parsed correctly?
         if ($item->id && $item->url) {
 
+            \PicoFeed\Logging::log('Item parsed correctly');
+
             // Insert only new item
             if ($db->table('items')->eq('id', $item->id)->count() !== 1) {
+
+                \PicoFeed\Logging::log('Item added to the database');
 
                 if (! $item->content && ! $nocontent && $grabber) {
                     $item->content = download_content_url($item->url);
@@ -360,6 +366,9 @@ function update_all($feed_id, array $items, $grabber = false)
                     'feed_id' => $feed_id
                 ));
             }
+            else {
+                \PicoFeed\Logging::log('Item already in the database');
+            }
 
             // Items inside this feed
             $items_in_feed[] = $item->id;
@@ -370,7 +379,7 @@ function update_all($feed_id, array $items, $grabber = false)
     // and not present inside the feed
     if (! empty($items_in_feed)) {
 
-        $removed_items = Database::get('db')
+        $removed_items = $db
             ->table('items')
             ->columns('id')
             ->notin('id', $items_in_feed)
@@ -387,15 +396,28 @@ function update_all($feed_id, array $items, $grabber = false)
 
             if (! empty($items_to_remove)) {
 
-                Database::get('db')
-                    ->table('items')
-                    ->in('id', $items_to_remove)
-                    ->eq('status', 'removed')
-                    ->eq('feed_id', $feed_id)
-                    ->remove();
+                $nb_items = count($items_to_remove);
+                \PicoFeed\Logging::log('There is '.$nb_items.' items to remove');
+
+                // Handle the case when there is a huge number of items to remove
+                // Sqlite have a limit of 1000 sql variables by default
+                // Avoid the error message "too many SQL variables"
+                // We remove old items by batch of 500 items
+                $chunks = array_chunk($items_to_remove, 500);
+
+                foreach ($chunks as $chunk) {
+
+                    $db->table('items')
+                        ->in('id', $chunk)
+                        ->eq('status', 'removed')
+                        ->eq('feed_id', $feed_id)
+                        ->remove();
+                }
             }
         }
     }
+
+    \PicoFeed\Logging::log('Db transaction => '.($db->getConnection()->inTransaction() ? 'ok' : 'rollback'));
 
     $db->closeTransaction();
 }
