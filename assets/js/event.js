@@ -3,6 +3,7 @@ Miniflux.Event = (function() {
     var queue = [];
 
     return {
+        lastEventType: "",
         ListenMouseEvents: function() {
 
             document.onclick = function(e) {
@@ -10,6 +11,8 @@ Miniflux.Event = (function() {
                 var action = e.target.getAttribute("data-action");
 
                 if (action) {
+
+                    Miniflux.Event.lastEventType = "mouse";
 
                     switch (action) {
                         case 'refresh-all':
@@ -62,6 +65,8 @@ Miniflux.Event = (function() {
         ListenKeyboardEvents: function() {
 
             document.onkeypress = function(e) {
+
+                Miniflux.Event.lastEventType = "keyboard";
 
                 queue.push(e.keyCode || e.which);
 

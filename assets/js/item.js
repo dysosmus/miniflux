@@ -133,7 +133,9 @@ Miniflux.Item = (function() {
 
     function hideItem(item)
     {
-        Miniflux.Nav.SelectNextItem();
+        if (Miniflux.Event.lastEventType != "mouse") {
+            Miniflux.Nav.SelectNextItem();
+        }
 
         item.parentNode.removeChild(item);
         var container = document.getElementById("page-counter");
