@@ -567,6 +567,10 @@ ul.item-infos a {
     color: #aaa;
 }
 
+ul.item-infos {
+    margin-bottom: 20px;
+}
+
 span.downloading img {
     display: inline;
     margin: 0;
@@ -662,6 +666,7 @@ iframe {
 
     .item-infos {
         font-size: 0.9em;
+        margin-bottom: 5px;
     }
 
     .item nav a {
