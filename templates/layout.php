@@ -37,7 +37,7 @@
                         <a href="?action=logout"><?= t('logout') ?></a>
                     </li>
                     <li class="<?= isset($menu) && $menu === 'more' ? 'active hide-desktop' : 'hide-desktop' ?>">
-                        <a href="?action=more"><?= t('▾ menu') ?></a>
+                        <a href="?action=more"><?= t('∨ menu') ?></a>
                     </li>
                 </ul>
             </nav>

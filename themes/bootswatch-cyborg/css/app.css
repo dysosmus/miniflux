@@ -4612,6 +4612,32 @@ section .alert ul {
     padding-left: 0;
 }
 
+ul.item-menu,
+ul.item-infos {
+    margin: 0;
+    padding: 0;
+    color: #2a9fd6;
+}
+
+.item-menu li,
+ul.item-infos li {
+    margin: 0;
+    padding-left: 7px;
+    padding-right: 5px;
+    display: inline;
+    border-right: 1px solid #ccc;
+}
+
+.item-menu li:first-child,
+ul.item-infos li:first-child {
+    padding-left: 0;
+}
+
+.item-menu li:last-child,
+ul.item-infos li:last-child {
+    border: none;
+}
+
 @media (max-width:1200px) {
     .hide-mobile {
         display: none !important;

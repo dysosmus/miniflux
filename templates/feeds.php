@@ -49,26 +49,32 @@
 
                 <?php endif ?>
             </h2>
-            <p>
-                <a href="<?= $feed['site_url'] ?>" rel="noreferrer" target="_blank"><?= Helper\get_host_from_url($feed['site_url']) ?></a> |
-
-                <span class="hide-mobile"><a href="?action=confirm-remove-feed&amp;feed_id=<?= $feed['id'] ?>"><?= t('remove') ?></a> |</span>
-
-                <?php if ($feed['download_content']): ?>
-                    <span class="hide-mobile"><a href="?action=disable-grabber-feed&amp;feed_id=<?= $feed['id'] ?>"><strong><?= t('disable full content') ?></strong></a> |</span>
-                <?php else: ?>
-                    <span class="hide-mobile"><a href="?action=enable-grabber-feed&amp;feed_id=<?= $feed['id'] ?>"><?= t('enable full content') ?></a> |</span>
-                <?php endif ?>
-
-                <?php if ($feed['enabled']): ?>
-                    <span class="hide-mobile"><a href="?action=confirm-disable-feed&amp;feed_id=<?= $feed['id'] ?>"><?= t('disable') ?></a> |</span>
-                    <a href="?action=refresh-feed&amp;feed_id=<?= $feed['id'] ?>" data-feed-id="<?= $feed['id'] ?>" data-action="refresh-feed"><?= t('refresh') ?></a> |
-                <?php else: ?>
-                    <span class="hide-mobile"><a href="?action=enable-feed&amp;feed_id=<?= $feed['id'] ?>"><?= t('enable') ?></a> |</span>
-                <?php endif ?>
-
-                <span class="hide-mobile"><a href="?action=edit-feed&amp;feed_id=<?= $feed['id'] ?>"><?= t('edit') ?></a></span>
-            </p>
+            <ul class="item-menu">
+                <li>
+                    <a href="<?= $feed['site_url'] ?>" rel="noreferrer" target="_blank"><?= Helper\get_host_from_url($feed['site_url']) ?></a>
+                </li>
+                <li class="hide-mobile">
+                    <a href="?action=confirm-remove-feed&amp;feed_id=<?= $feed['id'] ?>"><?= t('remove') ?></a>
+                </li>
+                <li class="hide-mobile">
+                    <?php if ($feed['download_content']): ?>
+                        <a href="?action=disable-grabber-feed&amp;feed_id=<?= $feed['id'] ?>"><strong><?= t('disable full content') ?></strong></a>
+                    <?php else: ?>
+                        <a href="?action=enable-grabber-feed&amp;feed_id=<?= $feed['id'] ?>"><?= t('enable full content') ?></a>
+                    <?php endif ?>
+                </li>
+                <li class="hide-mobile">
+                    <?php if ($feed['enabled']): ?>
+                        <a href="?action=confirm-disable-feed&amp;feed_id=<?= $feed['id'] ?>"><?= t('disable') ?></a>
+                        <a href="?action=refresh-feed&amp;feed_id=<?= $feed['id'] ?>" data-feed-id="<?= $feed['id'] ?>" data-action="refresh-feed"><?= t('refresh') ?></a>
+                    <?php else: ?>
+                        <a href="?action=enable-feed&amp;feed_id=<?= $feed['id'] ?>"><?= t('enable') ?></a>
+                    <?php endif ?>
+                </li>
+                <li class="hide-mobile">
+                    <a href="?action=edit-feed&amp;feed_id=<?= $feed['id'] ?>"><?= t('edit') ?></a>
+                </li>
+            </ul>
         </article>
     <?php endforeach ?>
     </section>

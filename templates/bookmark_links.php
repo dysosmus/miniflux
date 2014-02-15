@@ -1,3 +1,4 @@
+<li class="hide-mobile">
 <?php if ($item['bookmark']): ?>
     <a
         id="bookmark-<?= $item['id'] ?>"
@@ -7,7 +8,7 @@
         data-reverse-label="<?= t('bookmark') ?>"
     >
         <?= t('remove bookmark') ?>
-    </a> |
+    </a>
 <?php else: ?>
     <a
         id="bookmark-<?= $item['id'] ?>"
@@ -17,5 +18,6 @@
         data-reverse-label="<?= t('remove bookmark') ?>"
     >
         <?= t('bookmark') ?>
-    </a> |
+    </a>
 <?php endif ?>
+</li>

@@ -1,11 +1,7 @@
-<span class="hide-mobile">
-    <a
-        href="?action=mark-item-removed&amp;id=<?= $item['id'] ?>&amp;offset=<?= $offset ?>&amp;redirect=<?= $redirect ?>&amp;feed_id=<?= $item['feed_id'] ?>"
-    >
-        <?= t('remove') ?>
-    </a> |
-</span>
-
+<li class="hide-mobile">
+    <a href="?action=mark-item-removed&amp;id=<?= $item['id'] ?>&amp;offset=<?= $offset ?>&amp;redirect=<?= $redirect ?>&amp;feed_id=<?= $item['feed_id'] ?>"><?= t('remove') ?></a>
+</li>
+<li>
 <?php if ($item['status'] == 'unread'): ?>
     <a
         id="status-<?= $item['id'] ?>"
@@ -27,3 +23,4 @@
         <?= t('mark as unread') ?>
     </a>
 <?php endif ?>
+</li>

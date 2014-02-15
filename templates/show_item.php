@@ -36,7 +36,8 @@
             </a>
         </h1>
 
-        <p class="infos">
+        <ul class="item-infos">
+            <li>
             <?php if ($item['bookmark']): ?>
                 <a
                     id="bookmark-<?=$item['id'] ?>"
@@ -55,22 +56,26 @@
                     data-action="bookmark"
                     data-item-id="<?= $item['id'] ?>"
                 >☆</a>
-            <?php endif ?> |
-
-            <a href="?action=feed-items&amp;feed_id=<?= $feed['id'] ?>"><?= Helper\escape($feed['title']) ?></a> |
-
-            <span class="hide-mobile"><?= dt('%e %B %Y %k:%M', $item['updated']) ?> |</span>
-
-            <span id="download-item"
-                  data-item-id="<?= $item['id'] ?>"
-                  data-failure-message="<?= t('unable to fetch content') ?>"
-                  data-before-message="<?= t('in progress...') ?>"
-                  data-after-message="<?= t('content downloaded') ?>">
-                <a href="#" data-action="download-item">
-                    <?= t('download content') ?>
-                </a>
-            </span>
-        </p>
+            <?php endif ?>
+            </li>
+            <li>
+                <a href="?action=feed-items&amp;feed_id=<?= $feed['id'] ?>"><?= Helper\escape($feed['title']) ?></a>
+            </li>
+            <li class="hide-mobile">
+                <?= dt('%e %B %Y %k:%M', $item['updated']) ?>
+            </li>
+            <li class="hide-mobile">
+                <span id="download-item"
+                      data-item-id="<?= $item['id'] ?>"
+                      data-failure-message="<?= t('unable to fetch content') ?>"
+                      data-before-message="<?= t('in progress...') ?>"
+                      data-after-message="<?= t('content downloaded') ?>">
+                    <a href="#" data-action="download-item">
+                        <?= t('download content') ?>
+                    </a>
+                </span>
+            </li>
+        </ul>
 
         <div id="item-content">
             <?= $item['content'] ?>

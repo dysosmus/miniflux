@@ -79,6 +79,22 @@ iframe {
     padding: 3px;
 }
 
+ul.item-menu,
+ul.item-infos {
+    padding: 0;
+}
+
+ul.item-menu li,
+ul.item-infos li {
+    margin: 0;
+    padding-right: 5px;
+    display: inline;
+}
+
+a.bookmark-icon {
+    text-decoration: none;
+}
+
 /* desktop design */
 @media only screen and (min-width: 480px) {
 
@@ -90,6 +106,7 @@ iframe {
 /* mobile design */
 @media only screen and (max-width: 480px) {
 
+    ul li.hide-mobile,
     .hide-mobile {
         display: none;
     }
