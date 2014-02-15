@@ -8,7 +8,64 @@ require_once __DIR__.'/../vendor/PicoFeed/Filter.php';
 
 use PicoDb\Database;
 
-// Get all items
+// Get all items without filtering
+function get_everything()
+{
+    return Database::get('db')
+        ->table('items')
+        ->columns(
+            'items.id',
+            'items.title',
+            'items.updated',
+            'items.url',
+            'items.bookmark',
+            'items.feed_id',
+            'items.status',
+            'items.content',
+            'feeds.site_url',
+            'feeds.title AS feed_title'
+        )
+        ->join('feeds', 'id', 'feed_id')
+        ->in('status', array('read', 'unread'))
+        ->orderBy('updated', 'desc')
+        ->findAll();
+}
+
+// Get everthing since date (timestamp)
+function get_everything_since($timestamp)
+{
+    return Database::get('db')
+        ->table('items')
+        ->columns(
+            'items.id',
+            'items.title',
+            'items.updated',
+            'items.url',
+            'items.bookmark',
+            'items.feed_id',
+            'items.status',
+            'items.content',
+            'feeds.site_url',
+            'feeds.title AS feed_title'
+        )
+        ->join('feeds', 'id', 'feed_id')
+        ->in('status', array('read', 'unread'))
+        ->gte('updated', $timestamp)
+        ->orderBy('updated', 'desc')
+        ->findAll();
+}
+
+// Get a list of [item_id => status,...]
+function get_all_status()
+{
+    return Database::get('db')
+        ->table('items')
+        ->in('status', array('read', 'unread'))
+        ->orderBy('updated', 'desc')
+        ->listing('id', 'status');
+}
+
+// Get all items by status
 function get_all($status, $offset = null, $limit = null, $order_column = 'updated', $order_direction = 'desc')
 {
     return Database::get('db')

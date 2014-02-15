@@ -163,4 +163,22 @@ $server->register('item.mark_all_as_read', function() {
     return Model\Item\mark_all_as_read();
 });
 
+// Get all items with the content
+$server->register('item.get_all', function() {
+
+    return Model\Item\get_everything();
+});
+
+// Get all items since a date
+$server->register('item.get_all_since', function($timestamp) {
+
+    return Model\Item\get_everything_since($timestamp);
+});
+
+// Get all items id and status
+$server->register('item.get_all_status', function() {
+
+    return Model\Item\get_all_status();
+});
+
 echo $server->execute();
