@@ -399,6 +399,7 @@ Don't forget to send a pull request or a ticket to share your contribution with 
 
 - *.blog.lemonde.fr
 - *.blog.nytimes.com
+- *.igen.fr
 - *.nytimes.com
 - *.phoronix.com
 - *.slate.com
@@ -406,6 +407,7 @@ Don't forget to send a pull request or a ticket to share your contribution with 
 - *.wikipedia.org
 - *.wired.com
 - *.wsj.com
+- consomac.fr
 - github.com
 - golem.de
 - ing.dk
@@ -422,6 +424,7 @@ Don't forget to send a pull request or a ticket to share your contribution with 
 - techcrunch.com
 - version2.dk
 - www.bbc.co.uk
+- www.bdgest.com
 - www.businessweek.com
 - www.cnn.com
 - www.egscomics.com
@@ -434,3 +437,4 @@ Don't forget to send a pull request or a ticket to share your contribution with 
 - www.numerama.com
 - www.pcinpact.com
 - www.slate.fr
+- www.universfreebox.com
