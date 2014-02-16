@@ -152,10 +152,11 @@ class Filter
 
     // Iframe source whitelist, everything else is ignored
     public static $iframe_whitelist = array(
-        'http://www.youtube.com/',
-        'https://www.youtube.com/',
-        'http://player.vimeo.com/',
-        'https://player.vimeo.com/',
+        '//www.youtube.com',
+        'http://www.youtube.com',
+        'https://www.youtube.com',
+        'http://player.vimeo.com',
+        'https://player.vimeo.com',
         'http://www.dailymotion.com',
         'https://www.dailymotion.com',
     );

@@ -92,7 +92,7 @@ class Grabber
                 $this->html = Encoding::toUTF8($this->html);
             }
 
-            Logging::log(\get_called_class().' Try to find rules');
+            Logging::log(\get_called_class().' Content length: '.strlen($this->html).' bytes');
             $rules = $this->getRules();
 
             if (is_array($rules)) {
@@ -147,6 +147,7 @@ class Grabber
             $filename = __DIR__.'/Rules/'.$file.'.php';
 
             if (file_exists($filename)) {
+                Logging::log(\get_called_class().' Load rule: '.$file);
                 return include $filename;
             }
         }
