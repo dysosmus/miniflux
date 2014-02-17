@@ -110,6 +110,12 @@ class Rss20 extends \PicoFeed\Parser
 
             if (empty($item->title)) $item->title = $item->url;
 
+            // if optional enclosure tag with multimedia provided, capture here
+            if (isset($entry->enclosure)) {
+                $item->enclosure = (string) $entry->enclosure['url'];
+               //  \PicoFeed\Logging::log(\get_called_class().': recorded enclosure ('.(string) $item->enclosure.')');
+            }
+
             $item->content = $this->filterHtml($item->content, $item->url);
             $this->items[] = $item;
         }

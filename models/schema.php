@@ -3,6 +3,11 @@
 namespace Schema;
 
 
+function version_21($pdo)
+{
+    $pdo->exec('ALTER TABLE items ADD COLUMN enclosure TEXT');
+}
+
 function version_20($pdo)
 {
     $pdo->exec('ALTER TABLE config ADD COLUMN redirect_nothing_to_read TEXT DEFAULT "feeds"');
