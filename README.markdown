@@ -63,6 +63,7 @@ People who sent a pull-request, report a bug, make a new theme or share a super 
 - MonsieurPaulLeBoulanger: https://github.com/MonsieurPaulLeBoulanger
 - Necku: https://github.com/Necku
 - Nicolas Dewaele: http://adminrezo.fr/
+- Pcwalden: https://github.com/pcwalden
 - Silvus: https://github.com/Silvus
 - Skasi7: https://github.com/skasi7
 - Thiriot Christophe: https://github.com/doubleface

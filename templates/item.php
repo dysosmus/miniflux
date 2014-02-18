@@ -35,9 +35,9 @@
         <li class="hide-mobile">
             <a href="<?= $item['url'] ?>" id="original-<?= $item['id'] ?>" rel="noreferrer" target="_blank" data-item-id="<?= $item['id'] ?>"><?= t('original link') ?></a>
         </li>
-        <?php  if (isset($item['enclosure']) && ! is_null($item['enclosure'])): ?>
-            <li class="hide-mobile">
-            <a href="<?= $item['enclosure'] ?>" rel="noreferrer" target="_blank">multimedia 🔉</a>
+        <?php if ($item['enclosure']): ?>
+            <li>
+                <a href="<?= $item['enclosure'] ?>" rel="noreferrer" target="_blank"><?= t('media') ?></a>
             </li>
         <?php endif ?>
         <?= \PicoTools\Template\load('bookmark_links', array('item' => $item, 'menu' => $menu, 'offset' => $offset, 'source' => '')) ?>

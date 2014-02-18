@@ -1,6 +1,7 @@
 <?php
 
 return array(
+    'attachment' => 'pièce jointe',
     'When there is nothing to read, redirect me to this page' => 'Quand il n\'y a rien à lire, redirigez moi vers cette page',
     'Subscription page' => 'Page des abonnements',
     'History page' => 'Historique de lecture',

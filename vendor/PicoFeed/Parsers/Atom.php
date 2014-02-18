@@ -44,6 +44,19 @@ class Atom extends \PicoFeed\Parser
 
             if (empty($item->title)) $item->title = $item->url;
 
+            // Try to find an enclosure
+            foreach ($entry->link as $link) {
+                if ((string) $link['rel'] === 'enclosure') {
+                    $item->enclosure = (string) $link['href'];
+                    $item->enclosure_type = (string) $link['type'];
+
+                    if (\PicoFeed\Filter::isRelativePath($item->enclosure)) {
+                        $item->enclosure = \PicoFeed\Filter::getAbsoluteUrl($item->enclosure, $this->url);
+                    }
+                    break;
+                }
+            }
+
             $this->items[] = $item;
         }
 
@@ -58,16 +71,13 @@ class Atom extends \PicoFeed\Parser
         if (isset($entry->content) && ! empty($entry->content)) {
 
             if (count($entry->content->children())) {
-
                 return (string) $entry->content->asXML();
             }
             else {
-
                 return (string) $entry->content;
             }
         }
         else if (isset($entry->summary) && ! empty($entry->summary)) {
-
             return (string) $entry->summary;
         }
 
@@ -78,9 +88,7 @@ class Atom extends \PicoFeed\Parser
     public function getUrl($xml)
     {
         foreach ($xml->link as $link) {
-
             if ((string) $link['type'] === 'text/html' || (string) $link['type'] === 'application/xhtml+xml') {
-
                 return (string) $link['href'];
             }
         }

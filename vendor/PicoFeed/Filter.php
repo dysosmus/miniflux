@@ -315,7 +315,7 @@ class Filter
     }
 
 
-    public function getAbsoluteUrl($path, $url)
+    public static function getAbsoluteUrl($path, $url)
     {
         $components = parse_url($url);
 
@@ -358,7 +358,7 @@ class Filter
     }
 
 
-    public function isRelativePath($value)
+    public static function isRelativePath($value)
     {
         if (strpos($value, 'data:') === 0) return false;
         return strpos($value, '://') === false && strpos($value, '//') !== 0;

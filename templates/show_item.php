@@ -64,6 +64,11 @@
             <li class="hide-mobile">
                 <?= dt('%e %B %Y %k:%M', $item['updated']) ?>
             </li>
+            <?php if ($item['enclosure']): ?>
+            <li>
+                <a href="<?= $item['enclosure'] ?>" rel="noreferrer" target="_blank"><?= t('attachment') ?></a>
+            </li>
+            <?php endif ?>
             <li class="hide-mobile">
                 <span id="download-item"
                       data-item-id="<?= $item['id'] ?>"
@@ -79,6 +84,18 @@
 
         <div id="item-content">
             <?= $item['content'] ?>
+
+            <?php if ($item['enclosure']): ?>
+                <?php if (strpos($item['enclosure_type'], 'audio') !== false): ?>
+                    <audio controls>
+                        <source src="<?= $item['enclosure'] ?>" type="<?= $item['enclosure_type'] ?>">
+                    </audio>
+                <?php elseif (strpos($item['enclosure_type'], 'video') !== false): ?>
+                    <video controls>
+                        <source src="<?= $item['enclosure'] ?>" type="<?= $item['enclosure_type'] ?>">
+                    </video>
+                <?php endif ?>
+            <?php endif ?>
         </div>
 
         <?php if (isset($item_nav)): ?>

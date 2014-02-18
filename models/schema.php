@@ -6,7 +6,9 @@ namespace Schema;
 function version_21($pdo)
 {
     $pdo->exec('ALTER TABLE items ADD COLUMN enclosure TEXT');
+    $pdo->exec('ALTER TABLE items ADD COLUMN enclosure_type TEXT');
 }
+
 
 function version_20($pdo)
 {

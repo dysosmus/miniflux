@@ -19,6 +19,7 @@ function get_everything()
             'items.updated',
             'items.url',
             'items.enclosure',
+            'items.enclosure_type',
             'items.bookmark',
             'items.feed_id',
             'items.status',
@@ -43,6 +44,7 @@ function get_everything_since($timestamp)
             'items.updated',
             'items.url',
             'items.enclosure',
+            'items.enclosure_type',
             'items.bookmark',
             'items.feed_id',
             'items.status',
@@ -78,6 +80,7 @@ function get_all($status, $offset = null, $limit = null, $order_column = 'update
             'items.updated',
             'items.url',
             'items.enclosure',
+            'items.enclosure_type',
             'items.bookmark',
             'items.feed_id',
             'items.status',
@@ -123,6 +126,7 @@ function get_bookmarks($offset = null, $limit = null)
             'items.updated',
             'items.url',
             'items.enclosure',
+            'items.enclosure_type',
             'items.bookmark',
             'items.status',
             'items.content',
@@ -160,6 +164,7 @@ function get_all_by_feed($feed_id, $offset = null, $limit = null, $order_column 
             'items.updated',
             'items.url',
             'items.enclosure',
+            'items.enclosure_type',
             'items.feed_id',
             'items.status',
             'items.content',
@@ -426,7 +431,8 @@ function update_all($feed_id, array $items, $grabber = false)
                     'content' => $nocontent ? '' : $item->content,
                     'status' => 'unread',
                     'feed_id' => $feed_id,
-                    'enclosure' => isset($item->enclosure) ? $item->enclosure : NULL
+                    'enclosure' => isset($item->enclosure) ? $item->enclosure : null,
+                    'enclosure_type' => isset($item->enclosure_type) ? $item->enclosure_type : null,
                 ));
             }
             else {
