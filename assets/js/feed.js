@@ -15,6 +15,7 @@ Miniflux.Feed = (function() {
         var container = document.getElementById("loading-feed-" + feed_id);
 
         if (container) {
+            container.innerHTML = "";
             var img = document.createElement("img");
             img.src = "assets/img/refresh.gif";
             container.appendChild(img);
@@ -22,10 +23,10 @@ Miniflux.Feed = (function() {
     }
 
     // Hide the refresh icon after update
-    function hideRefreshIcon(feed_id)
+    function hideRefreshIcon(feed_id, replace_text)
     {
         var container = document.getElementById("loading-feed-" + feed_id);
-        if (container) container.innerHTML = "";
+        if (container) container.innerHTML = replace_text;
 
         var container = document.getElementById("last-checked-feed-" + feed_id);
         if (container) container.innerHTML = container.getAttribute("data-after-update");
@@ -51,14 +52,24 @@ Miniflux.Feed = (function() {
 
             request.onload = function() {
 
-                hideRefreshIcon(feed_id);
+                var response;
 
                 try {
-                    if (callback) {
-                        callback(JSON.parse(this.responseText));
-                    }
+                    response = JSON.parse(this.responseText);
                 }
                 catch (e) {}
+
+                var unread_ratio = String("(0/0)");
+                if (response.result !== false) {
+                    unread_ratio = "(" + String(response.result.items_unread) + "/" + String(response.result.items_total) + ")";
+                    // document.getElementById("xmlhttpresp").innerHTML=this.responseText + " " + unread_ratio;
+                }
+
+                hideRefreshIcon(feed_id, unread_ratio);
+
+                if (callback) {
+                    callback(response);
+                }
             };
 
             request.open("POST", "?action=refresh-feed&feed_id=" + feed_id, true);

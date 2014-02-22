@@ -194,7 +194,7 @@ Router\get_action('feeds', function() {
     }
 
     Response\html(Template\layout('feeds', array(
-        'feeds' => Model\Feed\get_all(),
+        'feeds' => Model\Feed\get_all_w_counts(),
         'nothing_to_read' => Request\int_param('nothing_to_read'),
         'menu' => 'feeds',
         'title' => t('Subscriptions')

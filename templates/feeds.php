@@ -25,7 +25,7 @@
                 <?php if (! $feed['enabled']): ?>
                     <span title="<?= t('Subscription disabled') ?>">✖</a>
                 <?php else: ?>
-                    <span id="loading-feed-<?= $feed['id'] ?>"></span>
+                    <span id="loading-feed-<?= $feed['id'] ?>">(<?= $feed['items_unread'] .'/' . $feed['items_total'] ?>)</span>
                 <?php endif ?>
 
                 <a href="?action=feed-items&amp;feed_id=<?= $feed['id'] ?>" title="<?= t('Show only this subscription') ?>"><?= Helper\escape($feed['title']) ?></a>
