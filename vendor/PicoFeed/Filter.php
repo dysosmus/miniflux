@@ -334,6 +334,8 @@ class Filter
             }
         }
 
+        if (! strlen($path)) return $url;
+
         if ($path{0} === '/') {
 
             // Absolute path
