@@ -256,19 +256,23 @@ Miniflux.Item = (function() {
             var item_id = container.getAttribute("data-item-id");
             var message = container.getAttribute("data-before-message");
 
-            var img = document.createElement("img");
-            img.src = "./assets/img/refresh.gif";
+            var span = document.createElement("span");
+            span.appendChild(document.createTextNode("☀"));
+            span.className = "loading-icon";
 
             container.innerHTML = "";
             container.className = "downloading";
-            container.appendChild(img);
+            container.appendChild(span);
             container.appendChild(document.createTextNode(" " + message));
+
+            var icon_interval = setInterval(Miniflux.App.BlinkIcon, 250);
 
             var request = new XMLHttpRequest();
 
             request.onload = function() {
 
                 var response = JSON.parse(request.responseText);
+                clearInterval(icon_interval);
 
                 if (response.result) {
 

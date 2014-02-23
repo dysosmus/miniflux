@@ -9,15 +9,21 @@ Miniflux.Feed = (function() {
     // Number of concurrent requests when updating all feeds
     var queue_length = 5;
 
+    // Interval reference for the loading icon
+    var icon_interval;
+
     // Show the refresh icon when updating a feed
     function showRefreshIcon(feed_id)
     {
         var container = document.getElementById("loading-feed-" + feed_id);
 
         if (container) {
-            var img = document.createElement("img");
-            img.src = "assets/img/refresh.gif";
-            container.appendChild(img);
+            container.appendChild(document.createTextNode("☀"));
+            container.classList.add("loading-icon-blink");
+        }
+
+        if (! icon_interval) {
+            icon_interval = setInterval(Miniflux.App.BlinkIcon, 500);
         }
     }
 
@@ -91,6 +97,7 @@ Miniflux.Feed = (function() {
 
                         if (feeds.length == 0 && queue.length == 0) {
                             clearInterval(interval);
+                            clearInterval(icon_interval);
                             window.location.href = "?action=unread";
                         }
                     });

@@ -617,6 +617,16 @@ iframe {
     color: #333;
 }
 
+.loading-icon {
+    color: #000;
+    opacity: 1;
+    transition: opacity 0.2s ease-in-out;
+}
+
+.loading-icon-blink {
+    opacity: 0;
+}
+
 /* desktop design */
 @media only screen and (min-width: 480px) {
 

@@ -184,3 +184,7 @@ textarea:focus {
     text-decoration: none;
     color: #fff;
 }
+
+.loading-icon {
+    color: #fff;
+}

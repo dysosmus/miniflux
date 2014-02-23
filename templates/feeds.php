@@ -25,7 +25,7 @@
                 <?php if (! $feed['enabled']): ?>
                     <span title="<?= t('Subscription disabled') ?>">✖</a>
                 <?php else: ?>
-                    <span id="loading-feed-<?= $feed['id'] ?>"></span>
+                    <span id="loading-feed-<?= $feed['id'] ?>" class="loading-icon"></span>
                 <?php endif ?>
 
                 <span id="items-count-<?= $feed['id'] ?>">(<?= $feed['items_unread'] .'/' . $feed['items_total'] ?>)</span>
