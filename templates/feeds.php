@@ -25,10 +25,13 @@
                 <?php if (! $feed['enabled']): ?>
                     <span title="<?= t('Subscription disabled') ?>">✖</a>
                 <?php else: ?>
-                    <span id="loading-feed-<?= $feed['id'] ?>">(<?= $feed['items_unread'] .'/' . $feed['items_total'] ?>)</span>
+                    <span id="loading-feed-<?= $feed['id'] ?>"></span>
                 <?php endif ?>
 
+                <span id="items-count-<?= $feed['id'] ?>">(<?= $feed['items_unread'] .'/' . $feed['items_total'] ?>)</span>
+
                 <a href="?action=feed-items&amp;feed_id=<?= $feed['id'] ?>" title="<?= t('Show only this subscription') ?>"><?= Helper\escape($feed['title']) ?></a>
+
                 <?php if ($feed['enabled']): ?>
 
                     <br/>

@@ -15,7 +15,6 @@ Miniflux.Feed = (function() {
         var container = document.getElementById("loading-feed-" + feed_id);
 
         if (container) {
-            container.innerHTML = "";
             var img = document.createElement("img");
             img.src = "assets/img/refresh.gif";
             container.appendChild(img);
@@ -23,10 +22,10 @@ Miniflux.Feed = (function() {
     }
 
     // Hide the refresh icon after update
-    function hideRefreshIcon(feed_id, replace_text)
+    function hideRefreshIcon(feed_id)
     {
         var container = document.getElementById("loading-feed-" + feed_id);
-        if (container) container.innerHTML = replace_text;
+        if (container) container.innerHTML = "";
 
         var container = document.getElementById("last-checked-feed-" + feed_id);
         if (container) container.innerHTML = container.getAttribute("data-after-update");
@@ -43,6 +42,13 @@ Miniflux.Feed = (function() {
         }
     }
 
+    // Update the items unread/total count for the feed
+    function updateItemsCounter(feed_id, counts)
+    {
+        var container = document.getElementById("items-count-" + feed_id);
+        if (container) container.innerHTML = "(" + counts["items_unread"] + "/" + counts['items_total'] + ")";
+    }
+
     return {
         Update: function(feed_id, callback) {
 
@@ -52,24 +58,16 @@ Miniflux.Feed = (function() {
 
             request.onload = function() {
 
-                var response;
+                hideRefreshIcon(feed_id);
 
                 try {
-                    response = JSON.parse(this.responseText);
+
+                    var response = JSON.parse(this.responseText);
+
+                    if (response.result) updateItemsCounter(feed_id, response.items_count);
+                    if (callback) callback(response);
                 }
                 catch (e) {}
-
-                var unread_ratio = String("(0/0)");
-                if (response.result !== false) {
-                    unread_ratio = "(" + String(response.result.items_unread) + "/" + String(response.result.items_total) + ")";
-                    // document.getElementById("xmlhttpresp").innerHTML=this.responseText + " " + unread_ratio;
-                }
-
-                hideRefreshIcon(feed_id, unread_ratio);
-
-                if (callback) {
-                    callback(response);
-                }
             };
 
             request.open("POST", "?action=refresh-feed&feed_id=" + feed_id, true);

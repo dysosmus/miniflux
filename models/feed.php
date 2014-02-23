@@ -157,11 +157,11 @@ function refresh($feed_id)
 
     // Update the `last_checked` column each time, HTTP cache or not
     update_last_checked($feed_id);
-    
+
     if (! $resource->isModified()) {
         update_parsing_error($feed_id, 0);
         \Model\Config\write_debug();
-        return get_feed_unread_counts($feed_id);
+        return true;
     }
 
     $parser = $reader->getParser();
@@ -182,7 +182,7 @@ function refresh($feed_id)
         }
 
         $result = $parser->execute();
-        
+
         if ($result !== false) {
 
             update_parsing_error($feed_id, 0);
@@ -190,7 +190,7 @@ function refresh($feed_id)
             \Model\Item\update_all($feed_id, $result->items, $parser->grabber);
             \Model\Config\write_debug();
 
-            return get_feed_unread_counts($feed_id);
+            return true;
         }
     }
 
@@ -244,56 +244,81 @@ function get_all()
         ->findAll();
 }
 
-// Returns item unread and total counts, indexed by feed_id
-//     setting $feed_id returns counts for just that feed
-function get_feed_unread_counts($feed_id = 0)
+// Get all feeds with the number unread/total items
+function get_all_item_counts()
 {
-    $query = Database::get('db')
+    $counts = Database::get('db')
         ->table('items')
-        ->columns('feed_id', 'status', 'count(status) AS item_count')
+        ->columns('feed_id', 'status', 'count(*) as item_count')
         ->in('status', array('read', 'unread'))
-        ->groupBy('feed_id', 'status');
-    if ($feed_id) $query->eq('feed_id', $feed_id);
-    $rq = $query->findAll();
+        ->groupBy('feed_id', 'status')
+        ->findAll();
 
-    $itemcnts = array();
-    foreach($rq as $rec) {
-        if (!array_key_exists($rec['feed_id'], $itemcnts))
-            $itemcnts[$rec['feed_id']] = array('items_unread' => 0, 'items_total' => 0);
-        if ($rec['status'] == 'unread')
-            $itemcnts[$rec['feed_id']]['items_unread'] = $rec['item_count'];
-        $itemcnts[$rec['feed_id']]['items_total'] += $rec['item_count'];
-    }
-    if ($feed_id)
-        // return the counts for the singe feed requested
-        if(! array_key_exists($feed_id, $itemcnts))
-            return array('items_unread' => 0, 'items_total' => 0);
-        else
-            return $itemcnts[$feed_id];
-    else
-        // return the counts for all feeds
-        return $itemcnts;
-}
+    $feeds = Database::get('db')
+        ->table('feeds')
+        ->asc('title')
+        ->findAll();
 
-// Get all feeds with counts of items_unread and items_total for each feed
-function get_all_w_counts()
-{
-    // get unread and total item counts by feed id
-    $cnts = get_feed_unread_counts();
-    // get all feeds
-    $rq = get_all();
-    // for loop re-processes return array by appending items_unread and items_total fields
-    foreach ($rq as $rec_no => $rec) {
-        // determine if there are item counts for this feed
-        if (array_key_exists($rec['id'], $cnts)) {
-            // yes, append unread and total counts to the feed record
-            $rq[$rec_no]  = array_merge($rec, $cnts[$rec['id']]);
-        } else {
-            // no this is an empty feed, so append unread and total counts = 0
-            $rq[$rec_no] = array_merge($rec, array('items_unread' => 0, 'items_total' => 0));
+    $item_counts = array();
+
+    foreach ($counts as &$count) {
+
+        if (! isset($item_counts[$count['feed_id']])) {
+            $item_counts[$count['feed_id']] = array(
+                'items_unread' => 0,
+                'items_total' => 0,
+            );
+        }
+
+        $item_counts[$count['feed_id']]['items_total'] += $count['item_count'];
+
+        if ($count['status'] === 'unread') {
+            $item_counts[$count['feed_id']]['items_unread'] = $count['item_count'];
         }
     }
-    return $rq;
+
+    foreach ($feeds as &$feed) {
+
+        if (isset($item_counts[$feed['id']])) {
+            $feed += $item_counts[$feed['id']];
+        }
+        else {
+            $feed += array(
+                'items_unread' => 0,
+                'items_total' => 0,
+            );
+        }
+    }
+
+    return $feeds;
+}
+
+// Get unread/total count for one feed
+function count_items($feed_id)
+{
+    $counts = Database::get('db')
+        ->table('items')
+        ->columns('status', 'count(*) as item_count')
+        ->in('status', array('read', 'unread'))
+        ->eq('feed_id', $feed_id)
+        ->groupBy('status')
+        ->findAll();
+
+    $result = array(
+        'items_unread' => 0,
+        'items_total' => 0,
+    );
+
+    foreach ($counts as &$count) {
+
+        if ($count['status'] === 'unread') {
+            $result['items_unread'] = (int) $count['item_count'];
+        }
+
+        $result['items_total'] += $count['item_count'];
+    }
+
+    return $result;
 }
 
 // Get one feed

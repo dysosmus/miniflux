@@ -162,10 +162,13 @@ Router\get_action('refresh-feed', function() {
 // Ajax call to refresh one feed
 Router\post_action('refresh-feed', function() {
 
-    $id = Request\int_param('feed_id', 0);
-    $result = Model\Feed\refresh($id);
+    $feed_id = Request\int_param('feed_id', 0);
 
-    Response\json(array('feed_id' => $id, 'result' => $result));
+    Response\json(array(
+        'feed_id' => $feed_id,
+        'result' => Model\Feed\refresh($feed_id),
+        'items_count' => Model\Feed\count_items($feed_id),
+    ));
 });
 
 // Display all feeds
@@ -194,7 +197,7 @@ Router\get_action('feeds', function() {
     }
 
     Response\html(Template\layout('feeds', array(
-        'feeds' => Model\Feed\get_all_w_counts(),
+        'feeds' => Model\Feed\get_all_item_counts(),
         'nothing_to_read' => Request\int_param('nothing_to_read'),
         'menu' => 'feeds',
         'title' => t('Subscriptions')
