@@ -84,6 +84,7 @@ class Curl extends \PicoFeed\Client
         Logging::log(\get_called_class().' cURL dns lookup time: '.curl_getinfo($ch, CURLINFO_NAMELOOKUP_TIME));
         Logging::log(\get_called_class().' cURL connect time: '.curl_getinfo($ch, CURLINFO_CONNECT_TIME));
         Logging::log(\get_called_class().' cURL speed download: '.curl_getinfo($ch, CURLINFO_SPEED_DOWNLOAD));
+        Logging::log(\get_called_class().' cURL effective url: '.curl_getinfo($ch, CURLINFO_EFFECTIVE_URL));
 
         if (curl_errno($ch)) {
 
