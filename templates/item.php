@@ -30,7 +30,7 @@
             <?php endif ?>
         </li>
         <li class="hide-mobile">
-            <?= dt('%e %B %Y %k:%M', $item['updated']) ?>
+            <span title="<?= dt('%e %B %Y %k:%M', $item['updated']) ?>"><?= Helper\relative_time($item['updated']) ?></span>
         </li>
         <li class="hide-mobile">
             <a href="<?= $item['url'] ?>" id="original-<?= $item['id'] ?>" rel="noreferrer" target="_blank" data-item-id="<?= $item['id'] ?>"><?= t('original link') ?></a>

@@ -77,6 +77,30 @@ function in_list($id, array $listing)
     return '?';
 }
 
+function relative_time($timestamp, $fallback_date_format = '%e %B %Y %k:%M')
+{
+    $diff = time() - $timestamp;
+
+    if ($diff < 60) return \t('%d second'.($diff > 1 ? 's' : '').' ago', $diff);
+
+    $diff = floor($diff / 60);
+    if ($diff < 60) return \t('%d minute'.($diff > 1 ? 's' : '').' ago', $diff);
+
+    $diff = floor($diff / 60);
+    if ($diff < 24) return \t('%d hour'.($diff > 1 ? 's' : '').' ago', $diff);
+
+    $diff = floor($diff / 24);
+    if ($diff < 7) return \t('%d day'.($diff > 1 ? 's' : '').' ago', $diff);
+
+    $diff = floor($diff / 7);
+    if ($diff < 4) return \t('%d week'.($diff > 1 ? 's' : '').' ago', $diff);
+
+    $diff = floor($diff / 4);
+    if ($diff < 12) return \t('%d month'.($diff > 1 ? 's' : '').' ago', $diff);
+
+    return \dt($fallback_date_format, $timestamp);
+}
+
 function error_class(array $errors, $name)
 {
     return ! isset($errors[$name]) ? '' : ' form-error';

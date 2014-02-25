@@ -62,7 +62,7 @@
                 <a href="?action=feed-items&amp;feed_id=<?= $feed['id'] ?>"><?= Helper\escape($feed['title']) ?></a>
             </li>
             <li class="hide-mobile">
-                <?= dt('%e %B %Y %k:%M', $item['updated']) ?>
+                <span title="<?= dt('%e %B %Y %k:%M', $item['updated']) ?>"><?= Helper\relative_time($item['updated']) ?></span>
             </li>
             <?php if ($item['enclosure']): ?>
             <li>
