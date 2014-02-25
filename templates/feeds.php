@@ -15,7 +15,7 @@
 <?php else: ?>
 
     <?php if ($nothing_to_read): ?>
-        <p class="alert"><?= t('Nothing to read, do you want to <a href="?action=refresh-all" data-action="refresh-all">update your subscriptions?</a>') ?></p>
+        <p class="alert"><?= tne('Nothing to read, do you want to <a href="?action=refresh-all" data-action="refresh-all">update your subscriptions?</a>') ?></p>
     <?php endif ?>
 
     <section class="items">

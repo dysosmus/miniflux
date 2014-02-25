@@ -21,6 +21,24 @@ namespace PicoTools\Translator {
         \array_shift($args);
         \array_unshift($args, get($identifier, $identifier));
 
+        foreach ($args as &$arg) {
+            $arg = htmlspecialchars($arg, ENT_QUOTES, 'UTF-8', false);
+        }
+
+        return \call_user_func_array(
+            'sprintf',
+            $args
+        );
+    }
+
+
+    function translate_no_escaping($identifier)
+    {
+        $args = \func_get_args();
+
+        \array_shift($args);
+        \array_unshift($args, get($identifier, $identifier));
+
         return \call_user_func_array(
             'sprintf',
             $args
@@ -122,26 +140,23 @@ namespace PicoTools\Translator {
 
 namespace {
 
-    function t() {
+    function tne() {
+        return call_user_func_array('\PicoTools\Translator\translate_no_escaping', func_get_args());
+    }
 
+    function t() {
         return call_user_func_array('\PicoTools\Translator\translate', func_get_args());
     }
 
-
     function c() {
-
         return call_user_func_array('\PicoTools\Translator\currency', func_get_args());
     }
 
-
     function n() {
-
         return call_user_func_array('\PicoTools\Translator\number', func_get_args());
     }
 
-
     function dt() {
-
         return call_user_func_array('\PicoTools\Translator\datetime', func_get_args());
     }
 }
