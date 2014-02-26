@@ -21,6 +21,9 @@ Router\before(function($action) {
     $language = Model\Config\get('language') ?: 'en_US';
     if ($language !== 'en_US') PicoTools\Translator\load($language);
 
+    // Set timezone
+    date_default_timezone_set(Model\Config\get('timezone') ?: 'UTC');
+
     // HTTP secure headers
     $frame_src = \PicoFeed\Filter::$iframe_whitelist;
     $frame_src[] = 'https://login.persona.org';

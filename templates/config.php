@@ -13,6 +13,9 @@
     <?= Helper\form_label(t('Confirmation'), 'confirmation') ?>
     <?= Helper\form_password('confirmation', $values, $errors) ?><br/>
 
+    <?= Helper\form_label(t('Timezone'), 'timezone') ?>
+    <?= Helper\form_select('timezone', $timezones, $values, $errors) ?><br/>
+
     <?= Helper\form_label(t('Language'), 'language') ?>
     <?= Helper\form_select('language', $languages, $values, $errors) ?><br/>
 

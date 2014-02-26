@@ -16,7 +16,7 @@ use SimpleValidator\Validator;
 use SimpleValidator\Validators;
 use PicoDb\Database;
 
-const DB_VERSION          = 21;
+const DB_VERSION          = 22;
 const HTTP_USERAGENT      = 'Miniflux - http://miniflux.net';
 const HTTP_FAKE_USERAGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/29.0.1547.62 Safari/537.36';
 
@@ -33,6 +33,13 @@ function write_debug()
 
         file_put_contents(DEBUG_FILENAME, $data);
     }
+}
+
+// Get available timezone
+function get_timezones()
+{
+    $timezones = \timezone_identifiers_list();
+    return array_combine(array_values($timezones), $timezones);
 }
 
 // Get all supported languages
@@ -172,7 +179,7 @@ function get($name)
     }
     else {
 
-        if (! isset($_SESSION['config'])) {
+        if (! isset($_SESSION['config'][$name])) {
             $_SESSION['config'] = get_all();
         }
 
@@ -192,6 +199,7 @@ function get_all()
         ->columns(
             'username',
             'language',
+            'timezone',
             'autoflush',
             'nocontent',
             'items_per_page',

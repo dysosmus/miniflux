@@ -206,4 +206,5 @@ return array(
     '%d weeks ago' => 'Il y a %d semaines',
     '%d month ago' => 'Il y a %d mois',
     '%d months ago' => 'Il y a %d mois',
+    'Timezone' => 'Fuseau horaire',
 );
