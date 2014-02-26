@@ -38,8 +38,7 @@
 
                     <?php if ($feed['last_checked']): ?>
                         <time class="feed-last-checked" id="last-checked-feed-<?= $feed['id'] ?>" data-after-update="<?= t('updated just now') ?>">
-                            <?= t('updated' ) ?>
-                            <span title="<?= dt('%e %B %Y %k:%M', $feed['last_checked']) ?>"><?= Helper\relative_time($feed['last_checked']) ?></span>
+                            <?= t('checked at').' '.dt('%e %B %Y %k:%M', $feed['last_checked']) ?>
                         </time>
                     <?php else: ?>
                         <span class="feed-last-checked" id="last-checked-feed-<?= $feed['id'] ?>" data-after-update="<?= t('now') ?>">
