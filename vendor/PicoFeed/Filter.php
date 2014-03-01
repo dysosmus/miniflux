@@ -43,7 +43,7 @@ class Filter
         'br' => array(),
         'del' => array(),
         'a' => array('href'),
-        'img' => array('src'),
+        'img' => array('src', 'title', 'alt'),
         'figure' => array(),
         'figcaption' => array(),
         'cite' => array(),
@@ -219,13 +219,13 @@ class Filter
 
                             if ($this->isAllowedIframeResource($value)) {
 
-                                $attr_data .= ' '.$attribute.'="'.$value.'"';
+                                $attr_data .= ' '.$attribute.'="'.$this->escape($value).'"';
                                 $used_attributes[] = $attribute;
                             }
                         }
                         else if ($this->isRelativePath($value)) {
 
-                            $attr_data .= ' '.$attribute.'="'.$this->getAbsoluteUrl($value, $this->url).'"';
+                            $attr_data .= ' '.$attribute.'="'.$this->escape($this->getAbsoluteUrl($value, $this->url)).'"';
                             $used_attributes[] = $attribute;
                         }
                         else if ($this->isAllowedProtocol($value) && ! $this->isBlacklistedMedia($value)) {
@@ -241,13 +241,13 @@ class Filter
                             // Replace protocol-relative url // by http://
                             if (substr($value, 0, 2) === '//') $value = 'http:'.$value;
 
-                            $attr_data .= ' '.$attribute.'="'.$value.'"';
+                            $attr_data .= ' '.$attribute.'="'.$this->escape($value).'"';
                             $used_attributes[] = $attribute;
                         }
                     }
                     else if ($this->validateAttributeValue($attribute, $value)) {
 
-                        $attr_data .= ' '.$attribute.'="'.$value.'"';
+                        $attr_data .= ' '.$attribute.'="'.$this->escape($value).'"';
                         $used_attributes[] = $attribute;
                     }
                 }
@@ -310,8 +310,14 @@ class Filter
         // }
 
         if (! $this->strip_content) {
-            $this->data .= htmlspecialchars($content, ENT_QUOTES, 'UTF-8', false);
+            $this->data .= $this->escape($content);
         }
+    }
+
+
+    public static function escape($content)
+    {
+        return htmlspecialchars($content, ENT_QUOTES, 'UTF-8', false);
     }
 
 
