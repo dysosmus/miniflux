@@ -130,12 +130,14 @@ function get_nothing_to_read_redirections()
 // Generate a token from /dev/urandom or with uniqid() if open_basedir is enabled
 function generate_token()
 {
-    if (ini_get('open_basedir') === '') {
-        return substr(base64_encode(file_get_contents('/dev/urandom', false, null, 0, 20)), 0, 15);
+    if (function_exists('openssl_random_pseudo_bytes')) {
+        return bin2hex(\openssl_random_pseudo_bytes(16));
     }
-    else {
-        return substr(base64_encode(uniqid(mt_rand(), true)), 0, 20);
+    else if (ini_get('open_basedir') === '' && strtoupper(substr(PHP_OS, 0, 3)) !== 'WIN') {
+        return hash('sha256', file_get_contents('/dev/urandom', false, null, 0, 30));
     }
+
+    return hash('sha256', uniqid(mt_rand(), true));
 }
 
 // Regenerate tokens for the API and bookmark feed
