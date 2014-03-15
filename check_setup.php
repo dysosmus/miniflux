@@ -5,11 +5,17 @@ if (version_compare(PHP_VERSION, '5.3.7', '<')) {
     die('This software require PHP 5.3.7 minimum');
 }
 
-// Short tags must be enabled for PHP < 5.4
+// Checks for PHP < 5.4
 if (version_compare(PHP_VERSION, '5.4.0', '<')) {
 
+    // Short tags must be enabled for PHP < 5.4
     if (! ini_get('short_open_tag')) {
-        die('This software require to have short tags enabled, check your php.ini => "short_open_tag = On"');
+        die('This software require to have short tags enabled if you have PHP < 5.4 ("short_open_tag = On")');
+    }
+
+    // Magic quotes are deprecated since PHP 5.4
+    if (get_magic_quotes_gpc()) {
+        die('This software require to have "Magic quotes" disabled, it\'s deprecated since PHP 5.4 ("magic_quotes_gpc = Off")');
     }
 }
 
@@ -34,6 +40,11 @@ if (! function_exists('dom_import_simplexml')) {
 // Check PDO Sqlite
 if (! extension_loaded('pdo_sqlite')) {
     die('PHP extension required: pdo_sqlite');
+}
+
+// Check extension: mbstring
+if (! extension_loaded('mbstring')) {
+    die('PHP extension required: mbstring');
 }
 
 // Check for curl
