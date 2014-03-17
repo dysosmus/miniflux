@@ -1,12 +1,12 @@
 <?php
 
 require __DIR__.'/common.php';
-require __DIR__.'/vendor/PicoTools/Template.php';
+require __DIR__.'/vendor/PicoFarad/Template.php';
 require __DIR__.'/vendor/PicoFarad/Response.php';
 require __DIR__.'/vendor/PicoFarad/Request.php';
 require __DIR__.'/vendor/PicoFarad/Session.php';
 require __DIR__.'/vendor/PicoFarad/Router.php';
-require __DIR__.'/helpers.php';
+require __DIR__.'/lib/helpers.php';
 
 use PicoFarad\Router;
 use PicoFarad\Response;

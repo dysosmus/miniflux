@@ -87,7 +87,7 @@
             <li><a href="?action=download-db"><?= t('Download the entire database') ?></a> <?= t('(Gzip compressed Sqlite file)') ?></li>
         </ul>
     </div>
-    <?= \PicoTools\Template\load('keyboard_shortcuts') ?>
+    <?= \PicoFarad\Template\load('keyboard_shortcuts') ?>
     <div class="alert alert-normal">
         <h3><?= t('About') ?></h3>
         <ul>

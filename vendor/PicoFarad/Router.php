@@ -104,12 +104,10 @@ function find_route($method, $route, \Closure $callback)
 {
     if ($_SERVER['REQUEST_METHOD'] === $method) {
 
-        if ($_SERVER['QUERY_STRING']) {
-
+        if (! empty($_SERVER['QUERY_STRING'])) {
             $url = substr($_SERVER['REQUEST_URI'], 0, -(strlen($_SERVER['QUERY_STRING']) + 1));
         }
         else {
-
             $url = $_SERVER['REQUEST_URI'];
         }
 
@@ -117,7 +115,7 @@ function find_route($method, $route, \Closure $callback)
 
         if (url_match($route, $url, $params)) {
 
-            before($handler);
+            before($route);
             \call_user_func_array($callback, $params);
             exit;
         }

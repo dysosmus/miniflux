@@ -1,10 +1,12 @@
 <?php
 
+require_once __DIR__.'/../lib/AuthProvider.php';
+
 use PicoFarad\Router;
 use PicoFarad\Response;
 use PicoFarad\Request;
 use PicoFarad\Session;
-use PicoTools\Template;
+use PicoFarad\Template;
 
 // Logout and destroy session
 Router\get_action('logout', function() {
@@ -45,14 +47,11 @@ Router\post_action('login', function() {
 // Link to a Google Account (redirect)
 Router\get_action('google-redirect-link', function() {
 
-    require 'vendor/PicoTools/AuthProvider.php';
     Response\Redirect(AuthProvider\google_get_url(Helper\get_current_base_url(), '?action=google-link'));
 });
 
 // Link to a Google Account (association)
 Router\get_action('google-link', function() {
-
-    require 'vendor/PicoTools/AuthProvider.php';
 
     list($valid, $token) = AuthProvider\google_validate();
 
@@ -70,14 +69,11 @@ Router\get_action('google-link', function() {
 // Authenticate with a Google Account (redirect)
 Router\get_action('google-redirect-auth', function() {
 
-    require 'vendor/PicoTools/AuthProvider.php';
     Response\Redirect(AuthProvider\google_get_url(Helper\get_current_base_url(), '?action=google-auth'));
 });
 
 // Authenticate with a Google Account (callback url)
 Router\get_action('google-auth', function() {
-
-    require 'vendor/PicoTools/AuthProvider.php';
 
     list($valid, $token) = AuthProvider\google_validate();
 
@@ -104,8 +100,6 @@ Router\get_action('google-auth', function() {
 // Authenticate with a Mozilla Persona (ajax check)
 Router\post_action('mozilla-auth', function() {
 
-    require 'vendor/PicoTools/AuthProvider.php';
-
     list($valid, $token) = AuthProvider\mozilla_validate(Request\param('token'));
 
     if ($valid && $token === Model\Config\get('auth_mozilla_token')) {
@@ -124,8 +118,6 @@ Router\post_action('mozilla-auth', function() {
 
 // Link Miniflux to a Mozilla Account (ajax check)
 Router\post_action('mozilla-link', function() {
-
-    require 'vendor/PicoTools/AuthProvider.php';
 
     list($valid, $token) = AuthProvider\mozilla_validate(Request\param('token'));
 

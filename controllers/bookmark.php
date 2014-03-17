@@ -6,7 +6,7 @@ use PicoFarad\Router;
 use PicoFarad\Response;
 use PicoFarad\Request;
 use PicoFarad\Session;
-use PicoTools\Template;
+use PicoFarad\Template;
 
 // Ajax call to add or remove a bookmark
 Router\post_action('bookmark', function() {

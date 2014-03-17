@@ -4,7 +4,7 @@ use PicoFarad\Router;
 use PicoFarad\Response;
 use PicoFarad\Request;
 use PicoFarad\Session;
-use PicoTools\Template;
+use PicoFarad\Template;
 
 // Display unread items
 Router\get_action('unread', function() {

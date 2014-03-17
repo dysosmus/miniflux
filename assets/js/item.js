@@ -93,7 +93,7 @@ Miniflux.Item = (function() {
 
                     var icon = document.createElement("span");
                     icon.id = "read-icon-" + item_id;
-                    icon.appendChild(document.createTextNode("☑ "));
+                    icon.appendChild(document.createTextNode("✔ "));
                     link.parentNode.insertBefore(icon, link);
                 }
 

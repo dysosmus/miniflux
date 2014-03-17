@@ -268,7 +268,7 @@ function save(array $values)
     $_SESSION['config'] = $values;
 
     // Reload translations for flash session message
-    \PicoTools\Translator\load($values['language']);
+    \Translator\load($values['language']);
 
     // If the user does not want content of feeds, remove it in previous ones
     if (isset($values['nocontent']) && (bool) $values['nocontent']) {

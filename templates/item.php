@@ -40,7 +40,7 @@
                 <a href="<?= $item['enclosure'] ?>" rel="noreferrer" target="_blank"><?= t('media') ?></a>
             </li>
         <?php endif ?>
-        <?= \PicoTools\Template\load('bookmark_links', array('item' => $item, 'menu' => $menu, 'offset' => $offset, 'source' => '')) ?>
-        <?= \PicoTools\Template\load('status_links', array('item' => $item, 'redirect' => $menu, 'offset' => $offset)) ?>
+        <?= \PicoFarad\Template\load('bookmark_links', array('item' => $item, 'menu' => $menu, 'offset' => $offset, 'source' => '')) ?>
+        <?= \PicoFarad\Template\load('status_links', array('item' => $item, 'redirect' => $menu, 'offset' => $offset)) ?>
     </ul>
 </article>

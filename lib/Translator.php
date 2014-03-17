@@ -1,15 +1,6 @@
 <?php
 
-/*
- * This file is part of PicoTools.
- *
- * (c) Frédéric Guillot http://fredericguillot.com
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
-namespace PicoTools\Translator {
+namespace Translator {
 
     const PATH = 'locales/';
 
@@ -137,26 +128,25 @@ namespace PicoTools\Translator {
     }
 }
 
-
 namespace {
 
     function tne() {
-        return call_user_func_array('\PicoTools\Translator\translate_no_escaping', func_get_args());
+        return call_user_func_array('\Translator\translate_no_escaping', func_get_args());
     }
 
     function t() {
-        return call_user_func_array('\PicoTools\Translator\translate', func_get_args());
+        return call_user_func_array('\Translator\translate', func_get_args());
     }
 
     function c() {
-        return call_user_func_array('\PicoTools\Translator\currency', func_get_args());
+        return call_user_func_array('\Translator\currency', func_get_args());
     }
 
     function n() {
-        return call_user_func_array('\PicoTools\Translator\number', func_get_args());
+        return call_user_func_array('\Translator\number', func_get_args());
     }
 
     function dt() {
-        return call_user_func_array('\PicoTools\Translator\datetime', func_get_args());
+        return call_user_func_array('\Translator\datetime', func_get_args());
     }
 }

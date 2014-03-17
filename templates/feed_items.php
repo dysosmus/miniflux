@@ -18,14 +18,14 @@
 
     <section class="items" id="listing">
         <?php foreach ($items as $item): ?>
-            <?= \PicoTools\Template\load('item', array('item' => $item, 'menu' => $menu, 'offset' => $offset, 'hide' => false)) ?>
+            <?= \PicoFarad\Template\load('item', array('item' => $item, 'menu' => $menu, 'offset' => $offset, 'hide' => false)) ?>
         <?php endforeach ?>
 
         <div id="bottom-menu">
             <a href="?action=mark-feed-as-read&amp;feed_id=<?= $feed['id'] ?>" data-action="mark-feed-read" data-feed-id="<?= $feed['id'] ?>"><?= t('mark all as read') ?></a>
         </div>
 
-        <?= \PicoTools\Template\load('paging', array('menu' => $menu, 'nb_items' => $nb_items, 'items_per_page' => $items_per_page, 'offset' => $offset, 'order' => $order, 'direction' => $direction, 'feed_id' => $feed['id'])) ?>
+        <?= \PicoFarad\Template\load('paging', array('menu' => $menu, 'nb_items' => $nb_items, 'items_per_page' => $items_per_page, 'offset' => $offset, 'order' => $order, 'direction' => $direction, 'feed_id' => $feed['id'])) ?>
     </section>
 
 <?php endif ?>

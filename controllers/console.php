@@ -4,7 +4,7 @@ use PicoFarad\Router;
 use PicoFarad\Response;
 use PicoFarad\Request;
 use PicoFarad\Session;
-use PicoTools\Template;
+use PicoFarad\Template;
 
 // Flush console messages
 Router\get_action('flush-console', function() {

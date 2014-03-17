@@ -4,7 +4,7 @@ use PicoFarad\Router;
 use PicoFarad\Response;
 use PicoFarad\Request;
 use PicoFarad\Session;
-use PicoTools\Template;
+use PicoFarad\Template;
 
 // Called before each action
 Router\before(function($action) {
@@ -19,7 +19,7 @@ Router\before(function($action) {
 
     // Load translations
     $language = Model\Config\get('language') ?: 'en_US';
-    if ($language !== 'en_US') PicoTools\Translator\load($language);
+    if ($language !== 'en_US') \Translator\load($language);
 
     // Set timezone
     date_default_timezone_set(Model\Config\get('timezone') ?: 'UTC');

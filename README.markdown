@@ -20,6 +20,7 @@ Features
 - Keyboard shortcuts (pressing '?' displays a pop-up listing the shortcuts; pressing 'q' closes it)
 - Basic bookmarks
 - Translated in English, French, German, Italian, Czech, Spanish, Portuguese and Simplified Chinese
+- RTL language support
 - Themes support
 - Alternative login with a Google Account or Mozilla Persona
 - **Full article download for feeds that display only a summary** (website scraper based on Xpath rules)
@@ -98,7 +99,6 @@ Libraries used
 
 - [PicoFeed](https://github.com/fguillot/picoFeed)
 - [PicoFarad](https://github.com/fguillot/picoFarad)
-- [PicoTools](https://github.com/fguillot/picoTools)
 - [PicoDb](https://github.com/fguillot/picoDb)
 - [SimpleValidator](https://github.com/fguillot/simpleValidator)
 - [PHP 5.5 password backport](https://github.com/ircmaxell/password_compat)

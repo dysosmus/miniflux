@@ -17,7 +17,9 @@ function content_type($mimetype)
 
 function status($status_code)
 {
-    if (strpos(php_sapi_name(), 'apache') !== false) {
+    $sapi_name = php_sapi_name();
+
+    if (strpos($sapi_name, 'apache') !== false || $sapi_name === 'cli-server') {
         header('HTTP/1.0 '.$status_code);
     }
     else {
