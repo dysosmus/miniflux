@@ -22,6 +22,7 @@ class Rss10 extends \PicoFeed\Parser
         $this->title = $this->stripWhiteSpace((string) $xml->channel->title) ?: $this->url;
         $this->url = (string) $xml->channel->link;
         $this->id = $this->url;
+        $this->language = '';
 
         \PicoFeed\Logging::log(\get_called_class().': Title => '.$this->title);
         \PicoFeed\Logging::log(\get_called_class().': Url => '.$this->url);
@@ -42,6 +43,7 @@ class Rss10 extends \PicoFeed\Parser
             $item->author= '';
             $item->updated = '';
             $item->content = '';
+            $item->language = '';
 
             foreach ($namespaces as $name => $url) {
 

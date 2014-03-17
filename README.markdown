@@ -20,7 +20,7 @@ Features
 - Keyboard shortcuts (pressing '?' displays a pop-up listing the shortcuts; pressing 'q' closes it)
 - Basic bookmarks
 - Translated in English, French, German, Italian, Czech, Spanish, Portuguese and Simplified Chinese
-- RTL language support
+- RTL languages support
 - Themes support
 - Alternative login with a Google Account or Mozilla Persona
 - **Full article download for feeds that display only a summary** (website scraper based on Xpath rules)
