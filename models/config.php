@@ -16,7 +16,7 @@ use SimpleValidator\Validator;
 use SimpleValidator\Validators;
 use PicoDb\Database;
 
-const DB_VERSION          = 22;
+const DB_VERSION          = 23;
 const HTTP_USERAGENT      = 'Miniflux - http://miniflux.net';
 const HTTP_FAKE_USERAGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/29.0.1547.62 Safari/537.36';
 

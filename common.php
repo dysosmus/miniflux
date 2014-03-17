@@ -4,6 +4,7 @@ require __DIR__.'/check_setup.php';
 require __DIR__.'/vendor/PicoTools/Translator.php';
 require __DIR__.'/vendor/PicoDb/Database.php';
 require __DIR__.'/vendor/PicoFeed/Client.php';
+require __DIR__.'/vendor/PicoFeed/Parser.php';
 require __DIR__.'/models/config.php';
 require __DIR__.'/models/user.php';
 require __DIR__.'/models/feed.php';

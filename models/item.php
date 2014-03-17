@@ -24,6 +24,7 @@ function get_everything()
             'items.feed_id',
             'items.status',
             'items.content',
+            'items.language',
             'feeds.site_url',
             'feeds.title AS feed_title'
         )
@@ -49,6 +50,7 @@ function get_everything_since($timestamp)
             'items.feed_id',
             'items.status',
             'items.content',
+            'items.language',
             'feeds.site_url',
             'feeds.title AS feed_title'
         )
@@ -85,6 +87,7 @@ function get_all($status, $offset = null, $limit = null, $order_column = 'update
             'items.feed_id',
             'items.status',
             'items.content',
+            'items.language',
             'feeds.site_url',
             'feeds.title AS feed_title'
         )
@@ -131,6 +134,7 @@ function get_bookmarks($offset = null, $limit = null)
             'items.status',
             'items.content',
             'items.feed_id',
+            'items.language',
             'feeds.site_url',
             'feeds.title AS feed_title'
         )
@@ -169,6 +173,7 @@ function get_all_by_feed($feed_id, $offset = null, $limit = null, $order_column 
             'items.status',
             'items.content',
             'items.bookmark',
+            'items.language',
             'feeds.site_url'
         )
         ->join('feeds', 'id', 'feed_id')
@@ -433,6 +438,7 @@ function update_all($feed_id, array $items, $grabber = false)
                     'feed_id' => $feed_id,
                     'enclosure' => isset($item->enclosure) ? $item->enclosure : null,
                     'enclosure_type' => isset($item->enclosure_type) ? $item->enclosure_type : null,
+                    'language' => $item->language,
                 ));
             }
             else {

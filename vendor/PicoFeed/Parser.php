@@ -7,24 +7,69 @@ require_once __DIR__.'/Filter.php';
 require_once __DIR__.'/Encoding.php';
 require_once __DIR__.'/Grabber.php';
 
+/**
+ * Base parser class
+ *
+ * @author  Frederic Guillot
+ * @package parser
+ */
 abstract class Parser
 {
+    /**
+     * Hash algorithm used to generate item id, any value supported by PHP, see hash_algos()
+     *
+     * @access public
+     * @static
+     * @var string
+     */
+    public static $hashAlgo = 'crc32b'; // crc32b seems to be faster and shorter than other hash algorithms
+
+    /**
+     * Feed content (XML data)
+     *
+     * @access protected
+     * @var string
+     */
     protected $content = '';
 
+    /**
+     * Feed properties (values parsed)
+     *
+     * @access public
+     */
     public $id = '';
     public $url = '';
     public $title = '';
     public $updated = '';
+    public $language = '';
     public $items = array();
+
+    /**
+     * Content grabber parameters
+     *
+     * @access public
+     */
     public $grabber = false;
     public $grabber_ignore_urls = array();
     public $grabber_timeout = null;
     public $grabber_user_agent = null;
 
-
+    /**
+     * Parse feed content
+     *
+     * @abstract
+     * @access public
+     * @return mixed
+     */
     abstract public function execute();
 
-
+    /**
+     * Constructor
+     *
+     * @access public
+     * @param  string  $content        Feed content
+     * @param  string  $http_encoding  HTTP encoding (headers)
+     */
     public function __construct($content, $http_encoding = '')
     {
         $xml_encoding = Filter::getEncodingFromXmlTag($content);
@@ -45,7 +90,14 @@ abstract class Parser
         $this->content = $this->normalizeData($this->content);
     }
 
-
+    /**
+     * Filter HTML for entry content
+     *
+     * @access public
+     * @param  string  $item_content  Item content
+     * @param  string  $item_url      Item URL
+     * @return string                 Filtered content
+     */
     public function filterHtml($item_content, $item_url)
     {
         $content = '';
@@ -64,7 +116,12 @@ abstract class Parser
         return $content;
     }
 
-
+    /**
+     * Get XML parser errors
+     *
+     * @access public
+     * @return string
+     */
     public function getXmlErrors()
     {
         $errors = array();
@@ -82,8 +139,13 @@ abstract class Parser
         return implode(', ', $errors);
     }
 
-
-    // Dirty quickfix before XML parsing
+    /**
+     * Dirty quickfixes before XML parsing
+     *
+     * @access public
+     * @param  string  $data Raw data
+     * @return string        Normalized data
+     */
     public function normalizeData($data)
     {
         $data = str_replace("\xc3\x20", '', $data);
@@ -91,8 +153,13 @@ abstract class Parser
         return $data;
     }
 
-    // For each href attribute, replace & by &amp;
-    // Useful for broken XML feeds
+    /**
+     * Replace & by &amp; for each href attribute (Fix broken feeds)
+     *
+     * @access public
+     * @param  string  $content Raw data
+     * @return string           Normalized data
+     */
     public function replaceEntityAttribute($content)
     {
         $content = preg_replace_callback('/href="[^"]+"/', function(array $matches) {
@@ -102,8 +169,13 @@ abstract class Parser
         return $content;
     }
 
-
-    // Trim whitespace from the begining, the end and inside a string and don't break utf-8 string
+    /**
+     * Trim whitespace from the begining, the end and inside a string and don't break utf-8 string
+     *
+     * @access public
+     * @param  string  $value  Raw data
+     * @return string          Normalized data
+     */
     public function stripWhiteSpace($value)
     {
         $value = str_replace("\r", "", $value);
@@ -112,14 +184,25 @@ abstract class Parser
         return trim($value);
     }
 
-
+    /**
+     * Generate a unique id for an entry (hash all arguments)
+     *
+     * @access public
+     * @param  string  $args  Pieces of data to hash
+     * @return string         Id
+     */
     public function generateId()
     {
-        // crc32b seems to be faster and shorter than other hash algorithms
-        return hash('crc32b', implode(func_get_args()));
+        return hash(self::$hashAlgo, implode(func_get_args()));
     }
 
-
+    /**
+     * Try to parse all date format for broken feeds
+     *
+     * @access public
+     * @param  string  $value  Original date format
+     * @return integer         Timestamp
+     */
     public function parseDate($value)
     {
         // Format => truncate to this length if not null
@@ -168,7 +251,14 @@ abstract class Parser
         return time();
     }
 
-
+    /**
+     * Get a valid date from a given format
+     *
+     * @access public
+     * @param  string  $format   Date format
+     * @param  string  $value    Original date value
+     * @return integer           Timestamp
+     */
     public function getValidDate($format, $value)
     {
         $date = \DateTime::createFromFormat($format, $value);
@@ -181,8 +271,13 @@ abstract class Parser
         return 0;
     }
 
-
-    // Hardcoded list of hostname/token to exclude from id generation
+    /**
+     * Hardcoded list of hostname/token to exclude from id generation
+     *
+     * @access public
+     * @param  string  $url  URL
+     * @return boolean
+     */
     public function isExcludedFromId($url)
     {
         $exclude_list = array('ap.org', 'jacksonville.com');
@@ -190,6 +285,61 @@ abstract class Parser
         foreach ($exclude_list as $token) {
             if (strpos($url, $token) !== false) return true;
         }
+
+        return false;
+    }
+
+    /**
+     * Get xml:lang value
+     *
+     * @access public
+     * @param  string  $xml  XML string
+     * @return string        Language
+     */
+    public function getXmlLang($xml)
+    {
+        $dom = new \DOMDocument;
+        $dom->loadXML($this->content);
+
+        $xpath = new \DOMXPath($dom);
+        return $xpath->evaluate('string(//@xml:lang[1])') ?: '';
+    }
+
+    /**
+     * Return true if the given language is "Right to Left"
+     *
+     * @static
+     * @access public
+     * @param  string  $language  Language: fr-FR, en-US
+     * @return bool
+     */
+    public static function isLanguageRTL($language)
+    {
+        $language = strtolower($language);
+
+        // Arabic (ar-**)
+        if (strpos($language, 'ar') === 0) return true;
+
+        // Farsi (fa-**)
+        if (strpos($language, 'fa') === 0) return true;
+
+        // Urdu (ur-**)
+        if (strpos($language, 'ur') === 0) return true;
+
+        // Pashtu (ps-**)
+        if (strpos($language, 'ps') === 0) return true;
+
+        // Syriac (syr-**)
+        if (strpos($language, 'syr') === 0) return true;
+
+        // Divehi (dv-**)
+        if (strpos($language, 'dv') === 0) return true;
+
+        // Hebrew (he-**)
+        if (strpos($language, 'he') === 0) return true;
+
+        // Yiddish (yi-**)
+        if (strpos($language, 'yi') === 0) return true;
 
         return false;
     }

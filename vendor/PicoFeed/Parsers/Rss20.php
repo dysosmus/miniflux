@@ -2,8 +2,20 @@
 
 namespace PicoFeed\Parsers;
 
+/**
+ * RSS 2.0 Parser
+ *
+ * @author  Frederic Guillot
+ * @package parser
+ */
 class Rss20 extends \PicoFeed\Parser
 {
+    /**
+     * Parse the document
+     *
+     * @access public
+     * @return mixed   Rss20 instance or false
+     */
     public function execute()
     {
         \PicoFeed\Logging::log(\get_called_class().': begin parsing');
@@ -26,7 +38,6 @@ class Rss20 extends \PicoFeed\Parser
                 $link = (string) $xml_link;
 
                 if ($link !== '') {
-
                     $this->url = (string) $link;
                     break;
                 }
@@ -37,6 +48,7 @@ class Rss20 extends \PicoFeed\Parser
             $this->url = (string) $xml->channel->link;
         }
 
+        $this->language = isset($xml->channel->language) ? (string) $xml->channel->language : '';
         $this->title = $this->stripWhiteSpace((string) $xml->channel->title) ?: $this->url;
         $this->id = $this->url;
         $this->updated = $this->parseDate(isset($xml->channel->pubDate) ? (string) $xml->channel->pubDate : (string) $xml->channel->lastBuildDate);
@@ -60,6 +72,7 @@ class Rss20 extends \PicoFeed\Parser
             $item->content = '';
             $item->enclosure = '';
             $item->enclosure_type = '';
+            $item->language = $this->language;
 
             foreach ($namespaces as $name => $url) {
 
@@ -94,22 +107,18 @@ class Rss20 extends \PicoFeed\Parser
             if (empty($item->author)) {
 
                 if (isset($entry->author)) {
-
                     $item->author = (string) $entry->author;
                 }
                 else if (isset($xml->channel->webMaster)) {
-
                     $item->author = (string) $xml->channel->webMaster;
                 }
             }
 
             if (isset($entry->guid) && isset($entry->guid['isPermaLink']) && (string) $entry->guid['isPermaLink'] != 'false') {
-
                 $id = (string) $entry->guid;
                 $item->id = $this->generateId($id !== '' && $id !== $item->url ? $id : $item->url, $this->isExcludedFromId($this->url) ? '' : $this->url);
             }
             else {
-
                 $item->id = $this->generateId($item->url, $this->isExcludedFromId($this->url) ? '' : $this->url);
             }
 

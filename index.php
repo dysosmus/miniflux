@@ -2,7 +2,6 @@
 
 require __DIR__.'/common.php';
 require __DIR__.'/vendor/PicoTools/Template.php';
-require __DIR__.'/vendor/PicoTools/Helper.php';
 require __DIR__.'/vendor/PicoFarad/Response.php';
 require __DIR__.'/vendor/PicoFarad/Request.php';
 require __DIR__.'/vendor/PicoFarad/Session.php';

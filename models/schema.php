@@ -2,6 +2,13 @@
 
 namespace Schema;
 
+
+function version_23($pdo)
+{
+    $pdo->exec('ALTER TABLE items ADD COLUMN language TEXT');
+}
+
+
 function version_22($pdo)
 {
     $pdo->exec("ALTER TABLE config ADD COLUMN timezone TEXT DEFAULT 'UTC'");

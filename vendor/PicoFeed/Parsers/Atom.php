@@ -2,8 +2,20 @@
 
 namespace PicoFeed\Parsers;
 
+/**
+ * Atom parser
+ *
+ * @author  Frederic Guillot
+ * @package parser
+ */
 class Atom extends \PicoFeed\Parser
 {
+    /**
+     * Parse the document
+     *
+     * @access public
+     * @return mixed   Atom instance or false
+     */
     public function execute()
     {
         \PicoFeed\Logging::log(\get_called_class().': begin parsing');
@@ -17,6 +29,7 @@ class Atom extends \PicoFeed\Parser
             return false;
         }
 
+        $this->language = $this->getXmlLang($this->content);
         $this->url = $this->getUrl($xml);
         $this->title = $this->stripWhiteSpace((string) $xml->title) ?: $this->url;
         $this->id = (string) $xml->id;
@@ -41,6 +54,7 @@ class Atom extends \PicoFeed\Parser
             $item->updated = $this->parseDate((string) $entry->updated);
             $item->author = $author;
             $item->content = $this->filterHtml($this->getContent($entry), $item->url);
+            $item->language = $this->language;
 
             if (empty($item->title)) $item->title = $item->url;
 
@@ -65,7 +79,13 @@ class Atom extends \PicoFeed\Parser
         return $this;
     }
 
-
+    /**
+     * Get the entry content
+     *
+     * @access public
+     * @param  SimpleXMLElement $entry XML Entry
+     * @return string
+     */
     public function getContent($entry)
     {
         if (isset($entry->content) && ! empty($entry->content)) {
@@ -84,7 +104,13 @@ class Atom extends \PicoFeed\Parser
         return '';
     }
 
-
+    /**
+     * Get the URL from a link tag
+     *
+     * @access public
+     * @param  SimpleXMLElement $xml XML tag
+     * @return string
+     */
     public function getUrl($xml)
     {
         foreach ($xml->link as $link) {

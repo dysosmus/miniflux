@@ -4,14 +4,27 @@ namespace PicoFeed\Clients;
 
 use \PicoFeed\Logging;
 
+/**
+ * Stream context HTTP client
+ *
+ * @author  Frederic Guillot
+ * @package client
+ */
 class Stream extends \PicoFeed\Client
 {
+    /**
+     * Do the HTTP request
+     *
+     * @access public
+     * @return array   HTTP response ['body' => ..., 'status' => ..., 'headers' => ...]
+     */
     public function doRequest()
     {
         // Prepare HTTP headers for the request
         $headers = array(
             'Connection: close',
             'User-Agent: '.$this->user_agent,
+            'Accept-Encoding: gzip',
         );
 
         if ($this->etag) $headers[] = 'If-None-Match: '.$this->etag;
@@ -61,6 +74,10 @@ class Stream extends \PicoFeed\Client
             $body = $this->decodeChunked($body);
         }
 
+        if (isset($headers['Content-Encoding']) && $headers['Content-Encoding'] === 'gzip') {
+            $body = gzdecode($body);
+        }
+
         return array(
             'status' => $status,
             'body' => $body,
@@ -68,7 +85,13 @@ class Stream extends \PicoFeed\Client
         );
     }
 
-
+    /**
+     * Decode a chunked body
+     *
+     * @access public
+     * @param  string $str Raw body
+     * @return string      Decoded body
+     */
     public function decodeChunked($str)
     {
         for ($result = ''; ! empty($str); $str = trim($str)) {

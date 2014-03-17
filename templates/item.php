@@ -6,7 +6,7 @@
     data-item-page="<?= $menu ?>"
     <?= $hide ? 'data-hide="true"' : '' ?>
     >
-    <h2>
+    <h2 <?= Helper\isRTL($item['language']) ? 'dir="rtl"' : '' ?>>
         <?= $item['bookmark'] ? '<span id="bookmark-icon-'.$item['id'].'">★ </span>' : '' ?>
         <?= $item['status'] === 'read' ? '<span id="read-icon-'.$item['id'].'">✔ </span>' : '' ?>
         <a
@@ -18,7 +18,7 @@
             <?= Helper\escape($item['title']) ?>
         </a>
     </h2>
-    <p class="preview">
+    <p class="preview" <?= Helper\isRTL($item['language']) ? 'dir="rtl"' : '' ?>>
         <?= Helper\escape(Helper\summary(strip_tags($item['content']), 50, 300)) ?>
     </p>
     <ul class="item-menu">

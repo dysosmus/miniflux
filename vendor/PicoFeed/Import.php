@@ -2,6 +2,8 @@
 
 namespace PicoFeed;
 
+require_once __DIR__.'/Logging.php';
+
 class Import
 {
     private $content = '';
