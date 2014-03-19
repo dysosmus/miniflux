@@ -13,7 +13,7 @@
         <title>Miniflux</title>
         <link href="<?= Helper\css() ?>" rel="stylesheet" media="screen">
         <?php if ($mozilla_auth_enable): ?>
-            <script type="text/javascript" src="?action=js" defer></script>
+            <script type="text/javascript" src="assets/js/all.min.js?<?= filemtime('assets/js/all.min.js') ?>" defer></script>
             <script type="text/javascript" src="assets/js/persona.js" defer></script>
         <?php endif ?>
     </head>
