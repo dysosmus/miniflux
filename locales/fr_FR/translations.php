@@ -207,4 +207,5 @@ return array(
     '%d month ago' => 'Il y a %d mois',
     '%d months ago' => 'Il y a %d mois',
     'Timezone' => 'Fuseau horaire',
+    'Update all subscriptions' => 'Mettre à jour tous les abonnements',
 );
