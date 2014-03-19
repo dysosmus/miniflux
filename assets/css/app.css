@@ -487,6 +487,13 @@ nav .active a {
     margin-left: 25px;
 }
 
+#item-content[dir="rtl"] blockquote {
+    border-right: 4px solid #ddd;
+    border-left: none;
+    padding-right: 25px;
+    padding-left: 0;
+}
+
 #item-content img,
 #item-content > a img,
 #item-content > img,
