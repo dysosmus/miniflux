@@ -55,6 +55,7 @@ People who sent a pull-request, report a bug, make a new theme or share a super 
 - Eauland: https://github.com/eauland
 - Félix: https://github.com/dysosmus
 - Geriel Castro: https://github.com/GerielCastro
+- Hika0: https://github.com/hika0
 - Horsely: https://github.com/horsley
 - Ing. Jan Kaláb: https://github.com/Pitel
 - Itoine: https://github.com/itoine
@@ -397,46 +398,6 @@ Don't forget to send a pull request or a ticket to share your contribution with 
 
 ### List of content grabber rules
 
-**If you want to add new rules, just open a ticket and I will do it.**
+Rules are stored here: [vendor/PicoFeed/Rules](https://github.com/fguillot/miniflux/tree/master/vendor/PicoFeed/Rules)
 
-- *.blog.lemonde.fr
-- *.blog.nytimes.com
-- *.igen.fr
-- *.nytimes.com
-- *.phoronix.com
-- *.slate.com
-- *.theguardian.com
-- *.wikipedia.org
-- *.wired.com
-- *.wsj.com
-- consomac.fr
-- github.com
-- golem.de
-- ing.dk
-- karriere.jobfinder.dk
-- lesjoiesducode.fr
-- lifehacker.com
-- lists.*
-- medium.com
-- pastebin.com
-- plus.google.com
-- rue89.com
-- smallhousebliss.com
-- spiegel.de
-- techcrunch.com
-- version2.dk
-- www.bbc.co.uk
-- www.bdgest.com
-- www.businessweek.com
-- www.cnn.com
-- www.egscomics.com
-- www.forbes.com
-- www.futura-sciences.com
-- www.lemonde.fr
-- www.lepoint.fr
-- www.mac4ever.com
-- www.npr.org
-- www.numerama.com
-- www.pcinpact.com
-- www.slate.fr
-- www.universfreebox.com
+If you want to add new rules, just open a ticket and I will do it.
