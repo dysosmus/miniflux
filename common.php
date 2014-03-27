@@ -10,6 +10,7 @@ require __DIR__.'/models/user.php';
 require __DIR__.'/models/feed.php';
 require __DIR__.'/models/item.php';
 require __DIR__.'/models/schema.php';
+require __DIR__.'/models/update.php';
 
 if (file_exists('config.php')) require 'config.php';
 
@@ -25,11 +26,14 @@ defined('PROXY_PORT') or define('PROXY_PORT', 3128);
 defined('PROXY_USERNAME') or define('PROXY_USERNAME', '');
 defined('PROXY_PASSWORD') or define('PROXY_PASSWORD', '');
 defined('ROOT_DIRECTORY') or define('ROOT_DIRECTORY', __DIR__);
-defined('UPDATE_DOWNLOAD_DIRECTORY') or define('UPDATE_DOWNLOAD_DIRECTORY', 'data/update/download');
-defined('UPDATE_ROLLBACK_DIRECTORY') or define('UPDATE_ROLLBACK_DIRECTORY', 'data/update/rollback');
+defined('UPDATE_DIRECTORY') or define('UPDATE_DIRECTORY', 'data/update');
+defined('UPDATE_DOWNLOAD_DIRECTORY') or define('UPDATE_DOWNLOAD_DIRECTORY', UPDATE_DIRECTORY . '/download');
+defined('UPDATE_ROLLBACK_DIRECTORY') or define('UPDATE_ROLLBACK_DIRECTORY', UPDATE_DIRECTORY . '/rollback');
 
-defined('ROOT_DIRECTORY') or define('ROOT_DIRECTORY', __DIR__);
 PicoFeed\Client::proxy(PROXY_HOSTNAME, PROXY_PORT, PROXY_USERNAME, PROXY_PASSWORD);
+
+\Model\Update\freeze_current_files();
+exit();
 
 PicoDb\Database::bootstrap('db', function() {
 
