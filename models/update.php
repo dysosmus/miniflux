@@ -154,7 +154,7 @@ function fetch($url)
                                                      : sys_get_temp_dir();
     $temporary_file      = tempnam($temporary_directory, 'miniflux-update-');
 
-    if(file_put_contents($temporary_file, file_get_contents($url)) === false) {
+    if(@file_put_contents($temporary_file, @file_get_contents($url)) == false) {
         Logging::log("[fetch] Unable to fetch {$url}.");
         $temporary_file = null;
     }
