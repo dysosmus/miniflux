@@ -7,6 +7,49 @@ use PicoFarad\Session;
 use PicoFarad\Template;
 use PicoDb\Database;
 
+// try to update miniflux
+Router\get_action('auto-update', function() {
+    /* Since copying files can be a long process, we do not want the script 
+       shuts down unexpectedly due to a lack of time. */
+    set_time_limit(0);
+
+    $rollback_name = \Model\Update\freeze(); 
+
+    if($rollback_name == null) {
+        Session\flash_error(t('Unable to update miniflux, can not freeze the current file structure.'));
+        Response\redirect('?action=config');
+    }
+
+    $url      = Model\Config\get('update_url');
+    $zip_path = Model\Update\fetch($url); 
+
+    if($zip_path == null) {
+        Session\flash_error(t("Unable to update miniflux, can not fetch a zip file at {$url}."));
+        Response\redirect('?action=config');
+    }
+
+    $update_name = Model\Update\uncompress($zip_path);
+
+    if($update_name == null) {
+        Session\flash_error(t('Unable to update miniflux, can not uncompress fetched zip file.'));
+        Response\redirect('?action=config');
+    }
+
+    $success = Model\Update\update($update_name);
+
+    if($success == false) {
+        if(Model\Update\rollback($rollback_name)) {
+            Session\flash_error(t("Unable to update miniflux, error during the writing, files are successfully rolled back."));
+        } else {
+            Session\flash_error(t("Unable to update miniflux, error during the writing, files are not rolled back."));
+        }
+        Response\redirect('?action=config');
+    }
+
+    Session\flash(t('Miniflux is updated.'));
+    Response\redirect('?action=config');
+});
+
 // Re-generate tokens
 Router\get_action('generate-tokens', function() {
 
