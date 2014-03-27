@@ -24,7 +24,11 @@ defined('PROXY_HOSTNAME') or define('PROXY_HOSTNAME', '');
 defined('PROXY_PORT') or define('PROXY_PORT', 3128);
 defined('PROXY_USERNAME') or define('PROXY_USERNAME', '');
 defined('PROXY_PASSWORD') or define('PROXY_PASSWORD', '');
+defined('ROOT_DIRECTORY') or define('ROOT_DIRECTORY', __DIR__);
+defined('UPDATE_DOWNLOAD_DIRECTORY') or define('UPDATE_DOWNLOAD_DIRECTORY', 'data/update/download');
+defined('UPDATE_ROLLBACK_DIRECTORY') or define('UPDATE_ROLLBACK_DIRECTORY', 'data/update/rollback');
 
+defined('ROOT_DIRECTORY') or define('ROOT_DIRECTORY', __DIR__);
 PicoFeed\Client::proxy(PROXY_HOSTNAME, PROXY_PORT, PROXY_USERNAME, PROXY_PASSWORD);
 
 PicoDb\Database::bootstrap('db', function() {
