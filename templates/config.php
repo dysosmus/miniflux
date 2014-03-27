@@ -34,6 +34,9 @@
     <?= Helper\form_label(t('Theme'), 'theme') ?>
     <?= Helper\form_select('theme', $theme_options, $values, $errors) ?><br/>
 
+    <?= Helper\form_label(t('Update url'), 'update_url') ?>
+    <?= Helper\form_text('update_url', $values, $errors, array('required')) ?><br/>
+
     <?= Helper\form_checkbox('nocontent', t('Do not fetch the content of articles'), 1, isset($values['nocontent']) ? $values['nocontent'] : false) ?><br />
 
     <ul>
@@ -92,6 +95,7 @@
         <h3><?= t('About') ?></h3>
         <ul>
             <li><?= t('Miniflux version:') ?> <strong><?= APP_VERSION ?></strong></li>
+            <li><a href="?action=auto-update"><?= t('Update miniflux') ?></a></li>
             <li><?= t('Official website:') ?> <a href="http://miniflux.net" rel="noreferer" target="_blank">http://miniflux.net</a></li>
             <li><a href="?action=console"><?= t('Console') ?></a></li>
         </ul>

@@ -211,7 +211,8 @@ function get_all()
             'auth_google_token',
             'auth_mozilla_token',
             'items_sorting_direction',
-            'redirect_nothing_to_read'
+            'redirect_nothing_to_read',
+            'update_url'
         )
         ->findOne();
 }
@@ -232,6 +233,7 @@ function validate_modification(array $values)
             new Validators\Required('items_per_page', t('Value required')),
             new Validators\Integer('items_per_page', t('Must be an integer')),
             new Validators\Required('theme', t('Value required')),
+            new Validators\Required('update_url', t('Value required')),
         ));
     }
     else {
