@@ -11,6 +11,10 @@ use PicoFeed\Logging;
 
 
 /**
+ * Synchronises the destination folder with the source folder.
+ * This function will skip all unreadable files, UPDATE_DIRECTORY 
+ * and symbolics links.
+ * In case of error, the function stop at the first error.
  * 
  * @param  string $source
  * @param  string $destination
@@ -29,7 +33,7 @@ function synchronize_files($source, $destination, $log_flag = '')
     $filtred_paths           = array(
         path(array($source, UPDATE_DIRECTORY)), // @todo move outside
     );
-    print path(array($source, UPDATE_DIRECTORY));
+
     $source_iterator         = new RecursiveDirectoryIterator($source);
     $filtred_source_iterator = new FileFilterIterator($source_iterator, 
                                                       $filtred_files,
@@ -84,15 +88,16 @@ function synchronize_files($source, $destination, $log_flag = '')
 
 /**
  * 
- * @param  [type] $to
- * @return [type]
+ * 
+ * @param string $name update name 
+ * @return boolean
  */
-function update($to) 
+function update($name) 
 {
     $success = true;
 
-    if(update_exsist($to)) {
-        $download_path = get_download_path($to);
+    if(update_exsist($name)) {
+        $download_path = get_download_path($name);
 
         $directories    = scandir($download_path);
         $upload_payload = array_pop($directories);
@@ -104,37 +109,44 @@ function update($to)
         if(! in_array($upload_payload, array('.', '..'))) { 
             $upload_payload_path = path(array($download_path, $upload_payload));
             $success             = synchronize_files($upload_payload_path, 
-                                                     ROOT_DIRECTORY, 
-                                                     'update');
+                                                     ROOT_DIRECTORY, 'update');
+
         } else {
             Logging::log("[update] Can not find upload payload in {$download_path}.");
             $success = false;
         }
     } else {
-         Logging::log("[update] Update {$to}, does not exsist.");
+         Logging::log("[update] Update {$name}, does not exsist.");
          $success = false;
     }
 
     return $success;
 }
 
-function rollback($to)
+/**
+ * 
+ * @param  string $name
+ * @return boolean
+ */
+function rollback($name)
 {
     $success = false;
 
-    if(rollback_exsist($to)) {
-
+    if(rollback_exsist($name)) {
+        $rollback_path = get_rollback_path($name);
+        $success       = synchronize_files($rollback_path, 
+                                            ROOT_DIRECTORY, 'rollback');
     } else {
-         Logging::log("Rollback {$to}, does not exsist.");
+         Logging::log("Rollback {$name}, does not exsist.");
     }
 
     return $success;
 }
 
 /**
- * Retrive a zip archive
  * 
- * @return string path of fetched file
+ * 
+ * @return string path of fetched file or null 
  */
 function fetch($url) 
 {
@@ -142,18 +154,18 @@ function fetch($url)
                                                      : sys_get_temp_dir();
     $temporary_file      = tempnam($temporary_directory, 'miniflux-update-');
 
-    if(file_put_contents($temporary_file, file_get_contents($url)) !== false) {
-        return $temporary_file;
-    } else {
+    if(file_put_contents($temporary_file, file_get_contents($url)) === false) {
         Logging::log("[fetch] Unable to fetch {$url}.");
-        return null;
+        $temporary_file = null;
     }
+
+    return $temporary_file;
 }
 
 /**
  * 
  * @param  string $zip_path
- * @return string
+ * @return string name of the update 
  */
 function uncompress($zip_path)
 {
@@ -182,8 +194,6 @@ function uncompress($zip_path)
 
 /**
  * Make a copy of all current files in the rollback folder.
- * This function will skip all unreadable files, UPDATE_DIRECTORY 
- * and symbolics links.
  *
  * @return string name of the rollback
  */
@@ -302,7 +312,13 @@ function get_update_path($for_file = null) {
 
     return path($tokens);
 }
-
+/**
+ * Path builder helper, build a path from a array with the system directory 
+ * separator and ensures no trailing directory separator.
+ * 
+ * @param  array $tokens
+ * @return string 
+ */
 function path($tokens)
 {
     return rtrim(implode(DIRECTORY_SEPARATOR, $tokens), DIRECTORY_SEPARATOR);
@@ -327,11 +343,11 @@ class FileFilterIterator extends RecursiveFilterIterator {
 
     /**
      * 
-     * @param RecursiveIterator $recursiveIter
-     * @param array             $filename_excludes 
-     * @param array             $path_excludes 
+     * @param RecursiveDirectoryIterator $recursiveIter
+     * @param array                      $filename_excludes 
+     * @param array                       $path_excludes 
      */
-    public function __construct(RecursiveIterator $recursiveIter, 
+    public function __construct(RecursiveDirectoryIterator $recursiveIter, 
                                 $filename_excludes = array(), 
                                 $path_excludes     = array()) 
     {
@@ -343,7 +359,7 @@ class FileFilterIterator extends RecursiveFilterIterator {
 
     public function accept() 
     {   
-       $accept = !in_array(
+        $accept = !in_array(
             $this->current()->getFilename(),
             $this->filename_excludes
         );
