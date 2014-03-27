@@ -32,9 +32,6 @@ defined('UPDATE_ROLLBACK_DIRECTORY') or define('UPDATE_ROLLBACK_DIRECTORY', UPDA
 
 PicoFeed\Client::proxy(PROXY_HOSTNAME, PROXY_PORT, PROXY_USERNAME, PROXY_PASSWORD);
 
-\Model\Update\freeze_current_files();
-exit();
-
 PicoDb\Database::bootstrap('db', function() {
 
     $db = new PicoDb\Database(array(
