@@ -4,7 +4,7 @@ namespace Schema;
 
 function version_24($pdo)
 {
-    $pdo->exec("ALTER TABLE config ADD COLUMN update_url TEXT DEFAULT 'https://github.com/fguillot/miniflux/archive/master.zip");
+    $pdo->exec("ALTER TABLE config ADD COLUMN update_url TEXT DEFAULT 'https://github.com/fguillot/miniflux/archive/master.zip'");
 }
 
 function version_23($pdo)
